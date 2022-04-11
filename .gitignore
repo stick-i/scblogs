@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 配置文件 ###
+**/resources/*.yml
+!**/resources/application.yml
+
+### 测试文件 ###
+**/test/
