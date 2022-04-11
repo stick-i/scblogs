@@ -1,0 +1,28 @@
+package cn.sticki.blog.mapper;
+
+import cn.sticki.blog.pojo.domain.UserSafety;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+@Mapper
+public interface UserSafetyMapper extends BaseMapper<UserSafety> {
+
+	/**
+	 * 登录时使用，todo 后续可以改进成 邮箱、手机号均可登录
+	 *
+	 * @param username 用户名
+	 * @param password 密码
+	 */
+	@Select("select * from user_safety where username = #{username} and password = #{password};")
+	UserSafety selectByUsernameAndPassword(String username, String password);
+
+	/**
+	 * 通过邮箱查找用户账号密码信息
+	 *
+	 * @param mail 邮箱
+	 */
+	@Select("select * from user_safety where mail = #{mail}")
+	UserSafety selectByMail(String mail);
+
+}
