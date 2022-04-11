@@ -27,6 +27,6 @@ public interface RegisterService extends IService<UserSafety> {
 	 * @param code        待核对的验证码
 	 * @return 验证结果，成功或失败
 	 */
-	boolean checkVerify(String mailAddress, String code);
+	boolean checkMailVerify(String mailAddress, String code);
 
 }

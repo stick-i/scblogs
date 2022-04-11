@@ -46,11 +46,11 @@ public class RegisterController {
 	 * 注册账号，必须有正确的验证码才能注册成功
 	 *
 	 * @param userSafety 用户注册时的账号密码等安全信息类
-	 * @param verifyCode 接收到的验证码
+	 * @param mailVerify 接收到的验证码
 	 */
 	@PostMapping("/register")
-	public RestTemplate register(UserSafety userSafety, @NotNull String verifyCode) {
-		if (!registerService.checkVerify(userSafety.getMail(), verifyCode)) {
+	public RestTemplate register(UserSafety userSafety, @NotNull String mailVerify) {
+		if (!registerService.checkMailVerify(userSafety.getMail(), mailVerify)) {
 			return new RestTemplate(false, "验证码错误");
 		}
 		return new RestTemplate(registerService.register(userSafety));

@@ -74,7 +74,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	}
 
 	@Override
-	public boolean checkVerify(@NotNull String mailAddress, @NotNull String code) {
+	public boolean checkMailVerify(@NotNull String mailAddress, @NotNull String code) {
 		// 此处读取缓存中的数据，并在读取成功之后从缓存中删除
 		String key = "blog:sendMailVerify:" + mailAddress;
 		String verify = redisUtils.get(key);
