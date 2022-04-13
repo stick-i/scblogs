@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Home from "@/views/home/Home";
+import Login from "@/views/login/Login";
+
 import Register from "@/views/Register";
-import Login from "@/views/Login";
 import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
@@ -20,6 +22,11 @@ const routes = [
     path: '/blogs',
     name: 'Blogs',
     component: Blogs
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home
   },
   {
     path: '/login',
