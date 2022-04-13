@@ -13,6 +13,10 @@
         <el-input v-model="ruleForm.mobile"></el-input>
       </el-form-item>
 
+      <el-form-item label="所在学校">
+        <el-input></el-input>
+      </el-form-item>
+
       <el-form-item prop="mail" label="邮箱" :rules="[
       { required: true, message: '请输入邮箱地址', trigger: 'blur' },
       { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }]">
