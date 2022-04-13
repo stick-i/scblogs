@@ -30,4 +30,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		return userMapper.selectByUsername(username);
 	}
 
+	@Override
+	public boolean removeByUsername(String username) {
+		// todo 需要加上事务
+		return userSafetyMapper.deleteByUsername(username) + userMapper.deleteByUsername(username) == 2;
+	}
+
 }

@@ -31,6 +31,7 @@ public class RegisterController {
 	 */
 	@PostMapping("/send-mail-verify")
 	public RestTemplate sendMailVerify(@NotNull String mail) throws Exception {
+		log.debug("mail->{}", mail);
 		Long sendTime = (Long) session.getAttribute("send-mail-verify-time");
 		Long nowTime = System.currentTimeMillis() / 1000;
 		// 判断是否发送过邮件，若上一次发送邮件的时间超过90s则允许发送
