@@ -2,6 +2,7 @@ package cn.sticki.blog.controller;
 
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
+import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class LoginController {
 		User user = userService.login(username, password);
 		if (user != null) {
 			session.setAttribute("user", user);
-			return new RestTemplate(true);
+			return new RestTemplate(new UserVO(user));
 		}
 		return new RestTemplate(false, "用户名或密码错误");
 	}

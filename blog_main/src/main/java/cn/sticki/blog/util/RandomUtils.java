@@ -3,6 +3,7 @@ package cn.sticki.blog.util;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class RandomUtils {
@@ -22,6 +23,10 @@ public class RandomUtils {
 			builder.append(ch);
 		}
 		return String.valueOf(builder);
+	}
+
+	public String uuid() {
+		return UUID.randomUUID().toString().trim().replaceAll("-", "");
 	}
 
 }

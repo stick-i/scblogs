@@ -1,13 +1,20 @@
 package cn.sticki.blog.util;
 
-import cn.sticki.blog.exception.SystemException;
+import cn.sticki.blog.exception.systemException.MinioException;
 import io.minio.*;
+import io.minio.errors.*;
+import io.minio.messages.Item;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @Component
 public class MinioUtils {
@@ -19,16 +26,15 @@ public class MinioUtils {
 	private String bucketName;
 
 	/**
-	 * 判断bucket是否存在，不存在则创建
+	 * 判断bucket是否存在
 	 */
-	public void existBucket(String name) {
+	public boolean existBucket(String name) throws MinioException {
 		try {
-			boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(name).build());
-			if (!exists) {
-				minioClient.makeBucket(MakeBucketArgs.builder().bucket(name).build());
-			}
+			return minioClient.bucketExists(BucketExistsArgs.builder().bucket(name).build());
+			// minioClient.makeBucket(MakeBucketArgs.builder().bucket(name).build());
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new MinioException();
 		}
 	}
 
@@ -38,14 +44,14 @@ public class MinioUtils {
 	 * @param bucketName 存储bucket名称
 	 * @return Boolean
 	 */
-	public Boolean makeBucket(String bucketName) {
+	public boolean makeBucket(String bucketName) throws MinioException {
 		try {
 			minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			throw new MinioException();
 		}
-		return true;
 	}
 
 	/**
@@ -54,95 +60,101 @@ public class MinioUtils {
 	 * @param bucketName 存储bucket名称
 	 * @return Boolean
 	 */
-	public Boolean removeBucket(String bucketName) {
+	public Boolean removeBucket(String bucketName) throws MinioException {
 		try {
 			minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			throw new MinioException();
 		}
-		return true;
-	}
-
-	public InputStream download(String fileName) throws SystemException {
-
-		try (InputStream stream =
-				     minioClient.getObject(
-						     GetObjectArgs.builder()
-								     .bucket(bucketName)
-								     .object(fileName)
-								     .build()
-				     )) {
-			// Read data from stream
-			return stream;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new SystemException("文件下载失败");
-		}
-
-		// try {
-		// 	 = minioClient.getObject(
-		// 			GetObjectArgs.builder()
-		// 					.bucket(bucketName)
-		// 					.object(fileName)
-		// 					.build()
-		// 	);
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// 	throw new SystemException("文件下载失败");
-		// }
 	}
 
 	/**
 	 * 上传文件
 	 */
-	public void upload(MultipartFile multipartFile) throws SystemException {
+	public void upload(String objectName, InputStream inputStream, long objectSize, long partSize, String contentType)
+			throws MinioException {
 		try {
-			minioClient.putObject(
-					PutObjectArgs.builder()
-							.bucket(bucketName)
-							.object(multipartFile.getOriginalFilename())
-							// 文件大小和分片大小，填-1默认为5Mib
-							.stream(multipartFile.getInputStream(), multipartFile.getSize(), -1)
-							.contentType(multipartFile.getContentType())
+			minioClient.putObject(PutObjectArgs
+					                      .builder()
+					                      .bucket(bucketName)
+					                      .object(objectName)
+					                      // 文件大小和分片大小，填-1默认为5Mib
+					                      .stream(inputStream, objectSize, partSize)
+					                      .contentType(contentType)
+					                      .build());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MinioException("文件上传异常");
+		}
+	}
 
-							.build()
+	/**
+	 * 上传文件
+	 *
+	 * @param multipartFile 文件
+	 * @throws MinioException minio异常
+	 * @throws IOException    字节流为空
+	 */
+	public void upload(MultipartFile multipartFile) throws MinioException, IOException {
+		this.upload(
+				multipartFile.getOriginalFilename(),
+				multipartFile.getInputStream(),
+				multipartFile.getSize(),
+				-1,
+				multipartFile.getContentType()
+		);
+	}
+
+	/**
+	 * 下载文件
+	 *
+	 * @param fileName     文件名
+	 * @param outputStream 输出流
+	 */
+	public void download(String fileName, ServletOutputStream outputStream) throws MinioException, IOException {
+		InputStream inputStream = this.download(fileName);
+		IOUtils.copy(inputStream, outputStream);
+		inputStream.close();
+	}
+
+	/**
+	 * 下载文件，需要手动关闭流，否则会一直占用资源
+	 *
+	 * @param fileName 文件名
+	 */
+	public InputStream download(String fileName) throws MinioException {
+		try {
+			return minioClient.getObject(GetObjectArgs
+					                             .builder()
+					                             .bucket(bucketName)
+					                             .object(fileName)
+					                             .build());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MinioException("文件下载异常");
+		}
+	}
+
+	public void removeFile(String fileName) throws MinioException {
+		try {
+			minioClient.removeObject(
+					RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new SystemException("文件上传失败");
+			throw new MinioException("文件删除异常");
 		}
+	}
 
-		// minioClient.putObject(bucketName, )
-		// minioClient.putObject(bucketName, multipartFile.getName(), multipartFile.getInputStream(), multipartFile.getSize(), multipartFile.getContentType());
-
-		// List<String> names = new ArrayList<>(multipartFile.length);
-		// for (MultipartFile file : multipartFile) {
-		// 	String fileName = file.getOriginalFilename();
-		// 	String[] split = fileName.split("\\.");
-		// 	if (split.length > 1) {
-		// 		fileName = split[0] + "_" + System.currentTimeMillis() + "." + split[1];
-		// 	} else {
-		// 		fileName = fileName + System.currentTimeMillis();
-		// 	}
-		// 	InputStream in = null;
-		// 	try {
-		// 		in = file.getInputStream();
-		// 		minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(fileName).stream(in, in.available(), -1).contentType(file.getContentType()).build());
-		// 	} catch (Exception e) {
-		// 		e.printStackTrace();
-		// 	} finally {
-		// 		if (in != null) {
-		// 			try {
-		// 				in.close();
-		// 			} catch (IOException e) {
-		// 				e.printStackTrace();
-		// 			}
-		// 		}
-		// 	}
-		// 	names.add(fileName);
-		// }
-		// return names;
+	public void getObjectList()
+			throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
+		for (Result<Item> result : results) {
+			Item item = result.get();
+			System.out.println(item.objectName());
+		}
 	}
 
 }
