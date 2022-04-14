@@ -38,7 +38,7 @@ class Config {
 	@Getter
 	public static String avatarPrefix;
 
-	@Value("${resource.url.avatar}")
+	@Value("${resource.avatar}")
 	public void setDatabase(String db) {
 		avatarPrefix = db;
 	}

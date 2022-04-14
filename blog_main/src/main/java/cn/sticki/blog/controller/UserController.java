@@ -26,30 +26,38 @@ public class UserController {
 	private UserService userService;
 
 	/**
-	 * 获取当前用户信息
-	 */
-	@GetMapping
-	public RestTemplate get() {
-		return new RestTemplate(new UserVO((User) session.getAttribute("user")));
-	}
-
-	/**
 	 * 获取用户信息
 	 *
 	 * @param username 用户名
 	 */
-	@GetMapping({"/{username}"})
-	public RestTemplate getByUsername(@PathVariable String username) {
-		return new RestTemplate(new UserVO(userService.getByUsername(username)));
+	@GetMapping("/user")
+	public RestTemplate getByUsername(String username) {
+		RestTemplate template = new RestTemplate();
+		if (username == null) {
+			User user = (User) session.getAttribute("user");
+			if (user != null) template.setData(new UserVO(user));
+		} else {
+			template.setData(new UserVO(userService.getByUsername(username)));
+		}
+		return template;
 	}
 
 	/**
-	 * 更新用户信息
+	 * 更新用户昵称
+	 *
+	 * @param nickname 昵称
 	 */
-	@PutMapping
-	public RestTemplate update(User user) {
-		// userService.update();
-		return new RestTemplate();
+	@PutMapping("/nickname")
+	public RestTemplate updateNickname(@NotNull String nickname) {
+		User user = (User) session.getAttribute("user");
+		if (user == null)
+			return new RestTemplate(400, "请先登录");
+		user.setNickname(nickname);
+		if (userService.updateNickname(user.getId(), user.getNickname())) {
+			session.setAttribute("user", user);
+			return new RestTemplate(true);
+		}
+		return new RestTemplate(false);
 	}
 
 	/**
@@ -70,6 +78,7 @@ public class UserController {
 	public RestTemplate updateAvatar(@NotNull MultipartFile multipartFile) throws MinioException, IOException {
 		User user = (User) session.getAttribute("user");
 		if (user != null) {
+			// todo 此处添加文件校验
 			userService.updateAvatar(user, multipartFile);
 			return new RestTemplate();
 		}

@@ -27,6 +27,22 @@ public interface UserService extends IService<User> {
 	 */
 	boolean removeByUsername(String username);
 
+	/**
+	 * 更新用户头像
+	 *
+	 * @param user       用户信息
+	 * @param avatarFile 头像文件
+	 * @throws MinioException minio服务器异常
+	 * @throws IOException    文件为空
+	 */
 	void updateAvatar(User user, MultipartFile avatarFile) throws MinioException, IOException;
+
+	/**
+	 * 更新用户昵称
+	 *
+	 * @param id       用户id
+	 * @param nickname 用户昵称
+	 */
+	boolean updateNickname(Integer id, String nickname);
 
 }

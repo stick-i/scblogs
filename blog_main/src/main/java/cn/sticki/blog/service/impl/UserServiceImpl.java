@@ -71,6 +71,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		);
 	}
 
+	@Override
+	public boolean updateNickname(Integer id, String nickname) {
+		return userMapper.updateNicknameById(id, nickname) == 1;
+	}
+
 	private static String getFileExtension(String fileName) {
 		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
 			return fileName.substring(fileName.lastIndexOf("."));

@@ -40,4 +40,11 @@ public class RestTemplate {
 		this.status = status;
 	}
 
+	public RestTemplate(Integer code, String message) {
+		this.code = code;
+		this.message = message;
+		this.data = null;
+		this.status = false;
+	}
+
 }
