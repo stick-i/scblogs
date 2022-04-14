@@ -8,7 +8,6 @@ import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.service.UserService;
 import cn.sticki.blog.util.MinioUtils;
 import cn.sticki.blog.util.RandomUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,8 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+// public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl implements UserService {
 
 	@Resource
 	private UserMapper userMapper;
@@ -49,9 +49,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	}
 
 	@Override
+	public boolean removeById(Integer id) {
+		// todo 需要加上事务
+		return userSafetyMapper.deleteById(id) + userMapper.deleteById(id) == 2;
+	}
+
+	@Override
 	public boolean removeByUsername(String username) {
 		// todo 需要加上事务
 		return userSafetyMapper.deleteByUsername(username) + userMapper.deleteByUsername(username) == 2;
+	}
+
+	@Override
+	public boolean checkPassword(Integer id, String password) {
+		UserSafety userSafety = userSafetyMapper.selectById(id);
+		return userSafety.getPassword().equals(password);
 	}
 
 	@Override

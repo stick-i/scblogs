@@ -2,12 +2,12 @@ package cn.sticki.blog.service;
 
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface UserService extends IService<User> {
+// public interface UserService extends IService<User> {
+public interface UserService {
 
 	/**
 	 * 用户登录
@@ -23,9 +23,21 @@ public interface UserService extends IService<User> {
 	/**
 	 * 移除用户
 	 *
+	 * @param id 用户id
+	 */
+	boolean removeById(Integer id);
+
+	/**
+	 * 移除用户
+	 *
 	 * @param username 用户名
 	 */
 	boolean removeByUsername(String username);
+
+	/**
+	 * 检查密码是否正确
+	 */
+	boolean checkPassword(Integer id, String password);
 
 	/**
 	 * 更新用户头像
