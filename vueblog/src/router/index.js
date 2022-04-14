@@ -9,20 +9,15 @@ import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
 import P_Register from "@/views/P_Register";
-import P_Register2 from "@/views/P_Register2";
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"P_Register2"}
+    redirect:{name:"P_Register"}
   },
-  {
-    path: '/P_Register2',
-    name: 'P_Register2',
-    component: P_Register2
-  },
+
   {
     path: '/home',
     name: 'Home',
