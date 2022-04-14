@@ -66,7 +66,10 @@ public class UserController {
 	@DeleteMapping
 	public RestTemplate delete() {
 		User user = (User) session.getAttribute("user");
-		return new RestTemplate(user != null && userService.removeByUsername(user.getUsername()));
+		if (user == null) {
+			return new RestTemplate(400, "请先登录");
+		}
+		return new RestTemplate(userService.removeByUsername(user.getUsername()));
 	}
 
 	/**
