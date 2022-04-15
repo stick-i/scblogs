@@ -3,7 +3,7 @@
     <top-bar></top-bar>
     <div class="container">
       <div class="register-login-box">
-        <login-item></login-item>
+        <register-item></register-item>
       </div>
     </div>
   </div>
@@ -11,12 +11,12 @@
 
 <script>
   import TopBar from "@/components/content/topbar/TopBar";
-  import LoginItem from "@/components/content/login/LoginItem";
+  import RegisterItem from "@/components/content/register/RegisterItem";
 
   export default {
     components: {
       TopBar,
-      LoginItem
+      RegisterItem
     },
 
   };
@@ -35,6 +35,7 @@
         position: absolute;
         width: 600px;
         padding: 30px;
+        /*padding-left: 0px;*/
         /*background-color: rgba(255,255,255,0.5);*/
         background-color: #fff;
         top: 50px;
