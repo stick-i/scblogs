@@ -1,5 +1,6 @@
 package cn.sticki.blog.pojo.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -7,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class UserEducation {
 
+	@TableId
 	String username; //  '用户名'
 
 	Timestamp createTime; //  '创建时间'
