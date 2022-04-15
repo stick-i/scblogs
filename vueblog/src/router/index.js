@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Home from "@/views/home/Home";
 import Login from "@/views/login/Login";
 
-import Register from "@/views/Register";
+import Register from "@/views/register/Register";
 import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
@@ -16,17 +16,17 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Blogs"}
-  },
-  {
-    path: '/blogs',
-    name: 'Blogs',
-    component: Blogs
+    redirect:{name:"Home"}
   },
   {
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/blogs',
+    name: 'Blogs',
+    component: Blogs
   },
   {
     path: '/login',
