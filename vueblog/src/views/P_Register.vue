@@ -57,7 +57,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 *{
   padding: 0;
   margin:0;
@@ -112,7 +112,6 @@ button:active{
   box-shadow:0 15px 15px rgb(94, 109, 109);
   border-radius: 10px;
   overflow: hidden;
-
 }
 .form-container{
   position: absolute;
