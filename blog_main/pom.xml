@@ -64,6 +64,12 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.75</version>
+		</dependency>
+
 		<!-- 开发者工具,可以进行热部署 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
