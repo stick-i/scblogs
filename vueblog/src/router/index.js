@@ -8,7 +8,6 @@ import Register from "@/views/register/Register";
 import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
-import P_Register from "@/views/P_Register";
 Vue.use(VueRouter)
 
 const routes = [
@@ -31,11 +30,6 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/P_Register',
-    name: 'P_Register',
-    component: P_Register
   },
   {
     path: '/register',
