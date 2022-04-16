@@ -11,6 +11,7 @@
           <el-input type="textarea" v-model="ruleForm.description"></el-input>
         </el-form-item>
 
+        <!-- markdown编辑器  -->
         <el-form-item label="内容" prop="content">
           <mavon-editor v-model="ruleForm.content"></mavon-editor>
         </el-form-item>
