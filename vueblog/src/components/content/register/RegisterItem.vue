@@ -163,13 +163,15 @@
                 .post("/register/register", qs.stringify(this.ruleForm))
                 .then((res) => {
                   console.log(res);
-                  if (res.data.status == true) {
+                  if (res.data.code == 200 && res.data.status == true) {
                     this.$message({
                       showClose: true,
                       message: "恭喜您，注册成功~",
                       type: "success",
                     });
-                  } else {
+                    this.$router.push({path:'login'});
+                  }
+                  if(res.data.code == 200 && res.data.status == false) {
                     this.$message({
                       showClose: true,
                       message: "验证码错误",

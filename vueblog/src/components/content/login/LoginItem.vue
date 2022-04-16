@@ -37,6 +37,7 @@
 </template>
 
 <script>
+  import qs from "qs";
   export default {
     name: "",
     data() {
@@ -52,7 +53,7 @@
           ],
           password: [
             { required: true, message: "请输入密码", trigger: "blur" },
-            { min: 6, message: "最少6个字符", trigger: "blur" },
+            // { min: 6, message: "最少6个字符", trigger: "blur" },
           ],
         }
       };
@@ -61,7 +62,27 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            // alert('submit!');
+            this.$axios
+                .post("/login/login", qs.stringify(this.ruleForm))
+                .then((res) => {
+                  console.log(res);
+                  if (res.data.code == 200 && res.data.status == false) {
+                    this.$message({
+                      showClose: true,
+                      message: "用户名或密码错误",
+                      type: "warning",
+                    });
+                  }
+                  if (res.data.code == 200 && res.data.status == true) {
+                    this.$message({
+                      showClose: true,
+                      message: "恭喜您，登录成功~",
+                      type: "success",
+                    });
+                    this.$router.push({path:'home'});
+                  }
+                })
           } else {
             console.log('error submit!!');
             return false;
