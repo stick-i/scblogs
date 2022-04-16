@@ -8,6 +8,7 @@ import Register from "@/views/register/Register";
 import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
+import Personal_Blog from "@/views/Personal_Blog";
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,6 +51,11 @@ const routes = [
     path: '/blog/:blogId/edit',
     name: 'BlogEdit',
     component: BlogEdit
+  },
+  {
+    path: '/Personal_Blog',
+    name: 'PersonalBlog',
+    component: Personal_Blog
   },
 ]
 

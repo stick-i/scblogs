@@ -1,0 +1,107 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "24850",
+      "name": "二维码",
+      "font_class": "erweima",
+      "unicode": "f0030",
+      "unicode_decimal": 983088
+    },
+    {
+      "icon_id": "162882",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "f018f",
+      "unicode_decimal": 983439
+    },
+    {
+      "icon_id": "297679",
+      "name": "文本编辑",
+      "font_class": "wenbenbianji",
+      "unicode": "e6d5",
+      "unicode_decimal": 59093
+    },
+    {
+      "icon_id": "577383",
+      "name": "信息-fill",
+      "font_class": "xinxifill",
+      "unicode": "e762",
+      "unicode_decimal": 59234
+    },
+    {
+      "icon_id": "1071104",
+      "name": "常见问题／相关问题",
+      "font_class": "changjianwentixiangguanwenti",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "3851381",
+      "name": "文章",
+      "font_class": "wenzhang",
+      "unicode": "e668",
+      "unicode_decimal": 58984
+    },
+    {
+      "icon_id": "5387553",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "eafe",
+      "unicode_decimal": 60158
+    },
+    {
+      "icon_id": "5387672",
+      "name": "云上传",
+      "font_class": "yunshangchuan",
+      "unicode": "eb2c",
+      "unicode_decimal": 60204
+    },
+    {
+      "icon_id": "5460560",
+      "name": "客服",
+      "font_class": "kefu",
+      "unicode": "ec2e",
+      "unicode_decimal": 60462
+    },
+    {
+      "icon_id": "7568889",
+      "name": "24gf-telephone2",
+      "font_class": "24gf-telephone2",
+      "unicode": "e96d",
+      "unicode_decimal": 59757
+    },
+    {
+      "icon_id": "15391396",
+      "name": "成就",
+      "font_class": "chengjiu",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "16198686",
+      "name": "星球",
+      "font_class": "xingqiu",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "26237607",
+      "name": "邮件、查看邮件、发送邮件、收邮件-06",
+      "font_class": "a-youjianchakanyoujianfasongyoujianshouyoujian-06",
+      "unicode": "e918",
+      "unicode_decimal": 59672
+    },
+    {
+      "icon_id": "28529353",
+      "name": "新建项目-285",
+      "font_class": "xinjianxiangmu-285",
+      "unicode": "e9ba",
+      "unicode_decimal": 59834
+    }
+  ]
+}
