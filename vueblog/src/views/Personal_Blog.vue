@@ -3,101 +3,90 @@
         <meta name="referrer" content="no-referrer">
         <!-- 个人博客界面显示 -->
         <!-- 顶部导航栏部分 -->
-        <div class="header">
-            <div class="header-content">
-                <!-- 内容区 -->
-                <div class="header-element">
-                    <!-- 元素区 -->
-                    <div class="header-left">
-                        <!-- 左边图片 -->
-                        <img src="../assets/img/PersonalBlog/csdn.png" alt="">
-                        <!-- 左侧元素块 -->
-                        <ul >
-                            <li><a href="#">博客</a></li>
-                            <li><a href="#">开发者文库</a></li>
-                            <li><a href="#">课程</a></li>
-                            <li><a href="#">问答</a></li>
-                            <li><a href="#">社区</a></li>
-                            <li><a href="#">插件</a></li>
-                            <li><a href="#">认证</a></li>
-                            <li><a href="#">开源</a></li>
-                        </ul>
-                    </div>
-                    <!-- 中部搜索框 -->
-                    <div class="header-middle">
-                        <form action="">
-                            <input :class="Flag?'active':''" class="sousuo" @focus="changeColor(true)" @blur="changeColor(false)" v-model="inputValue"  type="text">
-                            <button class="submit"><span class="iconfont icon-sousuo">提交</span></button>
-                        </form>
-                    </div>
-                    <!-- 右边元素块 -->
-                    <div class="header-right">
-                        <ul >
-                            <li class="vip"><a href="#">会员中心<img :src="introImg" alt=""></a></li>
-                            <li><a href="#">足迹</a></li>
-                            <li><a href="#">动态</a></li>
-                            <li><a href="#">消息</a></li>
-                        </ul>
-                    </div>
-                </div>    
-            </div>
-        </div>
-        <!-- <div class="a2"></div>  -->
+        <TopBarA symbolImg="https://profile.csdnimg.cn/7/3/4/3_u011663865"></TopBarA>
+        <!-- 背景图片部分 -->
+        <div class="bg"><img  :src="bg_Img" alt="" ></div>
         <div class="content">
             <!-- 个人信息简述 -->
             <div class="content-intro1">
                 <!-- 图片简介部分 -->
                 <div class="intro1-left"><!-- 左部简介部分 -->
                     <div class="intro1-left-img">
-                        <img src="https://profile.csdnimg.cn/2/8/8/2_qq_55817438" alt="">
+                        <img :src="introImg" alt="">
                     </div>
                     <div class="intro1-left-content">
                             <div class="left-content-up">
                                 <div class="username">{{username}}</div>
-                                <div>
-                                    <img src="" alt="">
+                                <div class="userage">
+                                    <img :src="segPositionImg" alt="">
                                     <span>码龄{{codeAge}}年</span>
                                 </div>
                                 <div></div>
                             </div>
-                            <div class="left-content-down"></div>
+                            <div class="left-content-down">
+                                <ul>
+                                    <li><a href="#">{{visitTimes}}被访问<span>|</span></a></li>
+                                    <li><a href="#">原创{{article}}篇<span>|</span></a></li>
+                                    <li><a href="#">排名{{ranking}}<span>|</span></a></li>
+                                    <li><a href="#">{{fans}}粉丝<span>|</span></a></li>
+                                </ul>
+                            </div>
                     </div>
                 </div>
-                <div><!-- 右部简介部分 --></div>
+                <div class="intro1-right">
+                    <!-- 右部简介部分 -->
+                    <button ><i class="iconfont icon-wenbenbianji"></i><span>编辑资料</span></button>
+                    <button ><i class="iconfont icon-shezhi"></i><span>设置</span></button>
+                </div>
             </div>
             <div class="content-intro2">
                 <!-- 下拉框部分 -->
             </div>
         </div>
+        <div class="a"></div>
+        <ButtomA></ButtomA>
     </div>
 </template>
-<script>
+<script> 
+import TopBarA from "@/components/P_user/TopBar/TopBar";
+import ButtomA from "@/components/P_user/ButtomView/ButtomView.vue"
     export default{
+        components: {
+            TopBarA,
+            ButtomA,
+         },
         data(){
             return{
-                inputValue:"",
-                // 判断颜色是否切换
-                Flag:false,
+                // 背景图片
+                bg_Img:"https://up.enterdesk.com/edpic_360_360/9e/c5/b6/9ec5b6630fd0deac6c421e80d955f367.jpg",
                 // 获取的个人头像照片地址
-                introImg:"",
+                introImg:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
+                // 码龄段位标识图
+                segPositionImg:"https://img-home.csdnimg.cn/images/20210108035944.gif",
                 // 用户名
-                username:"",
+                username:"没啥大不了",
                 // 码龄
                 codeAge:0,
+                // 个人博被访问次数
+                visitTimes:0,
+                // 原创文章
+                article:0,
+                ranking:0,
+                fans:0,
             }
         },
         methods:{
             // 修改搜索框颜色
-            //     changeColor(flag){
-            //         console.log("点击后激活类")
-            //         var input=document.querySelector(".sousuo")
-            //         if(flag==true){
-            //             input.style.borderColor="red"
-            //         }else{
-            //             input.style.borderColor="black"
-            //         }
-            //         this.Flag=flag
-            //     }
+                changeColor(flag){
+                    console.log("点击后激活类")
+                    var input=document.querySelector(".sousuo")
+                    if(flag==true){
+                        input.style.borderColor="red"
+                    }else{
+                        input.style.borderColor="black"
+                    }
+                    this.Flag=flag
+                }
         }
     }
 </script>
@@ -107,120 +96,125 @@
     padding: 0;
     box-sizing: border-box;
 }
+.a{
+    width: 24px;
+    height: 3000px;
+    background-color: blue;
+}
 /* 导航栏顶部固定 */
 /* .header{
     position: fixed;
     top: 0;
 } */
-/* .a2{
-    width: 100px;
-    height: 6000px;
-    background: rgb(232, 46, 46);
-} */
+
 .body{
     background: rgb(243, 244, 246);
 }
-.header{
-    height: 60px;
-    width: 100%;
-    background: rgb(255,255,255);
-    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 5%);
-}
-.header-content{
+
+/* 背景图 */
+.bg{
     width: 1280px;
+    margin:0 auto;
+    height: 100px;
+}
+.bg img{
+    width: inherit;
     height: 100%;
+}
+/* 中部介绍部分 */
+.content{
+    width: 1280px;
+    background:white;
+    padding: 0;
+    height:200px;
     margin: 0 auto;
 }
-.header-content li{
-    list-style-type: none;
+.content .content-intro1{
+    width: 100%;
+}
+.content .intro1-left{
     float: left;
-    width: auto;
-    height: 100%;
-    padding:0 10px;
-    background-color: white;
-} 
-.header-content li:hover{
-    background-color: rgb(240,240,245);
-} 
-
-.header-element{
-    color: black;
-    line-height: 60px;
+    }
+.content .intro1-left-img{
+    float: left;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgb(240,240,242);
+    margin: -15px 10px 0 20px;
+    overflow: hidden;
 }
-.header-element a{
-    color: black;
-    font-size: 14px;
-    text-decoration: none;
-}
-
-.header-left ul,img{
+.intro1-left-content{
     float: left;
 }
-.header-left img{
-    display: block;
-    width: 80px;
-    height: 44px;
-    min-width: 80px;
-    margin: 8px 5px 0 0;
+.intro1-left-content .left-content-up{
+    margin-top: 20px;
 }
-.header-middle{
-    float: left;
-    max-width: 720px;
-    height: 32px;
-    line-height: 32px;
-    margin-top:14px;
-    position: relative;
-}
-.header-middle input{
+.intro1-left-content .left-content-up .username{
+    /* float: left; */
+    font-size: 24px;
+    margin-right: 10px;
     display: inline-block;
-    box-sizing: border-box;
-    /* 行内元素垂直居中 */
-    vertical-align: top;
-    font-size: 14px;
-    width: 400px;
-    height: 32px;
-    border: 1px solid #e8e8e8;
-    /* 右侧边界消失 */
-    border-right: none;
-    border-radius: 16px 0 0 16px;
-    background: #f5f6f7;
-    color: rgb(3, 3, 3);
-}
-.header-middle input.active input{
-    border-color: rgb(255,80,27);
-}
-.header-middle button{
-    display: inline-block;
-    box-sizing: border-box;
-    height: 32px;
-    width: 88px;
-    border: none;
-    background-color: rgb(255, 80, 27);
-    text-align: left;
-    cursor: pointer;
-    border-radius: 0 16px 16px 0;
-}
-.header-middle button span{
-    color: white;
-    margin: 15px;
-}
-.header-right ul{
-    float: right;
-}
-.header-right .vip{
-    position: relative;
-}
-.header-right a{
-    display: block;
-    box-sizing: border-box;
-}
-.header-right img{
-    position:relative;
-    width: 14px;
-    top: 18.21px;
-    margin-right: 5px;
     vertical-align: middle;
-    display: inline-block;
 }
-
+.intro1-left-content .left-content-up .userage{
+    display: inline-block;
+    width: 80px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 16px;
+    background: rgb(209,221,241);
+}
+.userage img{
+    width: 22px;
+    margin-top: -2px;
+}
+.userage span{
+    font-size: 12px;
+    margin-left: 5px;
+}
+.intro1-left-content .left-content-down{
+    /* float: left; */
+    height: 30px;
+    width:auto;
+    margin-top: 10px;
+}
+.intro1-left-content .left-content-down li{
+    float: left;
+    list-style: none;
+}
+.intro1-left-content .left-content-down li a{
+    color: black;
+}
+.intro1-left-content .left-content-down li span{
+    margin:0 10px; 
+    /* vertical-align: buttom; */
+}
+.intro1-right{
+    float: right;
+    margin-right: 20px;
+    }
+.intro1-right button{
+    /* display: inline-block;
+    display: flex; */
+    margin:20px  ;
+    align-items: center;
+    border: 1px solid rgb(204, 204, 216);
+    background-color: white;
+    width: 110px;
+    height: 30px;
+    border-radius: 20px;
+    font-size:14px;
+}
+.intro1-right button:hover{
+    border:1px solid black;
+    }
+.intro1-right button i{
+    color: rgb(204, 204, 216);
+    vertical-align: middle;
+    margin-right:5px;
+}
+.intro1-right button span{
+    vertical-align: middle;
+}
 </style>
