@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 @Slf4j
@@ -84,19 +85,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateAvatar(User user, MultipartFile avatarFile) throws MinioException, IOException {
-		log.debug("updateAvatar, username->{}, fileName->{}", user.getUsername(), avatarFile.getOriginalFilename());
+		log.debug("updateAvatar,username->{}, fileName->{}", user.getUsername(), avatarFile.getOriginalFilename());
 		// 拼接字符串，使用 uuid+username+文件后缀 的格式来命名文件
 		String url = randomUtils.uuid() + "-" + user.getUsername() + getFileExtension(Objects.requireNonNull(avatarFile.getOriginalFilename()));
 		userMapper.updateAvatarById(user.getId(), url); // 更新数据库
 		minioUtils.removeFile(avatarPath + user.getAvatar()); // 删除原头像文件
-		// 上传新头像文件
-		minioUtils.upload(
-				avatarPath + url,  // 使用uuid+用户名的形式对用户头像进行保存
-				avatarFile.getInputStream(),
-				avatarFile.getSize(),
-				-1,
-				avatarFile.getContentType()
-		);
+		try (
+				InputStream inputStream = avatarFile.getInputStream()
+		) {
+			// 上传新头像文件
+			minioUtils.upload(
+					avatarPath + url,  // 使用uuid+用户名的形式对用户头像进行保存
+					inputStream,
+					avatarFile.getSize(),
+					-1,
+					avatarFile.getContentType()
+			);
+		}
 	}
 
 	@Override

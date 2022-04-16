@@ -6,6 +6,8 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
+import cn.sticki.blog.util.FileType;
+import cn.sticki.blog.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class UserController {
 
 	@Autowired
 	private User user;  // 当user为null时无法注入，此处将会抛出异常
+
+	@Resource
+	private FileUtils fileUtils;
 
 	/**
 	 * 获取公开信息
@@ -72,12 +77,22 @@ public class UserController {
 	/**
 	 * 修改头像
 	 *
-	 * @param multipartFile 文件流
+	 * @param avatarFile 文件流
 	 */
 	@PutMapping("/avatar")
-	public RestTemplate updateAvatar(@NotNull MultipartFile multipartFile) throws MinioException, IOException {
-		// todo 此处添加文件校验
-		userService.updateAvatar(user, multipartFile);
+	public RestTemplate updateAvatar(@NotNull MultipartFile avatarFile) throws MinioException, IOException {
+		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
+		// 小于1Mib
+		if (avatarFile.getSize() > 1024 * 1024) {
+			return new RestTemplate(false, "文件过大");
+		}
+		FileType fileType = fileUtils.getType(avatarFile);
+		// 仅支持JPEG和PNG
+		if (fileType != FileType.JPEG && fileType != FileType.PNG) {
+			return new RestTemplate(false, "不支持的文件类型");
+		}
+		userService.updateAvatar(user, avatarFile);
+		// todo 将新头像链接更新到Session中
 		return new RestTemplate();
 	}
 

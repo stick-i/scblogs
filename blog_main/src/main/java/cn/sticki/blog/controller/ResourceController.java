@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -37,7 +38,11 @@ public class ResourceController {
 		// 		"Content-Disposition",
 		// 		"attachment; filename=" + URLEncoder.encode(file, "UTF-8")
 		// );
-		minioUtils.download("avatar/" + file, response.getOutputStream());
+		try (
+				ServletOutputStream outputStream = response.getOutputStream()
+		) {
+			minioUtils.download("avatar/" + file, response.getOutputStream());
+		}
 	}
 
 }
