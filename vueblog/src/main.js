@@ -14,6 +14,8 @@ import 'mavon-editor/dist/css/index.css'
 
 import "./axios"
 
+import "./assets/css/iconfont/iconfont.css"
+
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 

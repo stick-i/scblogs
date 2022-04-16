@@ -9,13 +9,14 @@ import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
 import P_Register from "@/views/P_Register";
+import Personal_Blog from "@/views/Personal_Blog";
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Home"}
+    redirect:{name:"PersonalBlog"}
   },
   {
     path: '/home',
@@ -56,6 +57,11 @@ const routes = [
     path: '/blog/:blogId/edit',
     name: 'BlogEdit',
     component: BlogEdit
+  },
+  {
+    path: '/Personal_Blog',
+    name: 'PersonalBlog',
+    component: Personal_Blog
   },
 ]
 
