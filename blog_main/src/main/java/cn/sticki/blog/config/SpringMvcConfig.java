@@ -14,7 +14,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(@NotNull InterceptorRegistry registry) {
         WebMvcConfigurer.super.addInterceptors(registry);
         // 未登录用户拦截
-        registry.addInterceptor(userLoginInterceptor()).addPathPatterns("/user/*");
+        registry.addInterceptor(userLoginInterceptor()).addPathPatterns("/user/**").excludePathPatterns("/user");
     }
 
     @Bean

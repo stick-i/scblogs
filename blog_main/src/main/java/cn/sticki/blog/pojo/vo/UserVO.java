@@ -23,11 +23,16 @@ public class UserVO {
 		return Config.avatarPrefix;
 	}
 
-	public UserVO(User user) {
+	UserVO(User user) {
 		this.username = user.getUsername();
 		this.nickname = user.getNickname();
 		this.avatarUrl = avatarPrefix() + user.getAvatar();
 		this.registerTime = user.getRegisterTime();
+	}
+
+	public static UserVO userToVO(User user) {
+		if (user == null) return null;
+		else return new UserVO(user);
 	}
 
 }
