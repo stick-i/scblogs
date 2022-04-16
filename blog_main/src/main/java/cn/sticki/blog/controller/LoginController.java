@@ -32,7 +32,7 @@ public class LoginController {
 		User user = userService.login(username, password);
 		if (user != null) {
 			session.setAttribute("user", user);
-			return new RestTemplate(new UserVO(user));
+			return new RestTemplate(UserVO.userToVO(user));
 		}
 		return new RestTemplate(false, "用户名或密码错误");
 	}

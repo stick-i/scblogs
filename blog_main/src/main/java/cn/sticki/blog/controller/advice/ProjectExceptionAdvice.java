@@ -40,8 +40,8 @@ public class ProjectExceptionAdvice {
 		return new RestTemplate(400, "请求方式异常", null, false);
 	}
 
-	@ExceptionHandler(IllegalArgumentException.class)
-	public RestTemplate doIllegalArgumentException(IllegalArgumentException e) {
+	@ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
+	public RestTemplate doIllegalArgumentException(RuntimeException e) {
 		e.printStackTrace();
 		return new RestTemplate(400, "参数异常", null, false);
 	}

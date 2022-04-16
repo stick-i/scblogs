@@ -1,5 +1,6 @@
 package cn.sticki.blog.service;
 
+import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,14 @@ public interface UserService {
 	boolean checkPassword(Integer id, String password);
 
 	/**
+	 * 修改密码
+	 *
+	 * @param id       用户id
+	 * @param password 新密码
+	 */
+	boolean updatePasswordById(Integer id, String password);
+
+	/**
 	 * 更新用户头像
 	 *
 	 * @param user       用户信息
@@ -57,4 +66,22 @@ public interface UserService {
 	 */
 	boolean updateNickname(Integer id, String nickname);
 
+	/**
+	 * 更新用户邮箱
+	 */
+	boolean updateMail(Integer id, String mail);
+
+	/**
+	 * 发送邮箱验证码
+	 */
+	boolean sendMailVerify(Integer id, String key) throws MailSendException;
+
+	/**
+	 * 检查验证码
+	 *
+	 * @param id     用户id
+	 * @param verify 验证码
+	 * @param key    发送类别
+	 */
+	boolean checkMailVerify(Integer id, String verify, String key);
 }

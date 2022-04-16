@@ -26,6 +26,7 @@ public class MailUtils {
 		try {
 			sendMimeMail(mailDTO);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new MailSendException();
 		}
 	}

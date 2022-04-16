@@ -1,14 +1,19 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.mapper.UserSafetyMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
+import cn.sticki.blog.pojo.dto.MailDTO;
 import cn.sticki.blog.service.UserService;
+import cn.sticki.blog.util.MailUtils;
 import cn.sticki.blog.util.MinioUtils;
 import cn.sticki.blog.util.RandomUtils;
+import cn.sticki.blog.util.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +38,12 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private RandomUtils randomUtils;
+
+	@Resource
+	private RedisUtils redisUtils;
+
+	@Resource
+	private MailUtils mailUtils;
 
 	@Value("${minio.resource-path.avatar}")
 	private String avatarPath;
@@ -67,6 +78,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean updatePasswordById(Integer id, String password) {
+		return userSafetyMapper.updatePasswordById(id, password) > 0;
+	}
+
+	@Override
 	public void updateAvatar(User user, MultipartFile avatarFile) throws MinioException, IOException {
 		log.debug("updateAvatar, username->{}, fileName->{}", user.getUsername(), avatarFile.getOriginalFilename());
 		// 拼接字符串，使用 uuid+username+文件后缀 的格式来命名文件
@@ -86,6 +102,39 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean updateNickname(Integer id, String nickname) {
 		return userMapper.updateNicknameById(id, nickname) == 1;
+	}
+
+	@Override
+	public boolean updateMail(Integer id, String mail) {
+		return userSafetyMapper.updateMailById(id, mail) > 0;
+	}
+
+	@Override
+	public boolean sendMailVerify(Integer id, String key) throws MailSendException {
+		UserSafety userSafety = userSafetyMapper.selectById(id);
+		String code = randomUtils.generator(6, "0123456789");
+		MailDTO mailDTO = new MailDTO();
+		mailDTO.setFrom("博客校园");
+		mailDTO.setTo(userSafety.getMail());
+		mailDTO.setSubject("博客校园验证码");
+		mailDTO.setText("亲爱的用户：\n" + "你正在操作你的账户信息，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
+		// todo key值要修改
+		redisUtils.setex(key + userSafety.getMail(), 300, code);
+		mailUtils.sendMail(mailDTO);  // 发送邮件
+		return true;
+	}
+
+	@Override
+	public boolean checkMailVerify(Integer id, @NotNull String verify, String key) {
+		UserSafety userSafety = userSafetyMapper.selectById(id);
+		String code = redisUtils.get(key + userSafety.getMail());
+		System.out.println(key + userSafety.getMail());
+		System.out.println(code);
+		if (verify.equals(code)) {
+			redisUtils.del(key + userSafety.getMail());
+			return true;
+		}
+		return false;
 	}
 
 	private static String getFileExtension(String fileName) {
