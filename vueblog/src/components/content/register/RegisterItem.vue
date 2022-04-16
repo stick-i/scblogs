@@ -55,7 +55,10 @@
                     type="danger"
                     :disabled="isClickCodeBtn"
                     @click="obtainCode()"
-            >获取验证码</el-button
+            >
+              <span v-show="isShowTime">获取验证码</span>
+<!--              <span v-show="!isShowTime">{{ count }} s</span>-->
+            </el-button
             >
           </el-form-item>
 
@@ -85,11 +88,15 @@
 
 <script>
   import qs from "qs";
+  const TIME_COUNT = 60; // 倒计时的时间
   export default {
     name: "",
     data() {
       return {
         isClickCodeBtn: true,
+        isShowTime:true,
+        count: '',
+        timer: null,
         ruleForm: {
           username: "",
           password: "",
@@ -136,7 +143,7 @@
               .post("/register/send-mail-verify", qs.stringify(this.ruleForm))
               .then((res) => {
                 console.log(res);
-                if (res.data.code == 200) {
+                if (res.data.code == 200 && res.data.status == true) {
                   this.$message({
                     showClose: true,
                     message: "验证码发送成功，请注意查收哦~",
@@ -150,11 +157,38 @@
                     type: "warning",
                   });
                 }
+                if(res.data.code == 400 && res.data.status == false) {
+                  this.$message({
+                    showClose: true,
+                    message: "该邮箱已被注册",
+                    type: "error",
+                  });
+                }
               })
               .catch((error) => {
                 console.log(error);
               });
-        }
+
+          // 验证码倒计时
+          // if (!this.timer) {
+          //   this.count = TIME_COUNT
+          //   this.isShowTime = false
+          //   this.timer = setInterval(() => {
+          //     if (this.count > 0 && this.count <= TIME_COUNT) {
+          //       this.count--
+          //     } else {
+          //       this.show = true
+          //       clearInterval(this.timer)
+          //       this.timer = null
+          //     }
+          //   }, 1000)
+          // }
+
+
+        };
+
+
+
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
