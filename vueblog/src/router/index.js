@@ -8,7 +8,7 @@ import Register from "@/views/register/Register";
 import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
-import P_Register from "@/views/P_Register";
+// import P_Register from "@/views/P_Register";
 import Personal_Blog from "@/views/Personal_Blog";
 Vue.use(VueRouter)
 
@@ -33,13 +33,13 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  // {
+  //   path: '/P_Register',
+  //   name: 'P_Register',
+  //   component: P_Register
+  // },
   {
-    path: '/P_Register',
-    name: 'P_Register',
-    component: P_Register
-  },
-  {
-    path: '/register',
+    path: '/register/Register',
     name: 'register',
     component: Register
   },
