@@ -92,7 +92,6 @@ public class UserController {
 			return new RestTemplate(false, "不支持的文件类型");
 		}
 		userService.updateAvatar(user, avatarFile);
-		// todo 将新头像链接更新到Session中
 		return new RestTemplate();
 	}
 

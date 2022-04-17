@@ -4,6 +4,7 @@ import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.util.MinioUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,9 @@ public class ResourceController {
 
 	@Resource
 	private MinioUtils minioUtils;
+
+	@Value("${minio.resource-path.avatar}")
+	private String avatarPath;
 
 	/**
 	 * 获取头像资源
@@ -41,7 +45,7 @@ public class ResourceController {
 		try (
 				ServletOutputStream outputStream = response.getOutputStream()
 		) {
-			minioUtils.download("avatar/" + file, response.getOutputStream());
+			minioUtils.download(avatarPath + file, response.getOutputStream());
 		}
 	}
 

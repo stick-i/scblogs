@@ -58,4 +58,16 @@ public class FileUtils {
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * 获取文件后缀名
+	 *
+	 * @param fileName 文件名
+	 * @return 后缀名，如 .png .jpg 等
+	 */
+	public String getExtension(String fileName) {
+		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+			return fileName.substring(fileName.lastIndexOf("."));
+		else return "";
+	}
+
 }

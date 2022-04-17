@@ -8,10 +8,7 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.pojo.dto.MailDTO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.util.MailUtils;
-import cn.sticki.blog.util.MinioUtils;
-import cn.sticki.blog.util.RandomUtils;
-import cn.sticki.blog.util.RedisUtils;
+import cn.sticki.blog.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,8 +43,14 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	private MailUtils mailUtils;
 
+	@Resource
+	private FileUtils fileUtils;
+
 	@Value("${minio.resource-path.avatar}")
 	private String avatarPath;
+
+	@Value("${resource.default-avatar}")
+	private String defaultAvatar;
 
 	@Override
 	public User login(String username, String password) {
@@ -86,16 +89,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateAvatar(User user, MultipartFile avatarFile) throws MinioException, IOException {
 		log.debug("updateAvatar,username->{}, fileName->{}", user.getUsername(), avatarFile.getOriginalFilename());
-		// 拼接字符串，使用 uuid+username+文件后缀 的格式来命名文件
-		String url = randomUtils.uuid() + "-" + user.getUsername() + getFileExtension(Objects.requireNonNull(avatarFile.getOriginalFilename()));
-		userMapper.updateAvatarById(user.getId(), url); // 更新数据库
-		minioUtils.removeFile(avatarPath + user.getAvatar()); // 删除原头像文件
+		// 判断是否为默认头像
+		if (defaultAvatar.equals(user.getAvatar())) {
+			// 拼接文件名的字符串，使用 userid+username+文件后缀 的格式来命名文件
+			String url = user.getId() + "_" + user.getUsername() +
+					fileUtils.getExtension(Objects.requireNonNull(avatarFile.getOriginalFilename()));
+			userMapper.updateAvatarById(user.getId(), url);// 更新数据库
+			user.setAvatar(url);
+		}
+		log.debug("avatarPath + user.getAvatar() -> {}", avatarPath + user.getAvatar());
 		try (
 				InputStream inputStream = avatarFile.getInputStream()
 		) {
 			// 上传新头像文件
 			minioUtils.upload(
-					avatarPath + url,  // 使用uuid+用户名的形式对用户头像进行保存
+					avatarPath + user.getAvatar(),  // 使用uuid+用户名的形式对用户头像进行保存
 					inputStream,
 					avatarFile.getSize(),
 					-1,
@@ -140,12 +148,6 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 		return false;
-	}
-
-	private static String getFileExtension(String fileName) {
-		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-			return fileName.substring(fileName.lastIndexOf("."));
-		else return "";
 	}
 
 }
