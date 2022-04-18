@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from "@/views/home/Home";
-import Login from "@/views/login/Login";
-import Register from "@/views/register/Register";
+// 路由懒加载
+const Home = () => import('@/views/home/Home')
+const Login = () => import('@/views/login/Login')
+const Register = () => import('@/views/register/Register')
+const Blogs = () => import('@/views/Blogs')
+const BlogEdit = () => import('@/views/BlogEdit')
+const BlogDetail = () => import('@/views/BlogDetail')
+const Personal_Blog = () => import('@/views/Personal_Blog')
 
-import Blogs from "@/views/Blogs";
-import BlogEdit from "@/views/BlogEdit";
-import BlogDetail from "@/views/BlogDetail";
-import Personal_Blog from "@/views/Personal_Blog";
+
 Vue.use(VueRouter)
 
 const routes = [

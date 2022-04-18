@@ -71,6 +71,13 @@
 <!--                 href="https://passport.csdn.net/account/login">登录/注册</a>-->
               <router-link to="/login"><a>登录/注册</a></router-link>
             </div>
+
+            <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
+              <img :src="avatarUrl" alt="" class="test-img">
+            </a>
+<!--            <img :src="avatarUrl" alt="" class="test-img">-->
+<!--            <img src="/assets/img/home/003.jpg" alt="" class="test-img">-->
+
             <div class="toolbar-btn toolbar-btn-vip csdn-toolbar-fl">
               <a data-report-click="{&quot;mod&quot;:&quot;popu_336&quot;,&quot;dest&quot;:&quot;https://mall.csdn.net/vip&quot;,&quot;spm&quot;:&quot;3001.4496&quot;}"
                  data-report-query="spm=3001.4496" href="https://mall.csdn.net/vip">积分中心
@@ -144,20 +151,41 @@
 <script>
   export default {
     name: "TopBar",
-    // data(){
-    //   return{
-    //     path:"/login"
-    //   }
-    // },
+    data(){
+      return{
+        avatarUrl:require('../../../assets/img/home/003.jpg'),
+        isShowAvatar:false,
+
+      }
+    },
+
     components: {},
-    methods: {
-      // loginClick() {
-      //   this.$router.replace(this.path)
-      // }
+    mounted(){
+      this.bus.$on('avatar',res => {
+        console.log(res) // 输出的是LoginItem组件传过来的头像链接
+        this.avatarUrl = res;
+        this.isShowAvatar = true;
+        console.log(this.avatarUrl)
+      })
+
+        console.log(this.avatarUrl)
     }
   };
 </script>
 
 <style>
     @import "../../../assets/css/content/topbar/topbar.css";
+    .test-div {
+        height: 48px;
+    }
+    #csdn-toolbar .toolbar-inside .toolbar-container .toolbar-container-right .onlyUser .test-img {
+        display: block;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-top:  8px;
+    }
+
+
+
 </style>
