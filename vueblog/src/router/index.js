@@ -38,11 +38,6 @@ const routes = [
   //   component: P_Register
   // },
   {
-    path: '/P_Register',
-    name: 'P_Register',
-    component: P_Register
-  },
-  {
     path: '/register',
     name: 'register',
     component: Register

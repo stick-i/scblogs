@@ -43,17 +43,22 @@
                 <!-- 下拉框部分 -->
             </div>
         </div>
-        <div class="a"></div>
+        <navigationbar></navigationbar>
+        <FixedRightA></FixedRightA>
         <ButtomA></ButtomA>
     </div>
 </template>
 <script> 
 import TopBarA from "@/components/P_user/TopBar/TopBar";
-import ButtomA from "@/components/P_user/ButtomView/ButtomView.vue"
+import ButtomA from "@/components/P_user/ButtomView/ButtomView.vue";
+import FixedRightA from "@/components/P_user/FixedRight/FixedRight";
+import navigationbar from "@/components/P_user/NavigationBar/navigationbar"
     export default{
         components: {
             TopBarA,
             ButtomA,
+            FixedRightA,
+            navigationbar,
          },
         data(){
             return{
