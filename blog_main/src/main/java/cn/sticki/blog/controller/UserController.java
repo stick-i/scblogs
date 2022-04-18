@@ -1,10 +1,13 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
+import cn.sticki.blog.util.FileType;
+import cn.sticki.blog.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,10 @@ public class UserController {
 	private UserService userService;
 
 	@Autowired
-	private User user;
+	private User user;  // 当user为null时无法注入，此处将会抛出异常
+
+	@Resource
+	private FileUtils fileUtils;
 
 	/**
 	 * 获取公开信息
@@ -41,14 +47,16 @@ public class UserController {
 	 */
 	@GetMapping
 	public RestTemplate getByUsername(String username) {
-		// todo 查不到的人需要做处理
-		RestTemplate template = new RestTemplate();
-		if (username == null) {
-			if (user != null) template.setData(new UserVO(user));
-		} else {
-			template.setData(new UserVO(userService.getByUsername(username)));
+		user = (User) session.getAttribute("user");
+		User getUser = null;
+		if (username == null && user != null) {
+			getUser = user;
+			log.debug("getByUsername, sessionUser ,user->{}", getUser);
+		} else if (username != null) {
+			getUser = userService.getByUsername(username);
+			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
 		}
-		return template;
+		return new RestTemplate(UserVO.userToVO(getUser));
 	}
 
 	/**
@@ -60,7 +68,7 @@ public class UserController {
 	public RestTemplate updateNickname(@NotNull String nickname) {
 		user.setNickname(nickname); // 由于user是从session中注入进来的，所以更新user的时候，会自动更新session，无需将更新后的user重新放到Session中
 		if (userService.updateNickname(user.getId(), user.getNickname())) {
-//			session.setAttribute("user", user);
+			// session.setAttribute("user", user);
 			return new RestTemplate(true);
 		}
 		return new RestTemplate(false);
@@ -69,12 +77,21 @@ public class UserController {
 	/**
 	 * 修改头像
 	 *
-	 * @param multipartFile 文件流
+	 * @param avatarFile 文件流
 	 */
 	@PutMapping("/avatar")
-	public RestTemplate updateAvatar(@NotNull MultipartFile multipartFile) throws MinioException, IOException {
-		// todo 此处添加文件校验
-		userService.updateAvatar(user, multipartFile);
+	public RestTemplate updateAvatar(@NotNull MultipartFile avatarFile) throws MinioException, IOException {
+		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
+		// 小于1Mib
+		if (avatarFile.getSize() > 1024 * 1024) {
+			return new RestTemplate(false, "文件过大");
+		}
+		FileType fileType = fileUtils.getType(avatarFile);
+		// 仅支持JPEG和PNG
+		if (fileType != FileType.JPEG && fileType != FileType.PNG) {
+			return new RestTemplate(false, "不支持的文件类型");
+		}
+		userService.updateAvatar(user, avatarFile);
 		return new RestTemplate();
 	}
 
@@ -86,8 +103,42 @@ public class UserController {
 	 */
 	@PutMapping("/password")
 	public RestTemplate updatePassword(@NotNull String oldPassword, @NotNull String newPassword) {
-//		userService.checkPassword()
-		return new RestTemplate();
+		if (userService.checkPassword(user.getId(), oldPassword)) {
+			userService.updatePasswordById(user.getId(), newPassword);
+			return new RestTemplate(true, "修改成功");
+		}
+		return new RestTemplate(false, "修改失败");
+	}
+
+	/**
+	 * 修改邮箱
+	 *
+	 * @param mail       新邮箱
+	 * @param mailVerify 邮箱验证码
+	 */
+	@PutMapping("/mail")
+	public RestTemplate updateMail(@NotNull String mail, @NotNull String mailVerify) {
+		if (userService.checkMailVerify(user.getId(), mailVerify, "updateMail")) {
+			userService.updateMail(user.getId(), mail);
+			return new RestTemplate(true, "修改成功");
+		}
+		return new RestTemplate(false, "修改失败");
+	}
+
+	/**
+	 * 发送邮箱验证码
+	 */
+	@PostMapping("/mail/send-mail-verify")
+	public RestTemplate sendMailVerifyForUpdateMail() throws MailSendException {
+		Long sendTime = (Long) session.getAttribute("mail-send-mail-verify-time");
+		Long nowTime = System.currentTimeMillis() / 1000;
+		// 判断是否发送过邮件，若上一次发送邮件的时间超过60s则允许发送
+		if (sendTime == null || nowTime - sendTime > 60) {
+			userService.sendMailVerify(user.getId(), "updateMail");
+			session.setAttribute("mail-send-mail-verify-time", nowTime); // 将发送邮件的时间存到session
+			return new RestTemplate(true, "发送成功");
+		}
+		return new RestTemplate(false, "拒绝发送");
 	}
 
 	/**
@@ -95,13 +146,13 @@ public class UserController {
 	 */
 	@DeleteMapping("/user")
 	public RestTemplate delete(@NotNull String password) {
-		if (!userService.checkPassword(user.getId(), password)) {
+		if (!userService.checkPassword(user.getId(), password))
 			return new RestTemplate(false, "密码错误");
-		} else return new RestTemplate(userService.removeById(user.getId()));
+		else
+			return new RestTemplate(userService.removeById(user.getId()));
 	}
 
 }
-
 
 @Configuration
 class UserBean {
@@ -112,6 +163,7 @@ class UserBean {
 	@Bean
 	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public User getUser() {
+		// 当user为null时，无法正常注入到需要被注入的位置
 		return (User) session.getAttribute("user");
 	}
 }

@@ -17,7 +17,7 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Home"}
+    redirect:{name:"PersonalBlog"}
   },
   {
     path: '/home',
@@ -34,6 +34,11 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  // {
+  //   path: '/P_Register',
+  //   name: 'P_Register',
+  //   component: P_Register
+  // },
   {
     path: '/register',
     name: 'register',

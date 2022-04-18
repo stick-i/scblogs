@@ -33,7 +33,7 @@ public class MinioUtils {
 			return minioClient.bucketExists(BucketExistsArgs.builder().bucket(name).build());
 			// minioClient.makeBucket(MakeBucketArgs.builder().bucket(name).build());
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			throw new MinioException();
 		}
 	}
@@ -49,7 +49,7 @@ public class MinioUtils {
 			minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			throw new MinioException();
 		}
 	}
@@ -65,25 +65,25 @@ public class MinioUtils {
 			minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			throw new MinioException();
 		}
 	}
 
 	/**
-	 * 上传文件
+	 * 上传文件，请手动关闭inputStream
 	 */
 	public void upload(String objectName, InputStream inputStream, long objectSize, long partSize, String contentType)
 			throws MinioException {
 		try {
 			minioClient.putObject(PutObjectArgs
-					                      .builder()
-					                      .bucket(bucketName)
-					                      .object(objectName)
-					                      // 文件大小和分片大小，填-1默认为5Mib
-					                      .stream(inputStream, objectSize, partSize)
-					                      .contentType(contentType)
-					                      .build());
+					.builder()
+					.bucket(bucketName)
+					.object(objectName)
+					// 文件大小和分片大小，填-1默认为5Mib
+					.stream(inputStream, objectSize, partSize)
+					.contentType(contentType)
+					.build());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MinioException("文件上传异常");
@@ -98,13 +98,17 @@ public class MinioUtils {
 	 * @throws IOException    字节流为空
 	 */
 	public void upload(MultipartFile multipartFile) throws MinioException, IOException {
-		this.upload(
-				multipartFile.getOriginalFilename(),
-				multipartFile.getInputStream(),
-				multipartFile.getSize(),
-				-1,
-				multipartFile.getContentType()
-		);
+		try (
+				InputStream inputStream = multipartFile.getInputStream()
+		) {
+			this.upload(
+					multipartFile.getOriginalFilename(),
+					inputStream,
+					multipartFile.getSize(),
+					-1,
+					multipartFile.getContentType()
+			);
+		}
 	}
 
 	/**
@@ -127,12 +131,12 @@ public class MinioUtils {
 	public InputStream download(String fileName) throws MinioException {
 		try {
 			return minioClient.getObject(GetObjectArgs
-					                             .builder()
-					                             .bucket(bucketName)
-					                             .object(fileName)
-					                             .build());
+					.builder()
+					.bucket(bucketName)
+					.object(fileName)
+					.build());
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			throw new MinioException("文件下载异常");
 		}
 	}
@@ -143,7 +147,7 @@ public class MinioUtils {
 					RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
 			);
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			throw new MinioException("文件删除异常");
 		}
 	}
