@@ -70,6 +70,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			return;
 		}
 		// 博客不存在，此处应新建博客，并保存
+		// todo 博客时间有问题，需要修改
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		blog.setCreateTime(timestamp);
 		// 添加发表时间，若未发表则不添加

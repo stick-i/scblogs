@@ -9,6 +9,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface BlogService extends IService<Blog> {
 
+	/**
+	 * 保存博客
+	 *
+	 * @param blog 博客
+	 */
 	void saveBlog(BlogSaveDTO blog) throws UserException, DAOException;
 
 	BlogCountDTO getBlogCount(String author);

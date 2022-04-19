@@ -9,10 +9,13 @@ import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.BlogService;
+import cn.sticki.blog.type.BlogStatusType;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,8 +97,18 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog")
-	public RestTemplate deleteBlog(int id) {
-		return new RestTemplate();
+	public RestTemplate recoveryBlog(@NotNull Integer id) {
+		Blog blog = blogService.getBlog(id);
+		// 权限校验
+		if (blog == null || !blog.getAuthor().equals(user.getUsername()))
+			return new RestTemplate(402, "非法操作！");
+		// 判断博客当前状态,是否已经是存在草稿箱里了
+		if (BlogStatusType.DELETED.getValue().equals(blog.getStatus()))
+			return new RestTemplate(400, "操作失败，博客已经存入回收站");
+		// 更新数据库
+		LambdaUpdateWrapper<Blog> wrapper = new LambdaUpdateWrapper<>();
+		wrapper.eq(Blog::getId, id).set(Blog::getStatus, BlogStatusType.DELETED.getValue());
+		return new RestTemplate(blogService.update(wrapper));
 	}
 
 	/**

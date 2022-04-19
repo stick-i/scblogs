@@ -1,4 +1,4 @@
-package cn.sticki.blog.util;
+package cn.sticki.blog.type;
 
 /**
  * 文件类型
