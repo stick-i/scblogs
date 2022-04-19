@@ -4,12 +4,13 @@ import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.service.BlogService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 @Service
-public class BlogServiceImpl implements BlogService {
+public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
 
 	@Resource
 	private BlogMapper blogMapper;

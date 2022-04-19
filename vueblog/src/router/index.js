@@ -1,20 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Register from "@/views/Register";
-import Login from "@/views/Login";
+import Home from "@/views/home/Home";
+import Login from "@/views/login/Login";
+import Register from "@/views/register/Register";
+
 import Blogs from "@/views/Blogs";
 import BlogEdit from "@/views/BlogEdit";
 import BlogDetail from "@/views/BlogDetail";
-
-
+import Personal_Blog from "@/views/Personal_Blog";
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Blogs"}
+    redirect:{name:"PersonalBlog"}
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home
   },
   {
     path: '/blogs',
@@ -26,6 +32,11 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  // {
+  //   path: '/P_Register',
+  //   name: 'P_Register',
+  //   component: P_Register
+  // },
   {
     path: '/register',
     name: 'register',
@@ -45,6 +56,11 @@ const routes = [
     path: '/blog/:blogId/edit',
     name: 'BlogEdit',
     component: BlogEdit
+  },
+  {
+    path: '/Personal_Blog',
+    name: 'PersonalBlog',
+    component: Personal_Blog
   },
 ]
 

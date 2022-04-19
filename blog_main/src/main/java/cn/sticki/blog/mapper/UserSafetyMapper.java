@@ -2,8 +2,10 @@ package cn.sticki.blog.mapper;
 
 import cn.sticki.blog.pojo.domain.UserSafety;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserSafetyMapper extends BaseMapper<UserSafety> {
@@ -25,4 +27,12 @@ public interface UserSafetyMapper extends BaseMapper<UserSafety> {
 	@Select("select * from user_safety where mail = #{mail}")
 	UserSafety selectByMail(String mail);
 
+	@Delete("delete from user_safety where username = #{username} ;")
+	int deleteByUsername(String username);
+
+	@Update("update user_safety set `password` = #{password} where user_id = #{id};")
+	int updatePasswordById(Integer id, String password);
+
+	@Update("update user_safety set `mail` = #{mail} where user_id = #{id} ")
+	int updateMailById(Integer id, String mail);
 }

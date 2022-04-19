@@ -13,6 +13,7 @@ import cn.sticki.blog.util.RedisUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,11 +40,15 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	@Resource
 	private RedisUtils redisUtils;
 
+	@Value("${resource.default-avatar}")
+	private String defaultAvatar;
+
 	@Override
 	public boolean register(UserSafety userSafety) {
 		User user = new User();
 		user.setUsername(userSafety.getUsername());
 		user.setNickname(userSafety.getUsername());
+		user.setAvatar(defaultAvatar);
 		user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 		if (userMapper.insert(user) > 0) {
 			log.debug("新用户注册：id->{}", user.getId());

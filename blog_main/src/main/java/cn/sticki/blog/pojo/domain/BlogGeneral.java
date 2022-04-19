@@ -1,10 +1,12 @@
 package cn.sticki.blog.pojo.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 @Data
 public class BlogGeneral {
 
+	@TableId
 	Integer blogId; //  COMMENT '博客id'
 
 	Integer viewNum; //  COMMENT '浏览量'
