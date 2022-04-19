@@ -23,7 +23,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
         if (session.getAttribute("user") != null) {
             return true;
         }
-        responseUtils.objectToJson(response, new RestTemplate(400, "未登录"));
+        responseUtils.objectToJson(response, new RestTemplate(401, "未登录"));
         return false;
     }
 
