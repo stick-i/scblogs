@@ -4,11 +4,12 @@ import cn.sticki.blog.pojo.domain.Blog;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class BlogListVO {
 
-	BlogCountVO count;// 各状态博客数量
+	Map count;// 各状态博客数量
 
 	List<Blog> blogList;// 博客信息列表
 

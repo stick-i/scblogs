@@ -52,8 +52,8 @@ public class BlogConsoleController {
 		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0)
 			return new RestTemplate(400, "参数异常");
 		BlogListVO blogListVO = new BlogListVO();
-		// todo 获取博客统计数据
-
+		// 获取博客统计数据
+		blogListVO.setCount(blogService.getBlogCount(user.getUsername()));
 		// 获取博客列表
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getAuthor, user.getUsername());

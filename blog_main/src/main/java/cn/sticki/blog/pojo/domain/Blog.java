@@ -23,6 +23,6 @@ public class Blog {
 
 	Timestamp modifiedTime; //  修改时间
 
-	Integer status; // 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站）
+	Integer status; // 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
 
 }
