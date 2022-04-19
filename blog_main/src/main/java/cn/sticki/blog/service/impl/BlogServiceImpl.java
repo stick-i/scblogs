@@ -7,6 +7,7 @@ import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogContent;
 import cn.sticki.blog.pojo.domain.BlogCount;
+import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.service.BlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -87,22 +86,37 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		}
 	}
 
-	// 0表示全部，1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中
-	private static final String[] BLOG_STATUS = {"all", "publish", "draft", "personal", "deleted", "audit"};
-
 	@Override
-	public Map<String, Integer> getBlogCount(String author) {
-		List<BlogCount> blogCounts = blogMapper.selectBlogCountListByAuthor(author);
-		Map<String, Integer> statusMap = new HashMap<>();
-		// 添加key
-		for (String status : BLOG_STATUS) {
-			statusMap.put(status, 0);
+	public BlogCountDTO getBlogCount(String author) {
+		List<BlogCount> blogCountList = blogMapper.selectBlogCountListByAuthor(author);
+		BlogCountDTO blogCountDTO = new BlogCountDTO();
+		// 0表示全部，1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中
+		int all = 0;
+		for (BlogCount count : blogCountList) {
+			switch (count.getStatus()) {
+				case 0:
+					blogCountDTO.setAll(count.getNumber());
+					break;
+				case 1:
+					blogCountDTO.setPublish(count.getNumber());
+					break;
+				case 2:
+					blogCountDTO.setDraft(count.getNumber());
+					break;
+				case 3:
+					blogCountDTO.setPersonal(count.getNumber());
+					break;
+				case 4:
+					blogCountDTO.setDeleted(count.getNumber());
+					break;
+				case 5:
+					blogCountDTO.setAudit(count.getNumber());
+					break;
+			}
+			all += count.getNumber();
 		}
-		// 添加数量
-		for (BlogCount count : blogCounts) {
-			statusMap.put(BLOG_STATUS[count.getStatus()], count.getNumber());
-		}
-		return statusMap;
+		blogCountDTO.setAll(all);
+		return blogCountDTO;
 	}
 
 	@Override

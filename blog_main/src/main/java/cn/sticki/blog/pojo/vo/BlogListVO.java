@@ -1,15 +1,15 @@
 package cn.sticki.blog.pojo.vo;
 
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class BlogListVO {
 
-	Map count;// 各状态博客数量
+	BlogCountDTO count;// 各状态博客数量
 
 	List<Blog> blogList;// 博客信息列表
 
