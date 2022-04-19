@@ -42,6 +42,7 @@
     name: "",
     data() {
       return {
+        avatarUrl:'',
         ruleForm: {
           username: '',
           password: '',
@@ -80,6 +81,10 @@
                       message: "恭喜您，登录成功~",
                       type: "success",
                     });
+                    this.avatarUrl = res.data.data.avatarUrl;
+                    console.log(this.avatarUrl)
+                    this.bus.$emit('avatar',this.avatarUrl)
+                    // this.$parent.avatarUrl = this.avatarUrl;
                     this.$router.push({path:'home'});
                   }
                 })
