@@ -1,7 +1,57 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
+
     <div class="top-content">
+      <!-- navbar -->
+      <div class="top-navbar">
+        <div class="nav-content">
+          <ul>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a href="#">9</a></li>
+            <li><a href="#">10</a></li>
+            <li><a href="#">11</a></li>
+            <li><a href="#">12</a></li>
+            <li><a href="#">13</a></li>
+            <li><a href="#">14</a></li>
+            <li><a href="#">15</a></li>
+            <li><a href="#">16</a></li>
+            <li><a href="#">17</a></li>
+            <li><a href="#">18</a></li>
+            <li><a href="#">19</a></li>
+            <li><a href="#">20</a></li>
+            <li><a href="#">21</a></li>
+            <li><a href="#">22</a></li>
+            <li><a href="#">23</a></li>
+            <li><a href="#">24</a></li>
+            <li><a href="#">25</a></li>
+            <li><a href="#">26</a></li>
+            <li><a href="#">27</a></li>
+            <li><a href="#">28</a></li>
+            <li><a href="#">29</a></li>
+            <li><a href="#">30</a></li>
+            <li><a href="#">31</a></li>
+            <li><a href="#">32</a></li>
+            <li><a href="#">33</a></li>
+            <li><a href="#">34</a></li>
+            <li><a href="#">35</a></li>
+            <li><a href="#">36</a></li>
+            <li><a href="#">37</a></li>
+            <li><a href="#">38</a></li>
+            <li><a href="#">39</a></li>
+            <li><a href="#">40</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!--  -->
       <div class="main">
         <!-- 左边头条 -->
         <div class="main-left">
@@ -25,17 +75,23 @@
               <div class="headswiper-top">头条左右箭头</div>
               <div class="headswiper-content">
                 <div class="headswiper-item item-first">
-                  <a target="_blank" href="#" class="item-title">饭后走一走</a>
+                  <a target="_blank" href="#" class="item-title"
+                    >饭后走一走活到九十九</a
+                  >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
                 <div class="headswiper-item" v-for="item in 4">
-                  <a target="_blank" href="#" class="item-title">饭后走一走</a>
+                  <a target="_blank" href="#" class="item-title"
+                    >饭后走一走活到九十九</a
+                  >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
               </div>
             </div>
           </div>
-
+        </div>
+        <!-- 中间热点 -->
+        <div class="main-center">
           <!-- 热点item展示 -->
           <div class="main-left-right2">
             <div class="main-left-top">
@@ -47,19 +103,21 @@
               <!--              <div class="headswiper-top">热点左右箭头</div>-->
               <div class="headswiper-content">
                 <div class="headswiper-item item-first">
-                  <a target="_blank" href="#" class="item-title">饭后走一走</a>
+                  <a target="_blank" href="#" class="item-title"
+                    >饭后走一走活到九十九</a
+                  >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
                 <div class="headswiper-item" v-for="item in 4">
-                  <a target="_blank" href="#" class="item-title">饭后走一走</a>
+                  <a target="_blank" href="#" class="item-title"
+                    >饭后走一走活到九十九</a
+                  >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- 中间热点 -->
-        <div class="main-center"></div>
         <!-- 右边轮播图 -->
         <div class="main-right">
           <el-carousel indicator-position="outside" height="380px">
@@ -156,6 +214,36 @@ export default {
 </script>
 
 <style>
+.top-content {
+  width: 100%;
+  background-color: hsla(0, 0%, 98%, 0.8);
+  padding-top: 10px;
+  /*background-color: #fc5531;*/
+}
+
+/* navbar开始 */
+.top-navbar {
+  /* display: block; */
+  background-color: #ffffff;
+  width: 1380px;
+  margin: 0 auto;
+  box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
+  /* background-color: greenyellow; */
+}
+.nav-content ul li {
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 16px;
+  height: 24px;
+  margin-right: 31px;
+}
+.nav-content ul li a {
+  font-size: 15px;
+  color: #555666;
+}
+
+/* navbar结束 */
+
 /* 轮播图开始 */
 .main-right {
   width: 335px;
@@ -202,7 +290,7 @@ export default {
 
 .main-left-center img {
   width: 413px;
-  height: 228px;
+  height: 240px;
   object-fit: cover;
   /* 保持原有尺寸比例。保证替换内容尺寸一定大于容器尺寸，宽度和高度至少有一个和容器一致。因此，此参数可能会让替换内容（如图片）部分区域不可见。 */
 }
@@ -236,7 +324,7 @@ export default {
 .headswiper-content {
   height: 340px;
   width: 280px;
-  background-color: pink;
+  /* background-color: pink; */
 }
 .headswiper-item {
   margin-top: 24px;
@@ -246,6 +334,9 @@ export default {
   font-size: 16px;
   font-weight: 700;
   color: #222226;
+}
+.headswiper-item .item-title:hover {
+  text-decoration: underline;
 }
 .headswiper-item .item-name {
   display: block;
@@ -259,12 +350,6 @@ export default {
 
 /* 头条结束 */
 
-.top-content {
-  width: 100%;
-  /* height: 300px; */
-  background-color: hsla(0, 0%, 98%, 0.8);
-  /*background-color: #fc5531;*/
-}
 .top-content .main {
   width: 1380px;
   margin: 0 auto;
