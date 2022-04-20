@@ -132,6 +132,13 @@
 			<version>2.6.6</version>
 		</dependency>
 
+		<!-- hutool Java开发工具 -->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.8.0.M3</version>
+		</dependency>
+
 		<!-- MongoDB -->
 		<!-- <dependency> -->
 		<!-- 	<groupId>org.springframework.boot</groupId> -->

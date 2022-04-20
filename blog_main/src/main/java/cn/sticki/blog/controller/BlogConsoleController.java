@@ -2,12 +2,15 @@ package cn.sticki.blog.controller;
 
 import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.exception.systemException.DAOException;
+import cn.sticki.blog.exception.userException.UserIllegalException;
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.pojo.vo.RestTemplate;
+import cn.sticki.blog.service.BlogBasicService;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.type.BlogStatusType;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -18,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -28,6 +32,9 @@ public class BlogConsoleController {
 
 	@Resource
 	private BlogService blogService;
+
+	@Resource
+	private BlogBasicService blogBasicService;
 
 	@Autowired
 	private User user;
@@ -58,13 +65,13 @@ public class BlogConsoleController {
 		// 获取博客统计数据
 		blogListVO.setCount(blogService.getBlogCount(user.getUsername()));
 		// 获取博客列表
-		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(Blog::getAuthor, user.getUsername());
+		LambdaQueryWrapper<BlogBasic> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(BlogBasic::getAuthor, user.getUsername());
 		// 若status为0，则查找显示全部博客，否则查找某部分博客
-		if (status != 0) wrapper.eq(Blog::getStatus, status);
+		if (status != 0) wrapper.eq(BlogBasic::getStatus, status);
 		// 使用mybatis进行分页
-		IPage<Blog> blogIPage = new Page<>(page, pageSize);
-		blogService.page(blogIPage, wrapper);
+		IPage<BlogBasic> blogIPage = new Page<>(page, pageSize);
+		blogBasicService.page(blogIPage, wrapper);
 		blogListVO.setBlogList(blogIPage.getRecords());
 		blogListVO.setTotal((int) blogIPage.getTotal());
 		blogListVO.setPage(page);
@@ -76,10 +83,11 @@ public class BlogConsoleController {
 	/**
 	 * 保存博客
 	 *
-	 * @param blog 要保存的博客内容
+	 * @param blog          要保存的博客内容
+	 * @param multipartFile 封面图文件 todo 实现上传封面图，抽象文件接收方法
 	 */
 	@PostMapping("/blog")
-	public RestTemplate saveBlog(BlogSaveDTO blog) throws UserException, DAOException {
+	public RestTemplate saveBlog(BlogSaveDTO blog, MultipartFile multipartFile) throws UserException, DAOException {
 		// 如果为新增博客，则需要全部参数
 		if (blog.getId() == null && (blog.getContent() == null || blog.getTitle() == null || blog.getDescription() == null || blog.getStatus() == null))
 			return new RestTemplate(400, "参数异常");
@@ -97,12 +105,12 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog")
-	public RestTemplate recoveryBlog(@NotNull Integer id) {
+	public RestTemplate recoveryBlog(@NotNull Integer id) throws UserIllegalException {
 		Blog blog = blogService.getBlog(id);
 		// 权限校验
 		if (blog == null || !blog.getAuthor().equals(user.getUsername()))
-			return new RestTemplate(402, "非法操作！");
-		// 判断博客当前状态,是否已经是存在草稿箱里了
+			throw new UserIllegalException();
+		// 判断博客当前状态,是否已经是存在回收站里了
 		if (BlogStatusType.DELETED.getValue().equals(blog.getStatus()))
 			return new RestTemplate(400, "操作失败，博客已经存入回收站");
 		// 更新数据库
@@ -117,8 +125,17 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog/delete")
-	public RestTemplate completelyDeleteBlog(int id) {
-		return new RestTemplate();
+	public RestTemplate completelyDeleteBlog(@NotNull Integer id) throws UserIllegalException {
+		Blog blog = blogService.getBlog(id);
+		// 权限校验，博客不是属于该用户
+		if (blog == null || !blog.getAuthor().equals(user.getUsername()))
+			throw new UserIllegalException();
+		// 判断博客当前状态,是否已经是存在回收站里了
+		if (!BlogStatusType.DELETED.getValue().equals(blog.getStatus()))
+			return new RestTemplate(400, "操作失败，只有在回收站里的博客可以删除");
+		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(Blog::getId, id);
+		return new RestTemplate(blogService.remove(wrapper));
 	}
 
 }
