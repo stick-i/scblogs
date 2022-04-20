@@ -9,20 +9,20 @@ import java.sql.Timestamp;
 public class Blog {
 
 	@TableId
-	Integer id; //  COMMENT '博客id'
+	Integer id; //   博客id
 
-	String author; //  COMMENT '作者'
+	String author; //   作者
 
-	String title; //  COMMENT '标题'
+	String title; //   标题
 
-	String description; //  COMMENT '描述'
+	String description; //   描述
 
-	Timestamp createTime; //  CURRENT_TIMESTAMP(6) COMMENT '创建时间'
+	Timestamp createTime; //   创建时间
 
-	Timestamp releaseTime; //  '发表时间'
+	Timestamp releaseTime; //  发表时间
 
-	Timestamp modifiedTime; //  CURRENT_TIMESTAMP(6)
+	Timestamp modifiedTime; //  修改时间
 
-	String status; //  '发表状态（0表示已发表、2表示未发表、）'
+	Integer status; // 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
 
 }

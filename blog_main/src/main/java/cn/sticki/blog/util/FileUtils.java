@@ -1,5 +1,6 @@
 package cn.sticki.blog.util;
 
+import cn.sticki.blog.type.FileType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

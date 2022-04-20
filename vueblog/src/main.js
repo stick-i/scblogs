@@ -16,11 +16,17 @@ import "./axios"
 
 import "./assets/css/iconfont/iconfont.css"
 
+
+
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
 
 Vue.prototype.$axios = axios;
+
+// 兄弟组件通信
+Vue.prototype.bus = new Vue()
+
 
 
 Vue.config.productionTip = false

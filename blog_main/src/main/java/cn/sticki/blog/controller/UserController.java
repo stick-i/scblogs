@@ -6,17 +6,12 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.util.FileType;
+import cn.sticki.blog.type.FileType;
 import cn.sticki.blog.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -152,18 +147,4 @@ public class UserController {
 			return new RestTemplate(userService.removeById(user.getId()));
 	}
 
-}
-
-@Configuration
-class UserBean {
-
-	@Resource
-	private HttpSession session;
-
-	@Bean
-	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-	public User getUser() {
-		// 当user为null时，无法正常注入到需要被注入的位置
-		return (User) session.getAttribute("user");
-	}
 }

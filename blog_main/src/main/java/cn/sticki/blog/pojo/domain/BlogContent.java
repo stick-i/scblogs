@@ -13,8 +13,6 @@ public class BlogContent {
 
 	String content; // '博客内容'
 
-	Timestamp createTime; //  '创建时间'
-
 	Timestamp modifiedTime; // '修改时间'
 
 }

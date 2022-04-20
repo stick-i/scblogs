@@ -6,6 +6,7 @@
         <login-item></login-item>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -18,6 +19,11 @@
       TopBar,
       LoginItem
     },
+    data() {
+      return{
+        avatarUrl:'',
+      }
+    }
 
   };
 </script>
