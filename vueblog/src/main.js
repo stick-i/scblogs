@@ -8,7 +8,8 @@ import axios from "axios";
 import mavonEditor from 'mavon-editor'
 
 import ElementUI from 'element-ui';
-
+import jquery from 'jquery';
+// import jquery from 'jquery-3.6.0.js';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'mavon-editor/dist/css/index.css'
 
@@ -23,6 +24,7 @@ Vue.use(mavonEditor);
 
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$jquery = jquery;
 
 // 兄弟组件通信
 Vue.prototype.bus = new Vue()

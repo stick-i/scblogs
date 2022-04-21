@@ -39,26 +39,30 @@
                     <button ><i class="iconfont icon-shezhi"></i><span>设置</span></button>
                 </div>
             </div>
-            <div class="content-intro2">
-                <!-- 下拉框部分 -->
-            </div>
         </div>
-        <navigationbar></navigationbar>
+        <div class="content-intro2">
+                <!-- 下拉框部分 -->
+                 <leftcontent class="intro2-a"></leftcontent>
+                <navigationbar class="intro2-b"></navigationbar>
+        </div>
         <FixedRightA></FixedRightA>
-        <ButtomA></ButtomA>
+        <ButtomA></ButtomA>  
     </div>
 </template>
+
 <script> 
 import TopBarA from "@/components/P_user/TopBar/TopBar";
 import ButtomA from "@/components/P_user/ButtomView/ButtomView.vue";
 import FixedRightA from "@/components/P_user/FixedRight/FixedRight";
-import navigationbar from "@/components/P_user/NavigationBar/navigationbar"
+import navigationbar from "@/components/P_user/NavigationBar/navigationbar";
+import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
     export default{
         components: {
             TopBarA,
             ButtomA,
             FixedRightA,
             navigationbar,
+            leftcontent,
          },
         data(){
             return{
@@ -95,17 +99,17 @@ import navigationbar from "@/components/P_user/NavigationBar/navigationbar"
         }
     }
 </script>
-<style >
+<style scoped>
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.a{
-    width: 24px;
-    height: 3000px;
-    background-color: blue;
-}
+/*.a{*/
+/*    width: 2400px;*/
+/*    height: 3000px;*/
+/*    background-color: blue;*/
+/*}*/
 /* 导航栏顶部固定 */
 /* .header{
     position: fixed;
@@ -113,7 +117,7 @@ import navigationbar from "@/components/P_user/NavigationBar/navigationbar"
 } */
 
 .body{
-    background: rgb(243, 244, 246);
+    background: rgb(243,244,246);
 }
 
 /* 背景图 */
@@ -132,7 +136,7 @@ import navigationbar from "@/components/P_user/NavigationBar/navigationbar"
     background:white;
     padding: 0;
     height:200px;
-    margin: 0 auto;
+    margin: 30px auto;
 }
 .content .content-intro1{
     width: 100%;
@@ -221,5 +225,16 @@ import navigationbar from "@/components/P_user/NavigationBar/navigationbar"
 }
 .intro1-right button span{
     vertical-align: middle;
+}
+.content-intro2{
+    width: 1280px;
+    height: 550px;
+    margin: 0 auto;
+}
+.intro2-a{
+    float: left;
+}
+.intro2-b{
+    float: right;
 }
 </style>
