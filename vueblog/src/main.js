@@ -23,6 +23,7 @@ Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
 
+axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 Vue.prototype.$jquery = jquery;
 

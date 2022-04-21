@@ -138,7 +138,7 @@
             type: "warning",
           });
         } else {
-          // console.log("00
+          // console.log("00")
           this.$axios
               .post("/register/send-mail-verify", qs.stringify(this.ruleForm))
               .then((res) => {

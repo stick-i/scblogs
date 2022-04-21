@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-
+    <router-link to="/blog/add"><a>点击</a></router-link>
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
@@ -76,7 +76,7 @@
               <div class="headswiper-content">
                 <div class="headswiper-item item-first">
                   <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九</a
+                    >饭后走一走活到九十九饭后走一走活到九十九</a
                   >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
@@ -136,10 +136,10 @@
         <div class="tabs">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="关注" name="first">
-              <article-item v-for="item in 3"></article-item>
+              <article-item></article-item>
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <article-item v-for="item in 5"></article-item>
+              <article-item></article-item>
             </el-tab-pane>
             <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
@@ -186,6 +186,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -334,6 +335,11 @@ export default {
   font-size: 16px;
   font-weight: 700;
   color: #222226;
+  /*显示省略号*/
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
 }
 .headswiper-item .item-title:hover {
   text-decoration: underline;
