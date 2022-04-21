@@ -139,6 +139,13 @@
 			<version>5.8.0.M3</version>
 		</dependency>
 
+		<!-- session 设置 SameSite=None; Secure 的依赖 -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-core</artifactId>
+		</dependency>
+
+
 		<!-- MongoDB -->
 		<!-- <dependency> -->
 		<!-- 	<groupId>org.springframework.boot</groupId> -->
