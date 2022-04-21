@@ -6,7 +6,7 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.util.FileType;
+import cn.sticki.blog.type.FileType;
 import cn.sticki.blog.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

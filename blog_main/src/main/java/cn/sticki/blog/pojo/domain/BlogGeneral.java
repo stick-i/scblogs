@@ -7,16 +7,16 @@ import lombok.Data;
 public class BlogGeneral {
 
 	@TableId
-	Integer blogId; //  COMMENT '博客id'
+	Integer blogId; // 博客id
 
-	Integer viewNum; //  COMMENT '浏览量'
+	Integer viewNum; // 浏览量
 
-	Integer likeNum; //  COMMENT '点赞量'
+	Integer likeNum; // 点赞量
 
-	Integer commentNum; //  COMMENT '评论量'
+	Integer commentNum; // 评论量
 
-	Integer collectionNum; //  COMMENT '收藏量'
+	Integer collectionNum; // 收藏量
 
-	Double score; //  COMMENT '评分'
+	Integer score; // 评分
 
 }

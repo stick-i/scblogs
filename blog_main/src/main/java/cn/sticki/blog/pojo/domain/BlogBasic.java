@@ -1,14 +1,12 @@
 package cn.sticki.blog.pojo.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class Blog {
+public class BlogBasic {
 
-	@TableId
 	Integer id; //   博客id
 
 	String author; //   作者
@@ -26,5 +24,15 @@ public class Blog {
 	Timestamp modifiedTime; //  修改时间
 
 	Integer status; // 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
+
+	Integer viewNum; // 浏览量
+
+	Integer likeNum; // 点赞量
+
+	Integer commentNum; // 评论量
+
+	Integer collectionNum; // 收藏量
+
+	Integer score; // 评分
 
 }

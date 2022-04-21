@@ -1,7 +1,6 @@
 package cn.sticki.blog.pojo.vo;
 
-import cn.sticki.blog.pojo.domain.Blog;
-import cn.sticki.blog.pojo.dto.BlogCountDTO;
+import cn.sticki.blog.pojo.domain.BlogBasic;
 import lombok.Data;
 
 import java.util.List;
@@ -9,9 +8,7 @@ import java.util.List;
 @Data
 public class BlogListVO {
 
-	BlogCountDTO count;// 各状态博客数量
-
-	List<Blog> blogList;// 博客信息列表
+	List<BlogBasic> blogList;// 博客信息列表
 
 	Integer page;// 当前页
 

@@ -13,6 +13,8 @@ public class BlogSaveDTO {
 
 	String description; // 描述
 
+	String coverImage; // 封面图
+
 	String content; // 内容(md格式)
 
 	Integer status; // 博客状态码
