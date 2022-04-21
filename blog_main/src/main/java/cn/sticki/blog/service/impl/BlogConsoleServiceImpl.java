@@ -12,7 +12,7 @@ import cn.sticki.blog.pojo.domain.BlogCount;
 import cn.sticki.blog.pojo.domain.BlogGeneral;
 import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
-import cn.sticki.blog.service.BlogService;
+import cn.sticki.blog.service.BlogConsoleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
+public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogConsoleService {
 
 	@Resource
 	private BlogMapper blogMapper;
@@ -137,11 +137,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		}
 		blogCountDTO.setAll(all);
 		return blogCountDTO;
-	}
-
-	@Override
-	public Blog getBlog(int id) {
-		return blogMapper.selectById(id);
 	}
 
 }
