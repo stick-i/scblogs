@@ -65,7 +65,7 @@
           if (valid) {
             // alert('submit!');
             this.$axios
-                .post("/login/login", qs.stringify(this.ruleForm))
+                .post("/login/login", qs.stringify(this.ruleForm),{withCredentials : true})
                 .then((res) => {
                   console.log(res);
                   if (res.data.code == 200 && res.data.status == false) {

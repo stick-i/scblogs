@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-
+<!--    <button @click="lll()"></button>-->
+    <router-link to="/blog/add"><a>点击</a></router-link>
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
@@ -76,7 +77,7 @@
               <div class="headswiper-content">
                 <div class="headswiper-item item-first">
                   <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九</a
+                    >饭后走一走活到九十九饭后走一走活到九十九</a
                   >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
@@ -334,6 +335,11 @@ export default {
   font-size: 16px;
   font-weight: 700;
   color: #222226;
+  /*显示省略号*/
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
 }
 .headswiper-item .item-title:hover {
   text-decoration: underline;
