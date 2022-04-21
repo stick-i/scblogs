@@ -132,7 +132,7 @@ export default {
         });
       } else {
         this.$axios
-            .post("/blog-console/blog", qs.stringify(this.ruleForm),{withCredentials : true})
+            .post("/blog-console/blog", qs.stringify(this.ruleForm))
             .then((res) => {
               console.log(res);
             })

@@ -13,6 +13,7 @@
     "mavon-editor": "^2.10.4",
     "qs": "^6.10.3",
     "vue": "^2.6.14",
+    "vue-infinite-loading": "^2.4.5",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },
