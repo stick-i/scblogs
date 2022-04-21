@@ -153,6 +153,8 @@
     name: "TopBar",
     data(){
       return{
+        avatarUrl1:'',
+        isShowAvatar1:false,
         avatarUrl:require('../../../assets/img/home/003.jpg'),
         isShowAvatar:false,
 
@@ -161,14 +163,22 @@
 
     components: {},
     mounted(){
-      this.bus.$on('avatar',res => {
-        console.log(res) // 输出的是LoginItem组件传过来的头像链接
-        this.avatarUrl = res;
-        this.isShowAvatar = true;
-        console.log(this.avatarUrl)
-      })
+      this.$nextTick(function () {
+        this.bus.$on('avatar',(res) => {
+          console.log(res) // 输出的是LoginItem组件传过来的头像链接
+          this.avatarUrl = res;
+          this.isShowAvatar = true;
+          console.log(this.avatarUrl)
+          this.avatarUrl1=res;
+          this.isShowAvatar1 = true;
+        })
 
         console.log(this.avatarUrl)
+        console.log(this.avatarUrl1)
+        console.log(this.isShowAvatar1)
+
+
+      })
     }
   };
 </script>

@@ -22,6 +22,7 @@ Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
 
+axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 
 // 兄弟组件通信
