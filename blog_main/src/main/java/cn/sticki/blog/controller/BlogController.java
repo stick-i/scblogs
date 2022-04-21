@@ -6,11 +6,13 @@ import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.BlogBasicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
 import java.util.List;
 
 @Slf4j
@@ -36,7 +38,9 @@ public class BlogController {
 		log.debug("searchBlog,page->{}", page);
 		// todo 最好根据用户标签来推
 		List<BlogBasic> blogList = blogBasicService.getRecommendBlogList(page, pageSize);
-		response.addCookie(new Cookie("recommend-page", String.valueOf(page + 1)));
+		ResponseCookie cookie = ResponseCookie.from("recommend-page", String.valueOf(page + 1))
+				.sameSite("None").secure(true).maxAge(Duration.ofHours(1)).build();
+		response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 		return new RestTemplate(blogList);
 	}
 
@@ -50,7 +54,9 @@ public class BlogController {
 	public RestTemplate searchBlog(String key, @CookieValue(name = "search-page", defaultValue = "0") int page, HttpServletResponse response) {
 		log.debug("searchBlog,search->{},page->{}", key, page);
 		List<BlogBasic> blogList = blogBasicService.searchBlog(key, page, pageSize);
-		response.addCookie(new Cookie("search-page", String.valueOf(page + 1)));
+		ResponseCookie cookie = ResponseCookie.from("search-page", String.valueOf(page + 1))
+				.sameSite("None").secure(true).maxAge(Duration.ofHours(1)).build();
+		response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 		return new RestTemplate(blogList);
 	}
 
