@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,6 +18,17 @@ import javax.servlet.http.HttpSession;
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
 
+	/**
+	 * 解决跨域问题
+	 */
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS").allowCredentials(true).maxAge(3600).allowedHeaders("*");
+	}
+
+	/**
+	 * 拦截器
+	 */
 	@Override
 	public void addInterceptors(@NotNull InterceptorRegistry registry) {
 		WebMvcConfigurer.super.addInterceptors(registry);

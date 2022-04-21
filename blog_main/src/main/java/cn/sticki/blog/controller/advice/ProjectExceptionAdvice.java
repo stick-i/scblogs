@@ -1,6 +1,7 @@
 package cn.sticki.blog.controller.advice;
 
 import cn.sticki.blog.exception.UserException;
+import cn.sticki.blog.exception.userException.UserIllegalException;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -50,6 +51,13 @@ public class ProjectExceptionAdvice {
 	public RestTemplate doUserException(UserException e) {
 		e.printStackTrace();
 		return new RestTemplate(400, e.getMessage(), null, false);
+	}
+
+	@ExceptionHandler(UserIllegalException.class)
+	public RestTemplate doUserIllegalException(UserIllegalException e) {
+		e.printStackTrace();
+		// todo 对非法操作的用户进行记录，一定数量后禁止访问
+		return new RestTemplate(402, e.getMessage(), null, false);
 	}
 
 }
