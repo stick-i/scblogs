@@ -11,14 +11,16 @@ const BlogDetail = () => import('@/views/BlogDetail')
 const Personal_Blog = () => import('@/views/Personal_Blog')
 
 
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Home"}
+    redirect:{name:"PersonalBlog"}
   },
+
   {
     path: '/home',
     name: 'Home',

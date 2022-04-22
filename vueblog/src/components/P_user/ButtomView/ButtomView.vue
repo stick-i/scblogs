@@ -25,8 +25,8 @@
 }
 .body{
     width: 100%;
-    height: 100px;
-    background-color: rgb(255, 255, 255);
+    height: 200px;
+    background: rgb(255, 255, 255);
 }
 .content{
     width: 1280px;
@@ -34,6 +34,10 @@
     margin:0 auto;
 }
 .content-list{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
     margin: 20px auto; 
 }
 .content-list a{
