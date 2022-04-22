@@ -4,7 +4,11 @@
       <div class="article-item">
         <div class="article-title">
           <a target="_blank" href="#">
-            <span>{{item.title}}</span>
+            <span>
+              <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}">
+                {{item.title}}
+              </router-link>
+            </span>
           </a>
         </div>
         <div class="article-content-item">
@@ -20,7 +24,11 @@
               </div>
             </a>
             <div class="article-evaluation">
-              <div class="article-good"><img src="../../../assets/img/home/good.png" alt=""> {{ item.likeNum }} 赞</div>
+              <div class="article-good">
+                <img @click="isShowGoodIcon=false" v-if="isShowGoodIcon" src="../../../assets/img/home/good.png" alt="">
+                <img @click="isShowGoodIcon=true" v-if="!isShowGoodIcon" src="../../../assets/img/home/good_active.png" alt="">
+                {{ item.likeNum }} <span>赞</span>
+              </div>
               <div class="article-author">作者：<span>{{item.author}}</span></div>
               <div class="article-date">发布时间：<span>{{ item.releaseTime }}</span></div>
             </div>
@@ -57,6 +65,7 @@
     data(){
       return{
         blogList:[],
+        isShowGoodIcon:true,
       }
     },
     components: {

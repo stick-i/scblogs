@@ -32,48 +32,13 @@
         </div>
       </div>
 
-<!--      <el-form-->
-<!--        :model="ruleForm"-->
-<!--        :rules="rules"-->
-<!--        ref="ruleForm"-->
-<!--        class="demo-ruleForm"-->
-<!--      >-->
-        <!-- label-width="100px" -->
-        <!-- <el-form-item label="标题" prop="title">
-          <el-input
-            v-model="ruleForm.title"
-            placeholder="请输入文章标题"
-          ></el-input>
-        </el-form-item> -->
-
-        <!-- <el-form-item label="摘要" prop="description">
-          <el-input
-            type="textarea"
-            v-model="ruleForm.description"
-            placeholder="请输入文章摘要"
-          ></el-input>
-        </el-form-item> -->
-
         <!-- markdown编辑器  -->
-<!--        <el-form-item prop="content">-->
           <mavon-editor
             v-model="ruleForm.content"
             style="height: calc(100vh - 56px)"
           ></mavon-editor>
-<!--        </el-form-item>-->
-
-        <!--        <el-form-item>-->
-        <!--          <el-button type="primary" @click="submitForm('ruleForm')"-->
-        <!--            >立即创建</el-button-->
-        <!--          >-->
-        <!--          <el-button @click="resetForm('ruleForm')">重置</el-button>-->
-        <!--        </el-form-item>-->
-<!--      </el-form>-->
-
 
       <Dialog/>
-
-
 
     </div>
   </div>
@@ -98,25 +63,9 @@ export default {
         content: "",
         status:0
       },
-      // rules: {
-      //   title: [
-      //     { required: true, message: "请输入标题", trigger: "blur" },
-      //     {
-      //       min: 3,
-      //       max: 25,
-      //       message: "长度在 3 到 25 个字符",
-      //       trigger: "blur",
-      //     },
-      //   ],
-      //   description: [
-      //     { required: true, message: "请输入摘要", trigger: "blur" },
-      //   ],
-      //   content: [{ required: true, message: "请输入内容", trigger: "blur" }],
-      // },
     };
   },
   methods: {
-
     submitForm() {
       if (this.ruleForm.title.length === 0) {
         this.$message({
@@ -135,11 +84,22 @@ export default {
             .post("/blog-console/blog", qs.stringify(this.ruleForm))
             .then((res) => {
               console.log(res);
+              if(res.data.code == 401) {
+                this.$confirm('未登录, 请先登录', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  this.$router.push('/login');
+                }).catch(() => {
+                  this.$message({
+                    type: 'info',
+                    message: '已取消'
+                  });
+                });
+              }
             })
       }
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     },
   },
 };
@@ -234,12 +194,6 @@ export default {
   margin-right: 40px;
 }
 
-/* 表单 */
-/*.demo-ruleForm {*/
-/*  !* margin-top: 20px; *!*/
-/*  !* height: 700px; *!*/
-/*  background-color: pink;*/
-/*}*/
 .demo-ruleForm .el-form-item {
   margin-bottom: 0px;
 }

@@ -66,7 +66,7 @@
         </div>
         <div class="toolbar-container-right">
           <div class="toolbar-btns onlyUser">
-            <div class="toolbar-btn toolbar-btn-login csdn-toolbar-fl ">
+            <div class="toolbar-btn toolbar-btn-login csdn-toolbar-fl" v-if="!isShowAvatar">
 <!--              <a data-report-click="{&quot;spm&quot;:&quot;3001.5105&quot;}" data-report-query="spm=3001.5105"-->
 <!--                 href="https://passport.csdn.net/account/login">登录/注册</a>-->
               <router-link to="/login"><a>登录/注册</a></router-link>
@@ -153,33 +153,26 @@
     name: "TopBar",
     data(){
       return{
-        avatarUrl1:'',
-        isShowAvatar1:false,
-        avatarUrl:require('../../../assets/img/home/003.jpg'),
+        avatarUrl:'',
         isShowAvatar:false,
-
       }
     },
 
     components: {},
+    created() {
+        this.avatarUrl = window.localStorage.avatarUrl;
+        this.isShowAvatar = window.localStorage.isShowAvatar
+    },
     mounted(){
-      this.$nextTick(function () {
-        this.bus.$on('avatar',(res) => {
-          console.log(res) // 输出的是LoginItem组件传过来的头像链接
-          this.avatarUrl = res;
-          this.isShowAvatar = true;
-          console.log(this.avatarUrl)
-          this.avatarUrl1=res;
-          this.isShowAvatar1 = true;
-        })
-
+      this.state.$on('avatarlink',data => {
+        this.avatarUrl = data;
+        this.isShowAvatar= true;
+        window.localStorage.avatarUrl = this.avatarUrl
+        window.localStorage.isShowAvatar = this.isShowAvatar
+        // this.avatarUrl.push(data)
         console.log(this.avatarUrl)
-        console.log(this.avatarUrl1)
-        console.log(this.isShowAvatar1)
-
-
       })
-    }
+    },
   };
 </script>
 

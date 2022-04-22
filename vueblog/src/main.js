@@ -17,7 +17,6 @@ import "./axios"
 import "./assets/css/iconfont/iconfont.css"
 
 
-
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
@@ -25,15 +24,15 @@ Vue.use(mavonEditor);
 axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 
-// 兄弟组件通信
-Vue.prototype.bus = new Vue()
 
-
+Vue.prototype.state = new Vue();
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+
+
 }).$mount('#app')
