@@ -3,7 +3,8 @@ package cn.sticki.blog.controller;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
-import cn.sticki.blog.service.UserService;
+import cn.sticki.blog.service.LoginService;
+import cn.sticki.blog.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
@@ -19,28 +20,30 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
 	@Resource
-	private UserService userService;
+	private LoginService loginService;
 
 	@Resource
-	private HttpSession session;
+	private JwtUtils jwtUtils;
 
 	/**
 	 * 登录
 	 */
 	@PostMapping("/login")
-	public RestTemplate login(String username, String password) {
-		User user = userService.login(username, password);
-		if (user != null) {
-			session.setAttribute("user", user);
-			return new RestTemplate(UserVO.userToVO(user));
+	public RestTemplate login(String username, String password, HttpServletResponse response) {
+		User user = loginService.login(username, password);
+		if (user == null) {
+			return new RestTemplate(false, "用户名或密码错误!");
 		}
-		return new RestTemplate(false, "用户名或密码错误");
+		UserVO userVO = UserVO.userToVO(user);
+		response.setHeader("token", jwtUtils.createToken(userVO));
+		response.setHeader("Access-Control-Expose-Headers", "token");
+		return new RestTemplate(userVO);
 	}
 
 	@GetMapping("/logout")
 	public RestTemplate logout() {
-		session.removeAttribute("user");
-		return new RestTemplate(true);
+		// session.removeAttribute("user");
+		return new RestTemplate(400, "此接口暂时停用，请前端手动删除localSession中的token");
 	}
 
 }

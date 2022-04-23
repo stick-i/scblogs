@@ -52,13 +52,6 @@ public class UserServiceImpl implements UserService {
 	@Value("${resource.default-avatar}")
 	private String defaultAvatar;
 
-	@Override
-	public User login(String username, String password) {
-		UserSafety userSafety = userSafetyMapper.selectByUsernameAndPassword(username, password);
-		if (userSafety == null) return null;
-		else return userMapper.selectById(userSafety.getUserId());
-	}
-
 	public User getByUsername(String username) {
 		return userMapper.selectByUsername(username);
 	}
