@@ -6,7 +6,16 @@
 
 <script>
   export default {
-    name: ""
+    name: "BlogDetail",
+    components:{
+    },
+    data() {
+      return {
+      };
+    },
+    methods: {
+    }
+
   }
 </script>
 

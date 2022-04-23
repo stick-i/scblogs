@@ -1,5 +1,5 @@
 <template>
-    <div class="body">
+    <div v-if="bodySeen" class="body">
         <meta name="referrer" content="no-referrer">
         <!-- 弹性导航条html+css -->
         <div class="content">
@@ -40,45 +40,40 @@
                 <div class="img">
                        <img :src="naviImg" alt="">
                 </div>
+                <div class="BlogContent" v-for="(item,index) in articleList" :key="index">
+                    <div class="BlogContent-a">
+                      <div class="BlogContent-1">{{item.title}}</div> 
+                      <div class="BlogContent-2">{{item.description}}</div>
+                      <div class="BlogContent-3">{{item.releaseTime}}</div> 
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
-<script>
-export default {
-    name:"navigationbar",
-    props:{
-            naviImg:{
-                type:String,
-                required:false,
-                default:"https://img-home.csdnimg.cn/images/20210310101013.png"
-            }
-        },
-    data(){
-        return{
-            // 导航部分的背景图片
-            naviImg:"https://img-home.csdnimg.cn/images/20210310101013.png",
-            // 小图标颜色切换
-            img_1:"https://img-home.csdnimg.cn/images/20210127051652.png",
-            img_2:"https://img-home.csdnimg.cn/images/20210127051654.png"
-        }
-    },
-    methods:{
-        Checked(){
-            console.log("点击触发了")
-                .style.color="black"
-        }
-    }
-}
+
+<script >
+import axios from'axios'
+import qs from "qs"
 window.onload=function(){
+    const re=axios({
+        method:"GET",
+        url:"http://172.16.40.214/api/v1/blog-console/blog-list"
+    })
+    re.then(res=>{
+        console.log("使用原生获取到的数据是",res.data)
+    })
+
+        // $get('http://172.16.40.214/api/v1/blog-console/blog-list',function(res){
+        //         console.log("博客列表返回数据",res)
+        // })
+    
       var img_1="https://img-home.csdnimg.cn/images/20210127051652.png";
       var img_2="https://img-home.csdnimg.cn/images/20210127051654.png"
     var Lilist=document.querySelector(".navi-1-up").querySelectorAll('li')
-    console.log("获取到的li标签列表",Lilist)
    
     for(let i=0;i<Lilist.length;i++){
         Lilist[i].addEventListener('click',function ChangeBottomColor(){
-            console.log("获取到的标签属性",Lilist[i].style)
             // 清空被选中的属性
              for(let i=0;i<Lilist.length;i++){
                     Lilist[i].style.borderBottom="none"
@@ -106,6 +101,69 @@ window.onload=function(){
             })
     }
     }
+export default {
+    name:"navigationbar",
+    props:{
+            naviImg:{
+                type:String,
+                required:false,
+                default:"https://img-home.csdnimg.cn/images/20210310101013.png"
+            }
+        },
+    data(){
+        return{
+            bodySeen:true,
+            // 最近的文章列表
+            articleList:[],
+            // 导航部分的背景图片
+            naviImg:"https://img-home.csdnimg.cn/images/20210310101013.png",
+            // 小图标颜色切换
+            img_1:"https://img-home.csdnimg.cn/images/20210127051652.png",
+            img_2:"https://img-home.csdnimg.cn/images/20210127051654.png"
+        }
+    },
+    mounted(){
+        this.GetData()
+        //  setInterval(()=>{
+        //           if(this.articleList.length>4){
+        //               this.articleList.pop()
+        //           } else{
+        //               console.log("操作结束")
+        //           } 
+        //     },1000)
+
+    },
+    methods:{
+         GetData(){
+            this.articleList=[1,2,3,5,6,4]
+            console.log("触发了getdata函数")
+            let params={
+                username:"stick",
+                password:"stick"
+            }
+            // console.log("QS 转化后的数据",qs.stringify(params))
+            // console.log("JSON 转化后的数据",JSON.stringify(params))
+             axios.post('/login/login',qs.stringify(params)).then(res=>{
+                    if(res.data.code==200&&res.data.message=="success"){
+                        axios.get("/blog-console/blog-list").then((res) => {
+                            this.articleList=res.data.data.blogList
+                            this.DataChange()
+                        })
+                    }      
+            })  
+            this.bodySeen=false
+            setTimeout(()=>{
+                this.bodySeen=true
+            },1000)
+        },
+        DataChange(){
+            for(let i=0;i<this.articleList.length;i++){
+                    
+            }
+        }
+    }
+}
+
 </script>
 <style scoped>
 *{
@@ -114,7 +172,7 @@ window.onload=function(){
     box-sizing: border-box;
 }
 .content{
-    width: 760px;
+    width:850px;
     height: 500px;
     background: none;
     display: flex;
@@ -204,11 +262,55 @@ li{
     position: absolute;
     bottom: 0;
     border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
+    /* overflow: hidden; */
+    /* display: flex; */
+    /* align-items: center;
+    justify-content: center; */
+    /* background: #000; */
 }
-</style>
-<style scoped>
-
+.navi-2 img{
+    display: none;
+}
+.BlogContent{
+    width: 100%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* display: block; */
+    /* position: absolute; */
+    /* top: 0; */
+    border-bottom:1px solid rgb(241, 235, 235);
+    background: white;
+    cursor: pointer;
+}
+.BlogContent-a{
+    width: 90%;
+    height: 100%;
+    padding: 15px 0;
+    
+}
+.BlogContent-1{
+    width: 100%;
+    height:30%;
+    font-size: 18px;
+    color: black;
+} 
+.BlogContent-1:hover{
+    color: rgb(252, 85, 49);
+} 
+.BlogContent-2{
+    width: 100%;
+    height: 20%;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555666;
+} 
+.BlogContent-3{
+    width: 100%;
+    height: 20%;
+    font-size: 14px;
+    color: #555666;
+} 
 </style>

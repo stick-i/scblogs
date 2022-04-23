@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div class="article-main">
+    <div class="article-main" v-for="(item,index) in blogList" :key="index">
       <div class="article-item">
         <div class="article-title">
           <a target="_blank" href="#">
-            <span>【JS】质数求和</span>
+            <span>
+              <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}">
+                {{item.title}}
+              </router-link>
+            </span>
           </a>
         </div>
         <div class="article-content-item">
@@ -16,25 +20,82 @@
           <div class="article-content-right">
             <a target="_blank" href="#">
               <div class="article-content">
-                JS-质数求和：质数（prime number）是大于 1 且仅可以被 1 和自己整除的数。 比如，2 就是一个质数，因为它只可以被 1 和 2（它本身）整除。 相反，4 不是质数，因为它可以被 1, 2 和
-                4 整除。
+                {{item.description}}
               </div>
             </a>
             <div class="article-evaluation">
-              <div class="article-good"><img src="../../../assets/img/home/good.png" alt=""> 666 赞</div>
-              <div class="article-author">作者：<span>啦啦啦</span></div>
-              <div class="article-date">发布时间：<span>2022年4月9日</span></div>
+              <div class="article-good">
+                <img @click="isShowGoodIcon=false" v-if="isShowGoodIcon" src="../../../assets/img/home/good.png" alt="">
+                <img @click="isShowGoodIcon=true" v-if="!isShowGoodIcon" src="../../../assets/img/home/good_active.png" alt="">
+                {{ item.likeNum }} <span>赞</span>
+              </div>
+              <div class="article-author">作者：<span>{{item.author}}</span></div>
+              <div class="article-date">发布时间：<span>{{ item.releaseTime }}</span></div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!--infinite-loading这个组件要放在列表的底部，滚动的盒子里面-->
+    <infinite-loading
+      spinner="spiral"
+      @infinite="infiniteHandler"
+      :distance="200"
+      class="infinite-loading-wrap"
+    >
+      <div slot="spinner">Loading...</div>
+      <div slot="no-more">No more Data</div>
+      <div slot="no-results">No results Data</div>
+      <div slot="error" slot-scope="{ trigger }">
+        Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
+      </div>
+    </infinite-loading>
+
   </div>
 </template>
 
 <script>
+  import qs from "qs";
+
+  import InfiniteLoading from 'vue-infinite-loading'
+
   export default {
-    name: ""
+    name: "",
+    data(){
+      return{
+        blogList:[],
+        isShowGoodIcon:true,
+      }
+    },
+    components: {
+      InfiniteLoading
+    },
+    created() {
+      // this.$axios
+      //   .get("/blog/list")
+      //   .then((res) => {
+      //     console.log(res.data.data);
+      //     this.blogList = res.data.data
+      //   })
+    },
+    methods:{
+      infiniteHandler($state) {
+        this.$axios
+          .get("/blog/list")
+          .then((res) => {
+            if(res.data.data.length) {
+              let arr = res.data.data;
+              // this.blogList = this.blogList.concat(res.data.data);
+              this.blogList = [...this.blogList,...arr]
+              console.log(this.blogList)
+              $state.loaded();
+            }else {
+              $state.complete();
+            }
+          })
+      },
+    }
   }
 </script>
 

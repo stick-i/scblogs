@@ -21,7 +21,7 @@
     },
     data() {
       return{
-        avatarUrl:'',
+        // avatarUrl:'',
       }
     }
 
