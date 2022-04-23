@@ -2,6 +2,7 @@ package cn.sticki.blog.config;
 
 import cn.sticki.blog.controller.interceptor.UserLoginInterceptor;
 import cn.sticki.blog.pojo.domain.User;
+import cn.sticki.blog.util.JwtUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
@@ -33,10 +34,10 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(@NotNull InterceptorRegistry registry) {
 		WebMvcConfigurer.super.addInterceptors(registry);
 		// 未登录用户拦截
-		registry.addInterceptor(userLoginInterceptor())
-				.addPathPatterns("/user/**")
-				.excludePathPatterns("/user")
-				.addPathPatterns("/blog-console/**");
+		// registry.addInterceptor(userLoginInterceptor())
+		// 		.addPathPatterns("/user/**")
+		// 		.excludePathPatterns("/user")
+		// 		.addPathPatterns("/blog-console/**");
 	}
 
 	@Bean
@@ -50,13 +51,17 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 class UserBean {
 
 	@Resource
-	private HttpSession session;
+	private HttpServletRequest request;
+
+	@Resource
+	private JwtUtils jwtUtils;
 
 	@Bean
 	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public User getUser() {
 		// 当user为null时，无法正常注入到需要被注入的位置
-		return (User) session.getAttribute("user");
+		String token = request.getHeader("token");
+		return jwtUtils.parse(token, User.class);
 	}
 
 }

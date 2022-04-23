@@ -8,115 +8,76 @@
             <div class="text">文&nbsp;章&nbsp;管&nbsp;理</div>
           </div>
           <div class="bar-input">
-
             <input
               type="text"
               placeholder="请输入文章标题"
               v-model="ruleForm.title"
               prop="title"
             />
-
           </div>
           <div class="btn">
-            <button class="btn-save">保存草稿</button>
-<!--            <button class="btn-publish" @click="submitForm()">-->
-              <button class="btn-publish" @click="submitForm()">
-              发布文章
-            </button>
+            <button class="btn-save" @click="saveForm()">保存草稿</button>
+            <button class="btn-publish" @click="submitForm()">发布文章</button>
           </div>
           <div class="bar-img">
-            <a href="#"
-              ><img src="../assets/img/home/default_avatar.jpg" alt=""
-            /></a>
+            <a href="#">
+              <img src="../assets/img/home/default_avatar.jpg" alt="" />
+            </a>
           </div>
         </div>
       </div>
 
-<!--      <el-form-->
-<!--        :model="ruleForm"-->
-<!--        :rules="rules"-->
-<!--        ref="ruleForm"-->
-<!--        class="demo-ruleForm"-->
-<!--      >-->
-        <!-- label-width="100px" -->
-        <!-- <el-form-item label="标题" prop="title">
-          <el-input
-            v-model="ruleForm.title"
-            placeholder="请输入文章标题"
-          ></el-input>
-        </el-form-item> -->
+      <!-- markdown编辑器  -->
+      <mavon-editor
+        v-model="ruleForm.content"
+        style="height: calc(100vh - 56px)"
+      ></mavon-editor>
 
-        <!-- <el-form-item label="摘要" prop="description">
-          <el-input
-            type="textarea"
-            v-model="ruleForm.description"
-            placeholder="请输入文章摘要"
-          ></el-input>
-        </el-form-item> -->
-
-        <!-- markdown编辑器  -->
-<!--        <el-form-item prop="content">-->
-          <mavon-editor
-            v-model="ruleForm.content"
-            style="height: calc(100vh - 56px)"
-          ></mavon-editor>
-<!--        </el-form-item>-->
-
-        <!--        <el-form-item>-->
-        <!--          <el-button type="primary" @click="submitForm('ruleForm')"-->
-        <!--            >立即创建</el-button-->
-        <!--          >-->
-        <!--          <el-button @click="resetForm('ruleForm')">重置</el-button>-->
-        <!--        </el-form-item>-->
-<!--      </el-form>-->
-
-
-      <Dialog/>
-
-
-
+      <!-- 弹窗 -->
+      <div v-if="dialogShow">
+        <blog-edit-dialog
+          :blogTitle="ruleForm.title"
+          :blogContent="ruleForm.content"
+          :dialogShow="dialogShow"
+          @dialogShowChange="dialogShowChange"
+        ></blog-edit-dialog>
+      </div>
+      <!--      v-if="isShowDialogForm"-->
     </div>
   </div>
 </template>
 
 <script>
-import qs from "qs";
-
-import Dialog from "@/components/content/blogEdit/Dialog";
+import BlogEditDialog from "@/components/content/blogEdit/BlogEditDialog";
 
 export default {
   name: "",
-  components:{
-    Dialog
+  components: {
+    BlogEditDialog,
   },
   data() {
     return {
       ruleForm: {
-        id:'',
         title: "",
-        description: "11",
         content: "",
-        status:0
       },
-      // rules: {
-      //   title: [
-      //     { required: true, message: "请输入标题", trigger: "blur" },
-      //     {
-      //       min: 3,
-      //       max: 25,
-      //       message: "长度在 3 到 25 个字符",
-      //       trigger: "blur",
-      //     },
-      //   ],
-      //   description: [
-      //     { required: true, message: "请输入摘要", trigger: "blur" },
-      //   ],
-      //   content: [{ required: true, message: "请输入内容", trigger: "blur" }],
-      // },
+      dialogShow: false,
     };
   },
+  watch: {
+    // dialogShowChange(val) {
+    //   this.dialogShow = val
+    // },
+  },
   methods: {
+    dialogShowChange(val) {
+      this.dialogShow = val;
+    },
+    // 保存文章
+    saveForm() {
 
+    },
+    // 发布文章
     submitForm() {
       if (this.ruleForm.title.length === 0) {
         this.$message({
@@ -131,15 +92,8 @@ export default {
           type: "warning",
         });
       } else {
-        this.$axios
-            .post("/blog-console/blog", qs.stringify(this.ruleForm))
-            .then((res) => {
-              console.log(res);
-            })
+        this.dialogShow = true;
       }
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     },
   },
 };
@@ -234,12 +188,6 @@ export default {
   margin-right: 40px;
 }
 
-/* 表单 */
-/*.demo-ruleForm {*/
-/*  !* margin-top: 20px; *!*/
-/*  !* height: 700px; *!*/
-/*  background-color: pink;*/
-/*}*/
 .demo-ruleForm .el-form-item {
   margin-bottom: 0px;
 }
