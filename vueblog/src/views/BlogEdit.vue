@@ -8,64 +8,76 @@
             <div class="text">文&nbsp;章&nbsp;管&nbsp;理</div>
           </div>
           <div class="bar-input">
-
             <input
               type="text"
               placeholder="请输入文章标题"
               v-model="ruleForm.title"
               prop="title"
             />
-
           </div>
           <div class="btn">
-            <button class="btn-save">保存草稿</button>
-<!--            <button class="btn-publish" @click="submitForm()">-->
-              <button class="btn-publish" @click="submitForm()">
-              发布文章
-            </button>
+            <button class="btn-save" @click="saveForm()">保存草稿</button>
+            <button class="btn-publish" @click="submitForm()">发布文章</button>
           </div>
           <div class="bar-img">
-            <a href="#"
-              ><img src="../assets/img/home/default_avatar.jpg" alt=""
-            /></a>
+            <a href="#">
+              <img src="../assets/img/home/default_avatar.jpg" alt="" />
+            </a>
           </div>
         </div>
       </div>
 
-        <!-- markdown编辑器  -->
-          <mavon-editor
-            v-model="ruleForm.content"
-            style="height: calc(100vh - 56px)"
-          ></mavon-editor>
+      <!-- markdown编辑器  -->
+      <mavon-editor
+        v-model="ruleForm.content"
+        style="height: calc(100vh - 56px)"
+      ></mavon-editor>
 
-      <Dialog/>
-
+      <!-- 弹窗 -->
+      <div v-if="dialogShow">
+        <blog-edit-dialog
+          :blogTitle="ruleForm.title"
+          :blogContent="ruleForm.content"
+          :dialogShow="dialogShow"
+          @dialogShowChange="dialogShowChange"
+        ></blog-edit-dialog>
+      </div>
+      <!--      v-if="isShowDialogForm"-->
     </div>
   </div>
 </template>
 
 <script>
-import qs from "qs";
-
-import Dialog from "@/components/content/blogEdit/Dialog";
+import BlogEditDialog from "@/components/content/blogEdit/BlogEditDialog";
 
 export default {
   name: "",
-  components:{
-    Dialog
+  components: {
+    BlogEditDialog,
   },
   data() {
     return {
       ruleForm: {
-        id:'',
         title: "",
-        description: "11",
         content: "",
-        status:0
       },
+      dialogShow: false,
     };
   },
+  watch: {
+    // dialogShowChange(val) {
+    //   this.dialogShow = val
+    // },
+  },
   methods: {
+    dialogShowChange(val) {
+      this.dialogShow = val;
+    },
+    // 保存文章
+    saveForm() {
+
+    },
+    // 发布文章
     submitForm() {
       if (this.ruleForm.title.length === 0) {
         this.$message({
@@ -80,25 +92,7 @@ export default {
           type: "warning",
         });
       } else {
-        this.$axios
-            .post("/blog-console/blog", qs.stringify(this.ruleForm))
-            .then((res) => {
-              console.log(res);
-              if(res.data.code == 401) {
-                this.$confirm('未登录, 请先登录', '提示', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                }).then(() => {
-                  this.$router.push('/login');
-                }).catch(() => {
-                  this.$message({
-                    type: 'info',
-                    message: '已取消'
-                  });
-                });
-              }
-            })
+        this.dialogShow = true;
       }
     },
   },
