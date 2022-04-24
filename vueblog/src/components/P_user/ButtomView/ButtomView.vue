@@ -25,7 +25,7 @@
 }
 .body{
     width: 100%;
-    height: 200px;
+    height: 150px;
     background: rgb(255, 255, 255);
 }
 .content{

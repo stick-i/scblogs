@@ -8,8 +8,9 @@ const Register = () => import('@/views/register/Register')
 const Blogs = () => import('@/views/Blogs')
 const BlogEdit = () => import('@/views/BlogEdit')
 const BlogDetail = () => import('@/views/BlogDetail')
-const Personal_Blog = () => import('@/views/Personal_Blog')
-
+const PersonalBlog = () => import('@/views/PersonalBlog')
+const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
+const A = () => import('@/views/A')
 
 
 Vue.use(VueRouter)
@@ -64,7 +65,17 @@ const routes = [
   {
     path: '/Personal_Blog',
     name: 'PersonalBlog',
-    component: Personal_Blog
+    component: PersonalBlog
+  },
+  {
+    path: '/PersonalMessageEdit',
+    name: 'PersonalMessageEdit',
+    component: PersonalMessageEdit
+  },
+  {
+    path: '/A',
+    name: 'A',
+    component: A
   },
 ]
 
