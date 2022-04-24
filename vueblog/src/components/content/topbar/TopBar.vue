@@ -56,9 +56,10 @@
           <div class="toolbar-search onlySearch">
             <div class="toolbar-search-container">
               <span class="icon-fire" style="display: none;"></span>
-              <input id="toolbar-search-input" autocomplete="off" type="text" value="" placeholder="迁移学习分析"
+              <!--  搜索博客  -->
+              <input id="toolbar-search-input" autocomplete="off" type="text" v-model="key" value="" placeholder="迁移学习分析"
                      style="text-indent: 12px;">
-              <button id="toolbar-search-button"><i></i><span>搜索</span></button>
+              <button id="toolbar-search-button" @click="searchBlogs()"><i></i><span>搜索</span></button>
               <input type="password" autocomplete="new-password" readonly="" disabled="true"
                      style="display: none; position:absolute;left:-9999999px;width:0;height:0;">
             </div>
@@ -109,7 +110,7 @@
 
             <div class="toolbar-btn toolbar-btn-write csdn-toolbar-fl ">
               <a data-report-click="{&quot;spm&quot;:&quot;3001.7765&quot;}" data-report-query="spm=3001.7765"
-                 class="btn-write-new" @click="goBlogEdit()"></a>
+                 class="btn-write-new" @click="goBlogEdit()" style="cursor: pointer"></a>
 <!--              <div id="csdn-toolbar-write" class="csdn-toolbar-plugin" style="display: none; opacity: 1;">-->
 <!--                <div class="csdn-toolbar-plugin-triangle"></div>-->
 <!--                <ul class="csdn-toolbar-write-box">-->
@@ -164,8 +165,11 @@
     name: "TopBar",
     data(){
       return{
+        // 头像
         avatarUrl:'',
         isShowAvatar:false,
+        // 搜索内容
+        key:''
       }
     },
 
@@ -175,16 +179,20 @@
         this.isShowAvatar = window.localStorage.isShowAvatar
     },
     mounted(){
-      this.state.$on('avatarlink',data => {
+      this.bus.$on('avatarlink',data => {
         this.avatarUrl = data;
         this.isShowAvatar= true;
         window.localStorage.avatarUrl = this.avatarUrl
         window.localStorage.isShowAvatar = this.isShowAvatar
-        // this.avatarUrl.push(data)
-        console.log(this.avatarUrl)
       })
     },
     methods: {
+      // 搜索博客
+      searchBlogs() {
+        this.$axios.get("/blog/search",this.key).then(res => {
+          console.log(res)
+        })
+      },
       // 退出登录
       handleCommand(command) {
         if(command == 'a') {
@@ -202,6 +210,7 @@
 
             // 清除状态保持
             window.localStorage.clear()
+            window.sessionStorage.clear()
             // 状态保持清除后刷新页面
             window.location.reload()
 
@@ -210,7 +219,7 @@
       },
       // 点击跳转发布文章页面
       goBlogEdit () {
-        console.log(window.localStorage.isShowAvatar)
+        // console.log(window.localStorage.isShowAvatar)
         if(window.localStorage.isShowAvatar == undefined) {
           this.$message({
             showClose: true,

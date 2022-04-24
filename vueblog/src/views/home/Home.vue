@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-    <router-link to="/blog/add"><a>点击</a></router-link>
+<!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
@@ -133,6 +133,7 @@
     <div class="content">
       <!-- 左边-->
       <div class="article-left">
+        <!-- tabs标签-->
         <div class="tabs">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="关注" name="first">
@@ -145,6 +146,7 @@
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
           </el-tabs>
         </div>
+
       </div>
       <!-- 右边-->
       <div class="article-right">
@@ -487,6 +489,9 @@ export default {
 }
 .tabs .el-tabs--top {
   padding-left: 10px;
+}
+.tabs .el-tabs__header {
+  margin: 0;
 }
 
 .content .article-left {
