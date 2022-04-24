@@ -171,20 +171,19 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
-          // this.$axios
-          //   .post("/blog-console/blog", qs.stringify(this.ruleForm))
-          //   .then((res) => {
-          //     console.log(res);
-          //   });
           this.$axios
-            .post(
-              "/blog-console/blog",
-              qs.stringify(this.ruleForm) ,
+            .post("/blog-console/blog", qs.stringify(this.ruleForm),
               { headers: { 'token': sessionStorage.getItem("token") } }
             )
             .then((res) => {
-              console.log(res);
+              console.log(res)
+              if (res.data.code == 200 && res.data.status == true) {
+                this.$message({
+                  showClose: true,
+                  message: "发布成功~",
+                  type: "success",
+                });
+              }
             });
         } else {
           console.log("error submit!!");

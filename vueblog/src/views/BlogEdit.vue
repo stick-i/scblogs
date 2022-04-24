@@ -21,7 +21,7 @@
           </div>
           <div class="bar-img">
             <a href="#">
-              <img src="../assets/img/home/default_avatar.jpg" alt="" />
+              <img :src="avatarUrl" alt="头像" />
             </a>
           </div>
         </div>
@@ -42,13 +42,14 @@
           @dialogShowChange="dialogShowChange"
         ></blog-edit-dialog>
       </div>
-      <!--      v-if="isShowDialogForm"-->
+
     </div>
   </div>
 </template>
 
 <script>
 import BlogEditDialog from "@/components/content/blogEdit/BlogEditDialog";
+import qs from "qs";
 
 export default {
   name: "",
@@ -57,17 +58,20 @@ export default {
   },
   data() {
     return {
+      avatarUrl:'',
       ruleForm: {
-        title: "",
-        content: "",
+        id:'',
+        title: '',
+        description:'',
+        content: '',
+        status:2
       },
       dialogShow: false,
     };
   },
-  watch: {
-    // dialogShowChange(val) {
-    //   this.dialogShow = val
-    // },
+  created() {
+    // 显示头像
+    this.avatarUrl = window.localStorage.avatarUrl;
   },
   methods: {
     dialogShowChange(val) {
@@ -75,7 +79,20 @@ export default {
     },
     // 保存文章
     saveForm() {
-
+      this.$axios
+        .post("/blog-console/blog",
+          qs.stringify(this.ruleForm),
+          { headers: { 'token': sessionStorage.getItem("token") } }
+        ).then( res =>{
+        console.log(res)
+        if (res.data.code == 200 && res.data.status == true) {
+          this.$message({
+            showClose: true,
+            message: "保存成功~",
+            type: "success",
+          });
+        }
+      })
     },
     // 发布文章
     submitForm() {
@@ -181,7 +198,7 @@ export default {
 .article-bar .bar-img img {
   height: 38px;
   width: 38px;
-  border-radius: 16px;
+  border-radius: 19px;
   border: 1px solid #f0f0f2;
   /*border: 1px solid black;*/
   margin-left: 20px;

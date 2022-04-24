@@ -74,6 +74,7 @@ export default {
           // alert('submit!');
           this.$axios
             .post("/login/login", qs.stringify(this.ruleForm))
+          // { headers: { 'token': sessionStorage.getItem("token") } }
             .then((res) => {
               console.log(res);
               if (res.data.code == 200 && res.data.status == false) {
@@ -91,8 +92,9 @@ export default {
                 });
                 console.log(res.headers.token);
                 sessionStorage.setItem('token', res.headers.token);
+
                 this.avatarUrl = res.data.data.avatarUrl;
-                this.state.$emit("avatarlink", this.avatarUrl);
+                this.bus.$emit("avatarlink", this.avatarUrl);
                 this.$router.push({ path: "home" });
               }
             });

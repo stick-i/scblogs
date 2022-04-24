@@ -24,7 +24,7 @@ axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 
 
-Vue.prototype.state = new Vue();
+Vue.prototype.bus = new Vue();
 
 Vue.config.productionTip = false
 

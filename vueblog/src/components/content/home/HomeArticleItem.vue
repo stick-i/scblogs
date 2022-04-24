@@ -3,9 +3,9 @@
     <div class="article-main" v-for="(item,index) in blogList" :key="index">
       <div class="article-item">
         <div class="article-title">
-          <a target="_blank" href="#">
+          <a href="#">
             <span>
-              <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}">
+              <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}" target="_blank">
                 {{item.title}}
               </router-link>
             </span>
