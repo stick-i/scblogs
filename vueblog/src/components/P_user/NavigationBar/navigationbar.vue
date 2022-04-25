@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="最近" name="1">
-      <div class="F-1" v-for="item in recentList">
+      <div class="F-1" v-for="(item,index) in recentList"  @click="TurnToShow(item.id)">
         <div class="BlogContent-a">
           <div class="BlogContent-1">{{ item.title }}</div>
           <div class="BlogContent-2">{{ item.description }}</div>
@@ -19,7 +19,7 @@
     <el-tab-pane label="文章" name="2">
       <el-tabs v-model="activeName2" @tab-click="handleClick">
         <el-tab-pane label="按最后发布时间" name="1">
-            <div class="F-1" v-for="item in LastPublishTimeList">
+            <div class="F-1" v-for="(item,index) in LastPublishTimeList"  @click="TurnToShow(item.id)">
             <div class="BlogContent-a">
               <div class="BlogContent-1">{{ item.title }}</div>
               <div class="BlogContent-2">{{ item.description }}</div>
@@ -34,7 +34,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="按访问量" name="2">
-          <div class="F-1" v-for="item in maxViewList">
+          <div class="F-1" v-for="(item,index) in maxViewList"  :key="index" @click="TurnToShow(item.id)">
             <div class="BlogContent-a">
               <div class="BlogContent-1">{{ item.title }}</div>
               <div class="BlogContent-2">{{ item.description }}</div>
@@ -108,6 +108,9 @@ export default {
     await this.GetData();
   },
   methods: {
+    TurnToShow(index){
+        this.$router.push('/BlogContent')
+    },
     // 获取数据
     async GetData() {
       this.recentList = [];
@@ -123,8 +126,9 @@ export default {
         .post("/login/login", qs.stringify(params))
         .then(async (res) => {
           if (res.data.code == 200 && res.data.message == "success") {
-            console.log("登陆成功！！！！！");
-            await this.$axios.get("/blog-console/blog-list").then((res) => {
+            console.log("登陆成功！！！！！此时获取响应头数据",res.headers.token);
+            window.localStorage.setItem("token",res.headers.token)
+            await this.$axios.get("/blog-console/blog-list",{headers:{'token':localStorage.getItem('token')}}).then((res) => {
               this.recentList = this.recentList.concat(res.data.data.blogList);
               console.log("获取到的博客列表数据", this.recentList);
               this.DataChange();

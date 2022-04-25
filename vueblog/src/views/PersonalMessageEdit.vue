@@ -79,15 +79,20 @@ export default{
                 this.leftNavigation[i].chose=false
             }
             this.leftNavigation[index].chose=true
+            this.$refs.upload.submit();
         }
     }
 }
 </script>
 
-<style scoped>
+<style >
 *{
     padding: 0;
     margin:0;
+}
+body{
+    padding: 0 !important;
+    /* overflow:  hidden; */
 }
 .body{
     display: flex;

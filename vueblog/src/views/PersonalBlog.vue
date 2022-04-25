@@ -98,6 +98,7 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
                 },
                 TurnToEditPage(){
                     // 跳转至编辑页面
+                    console.log("触发了跳转函数")
                     this.$router.push('/PersonalMessageEdit')
                 }
         }
