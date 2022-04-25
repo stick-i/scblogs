@@ -10,7 +10,6 @@ const BlogEdit = () => import('@/views/BlogEdit')
 const BlogDetail = () => import('@/views/BlogDetail')
 const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
-const A = () => import('@/views/A')
 
 
 Vue.use(VueRouter)
@@ -71,11 +70,6 @@ const routes = [
     path: '/PersonalMessageEdit',
     name: 'PersonalMessageEdit',
     component: PersonalMessageEdit
-  },
-  {
-    path: '/A',
-    name: 'A',
-    component: A
   },
 ]
 
