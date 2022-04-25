@@ -1,4 +1,4 @@
-package cn.sticki.blog.controller.advice;
+package cn.sticki.blog.security.handler;
 
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.util.ResponseUtils;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class AccessDeniedHandlerAdvice implements AccessDeniedHandler {
+public class AuthAccessDeniedHandler implements AccessDeniedHandler {
 
 	@Autowired
 	private ResponseUtils responseUtils;

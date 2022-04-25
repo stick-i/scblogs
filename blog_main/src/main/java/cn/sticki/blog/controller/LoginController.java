@@ -30,6 +30,7 @@ public class LoginController {
 	 */
 	@PostMapping("/login")
 	public RestTemplate login(String username, String password, HttpServletResponse response) {
+		log.debug("/login/login,username->{}", username);
 		User user = loginService.login(username, password);
 		if (user == null) {
 			return new RestTemplate(false, "用户名或密码错误!");
