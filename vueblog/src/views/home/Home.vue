@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-    <router-link to="/blog/add"><a>点击</a></router-link>
+<!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
@@ -133,18 +133,20 @@
     <div class="content">
       <!-- 左边-->
       <div class="article-left">
+        <!-- tabs标签-->
         <div class="tabs">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="关注" name="first">
-              <article-item></article-item>
+              <HomeArticleItem/>
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <article-item></article-item>
+              <HomeArticleItem/>
             </el-tab-pane>
             <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
           </el-tabs>
         </div>
+
       </div>
       <!-- 右边-->
       <div class="article-right">
@@ -192,7 +194,7 @@
 <script>
 import TopBar from "../../components/content/topbar/TopBar";
 import Swiper from "@/components/common/swiper/Swiper";
-import ArticleItem from "@/components/content/home_article/ArticleItem";
+import HomeArticleItem from "@/components/content/home/HomeArticleItem";
 
 
 export default {
@@ -200,7 +202,7 @@ export default {
   components: {
     Swiper,
     TopBar,
-    ArticleItem,
+    HomeArticleItem,
   },
   data() {
     return {
@@ -487,6 +489,9 @@ export default {
 }
 .tabs .el-tabs--top {
   padding-left: 10px;
+}
+.tabs .el-tabs__header {
+  margin: 0;
 }
 
 .content .article-left {

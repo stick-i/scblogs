@@ -56,9 +56,10 @@
           <div class="toolbar-search onlySearch">
             <div class="toolbar-search-container">
               <span class="icon-fire" style="display: none;"></span>
-              <input id="toolbar-search-input" autocomplete="off" type="text" value="" placeholder="迁移学习分析"
+              <!--  搜索博客  -->
+              <input id="toolbar-search-input" autocomplete="off" type="text" v-model="key" value="" placeholder="迁移学习分析"
                      style="text-indent: 12px;">
-              <button id="toolbar-search-button"><i></i><span>搜索</span></button>
+              <button id="toolbar-search-button" @click="searchBlogs()"><i></i><span>搜索</span></button>
               <input type="password" autocomplete="new-password" readonly="" disabled="true"
                      style="display: none; position:absolute;left:-9999999px;width:0;height:0;">
             </div>
@@ -72,11 +73,22 @@
               <router-link to="/login"><a>登录/注册</a></router-link>
             </div>
 
-            <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
-              <img :src="avatarUrl" alt="" class="test-img">
-            </a>
-<!--            <img :src="avatarUrl" alt="" class="test-img">-->
-<!--            <img src="/assets/img/home/003.jpg" alt="" class="test-img">-->
+
+            <!-- 显示头像 下拉菜单 -->
+            <div class="test-div csdn-toolbar-fl">
+              <el-dropdown @command="handleCommand">
+              <span class="el-dropdown-link">
+                <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
+                  <img :src="avatarUrl" alt="头像" class="test-img">
+                </a>
+              </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="a">个人中心</el-dropdown-item>
+                  <el-dropdown-item command="b" divided>退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+
 
             <div class="toolbar-btn toolbar-btn-vip csdn-toolbar-fl">
               <a data-report-click="{&quot;mod&quot;:&quot;popu_336&quot;,&quot;dest&quot;:&quot;https://mall.csdn.net/vip&quot;,&quot;spm&quot;:&quot;3001.4496&quot;}"
@@ -98,48 +110,48 @@
 
             <div class="toolbar-btn toolbar-btn-write csdn-toolbar-fl ">
               <a data-report-click="{&quot;spm&quot;:&quot;3001.7765&quot;}" data-report-query="spm=3001.7765"
-                 href="https://mp.csdn.net" class="btn-write-new"></a>
-              <div id="csdn-toolbar-write" class="csdn-toolbar-plugin" style="display: none; opacity: 1;">
-                <div class="csdn-toolbar-plugin-triangle"></div>
-                <ul class="csdn-toolbar-write-box">
-                  <li class="csdn-toolbar-write-box-blog">
-                    <a href="https://mp.csdn.net/edit" target="_blank"
-                       data-report-click="{&quot;spm&quot;:&quot;3001.5352&quot;}" data-report-query="spm=3001.5352">
-                      <i class="csdn-toolbar-write-icon"></i>
-                      <span>写文章</span>
-                    </a>
-                  </li>
-                  <li class="csdn-toolbar-write-box-blink">
-                    <a href="https://blink.csdn.net" target="_blank"
-                       data-report-click="{&quot;spm&quot;:&quot;3001.5353&quot;}" data-report-query="spm=3001.5353">
-                      <i class="csdn-toolbar-write-icon"></i>
-                      <span>发Blink</span>
-                    </a>
-                  </li>
-                  <li class="csdn-toolbar-write-box-ask">
-                    <a href="https://ask.csdn.net/new?word=" target="_blank"
-                       data-report-click="{&quot;spm&quot;:&quot;3001.5354&quot;}" data-report-query="spm=3001.5354">
-                      <i class="csdn-toolbar-write-icon"></i>
-                      <span>提问题</span>
-                    </a>
-                  </li>
-                  <li class="csdn-toolbar-write-box-upload">
-                    <a href="https://mp.csdn.net/mp_download/creation/uploadResources" target="_blank"
-                       data-report-click="{&quot;spm&quot;:&quot;3001.5355&quot;}" data-report-query="spm=3001.5355">
-                      <i class="csdn-toolbar-write-icon"></i>
-                      <span>传资源</span>
-                    </a>
-                  </li>
-                  <li class="csdn-toolbar-write-box-code">
-                    <a href="https://codechina.csdn.net/explore" target="_blank"
-                       data-report-click="{&quot;spm&quot;:&quot;3001.5356&quot;}" data-report-query="spm=3001.5356">
-                      <i class="csdn-toolbar-write-icon"></i>
-                      <span>建项目</span>
-                    </a>
-                  </li>
-                </ul>
+                 class="btn-write-new" @click="goBlogEdit()" style="cursor: pointer"></a>
+<!--              <div id="csdn-toolbar-write" class="csdn-toolbar-plugin" style="display: none; opacity: 1;">-->
+<!--                <div class="csdn-toolbar-plugin-triangle"></div>-->
+<!--                <ul class="csdn-toolbar-write-box">-->
+<!--                  <li class="csdn-toolbar-write-box-blog">-->
+<!--                    <a href="https://mp.csdn.net/edit" target="_blank"-->
+<!--                       data-report-click="{&quot;spm&quot;:&quot;3001.5352&quot;}" data-report-query="spm=3001.5352">-->
+<!--                      <i class="csdn-toolbar-write-icon"></i>-->
+<!--                      <span>写文章</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li class="csdn-toolbar-write-box-blink">-->
+<!--                    <a href="https://blink.csdn.net" target="_blank"-->
+<!--                       data-report-click="{&quot;spm&quot;:&quot;3001.5353&quot;}" data-report-query="spm=3001.5353">-->
+<!--                      <i class="csdn-toolbar-write-icon"></i>-->
+<!--                      <span>发Blink</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li class="csdn-toolbar-write-box-ask">-->
+<!--                    <a href="https://ask.csdn.net/new?word=" target="_blank"-->
+<!--                       data-report-click="{&quot;spm&quot;:&quot;3001.5354&quot;}" data-report-query="spm=3001.5354">-->
+<!--                      <i class="csdn-toolbar-write-icon"></i>-->
+<!--                      <span>提问题</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li class="csdn-toolbar-write-box-upload">-->
+<!--                    <a href="https://mp.csdn.net/mp_download/creation/uploadResources" target="_blank"-->
+<!--                       data-report-click="{&quot;spm&quot;:&quot;3001.5355&quot;}" data-report-query="spm=3001.5355">-->
+<!--                      <i class="csdn-toolbar-write-icon"></i>-->
+<!--                      <span>传资源</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                  <li class="csdn-toolbar-write-box-code">-->
+<!--                    <a href="https://codechina.csdn.net/explore" target="_blank"-->
+<!--                       data-report-click="{&quot;spm&quot;:&quot;3001.5356&quot;}" data-report-query="spm=3001.5356">-->
+<!--                      <i class="csdn-toolbar-write-icon"></i>-->
+<!--                      <span>建项目</span>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                </ul>-->
 
-              </div>
+<!--              </div>-->
             </div>
           </div>
         </div>
@@ -153,8 +165,11 @@
     name: "TopBar",
     data(){
       return{
+        // 头像
         avatarUrl:'',
         isShowAvatar:false,
+        // 搜索内容
+        key:''
       }
     },
 
@@ -164,15 +179,58 @@
         this.isShowAvatar = window.localStorage.isShowAvatar
     },
     mounted(){
-      this.state.$on('avatarlink',data => {
+      this.bus.$on('avatarlink',data => {
         this.avatarUrl = data;
         this.isShowAvatar= true;
         window.localStorage.avatarUrl = this.avatarUrl
         window.localStorage.isShowAvatar = this.isShowAvatar
-        // this.avatarUrl.push(data)
-        console.log(this.avatarUrl)
       })
     },
+    methods: {
+      // 搜索博客
+      searchBlogs() {
+        this.$axios.get("/blog/search",this.key).then(res => {
+          console.log(res)
+        })
+      },
+      // 退出登录
+      handleCommand(command) {
+        if(command == 'a') {
+          console.log("个人中心")
+        }
+        if(command == 'b') {
+          console.log("退出登录")
+          this.$axios.get("/login/logout").then(res => {
+            console.log(res)
+            this.$message({
+              showClose: true,
+              message: "已退出登录",
+              type: "success",
+            });
+
+            // 清除状态保持
+            window.localStorage.clear()
+            window.sessionStorage.clear()
+            // 状态保持清除后刷新页面
+            window.location.reload()
+
+          })
+        }
+      },
+      // 点击跳转发布文章页面
+      goBlogEdit () {
+        // console.log(window.localStorage.isShowAvatar)
+        if(window.localStorage.isShowAvatar == undefined) {
+          this.$message({
+            showClose: true,
+            message: "请先登录哦~",
+            type: "warning",
+          });
+        } else {
+          this.$router.push({path:'/blog/add'});
+        }
+      }
+    }
   };
 </script>
 
@@ -188,7 +246,8 @@
         border-radius: 50%;
         margin-top:  8px;
     }
-
-
+    .el-dropdown-link {
+      cursor: pointer;
+    }
 
 </style>

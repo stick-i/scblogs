@@ -35,7 +35,7 @@
                 </div>
                 <div class="intro1-right">
                     <!-- 右部简介部分 -->
-                    <button ><i class="iconfont icon-wenbenbianji"></i><span>编辑资料</span></button>
+                    <button @click="TurnToEditPage"><i class="iconfont icon-wenbenbianji"></i><span>编辑资料</span></button>
                     <button ><i class="iconfont icon-shezhi"></i><span>设置</span></button>
                 </div>
             </div>
@@ -95,6 +95,11 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
                         input.style.borderColor="black"
                     }
                     this.Flag=flag
+                },
+                TurnToEditPage(){
+                    // 跳转至编辑页面
+                    console.log("触发了跳转函数")
+                    this.$router.push('/PersonalMessageEdit')
                 }
         }
     }
@@ -235,6 +240,9 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
     float: left;
 }
 .intro2-b{
+    width: 65%;
     float: right;
+    background: white;
+    padding: 0 20px;
 }
 </style>

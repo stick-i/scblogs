@@ -26,7 +26,7 @@
                     <!-- 中部搜索框 -->
                     <div class="header-middle">
                         <form action="">
-                            <input :class="Flag?'active':''" class="sousuo" @focus="changeColor(true)" @blur="changeColor(false)" v-model="inputValue"  type="text">
+                            <input v-model="inputValue"  type="text">
                             <button class="submit"><span class="iconfont icon-sousuo">提交</span></button>
                         </form>
                     </div>
