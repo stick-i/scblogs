@@ -1,12 +1,15 @@
 package cn.sticki.blog.config;
 
 import cn.sticki.blog.controller.interceptor.AuthenticationTokenFilter;
+import cn.sticki.blog.util.ResponseUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * SpringSecurity配置类
  */
+@Slf4j
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -30,16 +36,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	@Autowired
+	private ResponseUtils responseUtils;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		super.configure(auth);
-		// auth.authenticationProvider(new AnonymousAuthenticationProvider());
-	}
+	// @Resource
+	// private AuthenticationFailureHandlerAdvice authenticationFailureHandlerAdvice;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -48,17 +49,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				//不通过Session获取SecurityContext
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				// .formLogin().failureHandler().and()
+				// .formLogin().loginProcessingUrl("/login/login").failureHandler((request, response, exception) -> {
+				// 	log.debug("failureHandler,request->{}",request.getRequestURL());
+				// 	responseUtils.objectToJson(response, new RestTemplate(false, "用户名或密码错误"));
+				// }).and()
 				// 添加授权请求
 				.authorizeRequests()
 				// 登录接口 允许匿名访问(只能未登录访问，登录不可访问)
 				.antMatchers("/login/login").anonymous()
 				// 博客列表接口 允许全部访问
-				.antMatchers("/blog/**").permitAll()
+				.antMatchers("/blog/**", "/resource/**", "/user").permitAll()
 				// 除上面外的所有请求全部需要鉴权认证
 				.anyRequest().authenticated();
 		// 添加过滤器，添加到某个过滤器之前，这里是添加到 UsernamePasswordAuthenticationFilter 之前
 		http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+		// http.addFilterAt(authenticationFailureHandlerAdvice, UsernamePasswordAuthenticationFilter.class);
 
 		// 异常处理器
 		http.exceptionHandling()
@@ -76,9 +82,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
-	// @Bean
-	// public AuthenticationFailureHandler authenticationFailureHandler() {
-	// 	return new CustomAuthenticationFailureHandler();
-	// }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }
