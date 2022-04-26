@@ -64,6 +64,7 @@
     name: "",
     data(){
       return{
+        page:1,
         blogList:[],
         isShowGoodIcon:true,
       }
@@ -71,7 +72,8 @@
     components: {
       InfiniteLoading
     },
-    created() {
+    mounted() {
+      // this.goApi();
       // this.$axios
       //   .get("/blog/list")
       //   .then((res) => {
@@ -80,14 +82,21 @@
       //   })
     },
     methods:{
-      infiniteHandler($state) {
+      // async goApi() {
+      //   this.$axios
+      //     .get("/blog/list?page="+this.page)
+      //     .then((res) => {
+      //       console.log(res.data.data);
+      //       this.blogList.push(...res.data.data); // 追加数据
+      //     })
+      // },
+      async infiniteHandler($state) {
         this.$axios
-          .get("/blog/list")
+          .get("/blog/list?page="+this.page)
           .then((res) => {
             if(res.data.data.length) {
-              let arr = res.data.data;
-              // this.blogList = this.blogList.concat(res.data.data);
-              this.blogList = [...this.blogList,...arr]
+              this.page +=1;  // 下一页
+              this.blogList = this.blogList.concat(res.data.data);
               console.log(this.blogList)
               $state.loaded();
             }else {
