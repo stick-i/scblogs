@@ -189,8 +189,8 @@
     methods: {
       // 搜索博客
       searchBlogs() {
-        this.$axios.get("/blog/search",this.key).then(res => {
-          console.log(res)
+        this.$axios.get("/blog/search",{params:{key:this.key}}).then(res => {
+          console.log("搜索返回数据",res)
         })
       },
       // 退出登录
@@ -239,6 +239,9 @@
     .test-div {
         height: 48px;
     }
+    .body{
+    background: rgb(243, 244, 246);
+}
     #csdn-toolbar .toolbar-inside .toolbar-container .toolbar-container-right .onlyUser .test-img {
         display: block;
         width: 32px;

@@ -10,6 +10,7 @@ const BlogEdit = () => import('@/views/BlogEdit')
 const BlogDetail = () => import('@/views/BlogDetail')
 const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
+const ContentManagement = () => import('@/views/ContentManagement')
 const A = () => import('@/views/A')
 
 
@@ -49,11 +50,16 @@ const routes = [
   },
   {
     path: '/blog/add',
-    name: 'BlogAdd',
+    name: 'BlogEdit',
     component: BlogEdit
   },
   {
     path: '/blog/:blogId',
+    name: 'BlogDetail',
+    component: BlogDetail
+  },
+  {
+    path: '/blog',
     name: 'BlogDetail',
     component: BlogDetail
   },
@@ -71,6 +77,11 @@ const routes = [
     path: '/PersonalMessageEdit',
     name: 'PersonalMessageEdit',
     component: PersonalMessageEdit
+  },
+  {
+    path: '/ContentManagement',
+    name: 'ContentManagement',
+    component: ContentManagement
   },
   {
     path: '/A',

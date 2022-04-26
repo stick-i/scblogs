@@ -29,9 +29,10 @@
     },
     created() {
       const blogId = this.$route.params.blogId;
+      console.log("传输到的文章ID为",blogId,this.$route)
       const _this = this;
-      this.$axios.get("/blog/blog?id="+blogId).then(res => {
-        // console.log(res);
+      this.$axios.get("/blog/blog",{params:{id:blogId}}).then(res => {
+        console.log("内容显示页面获取到的所有数据",res);
         const blog = res.data.data;
         _this.blogDetail.id = blog.info.id;
         _this.blogDetail.title = blog.info.title;
