@@ -43,9 +43,9 @@ public class UserController {
 	@GetMapping
 	public RestTemplate getByUsername(String username) {
 		User getUser = null;
-		if (username == null && user != null) {
+		if (username == null && user.getUsername() != null) {
 			getUser = user;
-			log.debug("getByUsername, sessionUser ,user->{}", getUser);
+			log.debug("getByUsername, sessionUser ,user->{}", getUser.getClass());
 		} else if (username != null) {
 			getUser = userService.getByUsername(username);
 			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
@@ -112,7 +112,7 @@ public class UserController {
 	 */
 	@PutMapping("/mail")
 	public RestTemplate updateMail(@NotNull String mail, @NotNull String mailVerify) {
-		if (userService.checkMailVerify(user.getId(), mailVerify, "updateMail")) {
+		if (userService.checkMailVerify(user.getId(), mailVerify)) {
 			userService.updateMail(user.getId(), mail);
 			return new RestTemplate(true, "修改成功");
 		}
@@ -128,7 +128,7 @@ public class UserController {
 		Long nowTime = System.currentTimeMillis() / 1000;
 		// 判断是否发送过邮件，若上一次发送邮件的时间超过60s则允许发送
 		if (sendTime == null || nowTime - sendTime > 60) {
-			userService.sendMailVerify(user.getId(), "updateMail");
+			userService.sendMailVerify(user.getId());
 			session.setAttribute("mail-send-mail-verify-time", nowTime); // 将发送邮件的时间存到session
 			return new RestTemplate(true, "发送成功");
 		}

@@ -5,14 +5,14 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.BlogBasicService;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
 import java.util.List;
 
 @Slf4j
@@ -34,13 +34,10 @@ public class BlogController {
 	 * @return 博客列表
 	 */
 	@GetMapping("/list")
-	public RestTemplate recommendBlog(@CookieValue(name = "recommend-page", defaultValue = "0") int page, HttpServletResponse response) {
+	public RestTemplate recommendBlog(@RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,page->{}", page);
 		// todo 最好根据用户标签来推
 		List<BlogBasic> blogList = blogBasicService.getRecommendBlogList(page, pageSize);
-		ResponseCookie cookie = ResponseCookie.from("recommend-page", String.valueOf(page + 1))
-				.sameSite("None").secure(true).maxAge(Duration.ofHours(1)).build();
-		response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 		return new RestTemplate(blogList);
 	}
 
@@ -51,12 +48,9 @@ public class BlogController {
 	 * @return 博客列表
 	 */
 	@GetMapping("/search")
-	public RestTemplate searchBlog(String key, @CookieValue(name = "search-page", defaultValue = "0") int page, HttpServletResponse response) {
+	public RestTemplate searchBlog(@NotNull String key, @RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,search->{},page->{}", key, page);
 		List<BlogBasic> blogList = blogBasicService.searchBlog(key, page, pageSize);
-		ResponseCookie cookie = ResponseCookie.from("search-page", String.valueOf(page + 1))
-				.sameSite("None").secure(true).maxAge(Duration.ofHours(1)).build();
-		response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 		return new RestTemplate(blogList);
 	}
 

@@ -25,7 +25,7 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 		log.debug("用户未登录");
-		responseUtils.objectToJson(response, new RestTemplate(401, "未登录"));
+		responseUtils.objectToJson(response, new RestTemplate(401, "用户未登录"));
 	}
 
 }

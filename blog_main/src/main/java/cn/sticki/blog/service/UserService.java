@@ -65,14 +65,14 @@ public interface UserService {
 	/**
 	 * 发送邮箱验证码
 	 */
-	boolean sendMailVerify(Integer id, String key) throws MailSendException;
+	boolean sendMailVerify(Integer id) throws MailSendException;
 
 	/**
 	 * 检查验证码
 	 *
 	 * @param id     用户id
 	 * @param verify 验证码
-	 * @param key    发送类别
 	 */
-	boolean checkMailVerify(Integer id, String verify, String key);
+	boolean checkMailVerify(Integer id, String verify);
+
 }

@@ -8,7 +8,12 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.pojo.dto.MailDTO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.util.*;
+import cn.sticki.blog.util.FileUtils;
+import cn.sticki.blog.util.MailUtils;
+import cn.sticki.blog.util.MinioUtils;
+import cn.sticki.blog.util.RandomUtils;
+import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +27,6 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-// public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 public class UserServiceImpl implements UserService {
 
 	@Resource
@@ -36,9 +40,6 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private RandomUtils randomUtils;
-
-	@Resource
-	private RedisUtils redisUtils;
 
 	@Resource
 	private MailUtils mailUtils;
@@ -115,8 +116,11 @@ public class UserServiceImpl implements UserService {
 		return userSafetyMapper.updateMailById(id, mail) > 0;
 	}
 
+	@CreateCache(name = "userService:mailVerifyCode:", expire = 300)
+	private Cache<String, String> mailCache;
+
 	@Override
-	public boolean sendMailVerify(Integer id, String key) throws MailSendException {
+	public boolean sendMailVerify(Integer id) throws MailSendException {
 		UserSafety userSafety = userSafetyMapper.selectById(id);
 		String code = randomUtils.generator(6, "0123456789");
 		MailDTO mailDTO = new MailDTO();
@@ -124,20 +128,17 @@ public class UserServiceImpl implements UserService {
 		mailDTO.setTo(userSafety.getMail());
 		mailDTO.setSubject("博客校园验证码");
 		mailDTO.setText("亲爱的用户：\n" + "你正在操作你的账户信息，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
-		// todo key值要修改
-		redisUtils.setex(key + userSafety.getMail(), 300, code);
+		mailCache.put(userSafety.getMail(), code);
 		mailUtils.sendMail(mailDTO);  // 发送邮件
 		return true;
 	}
 
 	@Override
-	public boolean checkMailVerify(Integer id, @NotNull String verify, String key) {
+	public boolean checkMailVerify(Integer id, @NotNull String verify) {
 		UserSafety userSafety = userSafetyMapper.selectById(id);
-		String code = redisUtils.get(key + userSafety.getMail());
-		System.out.println(key + userSafety.getMail());
-		System.out.println(code);
+		String code = mailCache.get(userSafety.getMail());
 		if (verify.equals(code)) {
-			redisUtils.del(key + userSafety.getMail());
+			mailCache.remove(userSafety.getMail());
 			return true;
 		}
 		return false;

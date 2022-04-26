@@ -1,11 +1,9 @@
-package cn.sticki.blog.service.impl;
+package cn.sticki.blog.security;
 
 import cn.sticki.blog.mapper.UserSafetyMapper;
 import cn.sticki.blog.pojo.domain.UserSafety;
-import cn.sticki.blog.pojo.dto.UserDetailsSecurity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private UserSafetyMapper userSafetyMapper;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// 根据用户名查询用户信息
 		LambdaQueryWrapper<UserSafety> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(UserSafety::getUsername, username);
@@ -35,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		//TODO 根据用户查询权限信息 添加到UserDetailsImpl中
 
 		// 封装在UserDetails对象返回
-		return new UserDetailsSecurity(userSafety);
+		return new UserDetails(userSafety);
 	}
 
 }
