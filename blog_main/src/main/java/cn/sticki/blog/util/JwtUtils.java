@@ -3,9 +3,10 @@ package cn.sticki.blog.util;
 import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTValidator;
+import cn.hutool.jwt.signers.JWTSignerUtil;
+import cn.sticki.blog.config.JwtConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,13 +14,6 @@ import java.util.Date;
 @Slf4j
 @Service
 public class JwtUtils {
-
-	//设置秘钥
-	@Value("${security.jwt.key}")
-	public byte[] key;
-
-	@Value("${security.jwt.issuer}")
-	public String issuer;
 
 	/**
 	 * 生成jwtToken，有效时间默认为 1天
@@ -43,17 +37,12 @@ public class JwtUtils {
 	public String createToken(Object data, long validTime) {
 		JWT token = JWT.create();
 		token.setPayload("data", data);
-		// 获取类的所有属性，包括public、protected、default、private
-		// Field[] fields = o.getClass().getDeclaredFields();
-		// for (Field field : fields) {
-		// 	// 设置属性为可读
-		// 	field.setAccessible(true);
-		// 	// 将属性添加到payload
-		// 	token.setPayload(field.getName(), field.get(o));
-		// }
+		// 设置密钥
+		token.setSigner(JWTSignerUtil.hs512(JwtConfig.key.getBytes()));
 		// 设置失效时间和密钥、设置签发时间和签发人
 		Date date = new Date(System.currentTimeMillis() + (validTime * 1000L));
-		token.setIssuer(issuer).setExpiresAt(date).setKey(key);
+		token.setIssuer(JwtConfig.issuer).setExpiresAt(date);
+		// token.setIssuer(issuer).setExpiresAt(date).setKey(key);
 		return token.sign();
 	}
 
@@ -63,7 +52,8 @@ public class JwtUtils {
 	public boolean validate(String token) {
 		try {
 			// 验证签名是否正确
-			if (!JWT.of(token).setKey(key).validate(0)) return false;
+			JWTValidator.of(token).validateAlgorithm(JWTSignerUtil.hs512(JwtConfig.key.getBytes()));
+			// if (!JWT.of(token).setKey(JwtConfig.key.getBytes()).validate(0)) return false;
 			// 验证时间是否正常
 			JWTValidator.of(token).validateDate();
 			return true;

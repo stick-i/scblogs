@@ -28,6 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserSafety userSafety = userSafetyMapper.selectOne(wrapper);
 		// 如果查询不到数据就通过抛出异常来给出提示
 		if (Objects.isNull(userSafety)) {
+			log.debug("找不到用户");
 			throw new UsernameNotFoundException("找不到用户");
 		}
 		log.debug("loadUserByUsername,userSafety->{}", userSafety);

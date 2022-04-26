@@ -42,7 +42,6 @@ public class UserController {
 	 */
 	@GetMapping
 	public RestTemplate getByUsername(String username) {
-		user = (User) session.getAttribute("user");
 		User getUser = null;
 		if (username == null && user != null) {
 			getUser = user;

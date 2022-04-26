@@ -1,7 +1,9 @@
-package cn.sticki.blog.controller.interceptor;
+package cn.sticki.blog.security.filter;
 
+import cn.sticki.blog.config.JwtConfig;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.util.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -27,7 +30,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		//获取token
-		String token = request.getHeader("token");
+		String token = request.getHeader(JwtConfig.headerName);
 		if (!StringUtils.hasText(token)) {
 			//放行，因为这里无法进行认证，等于没有给权限，后面还是会经过认证接口的。
 			filterChain.doFilter(request, response);
