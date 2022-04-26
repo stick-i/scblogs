@@ -1,73 +1,119 @@
 package cn.sticki.blog.config;
 
-import cn.sticki.blog.controller.interceptor.AuthenticationTokenFilter;
+import cn.sticki.blog.security.filter.AuthenticationTokenFilter;
+import cn.sticki.blog.security.handler.AuthAccessDeniedHandler;
+import cn.sticki.blog.security.handler.AuthenticationEntryPointHandler;
+import cn.sticki.blog.security.handler.LoginFailureHandler;
+import cn.sticki.blog.security.handler.LoginSuccessHandler;
+import cn.sticki.blog.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * SpringSecurity配置类
  */
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	/**
+	 * 登录成功处理器
+	 */
+	@Autowired
+	private LoginSuccessHandler loginSuccessHandler;
+
+	/**
+	 * 登录失败处理器
+	 */
+	@Autowired
+	private LoginFailureHandler loginFailureHandler;
+
+	// /**
+	//  * 注销成功处理器
+	//  */
+	// @Autowired
+	// private UserLogoutSuccessHandler userLogoutSuccessHandler;
+
+	/**
+	 * 暂无权限处理器
+	 */
+	@Autowired
+	private AuthAccessDeniedHandler authAccessDeniedHandler;
+
+	/**
+	 * 未登录的处理器
+	 */
+	@Autowired
+	private AuthenticationEntryPointHandler authenticationEntryPointHandler;
+
+	/**
+	 * 自定义登录逻辑验证器
+	 */
+	// @Autowired
+	// private UserAuthenticationProvider userAuthenticationProvider;
 
 	@Autowired
 	private AuthenticationTokenFilter authenticationTokenFilter;
+	//
+	// @Autowired
+	// private AuthenticationEntryPoint authenticationEntryPoint;
+	//
+	// @Autowired
+	// private AccessDeniedHandler accessDeniedHandler;
 
 	@Autowired
-	private AuthenticationEntryPoint authenticationEntryPoint;
+	private ResponseUtils responseUtils;
 
-	@Autowired
-	private AccessDeniedHandler accessDeniedHandler;
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		super.configure(auth);
-		// auth.authenticationProvider(new AnonymousAuthenticationProvider());
-	}
+	// @Resource
+	// private AuthenticationFailureHandlerAdvice authenticationFailureHandlerAdvice;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-				//关闭csrf
-				.csrf().disable()
-				//不通过Session获取SecurityContext
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				// .formLogin().failureHandler().and()
-				// 添加授权请求
-				.authorizeRequests()
-				// 登录接口 允许匿名访问(只能未登录访问，登录不可访问)
-				.antMatchers("/login/login").anonymous()
-				// 博客列表接口 允许全部访问
-				.antMatchers("/blog/**").permitAll()
-				// 除上面外的所有请求全部需要鉴权认证
-				.anyRequest().authenticated();
-		// 添加过滤器，添加到某个过滤器之前，这里是添加到 UsernamePasswordAuthenticationFilter 之前
-		http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+		http.authorizeRequests()
+				// 不进行权限验证的请求或资源(从配置文件中读取)
+				.antMatchers(JwtConfig.antMatchers.split(",")).permitAll()
+				// 其他的需要登陆后才能访问
+				.anyRequest().authenticated().and()
+				// 配置httpBasic未登录自定义处理类
+				.httpBasic().authenticationEntryPoint(authenticationEntryPointHandler).and().exceptionHandling().and()
+				// 配置登录地址
+				.formLogin().loginProcessingUrl("/login/login")
+				// 配置登录成功自定义处理类
+				.successHandler(loginSuccessHandler)
+				// 配置登录失败自定义处理类
+				.failureHandler(loginFailureHandler).and()
+				// 配置登出地址
+				// .logout()
+				// .logoutUrl("/login/userLogout")
+				// 配置用户登出自定义处理类
+				// .logoutSuccessHandler(userLogoutSuccessHandler)
+				// .and()
+				// 配置没有权限自定义处理类
+				.exceptionHandling().accessDeniedHandler(authAccessDeniedHandler)
+				// 配置未登录自定义处理类
+				.authenticationEntryPoint(authenticationEntryPointHandler).and()
+				// 开启跨域
+				.cors().and()
+				// 取消跨站请求伪造防护
+				.csrf().disable();
 
-		// 异常处理器
-		http.exceptionHandling()
-				// 配置认证失败处理器
-				.authenticationEntryPoint(authenticationEntryPoint)
-				// 配置权限不足处理器
-				.accessDeniedHandler(accessDeniedHandler);
-		// 允许跨域
-		http.cors();
+		// 基于Token不需要session
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		// 禁用缓存
+		http.headers().cacheControl();
+		// 添加JWT过滤器
+		http.addFilterAt(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Bean
@@ -76,9 +122,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
-	// @Bean
-	// public AuthenticationFailureHandler authenticationFailureHandler() {
-	// 	return new CustomAuthenticationFailureHandler();
-	// }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }

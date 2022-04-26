@@ -5,9 +5,9 @@ import VueRouter from 'vue-router'
 const Home = () => import('@/views/home/Home')
 const Login = () => import('@/views/login/Login')
 const Register = () => import('@/views/register/Register')
-const Blogs = () => import('@/views/Blogs')
-const BlogEdit = () => import('@/views/BlogEdit')
-const BlogDetail = () => import('@/views/BlogDetail')
+const BlogSearch = () => import('@/views/blogSearch/BlogSearch')
+const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
+const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
 const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
@@ -29,11 +29,6 @@ const routes = [
     component: Home
   },
   {
-    path: '/blogs',
-    name: 'Blogs',
-    component: Blogs
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -47,6 +42,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/blog/search',
+    name: 'BlogSearch',
+    component: BlogSearch
   },
   {
     path: '/blog/add',

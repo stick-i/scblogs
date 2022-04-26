@@ -3,7 +3,7 @@ package cn.sticki.blog.service.impl;
 import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
-import cn.sticki.blog.pojo.dto.UserDetailsSecurity;
+import cn.sticki.blog.security.UserDetails;
 import cn.sticki.blog.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
 		if (Objects.isNull(authenticate)) {
 			return null;
 		}
-		UserDetailsSecurity userDetails = (UserDetailsSecurity) authenticate.getPrincipal();
+		UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
 		UserSafety userSafety = userDetails.getUserSafety();
 		return userMapper.selectById(userSafety.getUserId());
 	}

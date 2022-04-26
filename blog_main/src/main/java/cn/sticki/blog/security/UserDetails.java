@@ -1,18 +1,17 @@
-package cn.sticki.blog.pojo.dto;
+package cn.sticki.blog.security;
 
 import cn.sticki.blog.pojo.domain.UserSafety;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetailsSecurity implements UserDetails {
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
 	private UserSafety userSafety;
 

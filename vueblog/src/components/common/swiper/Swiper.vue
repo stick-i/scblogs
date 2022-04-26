@@ -1,21 +1,10 @@
 <template>
   <div class="swiper">
-    <div class="swiper-inner">
-      <el-carousel :interval="4000" type="card" height="300px">
-        <el-carousel-item>
-          <img src="../../../assets/img/home/swiper/1.jpg" alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <img src="../../../assets/img/home/swiper/2.jpg" alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <img src="../../../assets/img/home/swiper/3.jpg" alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <img src="../../../assets/img/home/swiper/4.jpg" alt="">
-        </el-carousel-item>
-        <el-carousel-item>
-          <img src="../../../assets/img/home/swiper/5.jpg" alt="">
+    <!-- 右边轮播图 -->
+    <div class="main-right">
+      <el-carousel indicator-position="outside" height="380px">
+        <el-carousel-item v-for="item in 4" :key="item">
+          <h3>{{ item }}</h3>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -23,21 +12,31 @@
 </template>
 
 <script>
-  export default {
-    name: ""
-  }
+export default {
+  name: "",
+};
 </script>
 
 <style scoped>
-    .swiper{
-        margin-top: 15px;
-        display: flex;
-        justify-content: center;
-    }
-    .swiper .swiper-inner .el-carousel{
-        width: 1500px;
-    }
-     .swiper .swiper-inner .el-carousel .el-carousel-item {
-        border-radius: 100px;
-    }
+/* 轮播图开始 */
+.main-right {
+  width: 335px;
+}
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 18px;
+  opacity: 0.75;
+  line-height: 300px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+
+/* 轮播图结束 */
 </style>

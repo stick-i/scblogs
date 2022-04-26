@@ -7,7 +7,6 @@ import cn.sticki.blog.service.LoginService;
 import cn.sticki.blog.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +27,9 @@ public class LoginController {
 	/**
 	 * 登录
 	 */
-	@PostMapping("/login")
+	// @PostMapping("/login")
 	public RestTemplate login(String username, String password, HttpServletResponse response) {
+		log.debug("/login/login,username->{}", username);
 		User user = loginService.login(username, password);
 		if (user == null) {
 			return new RestTemplate(false, "用户名或密码错误!");

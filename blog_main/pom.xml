@@ -96,15 +96,10 @@
 		</dependency>
 
 		<!-- redis -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
-		<!-- redis客户端jedis -->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- 	<groupId>org.springframework.boot</groupId> -->
+		<!-- 	<artifactId>spring-boot-starter-data-redis</artifactId> -->
+		<!-- </dependency> -->
 
 		<!-- MinIO 及相关依赖（后两个） -->
 		<dependency>
@@ -186,11 +181,11 @@
 		<!-- 	<artifactId>ehcache</artifactId> -->
 		<!-- </dependency> -->
 
-		<!-- <dependency> -->
-		<!-- 	<groupId>com.alicp.jetcache</groupId> -->
-		<!-- 	<artifactId>jetcache-starter-redis</artifactId> -->
-		<!-- 	<version>2.6.2</version> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>com.alicp.jetcache</groupId>
+			<artifactId>jetcache-starter-redis</artifactId>
+			<version>2.6.4</version>
+		</dependency>
 
 		<!-- ActiveMQ -->
 		<!-- <dependency> -->

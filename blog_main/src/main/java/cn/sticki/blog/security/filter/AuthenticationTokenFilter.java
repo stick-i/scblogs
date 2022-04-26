@@ -1,7 +1,9 @@
-package cn.sticki.blog.controller.interceptor;
+package cn.sticki.blog.security.filter;
 
+import cn.sticki.blog.config.JwtConfig;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.util.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -27,20 +30,19 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		//获取token
-		String token = request.getHeader("token");
-		if (!StringUtils.hasText(token)) {
-			//放行，因为这里无法进行认证，等于没有给权限，后面还是会经过认证接口的。
-			filterChain.doFilter(request, response);
-			return;
+		String token = request.getHeader(JwtConfig.headerName);
+		// 有则验证，验证成功则给权限，验证不成功或无token则不给权限，让后续的处理器判断是否允许操作
+		// 此处只是给有token的用户授权而已
+		if (StringUtils.hasText(token)) {
+			// 验证、解析token
+			User user = jwtUtils.validateAndParse(token, User.class);
+			if (user != null) {
+				// TODO 获取权限信息封装到Authentication中
+				// 存入SecurityContextHolder，这里构造一个已认证的 authenticationToken ，之后就不用再认证了。
+				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
+				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+			}
 		}
-		// 验证、解析token
-		User user = jwtUtils.validateAndParse(token, User.class);
-		if (user == null) throw new RuntimeException("token异常");
-
-		// TODO 获取权限信息封装到Authentication中
-		// 存入SecurityContextHolder，这里构造一个已认证的 authenticationToken ，之后就不用在认证了。
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
-		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 		//放行
 		filterChain.doFilter(request, response);
 	}
