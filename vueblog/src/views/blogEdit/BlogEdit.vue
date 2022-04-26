@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import BlogEditDialog from "@/components/content/blogEdit/BlogEditDialog";
+import BlogEditDialog from "@/views/blogEdit/childComps/BlogEditDialog";
 import qs from "qs";
 
 export default {

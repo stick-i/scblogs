@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-<!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
+    <!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
@@ -119,13 +119,7 @@
           </div>
         </div>
         <!-- 右边轮播图 -->
-        <div class="main-right">
-          <el-carousel indicator-position="outside" height="380px">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <h3>{{ item }}</h3>
-            </el-carousel-item>
-          </el-carousel>
-        </div>
+        <Swiper />
       </div>
     </div>
     <!--<swiper></swiper>-->
@@ -137,16 +131,15 @@
         <div class="tabs">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="关注" name="first">
-              <HomeArticleItem/>
+              <HomeArticleItem />
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <HomeArticleItem/>
+              <HomeArticleItem />
             </el-tab-pane>
             <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
           </el-tabs>
         </div>
-
       </div>
       <!-- 右边-->
       <div class="article-right">
@@ -188,14 +181,12 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 <script>
 import TopBar from "../../components/content/topbar/TopBar";
 import Swiper from "@/components/common/swiper/Swiper";
-import HomeArticleItem from "@/components/content/home/HomeArticleItem";
-
+import HomeArticleItem from "@/views/home/childComps/HomeArticleItem";
 
 export default {
   name: "Home",
@@ -247,28 +238,6 @@ export default {
 }
 
 /* navbar结束 */
-
-/* 轮播图开始 */
-.main-right {
-  width: 335px;
-}
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 18px;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
-/* 轮播图结束 */
 
 /* 头条开始 */
 .main-left {
@@ -342,7 +311,6 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-
 }
 .headswiper-item .item-title:hover {
   text-decoration: underline;
