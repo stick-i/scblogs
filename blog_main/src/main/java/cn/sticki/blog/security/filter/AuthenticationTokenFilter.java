@@ -2,6 +2,7 @@ package cn.sticki.blog.security.filter;
 
 import cn.hutool.jwt.JWT;
 import cn.sticki.blog.config.JwtConfig;
+import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.util.JwtUtils;
@@ -32,7 +33,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	@Resource
 	private UserMapper userMapper;
 
-	@CreateCache(name = "login:userId:", expire = 30, timeUnit = TimeUnit.MINUTES)
+	@CreateCache(name = CacheSpace.Login_UserID, expire = 30, timeUnit = TimeUnit.MINUTES)
 	private Cache<Integer, User> cache;
 
 	/**
@@ -47,7 +48,10 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 		if (StringUtils.hasText(token)) {
 			// 验证、解析token
 			JWT jwt = jwtUtils.validateAndParse(token);
-			Object object = jwt.getPayload("id");
+			Object object = null;
+			if (jwt != null) {
+				object = jwt.getPayload("id");
+			}
 			if (object instanceof Integer) {
 				Integer id = (Integer) object;
 				// 获取用户数据

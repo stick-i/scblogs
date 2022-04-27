@@ -13,14 +13,19 @@ import cn.sticki.blog.pojo.domain.BlogGeneral;
 import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.service.BlogConsoleService;
+import cn.sticki.blog.util.MinioUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -36,6 +41,12 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
+
+	@Value("${minio.resource-path.blog-cover-image}")
+	private String coverImagePath;
+
+	@Resource
+	private MinioUtils minioUtils;
 
 	@Override
 	public void saveBlog(BlogSaveDTO blogDTO) throws UserException, DAOException {
@@ -137,6 +148,24 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 		}
 		blogCountDTO.setAll(all);
 		return blogCountDTO;
+	}
+
+	@SneakyThrows
+	@Override
+	public void uploadCoverImage(String name, MultipartFile coverImage) {
+		log.debug("uploadCoverImage,name->{}", name);
+		try (
+				InputStream inputStream = coverImage.getInputStream()
+		) {
+			// 上传新头像文件
+			minioUtils.upload(
+					coverImagePath + name,  // 对用户头像进行保存
+					inputStream,
+					coverImage.getSize(),
+					-1,
+					coverImage.getContentType()
+			);
+		}
 	}
 
 }
