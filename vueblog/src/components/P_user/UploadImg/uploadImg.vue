@@ -19,6 +19,7 @@
           ref="upload">
           <i class="el-icon-plus"></i>
       </el-upload>
+	  <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
   </div>
 </template>
 <script>
@@ -31,8 +32,9 @@ export default {
       uploadImgUrl: 'https://local.sticki.cn/api/v1/user/avatar'  , // 上传图片的接口地址
       fileType: ["png", "jpg", "jpeg"], // 上传类型
       fileList:[],
-      autoUpload:true,
+      autoUpload:false,
 	  config:{headers:{'Content-Type': 'multipart/form-data','token':localStorage.getItem('token')}},
+	  formdata:""
     };
   },
  methods: {
@@ -70,14 +72,34 @@ export default {
       		}
     	},
        // 更新用户头像信息
-      upData(file,fileList){
-        console.log("执行顺序1",file, fileList)
-            let formdata = new FormData()
-            fileList.map(item => { //fileList本来就是数组，就不用转为真数组了
-              formdata.append("avatarFile", item.raw)  //将每一个文件图片都加进formdata
-            })
-            this.$axios.put("/user/avatar", formdata,this.config).then(res => { console.log("接口调用返回数据",res) })
-      },
+    //   upData(file,fileList){
+    //     console.log("执行顺序1",file, fileList)
+    //         let formdata = new FormData()
+    //         fileList.map(item => { //fileList本来就是数组，就不用转为真数组了
+    //           formdata.append("avatarFile", item.raw)  //将每一个文件图片都加进formdata
+    //         })
+    //         this.$axios.put("/user/avatar", formdata,this.config)
+	// 		.then(
+	// 			res => { console.log("接口调用返回数据",res) 
+	// 		})
+    //   },
+		upData(file,fileList){
+			console.log("执行顺序1",file, fileList)
+			console.log("qua",this.fileList)
+				let formdata = new FormData()
+				fileList.map(item => { //fileList本来就是数组，就不用转为真数组了
+				formdata.append("avatarFile", item.raw)  //将每一个文件图片都加进formdata
+				})
+				console.log(formdata)
+			this.formdata=formdata
+				// this.submitUpload(formdata)
+		},
+		submitUpload(){
+			this.$axios.put("/user/avatar",this.formdata,this.config)
+			.then(
+				res => { console.log("上传头像接口调用返回数据",res) 
+			})
+		},
     	 // 上传失败
     	handleUploadError() {
       		this.$message({
@@ -114,5 +136,8 @@ export default {
 <style scoped>
 ::v-deep.hide .el-upload--picture-card {
   display: none;
+}
+el-upload{
+	
 }
 </style>

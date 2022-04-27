@@ -10,6 +10,8 @@ const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
 const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
 const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
+const ContentManagement = () => import('@/views/ContentManagement')
+const A = () => import('@/views/A')
 
 
 Vue.use(VueRouter)
@@ -18,7 +20,7 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Home"}
+    redirect:{name:"PersonalBlog"}
   },
 
   {
@@ -31,6 +33,11 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  // {
+  //   path: '/P_Register',
+  //   name: 'P_Register',
+  //   component: P_Register
+  // },
   {
     path: '/register',
     name: 'register',
@@ -43,11 +50,16 @@ const routes = [
   },
   {
     path: '/blog/add',
-    name: 'BlogAdd',
+    name: 'BlogEdit',
     component: BlogEdit
   },
   {
     path: '/blog/:blogId',
+    name: 'BlogDetail',
+    component: BlogDetail
+  },
+  {
+    path: '/blog',
     name: 'BlogDetail',
     component: BlogDetail
   },
@@ -65,6 +77,16 @@ const routes = [
     path: '/PersonalMessageEdit',
     name: 'PersonalMessageEdit',
     component: PersonalMessageEdit
+  },
+  {
+    path: '/ContentManagement',
+    name: 'ContentManagement',
+    component: ContentManagement
+  },
+  {
+    path: '/A',
+    name: 'A',
+    component: A
   },
 ]
 

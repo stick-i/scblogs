@@ -1,4 +1,4 @@
-package cn.sticki.blog.type;
+package cn.sticki.blog.enumeration.type;
 
 /**
  * 文件类型

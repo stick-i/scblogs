@@ -2,6 +2,7 @@ package cn.sticki.blog.config;
 
 import cn.sticki.blog.controller.interceptor.UserLoginInterceptor;
 import cn.sticki.blog.pojo.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Slf4j
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
 
@@ -44,7 +46,13 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public User getUser() {
 		// 当user为null时，无法正常注入到需要被注入的位置
-		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		log.debug("create bean User");
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof User) {
+			log.debug("Get UserBean Success!");
+			return (User) principal;
+		}
+		return new User();
 	}
 
 }

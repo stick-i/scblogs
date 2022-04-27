@@ -4,11 +4,11 @@
         <div class="rightContentA-1">
             <div class="rightContentA-1-container">
               <div @click="ShowChose" class="img">
-                <img :src="userImg" alt="">
+                <img :src="userMessage.avatarUrl" alt="">
                 <img class="img-hover" :src="hoverCamera" alt="">
               </div>
               <div class="name">
-                <span>{{username}}</span>
+                <span>{{this.userMessage.username}}</span>
               </div>
             </div>
         </div>
@@ -29,17 +29,27 @@
     <div class="rightContentB">
         <div class="rightContentB-1">
             基本信息
+            <button class="button" @click="EditMessage()">编辑</button>
         </div>
         <div class="rightContentB-2">
           <div class="rightContentB-2-form">
             <ul>
-              <li><span>用户昵称</span></li>
-              <li><span>用户ID</span></li>
-              <li><span>性别</span></li>
-              <li><span>个人简介</span></li>
-              <li><span>所在地区</span></li>
-              <li><span>地址管理</span></li>
-              <li><span>出生日期</span></li>
+              <li>
+                <span v-if="formchange">用户昵称 {{this.$parent.userMessage.nickname}}</span>
+                <!-- 编辑时产生对话框 -->
+                <div  v-if="!formchange">
+                  <el-form class="form" ref="form" :model="form" label-width="80px">
+                      <el-form-item class="input" label="用户昵称">
+                        <el-input v-model="form.nickname"></el-input>
+                      </el-form-item>
+                        <el-button class="b1" @click="submit">确定</el-button>
+                        <el-button @click="cancel">取消</el-button>
+                  </el-form>
+                </div>
+              </li>
+              <li><span>用户ID {{}}</span></li>
+              <li><span>性别 {{}}</span></li>
+              <li><span>个人简介 {{}}</span></li>
             </ul>
           </div>
         </div>
@@ -55,7 +65,7 @@
       width="30%"
       :before-close="handleClose">
       <!-- 上传头像部分 -->
-      <uploadImg></uploadImg>
+        <uploadImg class="PickerImg"></uploadImg>
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="GetUserImg">确 定</el-button>
     </el-dialog>
@@ -71,19 +81,48 @@ export default {
   },
   data() {
     return {
-      userImg:this.$global.userMessage.userImg,
       username:"默认值没有",
       mymoney:0,
+      formchange:true,
       hoverCamera:"https://profile.csdnimg.cn/C/D/1/1_m0_46681545",
       // 获取图片弹窗显示
       dialogVisible: false,
-      config:{headers:{'token':localStorage.getItem('token')}}
+      userMessage:{
+
+      },
+      form:{
+          username:"勇敢牛牛不怕困难",
+          nickname:"超级飞侠",
+          // 获取的个人头像照片地址
+          avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
+          registerTime:""
+      },
+      config:{
+        headers:{
+          'token': localStorage.getItem('token')
+        }
+      }
     };
   },
   mounted(){
-    // this.GetData()
+    this.GetData()
   },
   methods:{
+    EditMessage(){
+        console.log("对数据进行编辑")
+        this.formchange=false
+    },
+    // 请求数据放入本地浏览器
+    GetData(){
+        this.$axios.get("/user",{headers:{'token':localStorage.getItem('token')}}).
+        then(res=>{
+            // this.$global.userMessage.userImg=res.data.data.avatarUrl
+              window.localStorage.setItem('userMessage',JSON.stringify(res.data.data))
+        })
+        this.userMessage=JSON.parse(window.localStorage.getItem('userMessage'))
+        this.form=this.userMessage
+        console.log("获取浏览器全局数据",this.userMessage)
+        },
     ShowChose(){
       //弹出选项框
         console.log("触发了弹窗显示部分")
@@ -99,17 +138,33 @@ export default {
       },
       // 在用户修改完成之后重新调取用户头像
       GetUserImg(){
+        // 使弹窗消失
           this.dialogVisible=false
-          this.$axios.get("/user",{headers:{'token':localStorage.getItem('token')}}).then(res=>{
-            this.$global.userMessage.userImg=res.data.data.avatarUrl
-          console.log("此时的全局头像",this.$global.userMessage.userImg)
-          })
+          this.GetData
+      },
+      submit(){
+        // 修改用户名称,需要添加ID元素
+        this.$axios.put('/user/nickname',{nickname:this.form.nickname},this.config).then(res=>{
+          console.log("返回数据",res)
+          // 调用父组件中GetData函数获取新的用户信息
+           this.$message({
+            message: '修改成功',
+            type: 'success'
+        });
+        })
+      },
+      cancel(){
+        this.form.nickname=this.userMessage.nickname
+        this.formchange=true
+        console.log("点击了取消按钮")
       }
   }
 }
 </script>
 <style scoped>
-
+.PickerImg{
+  margin :0 20px 30px 10px;
+}
 .rightContent{
   width: 100%;
   background: transparent;
@@ -217,9 +272,19 @@ export default {
   font-weight:800 ;
   border-bottom: 1px solid rgb(245,246,247);
 }
+.rightContentB .rightContentB-1 .button{
+  width: 10%;
+  height: 50%;
+  /* padding: 8px 8px; */
+  margin: 0 100px;
+  border-radius: 20px;
+  border: 2px solid rgb(81, 222, 253);
+  color: rgb(81, 222, 253);
+  background: white;
+}
 .rightContentB .rightContentB-2{
   width: 100%;
-  height: 480px;
+  /* height: 480px; */
   padding: 10px 40px 40px 40px;
 }
 .rightContentB .rightContentB-2 .rightContentB-2-form{
@@ -228,10 +293,32 @@ export default {
 }
 .rightContentB .rightContentB-2 .rightContentB-2-form ul{
   list-style: none;
-}.rightContentB .rightContentB-2 .rightContentB-2-form ul li{
+}
+.rightContentB .rightContentB-2 .rightContentB-2-form ul li{
   height: 24px;
   line-height:24px;
   margin-bottom:38px;
   font-size: 16px;
+}
+.rightContentB .rightContentB-2 .rightContentB-2-form ul li form{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.rightContentB .rightContentB-2 .rightContentB-2-form ul li form .input{
+  width: 60%;
+  height: 100%;
+}
+.rightContentB .rightContentB-2 .rightContentB-2-form ul li form button{
+  width: 10%;
+  height: 100%;
+  padding: 8px 15px;
+  margin: 0 10px;
+  border-radius: 20px;
+  border: none;
+}
+.rightContentB .rightContentB-2 .rightContentB-2-form ul li form .b1{
+  background: rgb(255,80,27);
+  color: white;
 }
 </style>

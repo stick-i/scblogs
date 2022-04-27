@@ -21,28 +21,32 @@ public class JwtUtils {
 	 * @param o 内容
 	 * @return token
 	 */
-	@SneakyThrows
 	public String createToken(Object o) {
-		return createToken(o, 86400);
+		return createToken("data", o, 86400);
+	}
+
+	public String createToken(String name, Object o) {
+		return createToken(name, o, 86400);
 	}
 
 	/**
 	 * 生成token
 	 *
+	 * @param name      名称
 	 * @param data      payload 内容
 	 * @param validTime 有效时间，单位->秒
 	 * @return token
 	 */
 	@SneakyThrows
-	public String createToken(Object data, long validTime) {
+	public String createToken(String name, Object data, long validTime) {
 		JWT token = JWT.create();
-		token.setPayload("data", data);
+		token.setPayload(name, data);
 		// 设置密钥
 		token.setSigner(JWTSignerUtil.hs512(JwtConfig.key.getBytes()));
 		// 设置失效时间和密钥、设置签发时间和签发人
 		Date date = new Date(System.currentTimeMillis() + (validTime * 1000L));
 		token.setIssuer(JwtConfig.issuer).setExpiresAt(date);
-		// token.setIssuer(issuer).setExpiresAt(date).setKey(key);
+		// token.setIssuer(issuer).setExpiresAt(date).setKey(name);
 		return token.sign();
 	}
 
@@ -78,6 +82,11 @@ public class JwtUtils {
 	public <T> T validateAndParse(String token, Class<T> clz) {
 		if (!validate(token)) return null;
 		return parse(token, clz);
+	}
+
+	public JWT validateAndParse(String token) {
+		if (!validate(token)) return null;
+		return JWT.of(token);
 	}
 
 }
