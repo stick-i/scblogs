@@ -41,9 +41,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="contentrigth">
-                        
-                        <TabsContent></TabsContent>
+                    <div class="contentright">
+                        <TabsContent v-if="leftNavigation[0].chose"></TabsContent>
                     </div>
                 </div>
             </div>
@@ -54,7 +53,7 @@
     </div>
 </template>
 <script>
-import TopBarA from "@/components/P_user/TopBar/TopBar";
+import TopBarA from "@/components/content/topbar/TopBar";
 import ButtomView from "@/components/P_user/ButtomView/ButtomView.vue"
 import TabsContent from "@/components/P_user/PMELeftTabs/lefttabs.vue";
 export default{
@@ -68,10 +67,23 @@ export default{
             leftNavigation:[{name:"个人资料",chose:true},{name:"账号设置",chose:false},
             {name:"隐私设置",chose:false},{name:"信息认证",chose:false}
             ,{name:"我的收藏",chose:false},{name:"浏览历史",chose:false},
-            {name:"内容管理",chose:false}]
+            {name:"内容管理",chose:false}],
+            userMessage:{
+                        username:"勇敢牛牛不怕困难",
+                        nickname:"超级飞侠",
+                        // 获取的个人头像照片地址
+                        avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
+                        registerTime:""
+            },
         }
     },
+    created(){
+        this.GetData()
+    },
     methods:{
+        GetData(){
+            this.$axios
+        },
         ChoseModel(index){
             // 选择模块
             console.log("模块选择成功")
@@ -79,7 +91,10 @@ export default{
                 this.leftNavigation[i].chose=false
             }
             this.leftNavigation[index].chose=true
-            this.$refs.upload.submit();
+            // this.$refs.upload.submit();
+            if(index==6){
+                this.$router.push('/ContentManagement')
+            }
         }
     }
 }
@@ -95,6 +110,9 @@ body{
     /* overflow:  hidden; */
 }
 .body{
+    width: 100%;
+    height: 100vh;
+    background: rgb(243,244,246);
     display: flex;
     justify-content: center;
 }
@@ -130,7 +148,7 @@ body{
     position: absolute;
     width: 200px;
     top: 0;
-    left: 1000px;
+    left: 0px;
     float: left;
     /* background: white; */
 }
@@ -191,15 +209,12 @@ body{
 }
 
 .contentright{
-    min-width: 1000px;
-    margin-left: 220px;
+    width: 83%;
+    margin-left: 10px;
     min-height: 800px;
     position: absolute;
-    /* width: 1000px; */
-    /* height: 100px; */
     top: 0;
-    left: 220px;
+    left: 200px;
     float: left;
-    background: rgb(233, 147, 147);
 }
 </style>

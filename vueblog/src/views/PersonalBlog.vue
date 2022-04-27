@@ -12,11 +12,11 @@
                 <!-- 图片简介部分 -->
                 <div class="intro1-left"><!-- 左部简介部分 -->
                     <div class="intro1-left-img">
-                        <img :src="introImg" alt="">
+                        <img :src="userMessage.avatarUrl" alt="">
                     </div>
                     <div class="intro1-left-content">
                             <div class="left-content-up">
-                                <div class="username">{{username}}</div>
+                                <div class="username">{{userMessage.username}}</div>
                                 <div class="userage">
                                     <img :src="segPositionImg" alt="">
                                     <span>码龄{{codeAge}}年</span>
@@ -39,9 +39,20 @@
                     <button ><i class="iconfont icon-shezhi"></i><span>设置</span></button>
                 </div>
             </div>
-        </div>
-        <div class="content-intro2">
+            <div class="content-intro2">
                 <!-- 下拉框部分 -->
+                <el-collapse>
+                    <el-collapse-item>
+                        <template slot="title">
+                        查看详细资料<i class="iconfont icon-xiangxia"></i>
+                        </template>
+                        <div>加入CSDN时间:{{userMessage.registerTime}}</div>
+                        <div>个人博客简介:{{userMessage.nickname}}的博客</div>
+                    </el-collapse-item>
+                </el-collapse>
+            </div>
+        </div>
+        <div class="content-intro3">
                  <leftcontent class="intro2-a"></leftcontent>
                 <navigationbar class="intro2-b"></navigationbar>
         </div>
@@ -51,11 +62,12 @@
 </template>
 
 <script> 
-import TopBarA from "@/components/P_user/TopBar/TopBar";
+import TopBarA from "@/components/content/topbar/TopBar";
 import ButtomA from "@/components/P_user/ButtomView/ButtomView.vue";
 import FixedRightA from "@/components/P_user/FixedRight/FixedRight";
 import navigationbar from "@/components/P_user/NavigationBar/navigationbar";
 import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
+import qs from "qs"
     export default{
         components: {
             TopBarA,
@@ -64,16 +76,21 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
             navigationbar,
             leftcontent,
          },
+        
         data(){
             return{
                 // 背景图片
                 bg_Img:"https://up.enterdesk.com/edpic_360_360/9e/c5/b6/9ec5b6630fd0deac6c421e80d955f367.jpg",
-                // 获取的个人头像照片地址
-                introImg:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
                 // 码龄段位标识图
                 segPositionImg:"https://img-home.csdnimg.cn/images/20210108035944.gif",
                 // 用户名
-                username:"没啥大不了",
+                userMessage:{
+                        username:"勇敢牛牛不怕困难",
+                        nickname:"超级飞侠",
+                        // 获取的个人头像照片地址
+                        avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
+                        registerTime:""
+                },
                 // 码龄
                 codeAge:0,
                 // 个人博被访问次数
@@ -82,19 +99,26 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
                 article:0,
                 ranking:0,
                 fans:0,
+                config:{
+                    headers:{
+                        'token':localStorage.getItem('token')
+                    }
+                }
             }
         },
+         mounted(){
+            this.GetData()
+            console.log("返回元素",this.userMessage)
+         },
         methods:{
-            // 修改搜索框颜色
-                changeColor(flag){
-                    console.log("点击后激活类")
-                    var input=document.querySelector(".sousuo")
-                    if(flag==true){
-                        input.style.borderColor="red"
-                    }else{
-                        input.style.borderColor="black"
-                    }
-                    this.Flag=flag
+                 GetData(){
+                    var _this=this 
+                    _this.$axios.get('/user',this.config).then((res)=>{
+                        console.log("接口返回的用户公开信息数据",res.data)
+                        localStorage.setItem('userMessage',JSON.stringify(res.data.data))
+                    })
+                    this.userMessage=JSON.parse(localStorage.getItem('userMessage'))
+                        console.log("我的本地数据",this.userMessage)
                 },
                 TurnToEditPage(){
                     // 跳转至编辑页面
@@ -123,6 +147,8 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
 
 .body{
     background: rgb(243,244,246);
+    width: 100%;
+    height: 100%;
 }
 
 /* 背景图 */
@@ -140,11 +166,21 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
     width: 1280px;
     background:white;
     padding: 0;
-    height:200px;
+    height:260px;
     margin: 30px auto;
 }
 .content .content-intro1{
+    height: 40%;
     width: 100%;
+}
+.content .content-intro2{
+    height: 40%;
+    width: 100%;
+}
+
+.content .content-intro2 el-collapse{
+    /* height: 100%;
+    width: 60%; */
 }
 .content .intro1-left{
     float: left;
@@ -157,6 +193,10 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
     border: 2px solid rgb(240,240,242);
     margin: -15px 10px 0 20px;
     overflow: hidden;
+}
+.content .intro1-left-img img{
+    width: 100px;
+    height: 100px;
 }
 .intro1-left-content{
     float: left;
@@ -231,12 +271,12 @@ import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
 .intro1-right button span{
     vertical-align: middle;
 }
-.content-intro2{
+.content-intro3{
     width: 1280px;
-    height: 550px;
     margin: 0 auto;
 }
 .intro2-a{
+    width: 30%;
     float: left;
 }
 .intro2-b{

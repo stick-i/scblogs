@@ -1,7 +1,9 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="最近" name="1">
-      <div class="F-1" v-for="(item,index) in recentList"  @click="TurnToShow(item.id)">
+<div >
+  <el-tabs  v-model="activeName" @tab-click="handleClick">
+    <!-- <div class="F-1"> -->
+    <el-tab-pane label="最近" @scroll="scrollBottom($event)" name="1">
+      <div  v-for="(item,index) in recentList"  @click="TurnToShow(item.id)">
         <div class="BlogContent-a">
           <div class="BlogContent-1">{{ item.title }}</div>
           <div class="BlogContent-2">{{ item.description }}</div>
@@ -14,6 +16,18 @@
           </div>
         </div>
       </div>
+      <infinite-loading
+          spinner="spiral"
+          @infinite="infiniteHandler"
+          :distance="200"
+          class="infinite-loading-wrap">
+          <div slot="spinner">Loading...</div>
+          <div slot="no-more">No more Data</div>
+          <div slot="no-results">No results Data</div>
+          <div slot="error" slot-scope="{ trigger }">
+            Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
+          </div>
+        </infinite-loading>
     </el-tab-pane>
 
     <el-tab-pane label="文章" name="2">
@@ -31,6 +45,19 @@
                 <span>{{ item.collectionNum }}收藏</span>
               </div>
             </div>
+            <infinite-loading
+                spinner="spiral"
+                @infinite="infiniteHandler"
+                :distance="200"
+                class="infinite-loading-wrap"
+              >
+                <div slot="spinner">Loading...</div>
+                <div slot="no-more">No more Data</div>
+                <div slot="no-results">No results Data</div>
+                <div slot="error" slot-scope="{ trigger }">
+                  Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
+                </div>
+              </infinite-loading> 
           </div>
         </el-tab-pane>
         <el-tab-pane label="按访问量" name="2">
@@ -82,11 +109,17 @@
       </el-tabs>
     </el-tab-pane>
     <el-tab-pane label="收藏" name="9">定时任务补偿</el-tab-pane>
+    <!-- </div> -->
   </el-tabs>
+</div>
 </template>
 <script>
 import qs from "qs";
+import InfiniteLoading from 'vue-infinite-loading'
 export default {
+  components: {
+      InfiniteLoading
+    },
   data() {
     return {
       activeName: "1",
@@ -102,22 +135,73 @@ export default {
       activeName3: "1",
       activeName4: "1",
       activeName5: "1",
+      page: 1, // 根据接口定义的初始值
+      loadflag: false, // 是否可以加载数据
+      config:{
+        headers:{
+          'token':localStorage.getItem('token')
+        }
+      }
     };
   },
-  async mounted() {
+  async created() {
     await this.GetData();
   },
   methods: {
+    scrollBottom(e){
+      console.log("触发之后判断是否已经滑动到底部区域")
+        let self = this
+      let Scroll = e.target
+      // 网页可见区域高：document.body.clientHeight
+      // 网页正文全文高：document.body.scrollHeight
+      let scrollHeight = Scroll.scrollHeight - Scroll.clientHeight
+      self.scrollTop = Scroll.scrollTop
+      if (scrollHeight - Scroll.scrollTop < 100 && !self.loadflag) {
+        console.log('到底部了')
+        self.loadflag = true
+        self.page++
+        self.loadData()
+      }
+    },
+    loadData(){
+      console.log("出发之后调用接口实现刷新")
+    },
+    infiniteHandler(){
+      console.log("到底了开始触发了方法调用数据")
+      this.page++
+      // console.log("用户的token",localStorage.getItem('token'))
+      // console.log("用户的token",this.config)
+      // this.$axios.get('/blog-console/blog-list',{
+      //   params:{page:this.page},
+      //   headers:{'token':localStorage.getItem('token')}})
+      // .then(res=>{
+      //   this.recentList=this.recentList.concat(res.data.data.blogList)
+      // })
+      this.$axios.get('/blog-console/blog-list',{
+        params:{page:this.page},
+        headers:{'token':localStorage.getItem('token')}})
+          .then((res) => {
+            console.log("下拉至底部返回的数据之前的",this.recentList)
+            if(res.data.data.blogList.length) {
+              let arr = res.data.data.bloglist;
+              // this.blogList = this.blogList.concat(res.data.data);
+              this.recentList = [...this.recentList,...arr]
+              console.log(this.recentList)
+              $state.loaded();
+            }else {
+              $state.complete();
+            }
+          })
+    },
     TurnToShow(index){
-        this.$router.push('/BlogContent')
+      console.log("获取到的文章ID是",index)
+        var routeUrl= this.$router.resolve({name:'BlogDetail',params:{blogId:index}})
+        window.open(routeUrl.href, '_blank');
     },
     // 获取数据
     async GetData() {
       this.recentList = [];
       console.log("触发了getdata函数");
-
-      // console.log("QS 转化后的数据",qs.stringify(params))
-      // console.log("JSON 转化后的数据",JSON.stringify(params))
       let params = {
         username: "stick",
         password: "stick",
@@ -126,8 +210,8 @@ export default {
         .post("/login/login", qs.stringify(params))
         .then(async (res) => {
           if (res.data.code == 200 && res.data.message == "success") {
-            console.log("登陆成功！！！！！此时获取响应头数据",res.headers.token);
             window.localStorage.setItem("token",res.headers.token)
+            console.log("用户登陆成功,已经完成数据存入浏览器返回数据为",res.data)
             await this.$axios.get("/blog-console/blog-list",{headers:{'token':localStorage.getItem('token')}}).then((res) => {
               this.recentList = this.recentList.concat(res.data.data.blogList);
               console.log("获取到的博客列表数据", this.recentList);
@@ -253,15 +337,19 @@ export default {
 <style scoped>
 .F-1 {
   width: 100%;
-  height: 100px;
+  height: 200px;
+  overflow-y:scroll;
   background: rgb(255, 255, 255);
   display: flex;
   justify-content: center;
   align-items: center;
 }
+/* .el-tabs__content{
+  overflow-y: scroll !important;  
+} */
 .BlogContent-a {
   width: 90%;
-  height: 100%;
+  height: 100px;
   padding: 10px 0;
   border-bottom: 1px solid #b7b8bb;
 }
