@@ -1,8 +1,12 @@
 package cn.sticki.blog.security.filter;
 
+import cn.hutool.jwt.JWT;
 import cn.sticki.blog.config.JwtConfig;
+import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.util.JwtUtils;
+import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -23,6 +28,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
 	@Resource
 	private JwtUtils jwtUtils;
+
+	@Resource
+	private UserMapper userMapper;
+
+	@CreateCache(name = "login:userId:", expire = 30, timeUnit = TimeUnit.MINUTES)
+	private Cache<Integer, User> cache;
 
 	/**
 	 * 认证过滤器
@@ -35,8 +46,17 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 		// 此处只是给有token的用户授权而已
 		if (StringUtils.hasText(token)) {
 			// 验证、解析token
-			User user = jwtUtils.validateAndParse(token, User.class);
-			if (user != null) {
+			JWT jwt = jwtUtils.validateAndParse(token);
+			Object object = jwt.getPayload("id");
+			if (object instanceof Integer) {
+				Integer id = (Integer) object;
+				// 获取用户数据
+				User user = cache.get(id);
+				if (user == null) {
+					user = userMapper.selectById(id);
+					cache.put(id, user);
+				}
+				log.debug("Token validate successful,user->{}", user);
 				// TODO 获取权限信息封装到Authentication中
 				// 存入SecurityContextHolder，这里构造一个已认证的 authenticationToken ，之后就不用再认证了。
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);

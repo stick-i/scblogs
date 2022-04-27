@@ -1,5 +1,6 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.enumeration.type.BlogStatusType;
 import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.exception.systemException.DAOException;
 import cn.sticki.blog.exception.userException.UserIllegalException;
@@ -12,7 +13,6 @@ import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.BlogBasicService;
 import cn.sticki.blog.service.BlogConsoleService;
-import cn.sticki.blog.type.BlogStatusType;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

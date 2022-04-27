@@ -1,12 +1,12 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.enumeration.type.FileType;
 import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.type.FileType;
 import cn.sticki.blog.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

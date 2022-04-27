@@ -1,11 +1,11 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.enumeration.type.BlogStatusType;
 import cn.sticki.blog.mapper.BlogBasicMapper;
 import cn.sticki.blog.mapper.BlogContentMapper;
 import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.service.BlogBasicService;
-import cn.sticki.blog.type.BlogStatusType;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
