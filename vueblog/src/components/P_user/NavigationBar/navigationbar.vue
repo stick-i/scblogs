@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <infinite-loading
+      <!-- <infinite-loading
           spinner="spiral"
           @infinite="infiniteHandler"
           :distance="200"
@@ -27,7 +27,7 @@
           <div slot="error" slot-scope="{ trigger }">
             Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
           </div>
-        </infinite-loading>
+        </infinite-loading> -->
     </el-tab-pane>
 
     <el-tab-pane label="文章" name="2">
@@ -45,7 +45,7 @@
                 <span>{{ item.collectionNum }}收藏</span>
               </div>
             </div>
-            <infinite-loading
+            <!-- <infinite-loading
                 spinner="spiral"
                 @infinite="infiniteHandler"
                 :distance="200"
@@ -57,7 +57,7 @@
                 <div slot="error" slot-scope="{ trigger }">
                   Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
                 </div>
-              </infinite-loading> 
+              </infinite-loading>  -->
           </div>
         </el-tab-pane>
         <el-tab-pane label="按访问量" name="2">
@@ -148,35 +148,9 @@ export default {
     await this.GetData();
   },
   methods: {
-    scrollBottom(e){
-      console.log("触发之后判断是否已经滑动到底部区域")
-        let self = this
-      let Scroll = e.target
-      // 网页可见区域高：document.body.clientHeight
-      // 网页正文全文高：document.body.scrollHeight
-      let scrollHeight = Scroll.scrollHeight - Scroll.clientHeight
-      self.scrollTop = Scroll.scrollTop
-      if (scrollHeight - Scroll.scrollTop < 100 && !self.loadflag) {
-        console.log('到底部了')
-        self.loadflag = true
-        self.page++
-        self.loadData()
-      }
-    },
-    loadData(){
-      console.log("出发之后调用接口实现刷新")
-    },
     infiniteHandler(){
       console.log("到底了开始触发了方法调用数据")
       this.page++
-      // console.log("用户的token",localStorage.getItem('token'))
-      // console.log("用户的token",this.config)
-      // this.$axios.get('/blog-console/blog-list',{
-      //   params:{page:this.page},
-      //   headers:{'token':localStorage.getItem('token')}})
-      // .then(res=>{
-      //   this.recentList=this.recentList.concat(res.data.data.blogList)
-      // })
       this.$axios.get('/blog-console/blog-list',{
         params:{page:this.page},
         headers:{'token':localStorage.getItem('token')}})
@@ -201,24 +175,12 @@ export default {
     // 获取数据
     async GetData() {
       this.recentList = [];
-      console.log("触发了getdata函数");
-      let params = {
-        username: "stick",
-        password: "stick",
-      };
-      await this.$axios
-        .post("/login/login", qs.stringify(params))
-        .then(async (res) => {
-          if (res.data.code == 200 && res.data.message == "success") {
-            window.localStorage.setItem("token",res.headers.token)
-            console.log("用户登陆成功,已经完成数据存入浏览器返回数据为",res.data)
-            await this.$axios.get("/blog-console/blog-list",{headers:{'token':localStorage.getItem('token')}}).then((res) => {
-              this.recentList = this.recentList.concat(res.data.data.blogList);
-              console.log("获取到的博客列表数据", this.recentList);
-              this.DataChange();
-            });
-          }
-        });
+    // 获取文章列表
+      await this.$axios.get("/blog-console/blog-list",{headers:{'token':localStorage.getItem('token')}}).then((res) => {
+        this.recentList = this.recentList.concat(res.data.data.blogList);
+        console.log("获取到的博客列表数据", this.recentList);
+        this.DataChange();
+      });
     },
     handleClick(tab, event) {
         console.log(tab, event)

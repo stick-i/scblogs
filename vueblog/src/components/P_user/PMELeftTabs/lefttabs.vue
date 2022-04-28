@@ -4,11 +4,11 @@
         <div class="rightContentA-1">
             <div class="rightContentA-1-container">
               <div @click="ShowChose" class="img">
-                <img :src="userMessage.avatarUrl" alt="">
+                <img :src="this.$parent.userMessage.avatarUrl" alt="">
                 <img class="img-hover" :src="hoverCamera" alt="">
               </div>
               <div class="name">
-                <span>{{this.userMessage.username}}</span>
+                <span>{{this.$parent.userMessage.username}}</span>
               </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
       <!-- 上传头像部分 -->
         <uploadImg class="PickerImg"></uploadImg>
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="GetUserImg">确 定</el-button>
+        <el-button type="primary" @click="GetUserData">确 定</el-button>
     </el-dialog>
   </div>
 </template>
@@ -87,12 +87,10 @@ export default {
       hoverCamera:"https://profile.csdnimg.cn/C/D/1/1_m0_46681545",
       // 获取图片弹窗显示
       dialogVisible: false,
-      userMessage:{
-
-      },
+      userMessage:{},
       form:{
           username:"勇敢牛牛不怕困难",
-          nickname:"超级飞侠",
+          nickname:"超级飞侠S",
           // 获取的个人头像照片地址
           avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
           registerTime:""
@@ -104,8 +102,15 @@ export default {
       }
     };
   },
-  mounted(){
-    this.GetData()
+  mounted() {
+      let pMountedTimer = window.setInterval(() => {
+          if (window.parentMounted ) {
+            window.clearInterval(pMountedTimer)
+            // 下面就可以写子组件想在mounted时执行代码（此时父组件的mounted已经执行完毕）
+            this.GetData()
+        // this.initData()
+          }
+      }, 500)
   },
   methods:{
     EditMessage(){
@@ -114,14 +119,11 @@ export default {
     },
     // 请求数据放入本地浏览器
     GetData(){
-        this.$axios.get("/user",{headers:{'token':localStorage.getItem('token')}}).
-        then(res=>{
-            // this.$global.userMessage.userImg=res.data.data.avatarUrl
-              window.localStorage.setItem('userMessage',JSON.stringify(res.data.data))
-        })
-        this.userMessage=JSON.parse(window.localStorage.getItem('userMessage'))
-        this.form=this.userMessage
-        console.log("获取浏览器全局数据",this.userMessage)
+        this.form=this.$parent.userMessage
+        console.log("form赋值",this.form)
+        console.log("form赋值",this.$parent.userMessage)
+        // console.log("获取浏览器全局数据",this.$parent.userMessage)
+        console.log("修改页面获取浏览器全局数据",this.form)
         },
     ShowChose(){
       //弹出选项框
@@ -137,20 +139,32 @@ export default {
           .catch(_ => {});
       },
       // 在用户修改完成之后重新调取用户头像
-      GetUserImg(){
+      GetUserData(){
         // 使弹窗消失
           this.dialogVisible=false
-          this.GetData
+          // this.GetData()
       },
       submit(){
         // 修改用户名称,需要添加ID元素
-        this.$axios.put('/user/nickname',{nickname:this.form.nickname},this.config).then(res=>{
-          console.log("返回数据",res)
+        console.log("点击成功修改用户昵称")
+        let formdata = new FormData()
+        formdata.append("nickname",this.form.nickname)
+        this.$axios.put('/user/nickname',formdata,this.config).then(res=>{
+          console.log("修改用户昵称接口返回数据",res)
           // 调用父组件中GetData函数获取新的用户信息
-           this.$message({
-            message: '修改成功',
-            type: 'success'
-        });
+          if(res.data.status==true){
+             this.$message({
+              message: '用户昵称修改成功',
+              type: 'success'
+            });
+        // 调用父组件函数函数重新请求用户数据并更新至本地浏览器
+            this.$parent.GetData()
+          }else{
+             this.$message({
+              message: '修改失败',
+              type: 'error'
+            });
+          }
         })
       },
       cancel(){

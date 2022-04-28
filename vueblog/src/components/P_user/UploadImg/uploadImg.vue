@@ -12,7 +12,7 @@
           name="scrm-files"
           :on-remove="handleRemove"
           :show-file-list="true"
-          :headers="headers"
+         
           :auto-upload="autoUpload"
           :on-preview="handlePictureCardPreview"
           :class="{ hide: this.fileList.length > 0 }"
@@ -95,12 +95,25 @@ export default {
 				// this.submitUpload(formdata)
 		},
 		submitUpload(){
+			console.log("上传的图片数据",this,this.formdata)
 			this.$axios.put("/user/avatar",this.formdata,this.config)
 			.then(
 				res => { console.log("上传头像接口调用返回数据",res) 
+				if(res.data.status==true){
+					 this.$message({
+						message: '头像修改成功',
+						type: 'success'
+						});
+				
+				}else{
+					 this.$message({
+						message: '头像修改失败',
+						type: 'error'
+						});
+					}
 			})
 		},
-    	 // 上传失败
+    	// 上传失败
     	handleUploadError() {
       		this.$message({
         		type: "error",
