@@ -1,6 +1,5 @@
 package cn.sticki.blog.config;
 
-import cn.sticki.blog.controller.interceptor.UserLoginInterceptor;
 import cn.sticki.blog.pojo.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -34,13 +33,10 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 
-	@Bean
-	public UserLoginInterceptor userLoginInterceptor() {
-		return new UserLoginInterceptor();
-	}
 
 	/**
-	 * 用户bean
+	 * 用户bean，需要注意注入的 User 中会包含一些其他的属性，这是由于cglib造成的
+	 * 如果需要对注入的user进行序列化，请使用 new User(user); 的形式来排除注入的影响
 	 */
 	@Bean
 	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)

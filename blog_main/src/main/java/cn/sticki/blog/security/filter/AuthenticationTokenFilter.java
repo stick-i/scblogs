@@ -54,6 +54,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 			}
 			if (object instanceof Integer) {
 				Integer id = (Integer) object;
+				log.debug("Token validate successful,userId->{}", id);
 				// 获取用户数据
 				User user = cache.get(id);
 				if (user == null) {

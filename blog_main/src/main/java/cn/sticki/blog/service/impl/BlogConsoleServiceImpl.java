@@ -1,5 +1,6 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.enumeration.type.BlogStatusType;
 import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.exception.systemException.DAOException;
 import cn.sticki.blog.exception.userException.UserIllegalException;
@@ -13,7 +14,8 @@ import cn.sticki.blog.pojo.domain.BlogGeneral;
 import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.service.BlogConsoleService;
-import cn.sticki.blog.util.MinioUtils;
+import cn.sticki.blog.util.OssUtils;
+import cn.sticki.blog.util.RandomUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -46,7 +48,10 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 	private String coverImagePath;
 
 	@Resource
-	private MinioUtils minioUtils;
+	private OssUtils ossUtils;
+
+	@Resource
+	private RandomUtils randomUtils;
 
 	@Override
 	public void saveBlog(BlogSaveDTO blogDTO) throws UserException, DAOException {
@@ -57,7 +62,6 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 		blog.setTitle(blogDTO.getTitle());
 		blog.setDescription(blogDTO.getDescription());
 		blog.setStatus(blogDTO.getStatus());
-		blog.setCoverImage(blogDTO.getCoverImage());
 
 		BlogContent blogContent = new BlogContent();
 		blogContent.setContent(blogDTO.getContent());
@@ -65,11 +69,11 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 		if (blogDTO.getId() != null) {
 			// 博客是已经存在的，直接进行更新操作，需要先进行作者身份核实
 			LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-			wrapper.eq(Blog::getId, blogDTO.getId()).eq(Blog::getAuthor, blogDTO.getAuthor());
-			Long count = blogMapper.selectCount(wrapper);
-			if (count != 1) {
+			wrapper.eq(Blog::getId, blogDTO.getId()).eq(Blog::getAuthor, blogDTO.getAuthor()).last("limit 1");
+			Blog blogSelect = blogMapper.selectOne(wrapper);
+			if (blogSelect == null) {
 				// 身份核实失败，拒绝操作
-				log.debug("blogId is false,refuse update,id->{}", blogDTO.getId());
+				log.debug("blogId is error,refuse update,id->{}", blogDTO.getId());
 				throw new UserIllegalException();
 			}
 			// 身份核实完毕，可以更新数据库，设置条件
@@ -87,13 +91,21 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				blogContentUW.set(BlogContent::getContent, blogDTO.getContent());
 				blogContentMapper.update(blogContent, blogContentUW);
 			}
+			// 更新头像，直接通过原有的名称，进行替换
+			if (!blogDTO.getCoverImage().isEmpty()) {
+				this.uploadCoverImage(blogSelect.getCoverImage(), blogDTO.getCoverImage());
+			}
 			return;
 		}
 		// 博客不存在，此处应新建博客，并保存
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		blog.setCreateTime(timestamp);
+		// 上传封面图
+		String imageUrl = randomUtils.uuid();
+		this.uploadCoverImage(imageUrl, blogDTO.getCoverImage());
+		blog.setCoverImage(imageUrl);
 		// 添加发表时间，若未发表则不添加
-		if (blogDTO.getStatus() != 2) blog.setReleaseTime(timestamp);
+		if (BlogStatusType.DRAFT.getValue().equals(blogDTO.getStatus())) blog.setReleaseTime(timestamp);
 		// 插入数据库
 		if (blogMapper.insert(blog) != 1)
 			throw new DAOException();
@@ -158,7 +170,7 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				InputStream inputStream = coverImage.getInputStream()
 		) {
 			// 上传新头像文件
-			minioUtils.upload(
+			ossUtils.upload(
 					coverImagePath + name,  // 对用户头像进行保存
 					inputStream,
 					coverImage.getSize(),

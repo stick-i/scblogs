@@ -1,7 +1,7 @@
 package cn.sticki.blog.controller;
 
 import cn.sticki.blog.exception.systemException.MinioException;
-import cn.sticki.blog.util.MinioUtils;
+import cn.sticki.blog.util.OssUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class ResourceController {
 
 	@Resource
-	private MinioUtils minioUtils;
+	private OssUtils ossUtils;
 
 	@Value("${minio.resource-path.avatar}")
 	private String avatarPath;
@@ -45,7 +45,7 @@ public class ResourceController {
 		try (
 				ServletOutputStream outputStream = response.getOutputStream()
 		) {
-			minioUtils.download(avatarPath + file, response.getOutputStream());
+			ossUtils.download(avatarPath + file, response.getOutputStream());
 		}
 	}
 

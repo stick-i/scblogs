@@ -17,7 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Component
-public class MinioUtils {
+public class OssUtils {
 
 	@Resource
 	private MinioClient minioClient;

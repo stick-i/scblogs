@@ -81,7 +81,7 @@ public class UserController {
 		// 检查文件，小于1Mib ,仅支持JPEG和PNG
 		fileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		userService.updateAvatar(user, avatarFile);
-		cache.put(user.getId(), user);
+		cache.put(user.getId(), new User(user));
 		return new RestTemplate();
 	}
 

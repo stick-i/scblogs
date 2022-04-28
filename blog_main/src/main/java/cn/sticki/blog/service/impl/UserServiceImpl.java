@@ -11,7 +11,7 @@ import cn.sticki.blog.pojo.dto.MailDTO;
 import cn.sticki.blog.service.UserService;
 import cn.sticki.blog.util.FileUtils;
 import cn.sticki.blog.util.MailUtils;
-import cn.sticki.blog.util.MinioUtils;
+import cn.sticki.blog.util.OssUtils;
 import cn.sticki.blog.util.RandomUtils;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 	private UserSafetyMapper userSafetyMapper;
 
 	@Resource
-	private MinioUtils minioUtils;
+	private OssUtils ossUtils;
 
 	@Resource
 	private RandomUtils randomUtils;
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 				InputStream inputStream = avatarFile.getInputStream()
 		) {
 			// 上传新头像文件
-			minioUtils.upload(
+			ossUtils.upload(
 					avatarPath + user.getAvatar(),  // 对用户头像进行保存
 					inputStream,
 					avatarFile.getSize(),
