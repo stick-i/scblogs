@@ -1,6 +1,7 @@
 package cn.sticki.blog.pojo.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class BlogSaveDTO {
@@ -13,10 +14,10 @@ public class BlogSaveDTO {
 
 	String description; // 描述
 
-	String coverImage; // 封面图
-
 	String content; // 内容(md格式)
 
 	Integer status; // 博客状态码
+
+	MultipartFile coverImage; // 封面图
 
 }

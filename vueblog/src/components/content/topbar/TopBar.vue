@@ -128,9 +128,9 @@
             <!-- 显示头像 下拉菜单 -->
             <div class="test-div csdn-toolbar-fl">
               <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link">
+                <span class="el-dropdown-link" >
                   <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
-                    <img :src="avatarUrl" alt="头像" class="test-img" />
+                    <img :src="avatarUrl" alt="头像" class="test-img" style="border: 1px solid #e8e8ed" />
                   </a>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -257,6 +257,9 @@
             </div>
           </div>
         </div>
+<!--        <div>{{key}}</div>-->
+<!--        <div>|</div>-->
+<!--        <div>{{$store.state.searchKey}}</div>-->
       </div>
     </div>
   </div>
@@ -310,17 +313,12 @@ export default {
         this.isShowInput = "block";
       }
     },
+
     // 跳转搜索博客
     goSearchBlogs() {
-      this.bus.$emit("content", this.key);
+      this.$store.commit('copySearchKey',this.key)
       this.$router.push('/blog/search')
     },
-    // // 搜索博客
-    // searchBlogs() {
-    //   this.$axios.get("/blog/search?key="+this.key).then(res => {
-    //     console.log(res)
-    //   })
-    // },
 
     // 退出登录
     handleCommand(command) {

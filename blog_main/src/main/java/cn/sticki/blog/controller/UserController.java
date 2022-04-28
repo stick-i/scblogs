@@ -1,13 +1,16 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.enumeration.CacheSpace;
+import cn.sticki.blog.enumeration.type.FileType;
 import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.type.FileType;
 import cn.sticki.blog.util.FileUtils;
+import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
-	@Resource
-	private HttpSession session;
 
 	@Resource
 	private UserService userService;
@@ -34,6 +33,9 @@ public class UserController {
 
 	@Resource
 	private FileUtils fileUtils;
+
+	@CreateCache(name = CacheSpace.Login_UserID)
+	Cache<Integer, User> cache;
 
 	/**
 	 * 获取公开信息
@@ -76,16 +78,10 @@ public class UserController {
 	@PutMapping("/avatar")
 	public RestTemplate updateAvatar(@NotNull MultipartFile avatarFile) throws MinioException, IOException {
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
-		// 小于1Mib
-		if (avatarFile.getSize() > 1024 * 1024) {
-			return new RestTemplate(false, "文件过大");
-		}
-		FileType fileType = fileUtils.getType(avatarFile);
-		// 仅支持JPEG和PNG
-		if (fileType != FileType.JPEG && fileType != FileType.PNG) {
-			return new RestTemplate(false, "不支持的文件类型");
-		}
+		// 检查文件，小于1Mib ,仅支持JPEG和PNG
+		fileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		userService.updateAvatar(user, avatarFile);
+		cache.put(user.getId(), new User(user));
 		return new RestTemplate();
 	}
 
@@ -119,17 +115,20 @@ public class UserController {
 		return new RestTemplate(false, "修改失败");
 	}
 
+	@CreateCache(name = CacheSpace.UserService_SendMailTime, expire = 300)
+	private Cache<Integer, Long> sendMailTimeCache;
+
 	/**
 	 * 发送邮箱验证码
 	 */
 	@PostMapping("/mail/send-mail-verify")
 	public RestTemplate sendMailVerifyForUpdateMail() throws MailSendException {
-		Long sendTime = (Long) session.getAttribute("mail-send-mail-verify-time");
+		Long sendTime = sendMailTimeCache.get(user.getId());
 		Long nowTime = System.currentTimeMillis() / 1000;
 		// 判断是否发送过邮件，若上一次发送邮件的时间超过60s则允许发送
 		if (sendTime == null || nowTime - sendTime > 60) {
 			userService.sendMailVerify(user.getId());
-			session.setAttribute("mail-send-mail-verify-time", nowTime); // 将发送邮件的时间存到session
+			sendMailTimeCache.put(user.getId(), nowTime);// 将发送邮件的时间存到Cache(Redis)
 			return new RestTemplate(true, "发送成功");
 		}
 		return new RestTemplate(false, "拒绝发送");
@@ -140,10 +139,8 @@ public class UserController {
 	 */
 	@DeleteMapping("/user")
 	public RestTemplate delete(@NotNull String password) {
-		if (!userService.checkPassword(user.getId(), password))
-			return new RestTemplate(false, "密码错误");
-		else
-			return new RestTemplate(userService.removeById(user.getId()));
+		if (!userService.checkPassword(user.getId(), password)) return new RestTemplate(false, "密码错误");
+		else return new RestTemplate(userService.removeById(user.getId()));
 	}
 
 }

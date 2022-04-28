@@ -6,6 +6,7 @@ import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BlogConsoleService extends IService<Blog> {
 
@@ -22,5 +23,13 @@ public interface BlogConsoleService extends IService<Blog> {
 	 * @param author 作者用户名
 	 */
 	BlogCountDTO getBlogCount(String author);
+
+	/**
+	 * 上传封面图
+	 *
+	 * @param name       存储的文件名
+	 * @param coverImage 封面图
+	 */
+	void uploadCoverImage(String name, MultipartFile coverImage);
 
 }

@@ -1,4 +1,4 @@
-package cn.sticki.blog.type;
+package cn.sticki.blog.enumeration.type;
 
 /**
  * 博客状态类型

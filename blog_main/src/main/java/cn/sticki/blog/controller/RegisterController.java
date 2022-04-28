@@ -1,5 +1,6 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.RegisterService;
@@ -21,7 +22,7 @@ public class RegisterController {
 	@Resource
 	private RegisterService registerService;
 
-	@CreateCache(name = "register:sendMailTime:", expire = 300)
+	@CreateCache(name = CacheSpace.Register_SendMailTime, expire = 300)
 	private Cache<String, Long> cache;
 
 	/**
