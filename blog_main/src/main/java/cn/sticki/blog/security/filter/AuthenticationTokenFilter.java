@@ -59,13 +59,15 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 				User user = cache.get(id);
 				if (user == null) {
 					user = userMapper.selectById(id);
-					cache.put(id, user);
 				}
 				log.debug("Token validate successful,user->{}", user);
 				// TODO 获取权限信息封装到Authentication中
 				// 存入SecurityContextHolder，这里构造一个已认证的 authenticationToken ，之后就不用再认证了。
-				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				if (user != null) {
+					cache.put(id, user);
+					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
+					SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				}
 			}
 		}
 		//放行

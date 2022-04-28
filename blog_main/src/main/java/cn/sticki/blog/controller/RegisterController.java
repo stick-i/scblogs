@@ -39,11 +39,11 @@ public class RegisterController {
 		Long nowTime = System.currentTimeMillis() / 1000;
 		// 判断是否发送过邮件，若上一次发送邮件的时间超过90s则允许发送
 		if (sendTime == null || nowTime - sendTime > 90) {
+			cache.put(mail, nowTime); // 将发送邮件的时间存到redis，先存时间，再发送
 			registerService.sendMailVerify(mail);
-			cache.put(mail, nowTime); // 将发送邮件的时间存到redis
 			return new RestTemplate(true);
 		}
-		return new RestTemplate(false);
+		return new RestTemplate(false, "发送频繁");
 	}
 
 	/**

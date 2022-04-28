@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -85,7 +86,8 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public RestTemplate saveBlog(BlogSaveDTO blog) throws UserException, DAOException {
+	public RestTemplate saveBlog(BlogSaveDTO blog, MultipartFile coverImage) throws UserException, DAOException {
+		blog.setCoverImageFile(coverImage);
 		// 如果为新增博客，则需要全部参数
 		if (blog.getId() == null && (blog.getContent() == null || blog.getTitle() == null || blog.getDescription() == null || blog.getStatus() == null))
 			return new RestTemplate(400, "参数异常");
@@ -95,8 +97,8 @@ public class BlogConsoleController {
 		// 先清空，防止恶意注入
 		// blog.setCoverImage(null);
 		// 检查封面图
-		if (!blog.getCoverImage().isEmpty()) {
-			fileUtils.checkFile(blog.getCoverImage(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
+		if (fileUtils.isNotEmpty(blog.getCoverImageFile())) {
+			fileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
 			// 博客id + 作者username
 			// String url = blog.getId() + user.getUsername();
 			// blogConsoleService.uploadCoverImage(url, coverImage);

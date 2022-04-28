@@ -1,9 +1,13 @@
 package cn.sticki.blog.pojo.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BlogSaveDTO {
 
 	Integer id; // 博客id(若无则不填)
@@ -18,6 +22,6 @@ public class BlogSaveDTO {
 
 	Integer status; // 博客状态码
 
-	MultipartFile coverImage; // 封面图
+	MultipartFile coverImageFile; // 封面图
 
 }
