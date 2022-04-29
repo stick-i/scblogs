@@ -13,43 +13,24 @@
         label-width="110px"
         class="demo-ruleForm"
       >
-        <el-form-item label="文章封面：" prop="desc">
-          <!-- 文章封面图片上传 -->
-          <el-upload action="#" list-type="picture-card" :auto-upload="false">
-            <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{ file }">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="file.url"
-                alt=""
-              />
-              <span class="el-upload-list__item-actions"
-                ><span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
-                >
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
-                  <i class="el-icon-download"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
+        <el-form-item label="文章封面：" prop="file">
+          <!-- 文章封面图片上传开始 -->
+          <el-upload
+            ref="uploadxls"
+            action="/blog-console/blog"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :headers="headersObj"
+            :auto-upload="false"
+            :before-upload="beforeupload"
+          >
+            <i class="el-icon-plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
           </el-dialog>
+          <!-- 文章封面图片上传结束 -->
         </el-form-item>
 
         <!-- 摘要 -->
@@ -90,13 +71,14 @@
           >
         </el-form-item> -->
         <!-- 标签结束 -->
-
+        <!-- 文章类型开始 -->
         <!-- <el-form-item label="文章类型：" prop="resource">
           <el-radio-group v-model="ruleForm.resource">
             <el-radio label="原创"></el-radio>
             <el-radio label="转载"></el-radio>
           </el-radio-group>
         </el-form-item> -->
+        <!-- 文章类型结束 -->
 
         <el-form-item label="发布形式：" prop="status">
           <el-radio-group v-model="ruleForm.status">
@@ -154,7 +136,13 @@ export default {
       // 图片上传
       dialogImageUrl: "",
       dialogVisible: false,
-      disabled: false,
+
+      // 图片上传添加
+      fileList: "",
+      headersObj: { token: localStorage.getItem("token") }, // 必要
+      ids: [],
+      formData: new FormData(), // 两个方法共用
+      // 图片上传添加结束
     };
   },
   mounted() {},
@@ -171,25 +159,40 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios
-            .post("/blog-console/blog", qs.stringify(this.ruleForm),
-              { headers: { 'token': sessionStorage.getItem("token") } }
-            )
-            .then((res) => {
-              console.log(res)
-              if (res.data.code == 200 && res.data.status == true) {
-                this.$message({
-                  showClose: true,
-                  message: "发布成功~",
-                  type: "success",
-                });
-              }
-            });
+          let that = this;
+          that.formData = new FormData();
+          this.formData.append('id',this.ruleForm.id);
+          this.formData.append('title',this.ruleForm.title);
+          this.formData.append('description',this.ruleForm.description);
+          this.formData.append('content',this.ruleForm.content);
+          this.formData.append('status',this.ruleForm.status);
+
+          this.$refs.uploadxls.submit();    // 提交表单
+          // this.$refs.uploadxls.clearFiles();    // 清空图片数据
+
+          this.$axios.post('/blog-console/blog',this.formData,{
+                headers: { token: localStorage.getItem("token") },
+              }).then(res=>{
+            console.log(res)
+            if(res.data.code == 200&& res.data.status==true) {
+              // this.$message({
+              //   showClose: true,
+              //   message: "发布成功~",
+              //   type: "success",
+              // });
+              this.$router.push("/blog/publish");
+            }
+          })
+
+          this.formData = "";   // 清空formData数据
+
+
         } else {
           console.log("error submit!!");
           return false;
         }
       });
+
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -217,15 +220,18 @@ export default {
     // 标签结束
 
     // 图片上传开始
-    handleRemove(file) {
-      console.log(file);
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
+      console.log('图片路径',this.dialogImageUrl);
       this.dialogVisible = true;
     },
-    handleDownload(file) {
-      console.log(file);
+    beforeupload(file) {
+      console.log('将图片添加到formData中保存',file);
+      this.formData.append("coverImage", file);  //将图片添加到formData中保存
+      return false;   //阻止自动上传
     },
     // 图片上传结束
   },

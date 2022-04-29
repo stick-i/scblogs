@@ -7,11 +7,11 @@ const Login = () => import('@/views/login/Login')
 const Register = () => import('@/views/register/Register')
 const BlogSearch = () => import('@/views/blogSearch/BlogSearch')
 const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
+const BlogPublishSuccess = () => import('@/views/blogPublishSuccess/BlogPublishSuccess')
 const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
 const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
-const A = () => import('@/views/A')
 
 
 Vue.use(VueRouter)
@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"PersonalBlog"}
+    redirect:{name:"Home"}
   },
 
   {
@@ -33,11 +33,6 @@ const routes = [
     name: 'Login',
     component: Login
   },
-  // {
-  //   path: '/P_Register',
-  //   name: 'P_Register',
-  //   component: P_Register
-  // },
   {
     path: '/register',
     name: 'register',
@@ -50,16 +45,16 @@ const routes = [
   },
   {
     path: '/blog/add',
-    name: 'BlogEdit',
+    name: 'BlogAdd',
     component: BlogEdit
   },
   {
-    path: '/blog/:blogId',
-    name: 'BlogDetail',
-    component: BlogDetail
+    path: '/blog/publish',
+    name: 'BlogPublishSuccess',
+    component: BlogPublishSuccess
   },
   {
-    path: '/blog',
+    path: '/blog/:blogId',
     name: 'BlogDetail',
     component: BlogDetail
   },
@@ -82,11 +77,6 @@ const routes = [
     path: '/ContentManagement',
     name: 'ContentManagement',
     component: ContentManagement
-  },
-  {
-    path: '/A',
-    name: 'A',
-    component: A
   },
 ]
 

@@ -19,7 +19,7 @@
           </div>
           <div class="intro1-left-content">
             <div class="left-content-up">
-              <div class="username">{{ userMessage.username }}</div>
+              <div class="username">{{ userMessage.nickname }}</div>
               <div class="userage">
                 <img :src="segPositionImg" alt="" />
                 <span>码龄{{ codeAge }}年</span>
@@ -129,33 +129,26 @@ export default {
       let params = {
         username: "123",
         password: "123456",
-      };
-      console.log("开始调用登陆借口");
+      };  
     await this.$axios
         .post("/login/login", qs.stringify(params))
         .then((res) => {
-          console.log("登陆接口返回的数据", res);
           // 将token设置到本地浏览器中
           window.localStorage.setItem("token", res.headers.token);
           window.localStorage.setItem(
             "userMessage",
             JSON.stringify(res.data.data)
           );
-          console.log("回去的token",window.localStorage.getItem("token"))
-          var a=window.localStorage.getItem("userMessage")
-          this.userMessage = JSON.parse(a);
-          console.log("拿到的用户数据",this.userMessage)
+          this.userMessage = res.data.data;
         });
         
      await this.$axios
         .get("/user", this.config)
         .then((res) => {
-          console.log("接口返回的用户公开信息数据", res.data);
           localStorage.setItem("userMessage", JSON.stringify(res.data.data));
         })
         .then((res) => {
-          this.userMessage = JSON.parse(localStorage.getItem("userMessage"));
-          console.log("我的本地数据", this.userMessage);
+          this.userMessage = res.data.data
         });
     },
     TurnToEditPage() {
