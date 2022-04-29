@@ -1,5 +1,6 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.config.ResourcePath;
 import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.mapper.UserMapper;
@@ -15,7 +16,6 @@ import com.alicp.jetcache.anno.CreateCache;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,8 +44,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	@CreateCache(name = CacheSpace.Register_MailVerify, expire = 300)
 	private Cache<String, String> cache;
 
-	@Value("${resource.default-avatar}")
-	private String defaultAvatar;
+	private final String defaultAvatar = ResourcePath.defaultAvatar;
 
 	@Resource
 	private PasswordEncoder passwordEncoder;
@@ -55,7 +54,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		User user = new User();
 		user.setUsername(userSafety.getUsername());
 		user.setNickname(userSafety.getUsername());
-		user.setAvatar(defaultAvatar);
+		user.setAvatarUrl(defaultAvatar);
 		user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 		if (userMapper.insert(user) > 0) {
 			log.debug("新用户注册：id->{}", user.getId());

@@ -20,4 +20,9 @@
 		where id = #{id};
 	</update>
 
+	<insert id="insert" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+		insert into user (username, nickname, avatar, register_time)
+		values (#{username}, #{nickname}, #{avatar}, #{registerTime});
+	</insert>
+
 </mapper>

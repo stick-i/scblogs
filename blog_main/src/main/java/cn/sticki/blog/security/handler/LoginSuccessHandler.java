@@ -6,7 +6,6 @@ import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.pojo.vo.RestTemplate;
-import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.security.UserDetails;
 import cn.sticki.blog.util.JwtUtils;
 import cn.sticki.blog.util.ResponseUtils;
@@ -52,11 +51,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 存入redis
 		cache.put(user.getId().toString(), user);
 		log.debug("/login/login,user->{}", user);
-		UserVO userVO = UserVO.userToVO(user);
 		// 添加token
 		response.setHeader(JwtConfig.headerName, jwtUtils.createToken("id", user.getId()));
 		response.setHeader("Access-Control-Expose-Headers", JwtConfig.headerName);
-		responseUtils.objectToJson(response, new RestTemplate(userVO));
+		responseUtils.objectToJson(response, new RestTemplate(user));
 	}
 
 }

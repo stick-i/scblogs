@@ -43,7 +43,7 @@ public class JwtConfig {
 	}
 
 	public void setExpiration(Integer expiration) {
-		JwtConfig.expiration = expiration * 1000;
+		JwtConfig.expiration = expiration;
 	}
 
 	public void setAntMatchers(String antMatchers) {

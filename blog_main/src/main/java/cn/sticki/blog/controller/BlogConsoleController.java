@@ -94,15 +94,9 @@ public class BlogConsoleController {
 		// 如果是修改博客，则需要有至少一个参数
 		if (blog.getId() != null && blog.getContent() == null && blog.getTitle() == null && blog.getDescription() == null && blog.getStatus() == null)
 			return new RestTemplate(400, "参数异常");
-		// 先清空，防止恶意注入
-		// blog.setCoverImage(null);
 		// 检查封面图
 		if (fileUtils.isNotEmpty(blog.getCoverImageFile())) {
 			fileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
-			// 博客id + 作者username
-			// String url = blog.getId() + user.getUsername();
-			// blogConsoleService.uploadCoverImage(url, coverImage);
-			// blog.setCoverImage(url);
 		}
 		blog.setAuthor(user.getUsername());
 		blogConsoleService.saveBlog(blog);
