@@ -2,6 +2,7 @@ package cn.sticki.blog.security.filter;
 
 import cn.hutool.jwt.JWT;
 import cn.sticki.blog.config.JwtConfig;
+import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.util.JwtUtils;
@@ -32,7 +33,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	@Resource
 	private UserMapper userMapper;
 
-	@CreateCache(name = "login:userId:", expire = 30, timeUnit = TimeUnit.MINUTES)
+	@CreateCache(name = CacheSpace.Login_UserID, expire = 30, timeUnit = TimeUnit.MINUTES)
 	private Cache<Integer, User> cache;
 
 	/**
@@ -47,20 +48,26 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 		if (StringUtils.hasText(token)) {
 			// 验证、解析token
 			JWT jwt = jwtUtils.validateAndParse(token);
-			Object object = jwt.getPayload("id");
+			Object object = null;
+			if (jwt != null) {
+				object = jwt.getPayload("id");
+			}
 			if (object instanceof Integer) {
 				Integer id = (Integer) object;
+				log.debug("Token validate successful,userId->{}", id);
 				// 获取用户数据
 				User user = cache.get(id);
 				if (user == null) {
 					user = userMapper.selectById(id);
-					cache.put(id, user);
 				}
 				log.debug("Token validate successful,user->{}", user);
 				// TODO 获取权限信息封装到Authentication中
 				// 存入SecurityContextHolder，这里构造一个已认证的 authenticationToken ，之后就不用再认证了。
-				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				if (user != null) {
+					cache.put(id, user);
+					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
+					SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				}
 			}
 		}
 		//放行

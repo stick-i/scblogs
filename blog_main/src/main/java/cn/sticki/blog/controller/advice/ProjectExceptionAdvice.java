@@ -6,6 +6,7 @@ import cn.sticki.blog.pojo.vo.RestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,7 +40,7 @@ public class ProjectExceptionAdvice {
 		return new RestTemplate(400, "请求方式异常", null, false);
 	}
 
-	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, NullPointerException.class, TypeMismatchException.class})
+	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, NullPointerException.class, TypeMismatchException.class, BindException.class})
 	public RestTemplate doIllegalArgumentException(Exception e) {
 		log.warn("参数异常,{}", e.getMessage());
 		return new RestTemplate(400, "参数异常", null, false);

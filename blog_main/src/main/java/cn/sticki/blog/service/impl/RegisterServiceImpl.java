@@ -1,5 +1,6 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.mapper.UserSafetyMapper;
@@ -15,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,11 +41,14 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	@Resource
 	private RandomUtils randomUtils;
 
-	@CreateCache(name = "register:mailVerify:", expire = 300)
+	@CreateCache(name = CacheSpace.Register_MailVerify, expire = 300)
 	private Cache<String, String> cache;
 
 	@Value("${resource.default-avatar}")
 	private String defaultAvatar;
+
+	@Resource
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public boolean register(UserSafety userSafety) {
@@ -55,6 +60,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		if (userMapper.insert(user) > 0) {
 			log.debug("新用户注册：id->{}", user.getId());
 			userSafety.setUserId(user.getId());
+			userSafety.setPassword(passwordEncoder.encode(userSafety.getPassword()));
 			if (userSafetyMapper.insert(userSafety) > 0) return true;
 			else {
 				log.debug("注册失败，操作回滚");

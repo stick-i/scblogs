@@ -1,6 +1,7 @@
 package cn.sticki.blog.security.handler;
 
 import cn.sticki.blog.config.JwtConfig;
+import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.mapper.UserMapper;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
@@ -38,7 +39,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Resource
 	private ResponseUtils responseUtils;
 
-	@CreateCache(name = "login:userId:", expire = 30, timeUnit = TimeUnit.MINUTES)
+	@CreateCache(name = CacheSpace.Login_UserID, expire = 30, timeUnit = TimeUnit.MINUTES)
 	private Cache<String, User> cache;
 
 	/**
