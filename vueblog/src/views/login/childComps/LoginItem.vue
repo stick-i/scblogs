@@ -91,7 +91,7 @@ export default {
                   type: "success",
                 });
                 console.log(res.headers.token);
-                sessionStorage.setItem('token', res.headers.token);
+                localStorage.setItem('token', res.headers.token);
 
                 this.avatarUrl = res.data.data.avatarUrl;
                 this.bus.$emit("avatarlink", this.avatarUrl);

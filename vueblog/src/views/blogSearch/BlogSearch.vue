@@ -23,8 +23,22 @@
           </div>
         </div>
         <div class="main-rt">
-          <div class="box">box1-{{key}}</div>
-          <div class="box">box2</div>
+          <div class="box">
+            <h3>全站热搜榜</h3>
+            <ul>
+              <li><span>1</span><span></span></li>
+              <li><span>2</span><span></span></li>
+              <li><span>3</span><span></span></li>
+              <li><span>4</span><span></span></li>
+              <li><span>5</span><span></span></li>
+              <li><span>6</span><span></span></li>
+              <li><span>7</span><span></span></li>
+              <li><span>8</span><span></span></li>
+              <li><span>9</span><span></span></li>
+              <li><span>10</span><span></span></li>
+            </ul>
+          </div>
+          <div class="box">box2-{{key}}</div>
         </div>
       </div>
     </div>
@@ -132,10 +146,11 @@ export default {
 /* 右边推荐开始 */
 .main-rt .box {
   width: 338px;
-  height: 100px;
+  /*height: 100px;*/
   /*float: right;*/
   background-color: #ffffff;
   margin-bottom: 10px;
+  padding: 16px;
 }
 /* 右边推荐结束 */
 </style>

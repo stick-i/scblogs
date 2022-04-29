@@ -4,8 +4,8 @@
     <div class="blog-main">
       <div class="main">
         <!-- 左边box -->
-        <div class="main-lt">
-          <!-- 侧边盒子 -->
+        <div class="main-lt" id="div1">
+          <!-- 侧边盒子1 个人 -->
           <div class="box asideProfile">
             <!-- 个人介绍 -->
             <div class="profile-intro">
@@ -72,15 +72,54 @@
                 <dd class="font">收藏</dd>
               </dl>
             </div>
-            <div></div>
+            <!-- 关注按钮 -->
+            <div class="focus-btn">
+              <div class="btn">私信</div>
+              <div class="btn">关注</div>
+            </div>
           </div>
-          <div class="box"></div>
+          <!-- 侧边盒子2 搜索 -->
+          <div class="box asideSearchArticle">
+            <div class="search-box">
+              <input type="text" placeholder="搜博主文章" />
+              <a href="#">
+                <img src="../../assets/img/blogDetail/search.png" alt="" />
+              </a>
+            </div>
+          </div>
+          <!-- 侧边盒子3 热门文章 -->
+          <div class="box asideHotArticle">
+            <h3 class="aside-title">热门文章</h3>
+            <div class="aside-content">
+              <ul>
+                <li v-for="(item, index) in 5" :key="index">
+                  WPF使用MaterialDesign -- 好看的控件先从button开始
+                  <img src="../../assets/img/blogDetail/view.png" alt="" />
+                  <span>124</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 侧边盒子4 推荐文章 -->
+          <div class="box asideHotArticle">
+            <h3 class="aside-title">推荐文章</h3>
+            <div class="aside-content">
+              <ul>
+                <li v-for="(item, index) in 5" :key="index">
+                  WPF使用MaterialDesign -- 好看的控件先从button开始
+                  <img src="../../assets/img/blogDetail/view.png" alt="" />
+                  <span>124</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
         </div>
         <!-- 右边博客内容 -->
-        <div class="main-rt">
+        <div class="main-rt textScroll">
           <el-card class="box-card">
-            <div class="text item">
-              <h2>{{ blogDetail.title }}</h2>
+            <div class="text item" v-cloak>
+              <h1>{{ blogDetail.title }}</h1>
               <div class="article-info">
                 <img
                   class="article-type-img"
@@ -112,7 +151,7 @@
                 </div>
               </div>
               <el-divider></el-divider>
-              <div v-html="blogDetail.content"></div>
+              <div class="markdown-body" v-html="blogDetail.content"></div>
             </div>
           </el-card>
         </div>
@@ -123,6 +162,7 @@
 
 <script>
 import TopBar from "@/components/content/topbar/TopBar";
+import "github-markdown-css/github-markdown.css"
 export default {
   name: "BlogDetail",
   components: {
@@ -132,14 +172,14 @@ export default {
     return {
       blogDetail: {
         id: 1,
-        title: "标题",
-        content: "内容",
-        releaseTime: "发表时间",
+        title: "",
+        content: "",
+        releaseTime: "",
         viewNum: "",
         collectionNum: "",
       },
       profile: {
-        author: "作者",
+        author: "",
       },
     };
   },
@@ -151,7 +191,13 @@ export default {
       const blog = res.data.data;
       _this.blogDetail.id = blog.content.blogId;
       _this.blogDetail.title = blog.info.title;
-      _this.blogDetail.content = blog.content.content;
+
+      // 渲染md文档
+      var MarkdownIt = require("markdown-it")
+      var md = new MarkdownIt()
+      var result = md.render(blog.content.content)
+      _this.blogDetail.content = result;
+
       _this.blogDetail.releaseTime = blog.info.releaseTime;
       _this.blogDetail.viewNum = blog.info.viewNum;
       _this.blogDetail.collectionNum = blog.info.collectionNum;
@@ -160,20 +206,37 @@ export default {
   },
   methods: {},
 };
+
 </script>
 
 <style scoped>
+
+  [v-cloak] {
+    display: none;
+  }
+
 .text {
   font-size: 14px;
 }
 
 .item {
-  padding: 18px 0;
+  padding-bottom: 18px;
+}
+
+/*标题*/
+.item h1 {
+  font-size: 28px;
+  color: #222226;
+  font-weight: 600;
+  word-break: break-all;
+  margin-bottom: 8px;
+  margin-top: 0px;
 }
 
 .blog-main {
   width: 100%;
-  /* background-color: skyblue; */
+   background:url("../../assets/img/blogDetail/bgc.png");
+  background-size: 16px 16px;
   padding-top: 10px;
 }
 
@@ -221,7 +284,7 @@ export default {
   /* background-color: plum; */
 }
 .main-lt .box {
-  height: 300px;
+  /* height: 300px; */
   background-color: #ffffff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
@@ -303,7 +366,113 @@ export default {
   width: 268px;
   margin: auto;
 }
+/* 关注 */
+.focus-btn {
+  padding: 8px 16px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.focus-btn .btn {
+  font-size: 14px;
+  width: 126px;
+  height: 28px;
+  border-radius: 14px;
+  text-align: center;
+  color: #555666;
+  line-height: 26px;
+  border: 1px solid #ccccd8;
+  cursor: pointer;
+}
+.focus-btn .btn:hover {
+  border: 1px solid #222226;
+}
 /* 个人box1结束 */
+
+/* 搜索box2开始 */
+.asideSearchArticle {
+  padding: 0 16px;
+  overflow: hidden;
+}
+.asideSearchArticle .search-box {
+  height: 32px;
+  border-radius: 5px;
+  background: #f0f0f5;
+  margin: 8px 0;
+  position: relative;
+}
+.asideSearchArticle .search-box input {
+  font-size: 14px;
+  color: #555666;
+  display: block;
+  float: left;
+  width: 226px;
+  height: 32px;
+  padding-left: 16px;
+  border: 0;
+  border-radius: 5px;
+  background: 0 0;
+  outline: none;
+}
+.asideSearchArticle .search-box a {
+  background-color: #e8e8ee;
+  color: #ccc;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 32px;
+  height: 32px;
+  float: right;
+  line-height: 32px;
+  transition: background-color 0.5s;
+  border-radius: 0 5px 5px 0;
+}
+.asideSearchArticle .search-box a img {
+  width: 20px;
+  height: 20px;
+}
+/* 搜索box2结束 */
+
+/* 热门文章开始 */
+.asideHotArticle .aside-title {
+  position: relative;
+  padding: 16px 16px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+}
+.asideHotArticle .aside-content {
+  padding: 12px 16px 16px 16px;
+  overflow: hidden;
+}
+.asideHotArticle .aside-content ul {
+  list-style: none;
+}
+.asideHotArticle .aside-content ul li {
+  cursor: pointer;
+  display: block;
+  color: #555666;
+  margin-top: 8px;
+}
+.asideHotArticle .aside-content ul li:hover {
+  color: #fc5531;
+}
+.asideHotArticle .aside-content ul li img {
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
+  margin-right: 3px;
+  margin-left: 4px;
+}
+.asideHotArticle .aside-content ul li span {
+  font-size: 12px;
+  color: #999aaa;
+  line-height: 24px;
+}
+
+/* 热门文章结束 */
 
 /* 左边结束 */
 </style>
