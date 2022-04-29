@@ -14,6 +14,7 @@ import cn.sticki.blog.pojo.domain.BlogGeneral;
 import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.service.BlogConsoleService;
+import cn.sticki.blog.util.FileUtils;
 import cn.sticki.blog.util.OssUtils;
 import cn.sticki.blog.util.RandomUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -53,6 +54,9 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 	@Resource
 	private RandomUtils randomUtils;
 
+	@Resource
+	private FileUtils fileUtils;
+
 	@Override
 	public void saveBlog(BlogSaveDTO blogDTO) throws UserException, DAOException {
 		log.debug("saveBlog, id->{}", blogDTO.getId());
@@ -76,6 +80,17 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				log.debug("blogId is error,refuse update,id->{}", blogDTO.getId());
 				throw new UserIllegalException();
 			}
+			// todo 漏写了
+			// 更新封面图，直接通过原有的名称，进行替换(如果有)
+			if (fileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
+				if (blogSelect.getCoverImage() != null) {
+					this.uploadCoverImage(blogSelect.getCoverImage(), blogDTO.getCoverImageFile());
+				} else {
+					String imageUrl = randomUtils.uuid();
+					this.uploadCoverImage(imageUrl, blogDTO.getCoverImageFile());
+					blog.setCoverImage(imageUrl);
+				}
+			}
 			// 身份核实完毕，可以更新数据库，设置条件
 			if (blogDTO.getStatus() != null || blogDTO.getDescription() != null || blogDTO.getTitle() != null) {
 				LambdaUpdateWrapper<Blog> blogUW = new LambdaUpdateWrapper<>();
@@ -83,6 +98,7 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				blogUW.set(blogDTO.getStatus() != null, Blog::getStatus, blogDTO.getStatus());
 				blogUW.set(blogDTO.getDescription() != null, Blog::getDescription, blogDTO.getDescription());
 				blogUW.set(blogDTO.getTitle() != null, Blog::getTitle, blogDTO.getTitle());
+				blogUW.set(blogDTO.getCoverImageFile() != null, Blog::getCoverImage, blogDTO.getCoverImageFile());
 				blogMapper.update(blog, blogUW);
 			}
 			if (blogDTO.getContent() != null) {
@@ -91,19 +107,17 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				blogContentUW.set(BlogContent::getContent, blogDTO.getContent());
 				blogContentMapper.update(blogContent, blogContentUW);
 			}
-			// 更新头像，直接通过原有的名称，进行替换
-			if (!blogDTO.getCoverImage().isEmpty()) {
-				this.uploadCoverImage(blogSelect.getCoverImage(), blogDTO.getCoverImage());
-			}
 			return;
 		}
 		// 博客不存在，此处应新建博客，并保存
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		blog.setCreateTime(timestamp);
 		// 上传封面图
-		String imageUrl = randomUtils.uuid();
-		this.uploadCoverImage(imageUrl, blogDTO.getCoverImage());
-		blog.setCoverImage(imageUrl);
+		if (fileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
+			String imageUrl = randomUtils.uuid();
+			this.uploadCoverImage(imageUrl, blogDTO.getCoverImageFile());
+			blog.setCoverImage(imageUrl);
+		}
 		// 添加发表时间，若未发表则不添加
 		if (BlogStatusType.DRAFT.getValue().equals(blogDTO.getStatus())) blog.setReleaseTime(timestamp);
 		// 插入数据库

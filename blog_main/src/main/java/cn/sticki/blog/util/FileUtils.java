@@ -113,4 +113,13 @@ public class FileUtils {
 		throw new FileTypeException();
 	}
 
+	/**
+	 * 判断文件是否不为空，不为空返回true
+	 * <p>
+	 * 如果为null或内容为empty 都返回false
+	 */
+	public boolean isNotEmpty(MultipartFile file) {
+		return (file != null && !file.isEmpty());
+	}
+
 }

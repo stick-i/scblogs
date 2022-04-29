@@ -125,12 +125,12 @@
               <router-link to="/login"><a>登录/注册</a></router-link>
             </div>
 
-            <!-- 显示头像 下拉菜单 -->
+            <!-- 显示头像 下拉菜单开始 -->
             <div class="test-div csdn-toolbar-fl">
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link" >
                   <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
-                    <img :src="avatarUrl" alt="头像" class="test-img" style="border: 1px solid #e8e8ed" />
+                    <img :src="avatarUrl" alt="" class="test-img" style="border: 1px solid #e8e8ed" />
                   </a>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -141,6 +141,7 @@
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
+            <!-- 显示头像 下拉菜单结束 -->
 
             <div class="toolbar-btn toolbar-btn-vip csdn-toolbar-fl">
               <a
@@ -271,7 +272,7 @@ export default {
   data() {
     return {
       // 头像
-      avatarUrl: "",
+      avatarUrl: require("../../../assets/img/home/default_avatar.jpg"),
       isShowAvatar: false,
       // 搜索内容
       key: "",
@@ -354,6 +355,7 @@ export default {
         });
       } else {
         this.$router.push({ path: "/blog/add" });
+        // window.open("/blog/add", "_blank");
       }
     },
   },

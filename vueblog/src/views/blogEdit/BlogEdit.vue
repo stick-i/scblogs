@@ -21,7 +21,7 @@
           </div>
           <div class="bar-img">
             <a href="#">
-              <img :src="avatarUrl" alt="头像" />
+              <img :src="avatarUrl" alt="" style="border: 1px solid #e8e8ed" />
             </a>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default {
       this.$axios
         .post("/blog-console/blog",
           qs.stringify(this.ruleForm),
-          { headers: { 'token': sessionStorage.getItem("token") } }
+          { headers: { 'token': localStorage.getItem("token") } }
         ).then( res =>{
         console.log(res)
         if (res.data.code == 200 && res.data.status == true) {
