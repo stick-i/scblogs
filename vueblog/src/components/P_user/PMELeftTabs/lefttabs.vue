@@ -8,7 +8,7 @@
                 <img class="img-hover" :src="hoverCamera" alt="">
               </div>
               <div class="name">
-                <span>{{this.$parent.userMessage.username}}</span>
+                <span>{{this.$parent.userMessage.nickname}}</span>
               </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <div class="rightContentB">
         <div class="rightContentB-1">
             基本信息
-            <button class="button" @click="EditMessage()">编辑</button>
+            <button v-if="buttonSeen" class="button" @click="EditMessage()">编辑</button>
         </div>
         <div class="rightContentB-2">
           <div class="rightContentB-2-form">
@@ -83,14 +83,15 @@ export default {
     return {
       username:"默认值没有",
       mymoney:0,
+      buttonSeen:true,
       formchange:true,
       hoverCamera:"https://profile.csdnimg.cn/C/D/1/1_m0_46681545",
       // 获取图片弹窗显示
       dialogVisible: false,
       userMessage:{},
       form:{
-          username:"勇敢牛牛不怕困难",
-          nickname:"超级飞侠S",
+          username:"默认参数L",
+          nickname:"默认参数L",
           // 获取的个人头像照片地址
           avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
           registerTime:""
@@ -102,28 +103,24 @@ export default {
       }
     };
   },
-  mounted() {
+  created() {
       let pMountedTimer = window.setInterval(() => {
           if (window.parentMounted ) {
             window.clearInterval(pMountedTimer)
             // 下面就可以写子组件想在mounted时执行代码（此时父组件的mounted已经执行完毕）
             this.GetData()
-        // this.initData()
           }
-      }, 500)
+      },100)
   },
   methods:{
     EditMessage(){
         console.log("对数据进行编辑")
+        this.buttonSeen=false
         this.formchange=false
     },
     // 请求数据放入本地浏览器
     GetData(){
-        this.form=this.$parent.userMessage
-        console.log("form赋值",this.form)
-        console.log("form赋值",this.$parent.userMessage)
-        // console.log("获取浏览器全局数据",this.$parent.userMessage)
-        console.log("修改页面获取浏览器全局数据",this.form)
+        this.form= JSON.parse(JSON.stringify(this.$parent.userMessage));
         },
     ShowChose(){
       //弹出选项框
@@ -157,8 +154,12 @@ export default {
               message: '用户昵称修改成功',
               type: 'success'
             });
-        // 调用父组件函数函数重新请求用户数据并更新至本地浏览器
             this.$parent.GetData()
+            this.formchange=true
+            this.buttonSeen=true
+        //直接更新本地数据并保存至浏览器
+            // this.userMessage.nickname=this.form.nickname
+            // localStorage.setItem('userMessage',JSON.stringify(this.form))
           }else{
              this.$message({
               message: '修改失败',
@@ -168,8 +169,9 @@ export default {
         })
       },
       cancel(){
-        this.form.nickname=this.userMessage.nickname
+        // this.form.nickname=this.userMessage.nickname
         this.formchange=true
+        this.buttonSeen=true
         console.log("点击了取消按钮")
       }
   }

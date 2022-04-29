@@ -52,9 +52,12 @@
       <div class="changepasscontent">
           <div class="changepassB">
               <span @click="Back()" >账号设置</span>/
-              <span>修改密码</span>
+              <span @click="changePassSeen=true">修改密码</span>
           </div>
-          <div class="changepassA">
+          <div v-if="!changePassSeen" class="changepassC">
+            账号修改完成！
+          </div>
+          <div v-if="changePassSeen" class="changepassA">
               <el-form :model="ruleForm2"
               status-icon
               :rules="rules2"
@@ -75,6 +78,7 @@
                     <el-button @click="resetForm('ruleForm2')">重置</el-button>
                 </el-form-item>
                </el-form>
+               <div class="errorTip" v-if="tipSeen">你小子原密码输入错了,是不是想盗号,报警抓你丫的</div>
           </div>
       </div>
   </div>
@@ -83,7 +87,7 @@
       <div class="deletecontent">
           <div class="changepassB">
               <span @click="Back()" >账号设置</span>/
-              <span >修改密码</span>
+              <span  >修改密码</span>
           </div>
           <div class="deleteaccountA">
                 你惨了放学别走！有种填密码
@@ -149,6 +153,10 @@ export default {
     changepassword:false,
     deleteaccount:false,
     contentSeen:true,
+    // 用户修改完成没有
+    changePassSeen:true,
+    // 改昵称时返回错误弹出提示
+    tipSeen:false,
     ruleForm2: {
         oldpass: '',
         pass: '',
@@ -185,16 +193,23 @@ export default {
             formdata.append("newPassword",this.ruleForm2.checkPass)
             console.log("formdata",formdata)
             this.$axios.put('/user/password',formdata,this.config).then(res=>{
-                if(res.data.data.status==true){
+              console.log("修改昵称接口的返回值",res)
+                if(res.data.status==true){
                      this.$message({
                             message: '密码修改成功',
                             type: 'success'
                         });
+                        // 重置表单
+                      this.resetForm('ruleForm2')
+                      this.changePassSeen=false
+                      this.tipSeen=false
                 }else{
                       this.$message({
                             message: '密码修改失败',
                             type:'error'
                         });
+                      this.tipSeen=true
+                      this.resetForm('ruleForm2')
                 }
             })
           } else {
@@ -219,6 +234,10 @@ export default {
     ChangePassword(){
         this.contentSeen=false
         this.changepassword=true
+        // 点击成功后的页面隐藏
+        this.changePassSeen=true
+        // 出错后的提示语隐藏
+        this.tipSeen=false
     },
     // 跳转至注销账号
     DeleteAccount(){
@@ -247,6 +266,7 @@ export default {
                             message: '注销失败',
                             type:'error'
                         });
+                        // 注销之后退出账号
                 }
             })
           } else {
@@ -343,6 +363,22 @@ export default {
     width: 50%;
     height: calc(100%- 50px);
     margin:100px auto;
+}
+.changepass .changepasscontent .changepassA .errorTip{
+    width: 100%;
+    height: 20%;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    color: rgb(234, 50, 50);
+}
+.changepass .changepasscontent .changepassC{
+    width: 50%;
+    height: calc(100%- 50px);
+    margin:100px auto;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
 }
 .deleteAccount{
     width: 100%;

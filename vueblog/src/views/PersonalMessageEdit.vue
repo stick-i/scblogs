@@ -41,12 +41,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="contentright">
+                    
+                    <div ref="tabs1" class="contentright">
                         <TabsContent v-if="leftNavigation[0].chose"></TabsContent>
+                        <!-- && content1Seens -->
                     </div>
-                    <!-- <div class="contentright">
+                    <div ref="tabs2" class="contentright">
                         <TabsContent2 v-if="leftNavigation[1].chose"></TabsContent2>
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <!-- 页面底部视图 -->
@@ -74,47 +76,53 @@ export default{
             ,{name:"我的收藏",chose:false},{name:"浏览历史",chose:false},
             {name:"内容管理",chose:false}],
             userMessage:{
-                username:"勇敢牛牛不怕困难",
-                nickname:"超级飞侠",   
+                username:"默认参数P",
+                nickname:"默认参数P",   
                 // 获取的个人头像照片地址
                 avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
                 registerTime:""
             },
             config:{
-                headers:{
+                headers:{   
                     'token':localStorage.getItem('token')
                 }
-            }
+            },
+            // 用户数据加载完成之后显示
+            content1Seen:false,
         }
     },
-    async mounted() {
+    async created() {
         await this.GetData()
-        window.parentMounted = this._isMounted	// _isMounted是当前实例mouned()是否执行 此时为true
+        window.parentMounted = true	// _isMounted是当前实例mouned()是否执行 此时为true
+        // 使得账号设置模块消失,模块选择可以变动
+        this.$refs.tabs2.style.display="none"
     },
-    beforeMount(){
-        window.parentMounted = this._isMounted
+    beforeCreate(){
+        window.parentMounted = this._isMounted  // _isMounted是当前实例mouned()是否执行 此时为false
     },
     methods:{
-        GetData(){
-            this.$axios.get('/user',this.config).then((res)=>{
-                console.log("接口返回的用户公开信息数据",res.data)
+       async GetData(){
+           await this.$axios.get('/user',this.config).then((res)=>{
                 localStorage.setItem('userMessage',JSON.stringify(res.data.data))
             }).then(res=>{
                 this.userMessage=JSON.parse(localStorage.getItem('userMessage'))
-                console.log("我的本地数据",this.userMessage)
-            }).then(res=>{
-                this.userMessage=JSON.parse(localStorage.getItem('userMessage'))
-                console.log("获取个人信息页面得到的个人信息",this.userMessage)
+                this.content1Seen=true
             })
         },
         ChoseModel(index){
             // 选择模块
-            console.log("模块选择成功")
             for(let i=0;i<this.leftNavigation.length;i++){
                 this.leftNavigation[i].chose=false
             }
             this.leftNavigation[index].chose=true
             // this.$refs.upload.submit();
+            if(index==0){
+                this.$refs.tabs1.style.display="block";
+                this.$refs.tabs2.style.display="none"
+            }else{
+                this.$refs.tabs2.style.display="block"
+                this.$refs.tabs1.style.display="none"
+            }
             if(index==6){
                 this.$router.push('/ContentManagement')
             }
