@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.net.ConnectException;
+
 // 作为SpringMVC的异常处理器
 @Slf4j
 @RestControllerAdvice
@@ -64,6 +66,12 @@ public class ProjectExceptionAdvice {
 	public RestTemplate doNoHandlerFoundException(Exception e) {
 		log.warn("页面不存在,{}", e.getMessage());
 		return new RestTemplate(404, "操作异常", null, false);
+	}
+
+	@ExceptionHandler(ConnectException.class)
+	public RestTemplate doConnectException(ConnectException e) {
+		log.warn("服务连接失败,{}", e.getMessage());
+		return new RestTemplate(501, "服务器连接故障，请联系管理员", null, false);
 	}
 
 }

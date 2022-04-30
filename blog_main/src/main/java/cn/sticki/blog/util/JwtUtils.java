@@ -15,6 +15,8 @@ import java.util.Date;
 @Service
 public class JwtUtils {
 
+	private final Integer expiration = JwtConfig.expiration;
+
 	/**
 	 * 生成jwtToken，有效时间默认为 1天
 	 *
@@ -22,11 +24,11 @@ public class JwtUtils {
 	 * @return token
 	 */
 	public String createToken(Object o) {
-		return createToken("data", o, 86400);
+		return createToken("data", o, expiration);
 	}
 
 	public String createToken(String name, Object o) {
-		return createToken(name, o, 86400);
+		return createToken(name, o, expiration);
 	}
 
 	/**

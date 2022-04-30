@@ -1,5 +1,6 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.config.ResourcePath;
 import cn.sticki.blog.enumeration.type.BlogStatusType;
 import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.exception.systemException.DAOException;
@@ -18,12 +19,10 @@ import cn.sticki.blog.util.FileUtils;
 import cn.sticki.blog.util.OssUtils;
 import cn.sticki.blog.util.RandomUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +44,7 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
 
-	@Value("${minio.resource-path.blog-cover-image}")
-	private String coverImagePath;
+	private final String coverImagePath = ResourcePath.blogCoverImage;
 
 	@Resource
 	private OssUtils ossUtils;
@@ -80,6 +78,8 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				log.debug("blogId is error,refuse update,id->{}", blogDTO.getId());
 				throw new UserIllegalException();
 			}
+			blog.setId(blogDTO.getId());
+			blogContent.setBlogId(blogDTO.getId());
 			// todo 漏写了
 			// 更新封面图，直接通过原有的名称，进行替换(如果有)
 			if (fileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
@@ -92,20 +92,12 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 				}
 			}
 			// 身份核实完毕，可以更新数据库，设置条件
-			if (blogDTO.getStatus() != null || blogDTO.getDescription() != null || blogDTO.getTitle() != null) {
-				LambdaUpdateWrapper<Blog> blogUW = new LambdaUpdateWrapper<>();
-				blogUW.eq(Blog::getId, blogDTO.getId());
-				blogUW.set(blogDTO.getStatus() != null, Blog::getStatus, blogDTO.getStatus());
-				blogUW.set(blogDTO.getDescription() != null, Blog::getDescription, blogDTO.getDescription());
-				blogUW.set(blogDTO.getTitle() != null, Blog::getTitle, blogDTO.getTitle());
-				blogUW.set(blogDTO.getCoverImageFile() != null, Blog::getCoverImage, blogDTO.getCoverImageFile());
-				blogMapper.update(blog, blogUW);
+			if (blog.getStatus() != null || blog.getDescription() != null || blog.getTitle() != null || blog.getCoverImage() != null) {
+				blog.setAuthor(null); // 作者不更新
+				blogMapper.updateById(blog);
 			}
 			if (blogDTO.getContent() != null) {
-				LambdaUpdateWrapper<BlogContent> blogContentUW = new LambdaUpdateWrapper<>();
-				blogContentUW.eq(BlogContent::getBlogId, blogDTO.getId());
-				blogContentUW.set(BlogContent::getContent, blogDTO.getContent());
-				blogContentMapper.update(blogContent, blogContentUW);
+				blogContentMapper.updateById(blogContent);
 			}
 			return;
 		}
@@ -183,9 +175,9 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 		try (
 				InputStream inputStream = coverImage.getInputStream()
 		) {
-			// 上传新头像文件
+			// 上传文件
 			ossUtils.upload(
-					coverImagePath + name,  // 对用户头像进行保存
+					coverImagePath + name,
 					inputStream,
 					coverImage.getSize(),
 					-1,

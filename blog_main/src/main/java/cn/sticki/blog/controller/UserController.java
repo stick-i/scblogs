@@ -6,7 +6,6 @@ import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
-import cn.sticki.blog.pojo.vo.UserVO;
 import cn.sticki.blog.service.UserService;
 import cn.sticki.blog.util.FileUtils;
 import com.alicp.jetcache.Cache;
@@ -52,7 +51,7 @@ public class UserController {
 			getUser = userService.getByUsername(username);
 			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
 		}
-		return new RestTemplate(UserVO.userToVO(getUser));
+		return new RestTemplate(new User(getUser));
 	}
 
 	/**
@@ -62,9 +61,9 @@ public class UserController {
 	 */
 	@PutMapping("/nickname")
 	public RestTemplate updateNickname(@NotNull String nickname) {
-		user.setNickname(nickname); // 由于user是从session中注入进来的，所以更新user的时候，会自动更新session，无需将更新后的user重新放到Session中
+		user.setNickname(nickname);
 		if (userService.updateNickname(user.getId(), user.getNickname())) {
-			// session.setAttribute("user", user);
+			cache.put(user.getId(), new User(user));
 			return new RestTemplate(true);
 		}
 		return new RestTemplate(false);
