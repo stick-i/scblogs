@@ -133,6 +133,7 @@ export default {
     await this.$axios
         .post("/login/login", qs.stringify(params))
         .then((res) => {
+          console.log("登录成功",res)
           // 将token设置到本地浏览器中
           window.localStorage.setItem("token", res.headers.token);
           window.localStorage.setItem(
