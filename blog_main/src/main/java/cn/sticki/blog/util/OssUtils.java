@@ -22,8 +22,6 @@ public class OssUtils {
 	@Resource
 	private MinioClient minioClient;
 
-	private final String bucketName = MinioConfig.bucketName;
-
 	/**
 	 * 判断bucket是否存在
 	 */
@@ -77,7 +75,7 @@ public class OssUtils {
 		try {
 			minioClient.putObject(PutObjectArgs
 					.builder()
-					.bucket(bucketName)
+					.bucket(MinioConfig.bucketName)
 					.object(objectName)
 					// 文件大小和分片大小，填-1默认为5Mib
 					.stream(inputStream, objectSize, partSize)
@@ -131,7 +129,7 @@ public class OssUtils {
 		try {
 			return minioClient.getObject(GetObjectArgs
 					.builder()
-					.bucket(bucketName)
+					.bucket(MinioConfig.bucketName)
 					.object(fileName)
 					.build());
 		} catch (Exception e) {
@@ -143,7 +141,7 @@ public class OssUtils {
 	public void removeFile(String fileName) throws MinioException {
 		try {
 			minioClient.removeObject(
-					RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
+					RemoveObjectArgs.builder().bucket(MinioConfig.bucketName).object(fileName).build()
 			);
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -153,7 +151,7 @@ public class OssUtils {
 
 	public void getObjectList()
 			throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
+		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(MinioConfig.bucketName).build());
 		for (Result<Item> result : results) {
 			Item item = result.get();
 			System.out.println(item.objectName());

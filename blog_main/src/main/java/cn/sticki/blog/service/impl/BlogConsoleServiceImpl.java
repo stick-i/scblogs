@@ -44,8 +44,6 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
 
-	private final String coverImagePath = ResourcePath.blogCoverImage;
-
 	@Resource
 	private OssUtils ossUtils;
 
@@ -177,7 +175,7 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 		) {
 			// 上传文件
 			ossUtils.upload(
-					coverImagePath + name,
+					ResourcePath.blogCoverImage + name,
 					inputStream,
 					coverImage.getSize(),
 					-1,

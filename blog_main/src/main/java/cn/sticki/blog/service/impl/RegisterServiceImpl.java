@@ -44,8 +44,6 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	@CreateCache(name = CacheSpace.Register_MailVerify, expire = 300)
 	private Cache<String, String> cache;
 
-	private final String defaultAvatar = ResourcePath.defaultAvatar;
-
 	@Resource
 	private PasswordEncoder passwordEncoder;
 
@@ -54,7 +52,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		User user = new User();
 		user.setUsername(userSafety.getUsername());
 		user.setNickname(userSafety.getUsername());
-		user.setAvatarUrl(defaultAvatar);
+		user.setAvatarUrl(ResourcePath.defaultAvatar);
 		user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 		if (userMapper.insert(user) > 0) {
 			log.debug("新用户注册：id->{}", user.getId());
