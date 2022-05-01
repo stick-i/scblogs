@@ -1,9 +1,11 @@
 package cn.sticki.blog.controller;
 
 import cn.sticki.blog.enumeration.CacheSpace;
+import cn.sticki.blog.exception.UserException;
 import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.RegisterService;
+import cn.sticki.blog.service.UserService;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,9 @@ public class RegisterController {
 
 	@CreateCache(name = CacheSpace.Register_SendMailTime, expire = 300)
 	private Cache<String, Long> cache;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 发送邮箱验证码请求
@@ -53,7 +58,9 @@ public class RegisterController {
 	 * @param mailVerify 接收到的验证码
 	 */
 	@PostMapping("/register")
-	public RestTemplate register(UserSafety userSafety, @NotNull String mailVerify) {
+	public RestTemplate register(UserSafety userSafety, @NotNull String mailVerify) throws UserException {
+		if (userService.getByUsername(userSafety.getUsername()) != null)
+			throw new UserException("用户名已存在");
 		if (!registerService.checkMailVerify(userSafety.getMail(), mailVerify)) {
 			return new RestTemplate(false, "验证码错误");
 		}

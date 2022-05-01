@@ -1,12 +1,10 @@
 package cn.sticki.blog.controller;
 
 import cn.sticki.blog.pojo.domain.BlogBasic;
-import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.service.BlogBasicService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/blog")
 public class BlogController {
-
-	@Autowired
-	private User user;
 
 	@Resource
 	private BlogBasicService blogBasicService;

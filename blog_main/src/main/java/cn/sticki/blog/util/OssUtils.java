@@ -1,11 +1,11 @@
 package cn.sticki.blog.util;
 
+import cn.sticki.blog.config.MinioConfig;
 import cn.sticki.blog.exception.systemException.MinioException;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,9 +21,6 @@ public class OssUtils {
 
 	@Resource
 	private MinioClient minioClient;
-
-	@Value("${minio.bucket-name}")
-	private String bucketName;
 
 	/**
 	 * 判断bucket是否存在
@@ -78,7 +75,7 @@ public class OssUtils {
 		try {
 			minioClient.putObject(PutObjectArgs
 					.builder()
-					.bucket(bucketName)
+					.bucket(MinioConfig.bucketName)
 					.object(objectName)
 					// 文件大小和分片大小，填-1默认为5Mib
 					.stream(inputStream, objectSize, partSize)
@@ -132,7 +129,7 @@ public class OssUtils {
 		try {
 			return minioClient.getObject(GetObjectArgs
 					.builder()
-					.bucket(bucketName)
+					.bucket(MinioConfig.bucketName)
 					.object(fileName)
 					.build());
 		} catch (Exception e) {
@@ -144,7 +141,7 @@ public class OssUtils {
 	public void removeFile(String fileName) throws MinioException {
 		try {
 			minioClient.removeObject(
-					RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
+					RemoveObjectArgs.builder().bucket(MinioConfig.bucketName).object(fileName).build()
 			);
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -154,7 +151,7 @@ public class OssUtils {
 
 	public void getObjectList()
 			throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
+		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(MinioConfig.bucketName).build());
 		for (Result<Item> result : results) {
 			Item item = result.get();
 			System.out.println(item.objectName());

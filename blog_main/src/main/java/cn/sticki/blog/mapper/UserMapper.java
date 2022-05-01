@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-	@Select("select * from user where username = #{username} ;")
+	@Select("select * from user_vo where username = #{username};")
 	User selectByUsername(String username);
 
 	@Delete("delete from user where username = #{username} ;")
@@ -23,5 +23,7 @@ public interface UserMapper extends BaseMapper<User> {
 	int updateNicknameById(Integer id, String nickname);
 
 	int updateUserById(User user);
+
+	int insert(User user);
 
 }

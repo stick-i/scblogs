@@ -1,11 +1,9 @@
 package cn.sticki.blog.config;
 
-import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Getter
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "security.jwt")
 public class JwtConfig {
 
@@ -43,7 +41,7 @@ public class JwtConfig {
 	}
 
 	public void setExpiration(Integer expiration) {
-		JwtConfig.expiration = expiration * 1000;
+		JwtConfig.expiration = expiration;
 	}
 
 	public void setAntMatchers(String antMatchers) {

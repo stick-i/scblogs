@@ -1,5 +1,6 @@
 package cn.sticki.blog.service.impl;
 
+import cn.sticki.blog.config.ResourcePath;
 import cn.sticki.blog.enumeration.CacheSpace;
 import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
@@ -9,7 +10,6 @@ import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.domain.UserSafety;
 import cn.sticki.blog.pojo.dto.MailDTO;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.util.FileUtils;
 import cn.sticki.blog.util.MailUtils;
 import cn.sticki.blog.util.OssUtils;
 import cn.sticki.blog.util.RandomUtils;
@@ -17,7 +17,6 @@ import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,15 +43,6 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private MailUtils mailUtils;
-
-	@Resource
-	private FileUtils fileUtils;
-
-	@Value("${minio.resource-path.avatar}")
-	private String avatarPath;
-
-	@Value("${resource.default-avatar}")
-	private String defaultAvatar;
 
 	@Resource
 	private PasswordEncoder passwordEncoder;
@@ -88,26 +78,31 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateAvatar(User user, MultipartFile avatarFile) throws MinioException, IOException {
 		log.debug("updateAvatar,username->{}, fileName->{}", user.getUsername(), avatarFile.getOriginalFilename());
-		// 判断是否为默认头像
-		if (defaultAvatar.equals(user.getAvatar())) {
+		// 判断是否为默认头像，defaultAvatar中只有文件名，而user.getAvatar()为完整的链接，故使用endWith进行判断
+		// 默认头像才需要更新数据库，非默认头像无需更新数据库 todo 可能有bug
+		int index = user.getAvatarUrl().lastIndexOf("/") + 1;
+		String fileName = user.getAvatarUrl().substring(index);
+		String filePath = user.getAvatarUrl().substring(0, index);
+		if (ResourcePath.defaultAvatar.equals(fileName)) {
 			// 拼接文件名的字符串，使用 userid+username 的格式来命名文件
 			String url = user.getId() + "_" + user.getUsername();
 			userMapper.updateAvatarById(user.getId(), url);// 更新数据库
-			user.setAvatar(url);
+			fileName = url;
 		}
-		log.debug("avatarPath + user.getAvatar() -> {}", avatarPath + user.getAvatar());
+		log.debug("user.getAvatar() -> {}", fileName);
 		try (
 				InputStream inputStream = avatarFile.getInputStream()
 		) {
 			// 上传新头像文件
 			ossUtils.upload(
-					avatarPath + user.getAvatar(),  // 对用户头像进行保存
+					ResourcePath.avatar + fileName,  // 对用户头像进行保存
 					inputStream,
 					avatarFile.getSize(),
 					-1,
 					avatarFile.getContentType()
 			);
 		}
+		user.setAvatarUrl(filePath + fileName);
 	}
 
 	@Override
