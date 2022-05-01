@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{key}}
     <!-- 文章item -->
     <div class="list-item" v-for="(item, index) in blogSearchList" :key="index">
       <div class="item">
@@ -49,25 +50,46 @@
             <div class="bdc-rt">
               <!-- 封面 -->
               <div class="img-slider">
-                <img src="../../../assets/img/home/003.jpg" alt="" />
+                <img :src="item.coverImage" alt="" />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- 下拉刷新开始 -->
+    <infinite-loading
+      spinner="spiral"
+      @infinite="infiniteHandler"
+      :distance="200"
+      class="infinite-loading-wrap"
+    >
+      <div slot="spinner">Loading...</div>
+      <div slot="no-more">No more Data</div>
+      <div slot="no-results">No results Data</div>
+      <div slot="error" slot-scope="{ trigger }">
+        Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
+      </div>
+    </infinite-loading>
+    <!-- 下拉刷新开始 -->
   </div>
 </template>
 
 <script>
+  import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: "",
   props: ["searchkey", "blogsearchlist"], //接收searchkey值
   data() {
     return {
+      page:1,
       key: this.searchkey,
-      blogSearchList: [],
+      // blogSearchList: [],
+      blogSearchList: this.blogsearchlist,
     };
+  },
+  components:{
+    InfiniteLoading
   },
   watch: {
     searchkey(a, b) {
@@ -79,14 +101,28 @@ export default {
     },
   },
   created() {
-    this.goApi();
+    // this.goApi();
   },
   methods: {
-    goApi() {
-      this.$axios.get("/blog/search?key=" + this.key).then((res) => {
-        console.log("数据第一次加载");
-        this.blogSearchList = res.data.data;
-      });
+    // goApi() {
+    //   this.$axios.get("/blog/search?key=" + this.key).then((res) => {
+    //     console.log("数据第一次加载", res);
+    //     this.blogSearchList = res.data.data;
+    //   });
+    // },
+    infiniteHandler($state) {
+      this.$axios
+        .get("/blog/search",{params:{key:this.key,page:this.page}})
+        .then((res) => {
+          if(res.data.data.length) {
+            this.page +=1;  // 下一页
+            this.blogSearchList = this.blogSearchList.concat(res.data.data);
+            console.log(this.blogSearchList)
+            $state.loaded();
+          }else {
+            $state.complete();
+          }
+        })
     },
   },
 };
@@ -170,7 +206,6 @@ export default {
   background-color: skyblue;
 }
 .item-bd .item-bd_cont .bdc-rt .img-slider {
-  /* cursor: zoom-in; */
   width: 100%;
   height: 100%;
 }
@@ -181,6 +216,8 @@ export default {
   object-fit: cover;
   max-height: none;
   margin: 0 auto;
+  background-image: url("../../../assets/img/home/003.jpg");
+  background-size: cover;
 }
 
 /* item结束 */

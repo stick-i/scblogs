@@ -328,20 +328,27 @@ export default {
       }
       if (command == "b") {
         console.log("退出登录");
-        this.$axios.get("/login/logout").then((res) => {
-          console.log(res);
-          this.$message({
-            showClose: true,
-            message: "已退出登录",
-            type: "success",
-          });
-
-          // 清除状态保持
-          window.localStorage.clear();
-          window.sessionStorage.clear();
-          // 状态保持清除后刷新页面
-          window.location.reload();
+        this.$message({
+          showClose: true,
+          message: "已退出登录",
+          type: "success",
         });
+        // 清除状态保持
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+        // 状态保持清除后刷新页面
+        window.location.reload();
+
+        // this.$axios.get("/login/logout").then((res) => {
+        //   console.log(res);
+        //   this.$message({
+        //     showClose: true,
+        //     message: "已退出登录",
+        //     type: "success",
+        //   });
+        //
+        //
+        // });
       }
     },
     // 点击跳转发布文章页面

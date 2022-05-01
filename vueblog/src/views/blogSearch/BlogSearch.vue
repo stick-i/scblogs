@@ -15,30 +15,35 @@
       </div>
       <!-- 搜索展示 -->
       <div class="main">
+        <!-- 搜索结果 -->
         <div class="main-lt">
           <div class="list-container">
 
-            <BlogSearchArticleItem :searchkey="key" :blogsearchlist="blogSearchList"/>
+            <BlogSearchArticleItem
+              :searchkey="key"
+              :blogsearchlist="blogSearchList"
+            />
 
           </div>
         </div>
+
         <div class="main-rt">
-          <div class="box">
+          <div class="box related-list">
             <h3>全站热搜榜</h3>
             <ul>
-              <li><span>1</span><span></span></li>
-              <li><span>2</span><span></span></li>
-              <li><span>3</span><span></span></li>
-              <li><span>4</span><span></span></li>
-              <li><span>5</span><span></span></li>
-              <li><span>6</span><span></span></li>
-              <li><span>7</span><span></span></li>
-              <li><span>8</span><span></span></li>
-              <li><span>9</span><span></span></li>
-              <li><span>10</span><span></span></li>
+              <li><span>1</span><a>计算机毕业设计</a></li>
+              <li><span>2</span><a>计算机毕业设计</a></li>
+              <li><span>3</span><a>计算机毕业设计</a></li>
+              <li><span>4</span><a>计算机毕业设计</a></li>
+              <li><span>5</span><a>计算机毕业设计</a></li>
+              <li><span>6</span><a>计算机毕业设计</a></li>
+              <li><span>7</span><a>计算机毕业设计</a></li>
+              <li><span>8</span><a>计算机毕业设计</a></li>
+              <li><span>9</span><a>计算机毕业设计</a></li>
+              <li><span>10</span><a>计算机毕业设计</a></li>
             </ul>
           </div>
-          <div class="box">box2-{{key}}</div>
+          <div class="box">关于我们-{{ key }}</div>
         </div>
       </div>
     </div>
@@ -49,10 +54,13 @@
 import TopBar from "@/components/content/topbar/TopBar";
 import BlogSearchArticleItem from "@/views/blogSearch/childComps/BlogSearchArticleItem";
 
+import InfiniteLoading from 'vue-infinite-loading'
+
 export default {
   components: {
     TopBar,
-    BlogSearchArticleItem
+    BlogSearchArticleItem,
+    InfiniteLoading
   },
   data() {
     return {
@@ -60,11 +68,19 @@ export default {
       blogSearchList: [],
     };
   },
+  watch:{
+    key(a, b) {
+      //a是value的新值，b是旧值
+      this.key = a;
+    },
+  },
   methods: {
     // 搜索博客
     searchBlogs() {
+      // 保存key
+      this.$store.commit('copySearchKey',this.key)
       this.$axios.get("/blog/search?key=" + this.key).then((res) => {
-        console.log("加载后再次点击搜索",res);
+        console.log("加载后再次点击搜索", res);
         this.blogSearchList = res.data.data;
       });
     },
@@ -146,11 +162,56 @@ export default {
 /* 右边推荐开始 */
 .main-rt .box {
   width: 338px;
-  /*height: 100px;*/
-  /*float: right;*/
   background-color: #ffffff;
   margin-bottom: 10px;
-  padding: 16px;
+  /* padding: 0 16px; */
 }
+
+/* 全站热搜榜开始 */
+.related-list h3 {
+  font-size: 18px;
+  height: 48px;
+  font-weight: 400;
+  /* line-height: 48px; */
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f2;
+}
+.related-list ul {
+  padding: 16px;
+  list-style: none;
+}
+.related-list ul li {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.related-list ul li span {
+  flex: 0 0 16px;
+  text-align: center;
+  font-size: 14px;
+  margin-right: 8px;
+}
+.related-list ul li:nth-child(1) {
+  color: #fe2d46;
+}
+.related-list ul li:nth-child(2) {
+  color: #f60;
+}
+.related-list ul li:nth-child(3) {
+  color: #faa90e;
+}
+.related-list ul li a {
+  display: block;
+  flex: 1;
+  color: #222226;
+  cursor: pointer;
+}
+.related-list ul li a:hover {
+  color: #fc5531;
+}
+/* 全站热搜榜结束 */
+
 /* 右边推荐结束 */
 </style>

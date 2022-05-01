@@ -5,48 +5,49 @@
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
+        <div class="small-box"></div>
         <div class="nav-content">
           <ul>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6</a></li>
-            <li><a href="#">7</a></li>
-            <li><a href="#">8</a></li>
-            <li><a href="#">9</a></li>
-            <li><a href="#">10</a></li>
-            <li><a href="#">11</a></li>
-            <li><a href="#">12</a></li>
-            <li><a href="#">13</a></li>
-            <li><a href="#">14</a></li>
-            <li><a href="#">15</a></li>
-            <li><a href="#">16</a></li>
-            <li><a href="#">17</a></li>
-            <li><a href="#">18</a></li>
-            <li><a href="#">19</a></li>
-            <li><a href="#">20</a></li>
-            <li><a href="#">21</a></li>
-            <li><a href="#">22</a></li>
-            <li><a href="#">23</a></li>
-            <li><a href="#">24</a></li>
-            <li><a href="#">25</a></li>
-            <li><a href="#">26</a></li>
-            <li><a href="#">27</a></li>
-            <li><a href="#">28</a></li>
-            <li><a href="#">29</a></li>
-            <li><a href="#">30</a></li>
-            <li><a href="#">31</a></li>
-            <li><a href="#">32</a></li>
-            <li><a href="#">33</a></li>
-            <li><a href="#">34</a></li>
-            <li><a href="#">35</a></li>
-            <li><a href="#">36</a></li>
-            <li><a href="#">37</a></li>
-            <li><a href="#">38</a></li>
-            <li><a href="#">39</a></li>
-            <li><a href="#">40</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
           </ul>
         </div>
       </div>
@@ -221,20 +222,50 @@ export default {
   /* display: block; */
   background-color: #ffffff;
   width: 1380px;
+  height: 72px;
   margin: 0 auto;
   box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
   /* background-color: greenyellow; */
+  overflow: hidden;
+  padding: 28px 0;
+}
+.top-navbar:hover {
+  overflow: inherit;
+}
+.nav-content ul {
+  position: relative;
+  background-color: #fff;
+  z-index: 5;
 }
 .nav-content ul li {
   display: inline-block;
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   height: 24px;
-  margin-right: 31px;
+  margin-right: 20px;
+  margin-left: 20px;
+  background-color: #fff;
 }
 .nav-content ul li a {
   font-size: 15px;
   color: #555666;
+}
+
+.top-navbar .small-box {
+  position: absolute;
+  z-index: 11;
+  width: 32px;
+  height: 12px;
+  /* background-color: pink; */
+  background-image: url("../../assets/img/home/down.png");
+  background-size: 32px 12px;
+  left: 50%;
+  top: 118px;
+  transform: translateX(-50%);
+}
+.top-navbar:hover .small-box {
+  background-image: url("../../assets/img/home/up.png");
+  top: 206px;
 }
 
 /* navbar结束 */

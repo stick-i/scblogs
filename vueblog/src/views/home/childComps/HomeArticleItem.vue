@@ -13,16 +13,19 @@
         </div>
         <div class="article-content-item">
           <div class="article-img-left">
-            <a target="_blank" href="#">
-              <img src="../../../assets/img/home/003.jpg" alt="">
-            </a>
+<!--            <a target="_blank" href="#">-->
+<!--              <img :src="item.coverImage" alt="">-->
+<!--            </a>-->
+            <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}" target="_blank">
+              <img :src="item.coverImage" alt="">
+            </router-link>
           </div>
           <div class="article-content-right">
-            <a target="_blank" href="#">
+            <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}" target="_blank">
               <div class="article-content">
                 {{item.description}}
               </div>
-            </a>
+            </router-link>
             <div class="article-evaluation">
               <div class="article-good">
                 <img @click="isShowGoodIcon=false" v-if="isShowGoodIcon" src="../../../assets/img/home/good.png" alt="">
@@ -149,11 +152,12 @@
         width: 134px;
         height: 84px;
         display: inline-block;
-        background-size: cover;
         background-position: 50%;
         border: 1px solid #f5f6f7;
         overflow: hidden;
         background: #f5f6f7;
+      background-image: url('../../../assets/img/home/003.jpg');
+      background-size: cover;
     }
 
     .article-img-left img {
