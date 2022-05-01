@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateAvatar(User user, MultipartFile avatarFile) throws MinioException, IOException {
 		log.debug("updateAvatar,username->{}, fileName->{}", user.getUsername(), avatarFile.getOriginalFilename());
-		// 判断是否为默认头像，defaultAvatar中只有文件名，而user.getAvatar()为完整的链接，故使用endWith进行判断
-		// 默认头像才需要更新数据库，非默认头像无需更新数据库 todo 可能有bug
+		// 判断是否为默认头像，defaultAvatar中只有文件名，而user.getAvatar()为完整的链接
+		// 默认头像才需要更新数据库，非默认头像无需更新数据库
 		int index = user.getAvatarUrl().lastIndexOf("/") + 1;
 		String fileName = user.getAvatarUrl().substring(index);
 		String filePath = user.getAvatarUrl().substring(0, index);
