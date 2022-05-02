@@ -130,7 +130,7 @@
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link" >
                   <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
-                    <img :src="avatarUrl" alt="" class="test-img" style="border: 1px solid #e8e8ed" />
+                    <img :src="avatarUrl" alt="" class="test-img" style="border: 1px solid #e8e8ed;margin-right: 10px;" />
                   </a>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -325,23 +325,31 @@ export default {
     handleCommand(command) {
       if (command == "a") {
         console.log("个人中心");
+        this.$router.push('/Personal_Blog')
       }
       if (command == "b") {
         console.log("退出登录");
-        this.$axios.get("/login/logout").then((res) => {
-          console.log(res);
-          this.$message({
-            showClose: true,
-            message: "已退出登录",
-            type: "success",
-          });
-
-          // 清除状态保持
-          window.localStorage.clear();
-          window.sessionStorage.clear();
-          // 状态保持清除后刷新页面
-          window.location.reload();
+        this.$message({
+          showClose: true,
+          message: "已退出登录",
+          type: "success",
         });
+        // 清除状态保持
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+        // 状态保持清除后刷新页面
+        window.location.reload();
+
+        // this.$axios.get("/login/logout").then((res) => {
+        //   console.log(res);
+        //   this.$message({
+        //     showClose: true,
+        //     message: "已退出登录",
+        //     type: "success",
+        //   });
+        //
+        //
+        // });
       }
     },
     // 点击跳转发布文章页面

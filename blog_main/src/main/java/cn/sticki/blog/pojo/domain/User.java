@@ -1,6 +1,5 @@
 package cn.sticki.blog.pojo.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -23,18 +22,8 @@ public class User implements Serializable {
 
 	String nickname;
 
-	@TableField("avatar")
 	String avatarUrl;
 
 	Timestamp registerTime;
-
-	public User(User user) {
-		if (user == null) return;
-		this.id = user.getId();
-		this.username = user.getUsername();
-		this.nickname = user.getNickname();
-		this.avatarUrl = user.getAvatarUrl();
-		this.registerTime = user.getRegisterTime();
-	}
 
 }

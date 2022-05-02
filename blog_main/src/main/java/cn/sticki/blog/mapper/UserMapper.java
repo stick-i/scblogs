@@ -16,7 +16,7 @@ public interface UserMapper extends BaseMapper<User> {
 	@Delete("delete from user where username = #{username} ;")
 	int deleteByUsername(String username);
 
-	@Update("update user set avatar = #{avatar} where id = #{id}")
+	@Update("update user set avatar_url = #{avatar} where id = #{id}")
 	int updateAvatarById(Integer id, String avatar);
 
 	@Update("update user set nickname = #{nickname} where id = #{id}")
@@ -25,5 +25,8 @@ public interface UserMapper extends BaseMapper<User> {
 	int updateUserById(User user);
 
 	int insert(User user);
+
+	@Delete("delete from user where id = #{id};")
+	int deleteById(Integer id);
 
 }

@@ -7,15 +7,13 @@ import cn.hutool.jwt.signers.JWTSignerUtil;
 import cn.sticki.blog.config.JwtConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Slf4j
-@Service
+@Component
 public class JwtUtils {
-
-	private final Integer expiration = JwtConfig.expiration;
 
 	/**
 	 * 生成jwtToken，有效时间默认为 1天
@@ -24,11 +22,11 @@ public class JwtUtils {
 	 * @return token
 	 */
 	public String createToken(Object o) {
-		return createToken("data", o, expiration);
+		return createToken("data", o, JwtConfig.expiration);
 	}
 
 	public String createToken(String name, Object o) {
-		return createToken(name, o, expiration);
+		return createToken(name, o, JwtConfig.expiration);
 	}
 
 	/**

@@ -37,6 +37,7 @@ build/
 **/resources/*.yml
 !**/resources/application.yml
 ssl/
+config/
 
 ### 测试文件 ###
 **/test/

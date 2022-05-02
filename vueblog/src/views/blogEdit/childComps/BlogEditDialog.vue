@@ -80,7 +80,7 @@
         </el-form-item> -->
         <!-- 文章类型结束 -->
 
-        <el-form-item label="发布形式：" prop="status">
+        <el-form-item label="发布形式：" prop="status" style="margin-top: 10px;">
           <el-radio-group v-model="ruleForm.status">
             <el-radio :label="1">公开</el-radio>
             <el-radio :label="3">私密</el-radio>
