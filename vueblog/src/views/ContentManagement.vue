@@ -20,7 +20,8 @@
                           </el-collapse-item>
                           <el-collapse-item title="管理" name="2">
                             <ul >
-                              <li @click="ChoseModel(item)" v-for="(item,index) in manageList" :style="{'color':item.chose==true?'red':''}" :key="index">{{item.title}}</li>
+                              <li @click="ChoseModel(item)" v-for="(item,index) in manageList" 
+                              :style="{'color':item.chose==true?'red':''}" :key="index">{{item.title}}</li>
                             </ul>
                           </el-collapse-item>
                           <el-collapse-item title="数据" name="3">
@@ -179,9 +180,12 @@ export default {
 }
 .right{
   width: 75%;
-  height: 1000px;
+  height: 100%;
   margin-top:20px;
   background: rgb(255, 255, 255);
 }
-
+.right .rightcontent{
+  width: 100%;
+  height: 100%;
+}
 </style>

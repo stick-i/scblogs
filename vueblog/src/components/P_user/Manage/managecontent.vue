@@ -26,7 +26,7 @@
                             </el-input>
                         </div>
                     </div>
-                    <div class="writeBlog">
+                    <div ref="writeBlog" class="writeBlog">
                         <div>这里啥也没有啊</div>
                         <button @click="TurnToWriteBlog">写博客</button>
                     </div>
@@ -44,6 +44,20 @@
                             </div>
                             </div>
                         </div>
+                        <!--infinite-loading这个组件要放在列表的底部，滚动的盒子里面-->
+                            <infinite-loading
+                            spinner="spiral"
+                            @infinite="infiniteHandler"
+                            :distance="200"
+                            class="infinite-loading-wrap"
+                            >
+                            <div slot="spinner">Loading...</div>
+                            <div slot="no-more">No more Data</div>
+                            <div slot="no-results">No results Data</div>
+                            <div slot="error" slot-scope="{ trigger }">
+                                Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
+                            </div>
+                            </infinite-loading>
                     </div>
                 </div>
             </div>
@@ -62,8 +76,12 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 export default {
     name:"ManageContent",
+    components: {
+      InfiniteLoading
+    },
     data(){
         return{
             // status选择部分列表
@@ -75,7 +93,9 @@ export default {
             //  时间选择
              timechose:"",
             // 显示遍历的列表
-            List: this.allList,
+            List: [],
+            // 博客页数
+            page:1,
             // 搜索博客
             searchblog:"",
             config:{
@@ -97,12 +117,36 @@ export default {
         GetData(){
             console.log("开始调用")
             this.$axios.get("/blog-console/blog-list",this.config).then(res=>{
+                console.log("获取全部用户博客返回数据",res)
                 this.allList=res.data.data.blogList
+                this.List=this.allList
+                if(this.List.length>0){
+                    this.$refs.writeBlog.style.display="none"
+                }
+                console.log("此时应该展示的用户博客",this.List);
             })
         },
         // 手动选择部分
         handleClick(tab, event) {
         console.log(tab, event);
+      },
+    //   滑动触底时调用
+    async infiniteHandler($state) {
+        console.log("其实已经到底了")
+        this.$axios
+          .get("/blog/list?page="+this.page)
+          .then((res) => {
+              console.log("获取列表接口返回值",res)
+            if(res.data.data.length) {
+              this.page +=1;  // 下一页
+              this.allList = this.allList.concat(res.data.data);
+              this.List=this.allList
+              console.log("此时所有的博客列表是",this.List)
+              $state.loaded();
+            }else {
+              $state.complete();
+            }
+          })
       },
     //   查找关键字博客列表
     SearchBlog(){
@@ -161,6 +205,7 @@ export default {
 .time-chose{
     width: 100%;
     height: 60px;
+    border-bottom:2px solid rgb(217, 217, 217);
 }
 .time-chose .chosemonth{
     width: 30%;
@@ -175,8 +220,8 @@ export default {
 }
 .screening-conditionsB{
     width: 100%;
-    height: 500px;
-    text-align: center;
+    /* height: 500px; */
+
 }
 .screening-conditionsB .writeBlog{
     width: 100%;
@@ -206,5 +251,47 @@ export default {
     position: relative;
     top: 20%;
     transform: translateY(-50%);
+}
+.screening-conditionsB .show-content{
+    width: 100%;
+    height: 100%;
+}
+.screening-conditionsB .show-content .F-1{
+    width: 100%;
+    height: 30%;
+}
+.BlogContent-a {
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid #b7b8bb;
+}
+.BlogContent-1 {
+  width: 100%;
+  height: 30%;
+  font-size: 22px;
+  font-weight: 600;
+  color: black;
+}
+.BlogContent-1:hover {
+  color: rgb(252, 85, 49);
+}
+.BlogContent-2 {
+  width: 100%;
+  height: 20%;
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555666;
+}
+.BlogContent-3 {
+  width: 100%;
+  height: 20%;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555666;
+}
+.BlogContent-3 span {
+  margin: 0 5px;
 }
 </style>

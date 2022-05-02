@@ -84,7 +84,7 @@ export default {
 	// 		})
     //   },
 		upData(file,fileList){
-			console.log("执行顺序1",file, fileList)
+			console.log("执行顺序1",file,"文件数组", fileList)
 			console.log("qua",this.fileList)
 				let formdata = new FormData()
 				fileList.map(item => { //fileList本来就是数组，就不用转为真数组了
