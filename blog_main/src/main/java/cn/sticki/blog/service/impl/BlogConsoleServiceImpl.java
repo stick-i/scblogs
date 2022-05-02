@@ -78,7 +78,6 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 			}
 			blog.setId(blogDTO.getId());
 			blogContent.setBlogId(blogDTO.getId());
-			// todo 漏写了
 			// 更新封面图，直接通过原有的名称，进行替换(如果有)
 			if (fileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
 				if (blogSelect.getCoverImage() != null) {
@@ -89,12 +88,16 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 					blog.setCoverImage(imageUrl);
 				}
 			}
-			// 身份核实完毕，可以更新数据库，设置条件
+			// 更新数据库，设置条件
 			if (blog.getStatus() != null || blog.getDescription() != null || blog.getTitle() != null || blog.getCoverImage() != null) {
+				// 更新发表时间，若发表时间为空且当前修改状态不为 未发表
+				if (blogSelect.getReleaseTime() == null && BlogStatusType.DRAFT.getValue().equals(blog.getStatus())) {
+					blog.setReleaseTime(new Timestamp(System.currentTimeMillis()));
+				}
 				blog.setAuthor(null); // 作者不更新
 				blogMapper.updateById(blog);
 			}
-			if (blogDTO.getContent() != null) {
+			if (blogContent.getContent() != null) {
 				blogContentMapper.updateById(blogContent);
 			}
 			return;
@@ -109,7 +112,7 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 			blog.setCoverImage(imageUrl);
 		}
 		// 添加发表时间，若未发表则不添加
-		if (BlogStatusType.DRAFT.getValue().equals(blogDTO.getStatus())) blog.setReleaseTime(timestamp);
+		if (!BlogStatusType.DRAFT.getValue().equals(blogDTO.getStatus())) blog.setReleaseTime(timestamp);
 		// 插入数据库
 		if (blogMapper.insert(blog) != 1)
 			throw new DAOException();

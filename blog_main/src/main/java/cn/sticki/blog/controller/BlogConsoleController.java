@@ -12,6 +12,7 @@ import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.pojo.vo.BlogListConsoleVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.pojo.vo.RestTemplate;
+import cn.sticki.blog.security.AuthenticationFacade;
 import cn.sticki.blog.service.BlogBasicService;
 import cn.sticki.blog.service.BlogConsoleService;
 import cn.sticki.blog.util.FileUtils;
@@ -21,7 +22,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +38,8 @@ public class BlogConsoleController {
 	@Resource
 	private BlogBasicService blogBasicService;
 
-	@Autowired
-	private User user;
+	@Resource
+	private AuthenticationFacade authenticationFacade;
 
 	@Resource
 	private FileUtils fileUtils;
@@ -61,6 +61,7 @@ public class BlogConsoleController {
 	 */
 	@GetMapping("/blog-list")
 	public RestTemplate getBlogList(@RequestParam(defaultValue = "1", required = false) int page, @RequestParam(defaultValue = "20", required = false) int pageSize, @RequestParam(defaultValue = "0", required = false) int status) {
+		User user = authenticationFacade.getUser();
 		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) return new RestTemplate(400, "参数异常");
 		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
 		// 获取博客统计数据
@@ -87,7 +88,9 @@ public class BlogConsoleController {
 	 */
 	@PostMapping("/blog")
 	public RestTemplate saveBlog(BlogSaveDTO blog, MultipartFile coverImage) throws UserException, DAOException {
+		User user = authenticationFacade.getUser();
 		blog.setCoverImageFile(coverImage);
+		blog.setAuthor(user.getUsername());
 		// 如果为新增博客，则需要全部参数
 		if (blog.getId() == null && (blog.getContent() == null || blog.getTitle() == null || blog.getDescription() == null || blog.getStatus() == null))
 			return new RestTemplate(400, "参数异常");
@@ -98,7 +101,6 @@ public class BlogConsoleController {
 		if (fileUtils.isNotEmpty(blog.getCoverImageFile())) {
 			fileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		}
-		blog.setAuthor(user.getUsername());
 		blogConsoleService.saveBlog(blog);
 		return new RestTemplate();
 	}
@@ -110,6 +112,7 @@ public class BlogConsoleController {
 	 */
 	@DeleteMapping("/blog")
 	public RestTemplate recoveryBlog(@NotNull Integer id) throws UserIllegalException {
+		User user = authenticationFacade.getUser();
 		Blog blog = blogConsoleService.getById(id);
 		// 权限校验
 		if (blog == null || !blog.getAuthor().equals(user.getUsername())) throw new UserIllegalException();
@@ -128,6 +131,7 @@ public class BlogConsoleController {
 	 */
 	@DeleteMapping("/blog/delete")
 	public RestTemplate completelyDeleteBlog(@NotNull Integer id) throws UserIllegalException {
+		User user = authenticationFacade.getUser();
 		Blog blog = blogConsoleService.getById(id);
 		// 权限校验，博客不是属于该用户
 		if (blog == null || !blog.getAuthor().equals(user.getUsername())) throw new UserIllegalException();

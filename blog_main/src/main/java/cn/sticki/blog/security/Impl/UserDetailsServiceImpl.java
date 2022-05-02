@@ -1,7 +1,8 @@
-package cn.sticki.blog.security;
+package cn.sticki.blog.security.Impl;
 
 import cn.sticki.blog.mapper.UserSafetyMapper;
 import cn.sticki.blog.pojo.domain.UserSafety;
+import cn.sticki.blog.security.UserDetails;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;

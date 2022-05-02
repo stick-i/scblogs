@@ -26,13 +26,4 @@ public class User implements Serializable {
 
 	Timestamp registerTime;
 
-	public User(User user) {
-		if (user == null) return;
-		this.id = user.getId();
-		this.username = user.getUsername();
-		this.nickname = user.getNickname();
-		this.avatarUrl = user.getAvatarUrl();
-		this.registerTime = user.getRegisterTime();
-	}
-
 }
