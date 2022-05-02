@@ -235,6 +235,7 @@ export default {
 .nav-content ul {
   position: relative;
   background-color: #fff;
+  box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
   z-index: 5;
 }
 .nav-content ul li {
@@ -249,6 +250,10 @@ export default {
 .nav-content ul li a {
   font-size: 15px;
   color: #555666;
+}
+.nav-content ul li a:hover {
+  font-size: 15px;
+  color: #222226;
 }
 
 .top-navbar .small-box {

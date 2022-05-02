@@ -18,12 +18,10 @@
         <!-- 搜索结果 -->
         <div class="main-lt">
           <div class="list-container">
-
             <BlogSearchArticleItem
               :searchkey="key"
               :blogsearchlist="blogSearchList"
             />
-
           </div>
         </div>
 
@@ -54,13 +52,13 @@
 import TopBar from "@/components/content/topbar/TopBar";
 import BlogSearchArticleItem from "@/views/blogSearch/childComps/BlogSearchArticleItem";
 
-import InfiniteLoading from 'vue-infinite-loading'
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   components: {
     TopBar,
     BlogSearchArticleItem,
-    InfiniteLoading
+    InfiniteLoading,
   },
   data() {
     return {
@@ -68,7 +66,7 @@ export default {
       blogSearchList: [],
     };
   },
-  watch:{
+  watch: {
     key(a, b) {
       //a是value的新值，b是旧值
       this.key = a;
@@ -77,8 +75,11 @@ export default {
   methods: {
     // 搜索博客
     searchBlogs() {
+      // 状态保持清除后刷新页面
+      window.location.reload();
       // 保存key
-      this.$store.commit('copySearchKey',this.key)
+      this.$store.commit("copySearchKey", this.key);
+      sessionStorage.setItem("store", JSON.stringify(this.$store.state));
       this.$axios.get("/blog/search?key=" + this.key).then((res) => {
         console.log("加载后再次点击搜索", res);
         this.blogSearchList = res.data.data;
@@ -92,6 +93,8 @@ export default {
 .container {
   width: 100%;
   height: 100%;
+  /* min-height: 100vh; */
+  min-height: calc(100vh - 65px);
   background-color: #f2f2f2;
 }
 

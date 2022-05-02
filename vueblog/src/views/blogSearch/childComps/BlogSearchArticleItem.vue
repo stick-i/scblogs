@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{key}}
+    <!--{{key}}-->
     <!-- 文章item -->
     <div class="list-item" v-for="(item, index) in blogSearchList" :key="index">
       <div class="item">
@@ -64,9 +64,9 @@
       :distance="200"
       class="infinite-loading-wrap"
     >
-      <div slot="spinner">Loading...</div>
-      <div slot="no-more">No more Data</div>
-      <div slot="no-results">No results Data</div>
+      <div slot="spinner" style="color: #999aaa;margin:10px 0;">Loading...</div>
+      <div slot="no-more" style="color: #999aaa;margin:10px 0;">暂无更多数据</div>
+      <div slot="no-results" style="color: #999aaa;margin:10px 0;">抱歉，没有找到相关内容</div>
       <div slot="error" slot-scope="{ trigger }">
         Error Data, click <a href="javascript:;" @click="trigger">here</a> toretry
       </div>
@@ -84,8 +84,8 @@ export default {
     return {
       page:1,
       key: this.searchkey,
-      // blogSearchList: [],
-      blogSearchList: this.blogsearchlist,
+      blogSearchList: [],
+      // blogSearchList: this.blogsearchlist,
     };
   },
   components:{
@@ -117,7 +117,8 @@ export default {
           if(res.data.data.length) {
             this.page +=1;  // 下一页
             this.blogSearchList = this.blogSearchList.concat(res.data.data);
-            console.log(this.blogSearchList)
+            console.log("下拉刷新",this.blogSearchList)
+            // console.log(this.blogSearchList)
             $state.loaded();
           }else {
             $state.complete();

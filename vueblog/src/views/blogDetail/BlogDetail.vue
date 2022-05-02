@@ -113,7 +113,6 @@
               </ul>
             </div>
           </div>
-
         </div>
         <!-- 右边博客内容 -->
         <div class="main-rt textScroll">
@@ -162,7 +161,7 @@
 
 <script>
 import TopBar from "@/components/content/topbar/TopBar";
-// import "github-markdown-css/github-markdown.css"
+import "github-markdown-css/github-markdown.css";
 export default {
   name: "BlogDetail",
   components: {
@@ -193,9 +192,9 @@ export default {
       _this.blogDetail.title = blog.info.title;
 
       // 渲染md文档
-      // var MarkdownIt = require("markdown-it")
-      var md = new MarkdownIt()
-      var result = md.render(blog.content.content)
+      var MarkdownIt = require("markdown-it");
+      var md = new MarkdownIt();
+      var result = md.render(blog.content.content);
       _this.blogDetail.content = result;
 
       _this.blogDetail.releaseTime = blog.info.releaseTime;
@@ -206,14 +205,12 @@ export default {
   },
   methods: {},
 };
-
 </script>
 
 <style scoped>
-
-  [v-cloak] {
-    display: none;
-  }
+[v-cloak] {
+  display: none;
+}
 
 .text {
   font-size: 14px;
@@ -235,7 +232,8 @@ export default {
 
 .blog-main {
   width: 100%;
-   background:url("../../assets/img/blogDetail/bgc.png");
+  min-height: 100vh;
+  background: url("../../assets/img/blogDetail/bgc.png");
   background-size: 16px 16px;
   padding-top: 10px;
 }

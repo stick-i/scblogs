@@ -130,7 +130,7 @@
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link" >
                   <a class="test-div csdn-toolbar-fl" v-if="isShowAvatar">
-                    <img :src="avatarUrl" alt="" class="test-img" style="border: 1px solid #e8e8ed" />
+                    <img :src="avatarUrl" alt="" class="test-img" style="border: 1px solid #e8e8ed;margin-right: 10px;" />
                   </a>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -325,6 +325,7 @@ export default {
     handleCommand(command) {
       if (command == "a") {
         console.log("个人中心");
+        this.$router.push('/Personal_Blog')
       }
       if (command == "b") {
         console.log("退出登录");
