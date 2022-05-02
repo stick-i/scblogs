@@ -5,6 +5,7 @@ import cn.sticki.blog.mapper.UserCollectBlogMapper;
 import cn.sticki.blog.mapper.UserLikeBlogMapper;
 import cn.sticki.blog.pojo.domain.UserCollectBlog;
 import cn.sticki.blog.pojo.domain.UserLikeBlog;
+import cn.sticki.blog.pojo.dto.UserBlogActionStatusDTO;
 import cn.sticki.blog.service.BlogActionService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -84,6 +88,20 @@ public class BlogActionServiceImpl implements BlogActionService {
 		LambdaQueryWrapper<UserCollectBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(UserCollectBlog::getBlogId, blogId);
 		return collectBlogMapper.selectCount(wrapper);
+	}
+
+	@Override
+	public Map<Integer, UserBlogActionStatusDTO> getUserBlogActionStatus(Integer userId, List<Integer> blogIdList) {
+		Map<Integer, Integer> likeMap = likeBlogMapper.selectMapByUserIdAndBlogIdList(userId, blogIdList);
+		Map<Integer, Integer> collectMap = collectBlogMapper.selectMapByUserIdAndBlogIdList(userId, blogIdList);
+		HashMap<Integer, UserBlogActionStatusDTO> map = new HashMap<>();
+		for (Integer blogId : blogIdList) {
+			UserBlogActionStatusDTO statusDTO = new UserBlogActionStatusDTO();
+			statusDTO.setLike(likeMap.containsKey(blogId));
+			statusDTO.setCollect(collectMap.containsKey(blogId));
+			map.put(blogId, statusDTO);
+		}
+		return map;
 	}
 
 }

@@ -10,10 +10,10 @@ public class BlogListVO {
 
 	List<BlogBasic> blogList;// 博客信息列表
 
-	Integer page;// 当前页
+	Long page;// 当前页
 
-	Integer pageSize;// 页大小
+	Long pageSize;// 页大小
 
-	Integer total;// 博客总数
+	Long total;// 博客总数
 
 }
