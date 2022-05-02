@@ -13,20 +13,20 @@
         </div>
         <div class="article-content-item">
           <div class="article-img-left">
-            <a target="_blank" href="#">
-              <img src="../../../assets/img/home/003.jpg" alt="">
-            </a>
+            <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}" target="_blank">
+              <img :src="item.coverImage" alt="">
+            </router-link>
           </div>
           <div class="article-content-right">
-            <a target="_blank" href="#">
+            <router-link :to="{name:'BlogDetail',params:{blogId:item.id}}" target="_blank">
               <div class="article-content">
                 {{item.description}}
               </div>
-            </a>
+            </router-link>
             <div class="article-evaluation">
-              <div class="article-good">
-                <img @click="isShowGoodIcon=false" v-if="isShowGoodIcon" src="../../../assets/img/home/good.png" alt="">
-                <img @click="isShowGoodIcon=true" v-if="!isShowGoodIcon" src="../../../assets/img/home/good_active.png" alt="">
+              <div class="article-good" @click="addLikeNum(item.id,index)" >
+                <img  :src="isShowGoodIcon?require('../../../assets/img/home/good.png'):require('../../../assets/img/home/good_active.png')" alt="">
+<!--                <img  src="../../../assets/img/home/good_active.png" alt="">-->
                 {{ item.likeNum }} <span>赞</span>
               </div>
               <div class="article-author">作者：<span>{{item.author}}</span></div>
@@ -67,10 +67,18 @@
         page:1,
         blogList:[],
         isShowGoodIcon:true,
+        blogIdForm:{
+          blogId:"",
+        }
       }
     },
     components: {
       InfiniteLoading
+    },
+    watch:{
+      // blogList(a,b) {
+      //   return this.blogList = a
+      // }
     },
     mounted() {
       // this.goApi();
@@ -90,6 +98,25 @@
       //       this.blogList.push(...res.data.data); // 追加数据
       //     })
       // },
+      // 点赞
+      addLikeNum(id,index) {
+        this.blogIdForm.blogId = id;
+        this.$axios
+            .post("/blog/like",qs.stringify(this.blogIdForm),{
+              headers: { token: localStorage.getItem("token") },
+            })
+            .then((res) => {
+              console.log(res);
+              if(this.isShowGoodIcon == true){
+                this.blogList[index].likeNum++;
+                this.isShowGoodIcon = false
+              } else {
+                this.blogList[index].likeNum--;
+                this.isShowGoodIcon = true
+              }
+
+            })
+      },
       async infiniteHandler($state) {
         this.$axios
           .get("/blog/list?page="+this.page)
@@ -149,11 +176,12 @@
         width: 134px;
         height: 84px;
         display: inline-block;
-        background-size: cover;
         background-position: 50%;
         border: 1px solid #f5f6f7;
         overflow: hidden;
         background: #f5f6f7;
+      background-image: url('../../../assets/img/home/003.jpg');
+      background-size: cover;
     }
 
     .article-img-left img {
