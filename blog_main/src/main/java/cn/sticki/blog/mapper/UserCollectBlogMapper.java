@@ -1,5 +1,6 @@
 package cn.sticki.blog.mapper;
 
+import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.domain.UserCollectBlog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
@@ -13,5 +14,7 @@ public interface UserCollectBlogMapper extends BaseMapper<UserCollectBlog> {
 
 	@MapKey("value")
 	Map<Integer, Integer> selectMapByUserIdAndBlogIdList(Integer userId, List<Integer> blogIdList);
+
+	List<BlogBasic> selectUserLikeBlogList(Integer userId, String lastSql);
 
 }

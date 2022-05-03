@@ -30,7 +30,7 @@ public class BlogController {
 	@Resource
 	private BlogBasicService blogBasicService;
 
-	private final int pageSize = 10;
+	private final int pageSize = 20;
 
 	@Resource
 	private AuthenticationFacade authenticationFacade;

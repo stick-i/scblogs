@@ -1,5 +1,6 @@
 package cn.sticki.blog.mapper;
 
+import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.domain.UserLikeBlog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
@@ -13,5 +14,13 @@ public interface UserLikeBlogMapper extends BaseMapper<UserLikeBlog> {
 
 	@MapKey("value")
 	Map<Integer, Integer> selectMapByUserIdAndBlogIdList(Integer userId, List<Integer> blogIdList);
+
+	/**
+	 * 查询用户点赞博客列表的信息
+	 *
+	 * @param userId  用户id
+	 * @param lastSql 添加到末尾的sql
+	 */
+	List<BlogBasic> selectUserLikeBlogList(Integer userId, String lastSql);
 
 }

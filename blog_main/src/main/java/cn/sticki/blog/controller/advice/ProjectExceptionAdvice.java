@@ -1,6 +1,7 @@
 package cn.sticki.blog.controller.advice;
 
 import cn.sticki.blog.exception.UserException;
+import cn.sticki.blog.exception.userException.SqlLimitException;
 import cn.sticki.blog.exception.userException.UserIllegalException;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.net.ConnectException;
+import java.util.ArrayList;
 
 // 作为SpringMVC的异常处理器
 @Slf4j
@@ -72,6 +74,12 @@ public class ProjectExceptionAdvice {
 	public RestTemplate doConnectException(ConnectException e) {
 		log.warn("服务连接失败,{}", e.getMessage());
 		return new RestTemplate(501, "服务器连接故障，请联系管理员", null, false);
+	}
+
+	@ExceptionHandler(SqlLimitException.class)
+	public RestTemplate doSqlLimitException(SqlLimitException e) {
+		log.info("请求分页数量超过上限,{}", e.getMessage());
+		return new RestTemplate(200, e.getMessage(), new ArrayList<>(), false);
 	}
 
 }
