@@ -1,13 +1,16 @@
 package cn.sticki.blog.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.sticki.blog.mapper.BlogBasicMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
 import cn.sticki.blog.mapper.UserCollectBlogMapper;
 import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.domain.UserCollectBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.service.UserCollectBlogService;
-import cn.sticki.blog.util.SqlUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +30,9 @@ public class UserCollectBlogServiceImpl extends ServiceImpl<UserCollectBlogMappe
 
 	@Resource
 	private UserCollectBlogMapper userCollectBlogMapper;
+
+	@Resource
+	private BlogBasicMapper blogBasicMapper;
 
 	@Override
 	public boolean collectBlog(Integer userId, Integer blogId) {
@@ -58,16 +65,22 @@ public class UserCollectBlogServiceImpl extends ServiceImpl<UserCollectBlogMappe
 
 	@Override
 	public BlogListVO getCollectBlogList(@NotNull Integer userId, int page, int pageSize) {
-		BlogListVO blogListVO = new BlogListVO();
+		// 先查收藏表，获取收藏的博客id
 		LambdaQueryWrapper<UserCollectBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(UserCollectBlog::getUserId, userId);
-		Long count = userCollectBlogMapper.selectCount(wrapper);
-		blogListVO.setTotal(count);
-		if (count != 0 && count >= (long) (page - 1) * pageSize) {
-			String limit = SqlUtils.limit(count, (long) page, (long) pageSize);
-			List<BlogBasic> blogList = userCollectBlogMapper.selectUserLikeBlogList(userId, limit);
-			blogListVO.setBlogList(blogList);
+		IPage<UserCollectBlog> iPage = new Page<>(page, pageSize);
+		userCollectBlogMapper.selectPage(iPage, wrapper);
+		List<UserCollectBlog> userCollectBlogList = iPage.getRecords();
+		ArrayList<Integer> blogIdList = new ArrayList<>();
+		for (UserCollectBlog blog : userCollectBlogList) {
+			blogIdList.add(blog.getBlogId());
 		}
+		// 查询blog表，把之前获取的博客id列表传入，获取blog数据
+		LambdaQueryWrapper<BlogBasic> blogWrapper = new LambdaQueryWrapper<>();
+		blogWrapper.in(BlogBasic::getId, blogIdList);
+		List<BlogBasic> blogBasicList = blogBasicMapper.selectList(blogWrapper);
+		BlogListVO blogListVO = BeanUtil.copyProperties(iPage, BlogListVO.class, "records");
+		blogListVO.setRecords(blogBasicList);
 		return blogListVO;
 	}
 

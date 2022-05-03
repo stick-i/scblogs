@@ -68,8 +68,11 @@ public class UserLikeBlogServiceImpl extends ServiceImpl<UserLikeBlogMapper, Use
 		if (count != 0 && count >= (long) (page - 1) * pageSize) {
 			String limit = SqlUtils.limit(count, (long) page, (long) pageSize);
 			List<BlogBasic> blogList = userLikeBlogMapper.selectUserLikeBlogList(userId, limit);
-			blogListVO.setBlogList(blogList);
+			blogListVO.setRecords(blogList);
 		}
+		blogListVO.setCurrent(page);
+		blogListVO.setSize(pageSize);
+		blogListVO.setPages(count / pageSize);
 		return blogListVO;
 	}
 

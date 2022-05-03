@@ -1,5 +1,6 @@
 package cn.sticki.blog.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.enumeration.type.BlogStatusType;
 import cn.sticki.blog.enumeration.type.FileType;
 import cn.sticki.blog.exception.UserException;
@@ -63,9 +64,6 @@ public class BlogConsoleController {
 	public RestTemplate getBlogList(@RequestParam(defaultValue = "1", required = false) int page, @RequestParam(defaultValue = "20", required = false) int pageSize, @RequestParam(defaultValue = "0", required = false) int status) {
 		User user = authenticationFacade.getUser();
 		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) return new RestTemplate(400, "参数异常");
-		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
-		// 获取博客统计数据
-		blogListConsoleVO.setCount(blogConsoleService.getBlogCount(user.getUsername()));
 		// 获取博客列表
 		LambdaQueryWrapper<BlogBasic> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(BlogBasic::getAuthor, user.getUsername());
@@ -74,10 +72,9 @@ public class BlogConsoleController {
 		// 使用mybatis进行分页
 		IPage<BlogBasic> blogIPage = new Page<>(page, pageSize);
 		blogBasicService.page(blogIPage, wrapper);
-		blogListConsoleVO.setBlogList(blogIPage.getRecords());
-		blogListConsoleVO.setTotal((int) blogIPage.getTotal());
-		blogListConsoleVO.setPage(page);
-		blogListConsoleVO.setPageSize(pageSize);
+		BlogListConsoleVO blogListConsoleVO = BeanUtil.copyProperties(blogIPage, BlogListConsoleVO.class);
+		// 获取博客统计数据
+		blogListConsoleVO.setCount(blogConsoleService.getBlogCount(user.getUsername()));
 		return new RestTemplate(blogListConsoleVO);
 	}
 

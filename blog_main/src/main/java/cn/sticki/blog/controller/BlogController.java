@@ -4,9 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.dto.UserBlogActionStatusDTO;
-import cn.sticki.blog.pojo.vo.BlogListVO;
-import cn.sticki.blog.pojo.vo.HotBlogListVO;
-import cn.sticki.blog.pojo.vo.RestTemplate;
+import cn.sticki.blog.pojo.vo.*;
 import cn.sticki.blog.security.AuthenticationFacade;
 import cn.sticki.blog.service.BlogActionService;
 import cn.sticki.blog.service.BlogBasicService;
@@ -51,7 +49,7 @@ public class BlogController {
 		HotBlogListVO hotBlogListVO = BeanUtil.copyProperties(blogListVO, HotBlogListVO.class);
 		User user = authenticationFacade.getUser();
 		if (user != null) {
-			List<BlogBasic> blogList = blogListVO.getBlogList();
+			List<BlogBasic> blogList = blogListVO.getRecords();
 			List<Integer> blogIdList = new ArrayList<>();
 			for (BlogBasic blogBasic : blogList) {
 				blogIdList.add(blogBasic.getId());
@@ -72,7 +70,9 @@ public class BlogController {
 	public RestTemplate searchBlog(@NotNull String key, @RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,search->{},page->{}", key, page);
 		BlogListVO blogListVO = blogBasicService.searchBlog(key, page, pageSize);
-		return new RestTemplate(blogListVO);
+		IListVO<BlogBasic> blogList = new ListVO<>();
+		blogList.setRecords(blogListVO.getRecords());
+		return new RestTemplate(blogList);
 	}
 
 	/**
