@@ -11,7 +11,7 @@
             <div class="profile-intro">
               <div class="avatar-box">
                 <a href="#">
-                  <img src="../../assets/img/home/default_avatar.jpg" alt="" />
+                  <img :src="profile.avatarUrl" alt="" />
                 </a>
               </div>
               <div class="user-info">
@@ -161,7 +161,7 @@
 
 <script>
 import TopBar from "@/components/content/topbar/TopBar";
-import "github-markdown-css/github-markdown.css";
+// import "github-markdown-css/github-markdown.css";
 export default {
   name: "BlogDetail",
   components: {
@@ -179,6 +179,7 @@ export default {
       },
       profile: {
         author: "",
+        avatarUrl: "",
       },
     };
   },
@@ -188,19 +189,24 @@ export default {
     this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
       console.log(res);
       const blog = res.data.data;
-      _this.blogDetail.id = blog.content.blogId;
-      _this.blogDetail.title = blog.info.title;
 
       // 渲染md文档
-      var MarkdownIt = require("markdown-it");
+      // var MarkdownIt = require("markdown-it");
       var md = new MarkdownIt();
       var result = md.render(blog.content.content);
-      _this.blogDetail.content = result;
 
-      _this.blogDetail.releaseTime = blog.info.releaseTime;
-      _this.blogDetail.viewNum = blog.info.viewNum;
-      _this.blogDetail.collectionNum = blog.info.collectionNum;
-      _this.profile.author = blog.info.author;
+      _this.blogDetail = {
+        id: blog.content.blogId,
+        title: blog.info.title,
+        content: result,
+        releaseTime: blog.info.releaseTime,
+        viewNum: blog.info.viewNum,
+        collectionNum: blog.info.collectionNum,
+      };
+      _this.profile = {
+        author: blog.info.author,
+        avatarUrl: blog.author.avatarUrl,
+      };
     });
   },
   methods: {},
