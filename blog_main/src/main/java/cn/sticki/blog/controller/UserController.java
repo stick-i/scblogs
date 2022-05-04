@@ -1,21 +1,22 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.enumeration.CacheSpace;
+import cn.sticki.blog.enumeration.type.FileType;
 import cn.sticki.blog.exception.systemException.MailSendException;
 import cn.sticki.blog.exception.systemException.MinioException;
 import cn.sticki.blog.pojo.domain.User;
 import cn.sticki.blog.pojo.vo.RestTemplate;
-import cn.sticki.blog.pojo.vo.UserVO;
+import cn.sticki.blog.security.AuthenticationFacade;
 import cn.sticki.blog.service.UserService;
-import cn.sticki.blog.type.FileType;
 import cn.sticki.blog.util.FileUtils;
+import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
@@ -24,16 +25,16 @@ import java.io.IOException;
 public class UserController {
 
 	@Resource
-	private HttpSession session;
-
-	@Resource
 	private UserService userService;
 
-	@Autowired
-	private User user;  // 当user为null时无法注入，此处将会抛出异常
+	@Resource
+	private AuthenticationFacade authenticationFacade;
 
 	@Resource
 	private FileUtils fileUtils;
+
+	@CreateCache(name = CacheSpace.Login_UserID)
+	Cache<Integer, User> cache;
 
 	/**
 	 * 获取公开信息
@@ -42,16 +43,16 @@ public class UserController {
 	 */
 	@GetMapping
 	public RestTemplate getByUsername(String username) {
-		user = (User) session.getAttribute("user");
+		User user = authenticationFacade.getUser();
 		User getUser = null;
 		if (username == null && user != null) {
 			getUser = user;
-			log.debug("getByUsername, sessionUser ,user->{}", getUser);
+			log.debug("getByUsername, sessionUser ,user->{}", getUser.getClass());
 		} else if (username != null) {
 			getUser = userService.getByUsername(username);
 			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
 		}
-		return new RestTemplate(UserVO.userToVO(getUser));
+		return new RestTemplate(getUser);
 	}
 
 	/**
@@ -61,9 +62,10 @@ public class UserController {
 	 */
 	@PutMapping("/nickname")
 	public RestTemplate updateNickname(@NotNull String nickname) {
-		user.setNickname(nickname); // 由于user是从session中注入进来的，所以更新user的时候，会自动更新session，无需将更新后的user重新放到Session中
+		User user = authenticationFacade.getUser();
+		user.setNickname(nickname);
 		if (userService.updateNickname(user.getId(), user.getNickname())) {
-			// session.setAttribute("user", user);
+			cache.put(user.getId(), user);
 			return new RestTemplate(true);
 		}
 		return new RestTemplate(false);
@@ -76,17 +78,12 @@ public class UserController {
 	 */
 	@PutMapping("/avatar")
 	public RestTemplate updateAvatar(@NotNull MultipartFile avatarFile) throws MinioException, IOException {
+		User user = authenticationFacade.getUser();
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
-		// 小于1Mib
-		if (avatarFile.getSize() > 1024 * 1024) {
-			return new RestTemplate(false, "文件过大");
-		}
-		FileType fileType = fileUtils.getType(avatarFile);
-		// 仅支持JPEG和PNG
-		if (fileType != FileType.JPEG && fileType != FileType.PNG) {
-			return new RestTemplate(false, "不支持的文件类型");
-		}
+		// 检查文件，小于1Mib ,仅支持JPEG和PNG
+		fileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		userService.updateAvatar(user, avatarFile);
+		cache.put(user.getId(), user);
 		return new RestTemplate();
 	}
 
@@ -98,6 +95,7 @@ public class UserController {
 	 */
 	@PutMapping("/password")
 	public RestTemplate updatePassword(@NotNull String oldPassword, @NotNull String newPassword) {
+		User user = authenticationFacade.getUser();
 		if (userService.checkPassword(user.getId(), oldPassword)) {
 			userService.updatePasswordById(user.getId(), newPassword);
 			return new RestTemplate(true, "修改成功");
@@ -113,24 +111,29 @@ public class UserController {
 	 */
 	@PutMapping("/mail")
 	public RestTemplate updateMail(@NotNull String mail, @NotNull String mailVerify) {
-		if (userService.checkMailVerify(user.getId(), mailVerify, "updateMail")) {
+		User user = authenticationFacade.getUser();
+		if (userService.checkMailVerify(user.getId(), mailVerify)) {
 			userService.updateMail(user.getId(), mail);
 			return new RestTemplate(true, "修改成功");
 		}
 		return new RestTemplate(false, "修改失败");
 	}
 
+	@CreateCache(name = CacheSpace.UserService_SendMailTime, expire = 300)
+	private Cache<Integer, Long> sendMailTimeCache;
+
 	/**
 	 * 发送邮箱验证码
 	 */
 	@PostMapping("/mail/send-mail-verify")
 	public RestTemplate sendMailVerifyForUpdateMail() throws MailSendException {
-		Long sendTime = (Long) session.getAttribute("mail-send-mail-verify-time");
+		User user = authenticationFacade.getUser();
+		Long sendTime = sendMailTimeCache.get(user.getId());
 		Long nowTime = System.currentTimeMillis() / 1000;
 		// 判断是否发送过邮件，若上一次发送邮件的时间超过60s则允许发送
 		if (sendTime == null || nowTime - sendTime > 60) {
-			userService.sendMailVerify(user.getId(), "updateMail");
-			session.setAttribute("mail-send-mail-verify-time", nowTime); // 将发送邮件的时间存到session
+			userService.sendMailVerify(user.getId());
+			sendMailTimeCache.put(user.getId(), nowTime);// 将发送邮件的时间存到Cache(Redis)
 			return new RestTemplate(true, "发送成功");
 		}
 		return new RestTemplate(false, "拒绝发送");
@@ -141,10 +144,9 @@ public class UserController {
 	 */
 	@DeleteMapping("/user")
 	public RestTemplate delete(@NotNull String password) {
-		if (!userService.checkPassword(user.getId(), password))
-			return new RestTemplate(false, "密码错误");
-		else
-			return new RestTemplate(userService.removeById(user.getId()));
+		User user = authenticationFacade.getUser();
+		if (!userService.checkPassword(user.getId(), password)) return new RestTemplate(false, "密码错误");
+		else return new RestTemplate(userService.removeById(user.getId()));
 	}
 
 }

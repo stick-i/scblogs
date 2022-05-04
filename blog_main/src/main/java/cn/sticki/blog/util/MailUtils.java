@@ -20,7 +20,7 @@ public class MailUtils {
 	@Resource
 	private JavaMailSenderImpl mailSender;//注入邮件工具类
 
-	@Async  // todo 此处异步有点问题
+	@Async
 	public void sendMail(MailDTO mailDTO) throws MailSendException {
 		checkMail(mailDTO);
 		try {

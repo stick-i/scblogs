@@ -12,7 +12,7 @@
 
 <script>
   import TopBar from "@/components/content/topbar/TopBar";
-  import LoginItem from "@/components/content/login/LoginItem";
+  import LoginItem from "@/views/login/childComps/LoginItem";
 
   export default {
     components: {
@@ -21,7 +21,7 @@
     },
     data() {
       return{
-        avatarUrl:'',
+        // avatarUrl:'',
       }
     }
 

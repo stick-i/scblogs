@@ -5,10 +5,13 @@ import VueRouter from 'vue-router'
 const Home = () => import('@/views/home/Home')
 const Login = () => import('@/views/login/Login')
 const Register = () => import('@/views/register/Register')
-const Blogs = () => import('@/views/Blogs')
-const BlogEdit = () => import('@/views/BlogEdit')
-const BlogDetail = () => import('@/views/BlogDetail')
-const Personal_Blog = () => import('@/views/Personal_Blog')
+const BlogSearch = () => import('@/views/blogSearch/BlogSearch')
+const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
+const BlogPublishSuccess = () => import('@/views/blogPublishSuccess/BlogPublishSuccess')
+const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
+const PersonalBlog = () => import('@/views/PersonalBlog')
+const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
+const ContentManagement = () => import('@/views/ContentManagement')
 
 
 Vue.use(VueRouter)
@@ -19,35 +22,36 @@ const routes = [
     name: 'Index',
     redirect:{name:"Home"}
   },
+
   {
     path: '/home',
     name: 'Home',
     component: Home
   },
   {
-    path: '/blogs',
-    name: 'Blogs',
-    component: Blogs
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
   },
-  // {
-  //   path: '/P_Register',
-  //   name: 'P_Register',
-  //   component: P_Register
-  // },
   {
     path: '/register',
     name: 'register',
     component: Register
   },
   {
+    path: '/blog/search',
+    name: 'BlogSearch',
+    component: BlogSearch
+  },
+  {
     path: '/blog/add',
-    name: 'BlogEdit',
+    name: 'BlogAdd',
     component: BlogEdit
+  },
+  {
+    path: '/blog/publish',
+    name: 'BlogPublishSuccess',
+    component: BlogPublishSuccess
   },
   {
     path: '/blog/:blogId',
@@ -62,7 +66,17 @@ const routes = [
   {
     path: '/Personal_Blog',
     name: 'PersonalBlog',
-    component: Personal_Blog
+    component: PersonalBlog
+  },
+  {
+    path: '/PersonalMessageEdit',
+    name: 'PersonalMessageEdit',
+    component: PersonalMessageEdit
+  },
+  {
+    path: '/ContentManagement',
+    name: 'ContentManagement',
+    component: ContentManagement
   },
 ]
 
@@ -71,5 +85,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 export default router

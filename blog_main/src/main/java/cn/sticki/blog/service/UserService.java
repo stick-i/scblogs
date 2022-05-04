@@ -10,15 +10,6 @@ import java.io.IOException;
 // public interface UserService extends IService<User> {
 public interface UserService {
 
-	/**
-	 * 用户登录
-	 *
-	 * @param username 用户名
-	 * @param password 密码
-	 * @return 用户信息
-	 */
-	User login(String username, String password);
-
 	User getByUsername(String username);
 
 	/**
@@ -74,14 +65,14 @@ public interface UserService {
 	/**
 	 * 发送邮箱验证码
 	 */
-	boolean sendMailVerify(Integer id, String key) throws MailSendException;
+	boolean sendMailVerify(Integer id) throws MailSendException;
 
 	/**
 	 * 检查验证码
 	 *
 	 * @param id     用户id
 	 * @param verify 验证码
-	 * @param key    发送类别
 	 */
-	boolean checkMailVerify(Integer id, String verify, String key);
+	boolean checkMailVerify(Integer id, String verify);
+
 }

@@ -1,3 +1,139 @@
+server:
+  port: 443
+  servlet:
+    context-path: /api/v1
+  ssl:
+    key-store: xxx
+    key-store-type: "PKCS12"
+    key-store-password: xxx
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto  # 全局id增长策略
+      # table-prefix: 全局表名前缀
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志配置
+    map-underscore-to-camel-case: true  # 配置驼峰命名自动映射
+  mapper-locations: classpath*:mapper/*.xml  # 指定xml文件的路径
+  type-aliases-package: cn.sticki.blog.pojo  # 实体对象的扫描包
+
 spring:
-  profiles:
-    active: dev
+  #  main:
+  #    allow-circular-references: true
+  # 404时不跳转，直接抛出异常
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  # 数据库
+  datasource:
+    druid:
+      url: xxx
+      username: xxx
+      password: xxx
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  devtools:
+    restart:
+      enabled: true  # 是否启用热部署
+  #  redis相关
+  #  redis:
+  #    host: 127.0.0.1
+  #    port: 6379
+  #    database: 0
+  #    client-type: lettuce
+
+  # servlet文件传输限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  # 邮箱相关
+  mail:
+    host: smtp.163.com
+    username: xxx
+    password: xxx
+    port: 465
+    default-encoding: UTF-8
+    properties:
+      mail:
+        #        debug: true # 开启发送邮件debug模式
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  # spring-boot-admin 相关配置
+  boot:
+    admin:
+      client:
+        url: xxx
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #时间戳统一转换为指定格式
+    time-zone: GMT+8 # 时区修改为东8 区
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    enabled-by-default: true
+
+info:
+  #  appName: @project.artifactId@
+  author: stick
+
+#日志配置
+logging:
+  group:
+    user: cn.sticki.blog
+    security: org.springframework.security
+  level:
+    user: debug
+#    security: debug
+
+minio:
+  url: xxx
+  username: xxx
+  password: xxx
+  bucket-name: xxx
+
+resource-path:
+  avatar: avatar/
+  default-avatar: default_avatar.jpg
+  blog-cover-image: blogCover/
+
+security:
+  # JWT配置
+  jwt:
+    # 密匙KEY
+    key: xxx
+    # token在http头中的命名
+    header-name: "token"
+    # 签名发放者
+    issuer: "scblogs.cn"
+    # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
+    expiration: 604800
+    # 配置不需要认证的接口，中间不能加空格
+    ant-matchers: /login/**,/blog/**,/resource/**,/user,/register/**
+
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false  # 设置不把areaName作为Key前缀
+  remote:
+    default:
+      type: redis
+      host: xxx
+      port: xxx
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      expireAfterWriteInMillis: 15
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50

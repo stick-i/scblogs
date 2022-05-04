@@ -8,7 +8,7 @@
 		update user set
 		<choose>
 			<when test="avatar != null">
-				avatar = #{avatar}
+				avatar_url = #{avatar}
 			</when>
 			<when test="nickname != null">
 				nickname = #{nickname}
@@ -19,5 +19,10 @@
 		</choose>
 		where id = #{id};
 	</update>
+
+	<insert id="insert" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+		insert into user (username, nickname, avatar_url, register_time)
+		values (#{username}, #{nickname}, #{avatarUrl}, #{registerTime});
+	</insert>
 
 </mapper>

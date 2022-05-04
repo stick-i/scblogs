@@ -1,52 +1,53 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-
+    <!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
+        <div class="small-box"></div>
         <div class="nav-content">
           <ul>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6</a></li>
-            <li><a href="#">7</a></li>
-            <li><a href="#">8</a></li>
-            <li><a href="#">9</a></li>
-            <li><a href="#">10</a></li>
-            <li><a href="#">11</a></li>
-            <li><a href="#">12</a></li>
-            <li><a href="#">13</a></li>
-            <li><a href="#">14</a></li>
-            <li><a href="#">15</a></li>
-            <li><a href="#">16</a></li>
-            <li><a href="#">17</a></li>
-            <li><a href="#">18</a></li>
-            <li><a href="#">19</a></li>
-            <li><a href="#">20</a></li>
-            <li><a href="#">21</a></li>
-            <li><a href="#">22</a></li>
-            <li><a href="#">23</a></li>
-            <li><a href="#">24</a></li>
-            <li><a href="#">25</a></li>
-            <li><a href="#">26</a></li>
-            <li><a href="#">27</a></li>
-            <li><a href="#">28</a></li>
-            <li><a href="#">29</a></li>
-            <li><a href="#">30</a></li>
-            <li><a href="#">31</a></li>
-            <li><a href="#">32</a></li>
-            <li><a href="#">33</a></li>
-            <li><a href="#">34</a></li>
-            <li><a href="#">35</a></li>
-            <li><a href="#">36</a></li>
-            <li><a href="#">37</a></li>
-            <li><a href="#">38</a></li>
-            <li><a href="#">39</a></li>
-            <li><a href="#">40</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">前端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">后端</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">游戏开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
+            <li><a href="#">嵌入式开发</a></li>
           </ul>
         </div>
       </div>
@@ -76,7 +77,7 @@
               <div class="headswiper-content">
                 <div class="headswiper-item item-first">
                   <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九</a
+                    >饭后走一走活到九十九饭后走一走活到九十九</a
                   >
                   <a target="_blank" href="#" class="item-name">活到九十九</a>
                 </div>
@@ -119,13 +120,7 @@
           </div>
         </div>
         <!-- 右边轮播图 -->
-        <div class="main-right">
-          <el-carousel indicator-position="outside" height="380px">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <h3>{{ item }}</h3>
-            </el-carousel-item>
-          </el-carousel>
-        </div>
+        <Swiper />
       </div>
     </div>
     <!--<swiper></swiper>-->
@@ -133,13 +128,14 @@
     <div class="content">
       <!-- 左边-->
       <div class="article-left">
+        <!-- tabs标签-->
         <div class="tabs">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="关注" name="first">
-              <article-item v-for="item in 3"></article-item>
+              <HomeArticleItem />
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <article-item v-for="item in 5"></article-item>
+              <HomeArticleItem />
             </el-tab-pane>
             <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
@@ -191,14 +187,14 @@
 <script>
 import TopBar from "../../components/content/topbar/TopBar";
 import Swiper from "@/components/common/swiper/Swiper";
-import ArticleItem from "@/components/content/home_article/ArticleItem";
+import HomeArticleItem from "@/views/home/childComps/HomeArticleItem";
 
 export default {
   name: "Home",
   components: {
     Swiper,
     TopBar,
-    ArticleItem,
+    HomeArticleItem,
   },
   data() {
     return {
@@ -226,45 +222,58 @@ export default {
   /* display: block; */
   background-color: #ffffff;
   width: 1380px;
+  height: 72px;
   margin: 0 auto;
   box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
   /* background-color: greenyellow; */
+  overflow: hidden;
+  padding: 28px 0;
+}
+.top-navbar:hover {
+  overflow: inherit;
+}
+.nav-content ul {
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
+  z-index: 5;
 }
 .nav-content ul li {
   display: inline-block;
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   height: 24px;
-  margin-right: 31px;
+  margin-right: 20px;
+  margin-left: 20px;
+  background-color: #fff;
 }
 .nav-content ul li a {
   font-size: 15px;
   color: #555666;
 }
+.nav-content ul li a:hover {
+  font-size: 15px;
+  color: #222226;
+}
+
+.top-navbar .small-box {
+  position: absolute;
+  z-index: 11;
+  width: 32px;
+  height: 12px;
+  /* background-color: pink; */
+  background-image: url("../../assets/img/home/down.png");
+  background-size: 32px 12px;
+  left: 50%;
+  top: 118px;
+  transform: translateX(-50%);
+}
+.top-navbar:hover .small-box {
+  background-image: url("../../assets/img/home/up.png");
+  top: 206px;
+}
 
 /* navbar结束 */
-
-/* 轮播图开始 */
-.main-right {
-  width: 335px;
-}
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 18px;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
-/* 轮播图结束 */
 
 /* 头条开始 */
 .main-left {
@@ -334,6 +343,10 @@ export default {
   font-size: 16px;
   font-weight: 700;
   color: #222226;
+  /*显示省略号*/
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .headswiper-item .item-title:hover {
   text-decoration: underline;
@@ -480,6 +493,9 @@ export default {
 }
 .tabs .el-tabs--top {
   padding-left: 10px;
+}
+.tabs .el-tabs__header {
+  margin: 0;
 }
 
 .content .article-left {

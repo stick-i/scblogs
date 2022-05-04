@@ -11,7 +11,7 @@
 
 <script>
   import TopBar from "@/components/content/topbar/TopBar";
-  import RegisterItem from "@/components/content/register/RegisterItem";
+  import RegisterItem from "@/views/register/childComps/RegisterItem";
 
   export default {
     components: {
