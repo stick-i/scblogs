@@ -112,11 +112,14 @@ export default {
     // },
     infiniteHandler($state) {
       this.$axios
-        .get("/blog/search",{params:{key:this.key,page:this.page}})
+        .get("/blog/search",{params:{key:this.key,page:this.page}},{
+          headers: { token: localStorage.getItem("token") },
+        })
         .then((res) => {
-          if(res.data.data.length) {
+          console.log(res)
+          if(res.data.data.records.length) {
             this.page +=1;  // 下一页
-            this.blogSearchList = this.blogSearchList.concat(res.data.data);
+            this.blogSearchList = this.blogSearchList.concat(res.data.data.records);
             console.log("下拉刷新",this.blogSearchList)
             // console.log(this.blogSearchList)
             $state.loaded();

@@ -235,7 +235,7 @@ export default {
 .nav-content ul {
   position: relative;
   background-color: #fff;
-  box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
+  box-shadow: 0 4px 5px 0 rgb(232 232 237 / 50%);
   z-index: 5;
 }
 .nav-content ul li {
