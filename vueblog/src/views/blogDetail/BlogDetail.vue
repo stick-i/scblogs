@@ -119,6 +119,7 @@
           <el-card class="box-card">
             <div class="text item" v-cloak>
               <h1>{{ blogDetail.title }}</h1>
+              <!--文章信息开始-->
               <div class="article-info">
                 <img
                   class="article-type-img"
@@ -140,19 +141,72 @@
                   alt=""
                 />
                 <div class="info-box">浏览量：{{ blogDetail.viewNum }}</div>
-                <img
-                  class="icon"
-                  src="../../assets/img/blogDetail/collection.png"
-                  alt=""
-                />
-                <div class="info-box">
-                  收藏&nbsp;{{ blogDetail.collectionNum }}
+                <!-- 收藏 -->
+                <div class="collection" @click="addCollectionNum()">
+                  <img
+                    class="icon"
+                    :src="
+                      isCollect
+                        ? require('../../assets/img/blogDetail/collection_active.png')
+                        : require('../../assets/img/blogDetail/collection.png')
+                    "
+                    alt=""
+                  />
+                  <div class="info-box">
+                    收藏&nbsp;{{ blogDetail.collectionNum }}
+                  </div>
                 </div>
               </div>
+              <!--文章信息结束-->
               <el-divider></el-divider>
               <div class="markdown-body" v-html="blogDetail.content"></div>
             </div>
           </el-card>
+          <!-- 底部文章信息 -->
+          <!-- <div id="testNavBar" :class="isfixTab == false ? 'fixed1' : 'fixed2'">
+            <div>1234</div>
+          </div> -->
+          <div class="right-toolbox">
+            <div class="toolbox-left">
+              <div class="profile-box">
+                <img class="profile-img" :src="profile.avatarUrl" alt="" />
+                <span class="profile-name">{{ profile.author }}</span>
+              </div>
+              <div class="profile-attend">
+                <a href="javascript:;">关注</a>
+              </div>
+            </div>
+            <div class="toolbox-middle">
+              <div class="item-box like" @click="addLikeNum()">
+                <img
+                  :src="
+                    isLike
+                      ? require('../../assets/img/blogDetail/good_active.png')
+                      : require('../../assets/img/blogDetail/good.png')
+                  "
+                  alt=""
+                />
+                <span>{{blogDetail.likeNum}}</span>
+              </div>
+              <div class="item-box comment">
+                <img src="../../assets/img/blogDetail/comment.png" alt="" />
+                <span>{{blogDetail.commentNum}}</span>
+              </div>
+              <div class="item-box collection" @click="addCollectionNum()">
+                <img
+                  :src="
+                    isCollect
+                      ? require('../../assets/img/blogDetail/collection2_active.png')
+                      : require('../../assets/img/blogDetail/collection2.png')
+                  "
+                  alt=""
+                />
+                <span>{{ blogDetail.collectionNum }}</span>
+              </div>
+            </div>
+          </div>
+          <!-- 评论 -->
+          <div class="test-box">1111111111111111111111</div>
         </div>
       </div>
     </div>
@@ -162,6 +216,7 @@
 <script>
 import TopBar from "@/components/content/topbar/TopBar";
 import "github-markdown-css/github-markdown.css";
+import qs from "qs";
 export default {
   name: "BlogDetail",
   components: {
@@ -169,13 +224,22 @@ export default {
   },
   data() {
     return {
+      isfixTab: true,
+      // 收藏id
+      blogIdForm: {
+        blogId: "",
+      },
+      isLike:false,
+      isCollect: false,
       blogDetail: {
         id: 1,
         title: "",
         content: "",
         releaseTime: "",
         viewNum: "",
+        likeNum:'',
         collectionNum: "",
+        commentNum:"",
       },
       profile: {
         author: "",
@@ -184,7 +248,9 @@ export default {
     };
   },
   created() {
+    // 显示文章详情
     const blogId = this.$route.params.blogId;
+    this.blogIdForm.blogId = this.$route.params.blogId;
     const _this = this;
     this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
       console.log(res);
@@ -201,15 +267,102 @@ export default {
         content: result,
         releaseTime: blog.info.releaseTime,
         viewNum: blog.info.viewNum,
+        likeNum:blog.info.likeNum,
         collectionNum: blog.info.collectionNum,
+        commentNum: blog.info.commentNum,
       };
       _this.profile = {
         author: blog.info.author,
         avatarUrl: blog.author.avatarUrl,
       };
-    });
+    })
+    // 显示点赞收藏
+    // this.$axios
+    //   .post("/blog/like", qs.stringify(this.blogIdForm), {
+    //     headers: { token: localStorage.getItem("token") },
+    //   })
+    //   .then((res) => {
+    //     this.isLike = res.data.data.status;
+    //     this.$axios.post("/blog/collect", qs.stringify(this.blogIdForm), {
+    //       headers: { token: localStorage.getItem("token") },
+    //     }).then((response)=>{
+    //       this.isCollect = res.data.data.status;
+    //     })
+    //   });
   },
-  methods: {},
+
+  // 滚动开始
+  // 监听页面滚动
+  // mounted () {
+  //   window.addEventListener('scroll', this.handleTabFix, true)
+  // },
+  // //离开当前组件前一定要清除滚动监听，否则进入其他路由会报错
+  // beforeRouteLeave (to, from, next) {
+  //   window.removeEventListener('scroll', this.handleTabFix, true)
+  //   next()
+  // },
+  // 滚动结束
+
+  methods: {
+    // 点赞
+    addLikeNum() {
+      this.$axios
+        .post("/blog/like", qs.stringify(this.blogIdForm), {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.data.status) {
+            this.blogDetail.likeNum++;
+            this.isLike = true;
+          } else {
+            this.blogDetail.likeNum--;
+            this.isLike = false;
+          }
+        });
+    },
+    // 收藏
+    addCollectionNum() {
+      this.$axios
+        .post("/blog/collect", qs.stringify(this.blogIdForm), {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log(res);
+          // this.isCollect = res.data.data.status
+          if (res.data.data.status) {
+            this.blogDetail.collectionNum++;
+            this.isCollect = true;
+          } else {
+            this.blogDetail.collectionNum--;
+            this.isCollect = false;
+          }
+        });
+    },
+
+    // 滚动
+    // 先分别获得id为testNavBar的元素距离顶部的距离和页面滚动的距离
+    // 比较他们的大小来确定是否添加fixedNavbar样式
+    handleTabFix() {
+      var scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      // var offsetTop = document.querySelector('#testNavBar').offsetTop
+      var offsetTop = document.getElementById("testNavBar").offsetTop;
+      console.log(scrollTop);
+      console.log("--------------");
+      console.log(offsetTop);
+      console.log("===============");
+      if (scrollTop > 11590) {
+        this.isfixTab = true;
+      } else {
+        this.isfixTab = false;
+      }
+      // scrollTop > offsetTop ? this.isfixTab = true : this.isfixTab = false
+    },
+    // 滚动结束
+  },
 };
 </script>
 
@@ -217,6 +370,120 @@ export default {
 [v-cloak] {
   display: none;
 }
+
+/*文章点赞收藏底部开始*/
+.fixed1 {
+  width: 1070px;
+  height: 48px;
+  background-color: pink;
+  /*position: relative;*/
+  position: fixed;
+  /*bottom: 0;*/
+  top: 735px;
+  z-index: 10;
+}
+.fixed2 {
+  width: 1070px;
+  height: 48px;
+  background-color: green;
+}
+.fixedNavbar {
+  width: 1070px;
+  height: 48px;
+  background-color: pink;
+  /*position: relative;*/
+  position: fixed;
+  /*bottom: 0;*/
+  top: 735px;
+  z-index: 10;
+}
+
+.right-toolbox {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 24px;
+  height: 64px;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 -1px 8px 0 rgba(0, 0, 0, 0.06);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.toolbox-left {
+  display: flex;
+  align-items: center;
+}
+.profile-box {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.profile-box .profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+  border: 1px solid #f5f6f7;
+  margin-right: 8px;
+}
+.profile-box .profile-name {
+  height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222226;
+  line-height: 24px;
+  margin-right: 8px;
+}
+.profile-attend {
+  position: relative;
+}
+.profile-attend a {
+  display: block;
+  min-width: 60px;
+  height: 28px;
+  background: #fff;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 28px;
+  text-align: center;
+  border: 1px solid #ccccd8;
+  color: #555666;
+}
+.profile-attend a:hover {
+  border: 1px solid #555666;
+}
+
+.toolbox-middle {
+  display: flex;
+}
+.toolbox-middle .item-box {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.toolbox-middle .item-box img {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+}
+.toolbox-middle .item-box span {
+  color: #999aaa;
+  font-size: 14px;
+}
+
+/*文章点赞收藏底部结束*/
+
+/*评论开始*/
+.test-box {
+  width: 1070px;
+  height: 100px;
+  background-color: skyblue;
+}
+/*评论结束*/
 
 .text {
   font-size: 14px;
@@ -257,6 +524,7 @@ export default {
 /*博客详情开始*/
 .main-rt {
   width: 1070px;
+  position: relative;
 }
 .article-info {
   display: flex;
@@ -279,6 +547,11 @@ export default {
   width: 16px;
   height: 16px;
   line-height: 32px;
+}
+.article-info .collection {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 /*博客详情结束*/
 

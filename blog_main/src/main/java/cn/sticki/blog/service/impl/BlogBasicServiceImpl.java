@@ -9,6 +9,7 @@ import cn.sticki.blog.pojo.domain.BlogBasic;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.service.BlogBasicService;
+import cn.sticki.blog.service.CommentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,6 +31,9 @@ public class BlogBasicServiceImpl extends ServiceImpl<BlogBasicMapper, BlogBasic
 
 	@Resource
 	private UserMapper userMapper;
+
+	@Resource
+	private CommentService commentService;
 
 	@Override
 	public BlogListVO getRecommendBlogList(int page, int pageSize) {
@@ -55,6 +59,7 @@ public class BlogBasicServiceImpl extends ServiceImpl<BlogBasicMapper, BlogBasic
 		blog.setInfo(blogBasicMapper.selectById(id));
 		blog.setContent(blogContentMapper.selectById(id));
 		blog.setAuthor(userMapper.selectByUsername(blog.getInfo().getAuthor()));
+		blog.setComment(commentService.getList(id, 1, 3));
 		return blog;
 	}
 
