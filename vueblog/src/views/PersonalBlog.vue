@@ -133,7 +133,7 @@ export default {
     await this.$axios
         .post("/login/login", qs.stringify(params))
         .then((res) => {
-          console.log("登录成功",res)
+          console.log("登录成功",res.data.data)
           // 将token设置到本地浏览器中
           window.localStorage.setItem("token", res.headers.token);
           window.localStorage.setItem(
@@ -147,10 +147,8 @@ export default {
         .get("/user", this.config)
         .then((res) => {
           localStorage.setItem("userMessage", JSON.stringify(res.data.data));
-        })
-        .then((res) => {
           this.userMessage = res.data.data
-        });
+        })
     },
     TurnToEditPage() {
       // 跳转至编辑页面
