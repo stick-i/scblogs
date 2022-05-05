@@ -177,7 +177,8 @@ export default {
       this.recentList = [];
     // 获取文章列表
       await this.$axios.get("/blog-console/blog-list",{headers:{'token':localStorage.getItem('token')}}).then((res) => {
-        this.recentList = this.recentList.concat(res.data.data.blogList);
+        console.log("获取博客列表成功",res)
+        this.recentList = this.recentList.concat(res.data.data.records);
         console.log("获取到的博客列表数据", this.recentList);
         this.DataChange();
       });
