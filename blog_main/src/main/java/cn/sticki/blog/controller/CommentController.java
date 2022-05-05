@@ -3,6 +3,7 @@ package cn.sticki.blog.controller;
 import cn.sticki.blog.exception.userException.UserArgumentException;
 import cn.sticki.blog.pojo.domain.Comment;
 import cn.sticki.blog.pojo.domain.User;
+import cn.sticki.blog.pojo.vo.CommentListVO;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import cn.sticki.blog.security.AuthenticationFacade;
 import cn.sticki.blog.service.CommentService;
@@ -47,6 +48,17 @@ public class CommentController {
 		User user = authenticationFacade.getUser();
 		commentService.checkAndDelete(user.getId(), id);
 		return new RestTemplate();
+	}
+
+	/**
+	 * 获取评论列表
+	 *
+	 * @param blogId 评论的博客id
+	 */
+	@GetMapping("/list")
+	public RestTemplate getCommentList(@RequestParam Integer blogId, @RequestParam Integer page, @RequestParam(defaultValue = "3") Integer pageSize) {
+		CommentListVO commentListVO = commentService.getList(blogId, page, pageSize);
+		return new RestTemplate(commentListVO);
 	}
 
 }
