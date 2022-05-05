@@ -60,7 +60,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 				if (user == null) {
 					user = userMapper.selectById(id);
 				}
-				log.debug("Token validate successful,user->{}", user);
+				log.debug("Token get success,user->{}", user);
 				// TODO 获取权限信息封装到Authentication中
 				// 存入SecurityContextHolder，这里构造一个已认证的 authenticationToken ，之后就不用再认证了。
 				if (user != null) {
