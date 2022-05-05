@@ -8,12 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.ServletException;
 import java.net.ConnectException;
 import java.util.ArrayList;
 
@@ -32,13 +34,19 @@ public class ProjectExceptionAdvice {
 		return new RestTemplate(500, "服务器故障，请稍后再试", null, false);
 	}
 
+	@ExceptionHandler(ServletException.class)
+	public RestTemplate doServletException(Exception e) {
+		log.warn("请求异常,{}", e.getMessage());
+		return new RestTemplate(400, "请求异常", null, false);
+	}
+
 	@ExceptionHandler(HttpMessageConversionException.class)
 	public RestTemplate doHttpMessageConversionException(HttpMessageConversionException e) {
-		e.printStackTrace();
+		log.warn("数据异常,{}", e.getMessage());
 		return new RestTemplate(400, "数据异常", null, false);
 	}
 
-	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	@ExceptionHandler({HttpRequestMethodNotSupportedException.class, HttpMediaTypeException.class})
 	public RestTemplate doHttpRequestMethodNotSupportedException(Exception e) {
 		log.warn("请求方式异常,{}", e.getMessage());
 		return new RestTemplate(400, "请求方式异常", null, false);
