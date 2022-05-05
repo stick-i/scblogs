@@ -161,7 +161,7 @@
 
 <script>
 import TopBar from "@/components/content/topbar/TopBar";
-// import "github-markdown-css/github-markdown.css";
+import "github-markdown-css/github-markdown.css";
 export default {
   name: "BlogDetail",
   components: {
@@ -192,7 +192,7 @@ export default {
       _this.blogDetail.title = blog.info.title;
 
       // 渲染md文档
-      // var MarkdownIt = require("markdown-it");
+      var MarkdownIt = require("markdown-it");
       var md = new MarkdownIt();
       var result = md.render(blog.content.content);
       _this.blogDetail.content = result;
