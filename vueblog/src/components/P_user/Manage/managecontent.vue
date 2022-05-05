@@ -36,17 +36,30 @@
                         啥也没搜到！
                     </div>
                     <div ref="firstContent" class="show-content">
-                        <div class="F-1" v-for="(item,index) in List"  :key="index" @click="TurnToShow(item.id)">
+                        <div class="F-1" v-for="(item,index) in List"  :key="index" >
                             <div class="BlogContent-a">
-                            <div class="BlogContent-1">{{ item.title }}</div>
-                            <div class="BlogContent-2">{{ item.description }}</div>
-                            <div class="BlogContent-3">
-                                {{ item.releaseTime }}.
-                                <span>{{ item.viewNum }}阅读 .</span>
-                                <span>{{ item.likeNum }}点赞 .</span>
-                                <span>{{ item.commentNum }}评论 .</span>
-                                <span>{{ item.collectionNum }}收藏</span>
+                                <div @click="TurnToShow(item.id)" class="BlogContent-1">{{ item.title }}</div>
+                                <div class="BlogContent-2">{{ item.description }}</div>
+                                <div class="BlogContent-3">
+                                    {{ item.releaseTime }}.
+                                    <span>{{ item.viewNum }}阅读 .</span>
+                                    <span>{{ item.likeNum }}点赞 .</span>
+                                    <span>{{ item.commentNum }}评论 .</span>
+                                    <span>{{ item.collectionNum }}收藏</span>
+                                </div>
                             </div>
+                            <div class="BlogContent-b">
+                                <el-popover
+                                    placement="top"
+                                    width="160"
+                                    v-model="visible2">
+                                    <p>这是一段内容这是一段内容确定删除吗？</p>
+                                    <div style="text-align: right; margin: 0">
+                                    <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
+                                    <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
+                                    </div>
+                                    <el-button style="pointer-events: auto;" slot="reference">删除</el-button>
+                                </el-popover>
                             </div>
                         </div>
                         <!--infinite-loading这个组件要放在列表的底部，滚动的盒子里面-->
@@ -108,7 +121,8 @@ export default {
                 headers:{
                     'token':localStorage.getItem('token')
                 }
-            }
+            },
+            visible2:false
         }
     },
     async mounted(){
@@ -204,7 +218,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .managecontent{
     width:calc(100%- 40px);
     height: calc(100%- 40px);
@@ -298,10 +312,17 @@ export default {
     height: 30%;
 }
 .BlogContent-a {
-  width: 100%;
+  width: 80%;
   height: 100%;
+  display: inline-block;
   padding: 10px 0;
   border-bottom: 1px solid #b7b8bb;
+}
+.BlogContent-b {
+  width: 20%;
+  height: 100%;
+  display: inline-block;
+  /* border-bottom: 1px solid #b7b8bb; */
 }
 .BlogContent-1 {
   width: 100%;
