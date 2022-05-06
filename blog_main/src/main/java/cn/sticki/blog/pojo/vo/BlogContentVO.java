@@ -14,4 +14,6 @@ public class BlogContentVO {
 
 	User author;
 
+	CommentListVO comment;
+
 }

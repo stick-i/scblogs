@@ -42,12 +42,18 @@
                         </div>
                     </div>
                     
-                    <div ref="tabs1" class="contentright">
-                        <TabsContent v-if="leftNavigation[0].chose"></TabsContent>
+                    <div ref="tabs1" v-show="leftNavigation[0].chose" class="contentright">
+                        <TabsContent></TabsContent>
                         <!-- && content1Seens -->
                     </div>
-                    <div ref="tabs2" class="contentright">
-                        <TabsContent2 v-if="leftNavigation[1].chose"></TabsContent2>
+                    <div ref="tabs2" v-show="leftNavigation[1].chose" class="contentright">
+                        <TabsContent2></TabsContent2>
+                    </div>
+                    <div ref="tabs5" v-show="leftNavigation[4].chose" class="contentright">
+                        <TabsContent5></TabsContent5>
+                    </div>
+                    <div ref="tabs8" v-show="leftNavigation[7].chose" class="contentright">
+                        <TabsContent8></TabsContent8>
                     </div>
                 </div>
             </div>
@@ -62,19 +68,23 @@ import TopBarA from "@/components/content/topbar/TopBar";
 import ButtomView from "@/components/P_user/ButtomView/ButtomView.vue"
 import TabsContent from "@/components/P_user/PMELeftTabs/lefttabs.vue";
 import TabsContent2 from "@/components/P_user/PMELeftTabs/lefttabs2.vue"
+import TabsContent5 from "@/components/P_user/PMELeftTabs/lefttabs5.vue"
+import TabsContent8 from "@/components/P_user/PMELeftTabs/lefttabs8.vue"
 export default{
     components:{
         TopBarA,
         ButtomView,
         TabsContent,
-        TabsContent2
+        TabsContent2,
+        TabsContent5,
+        TabsContent8,
     },
     data(){
         return {
             leftNavigation:[{name:"个人资料",chose:true},{name:"账号设置",chose:false},
             {name:"隐私设置",chose:false},{name:"信息认证",chose:false}
             ,{name:"我的收藏",chose:false},{name:"浏览历史",chose:false},
-            {name:"内容管理",chose:false}],
+            {name:"内容管理",chose:false},{name:"我的点赞",chose:false}],
             userMessage:{
                 username:"默认参数P",
                 nickname:"默认参数P",   
@@ -115,14 +125,7 @@ export default{
                 this.leftNavigation[i].chose=false
             }
             this.leftNavigation[index].chose=true
-            // this.$refs.upload.submit();
-            if(index==0){
-                this.$refs.tabs1.style.display="block";
-                this.$refs.tabs2.style.display="none"
-            }else{
-                this.$refs.tabs2.style.display="block"
-                this.$refs.tabs1.style.display="none"
-            }
+            
             if(index==6){
                 this.$router.push('/ContentManagement')
             }

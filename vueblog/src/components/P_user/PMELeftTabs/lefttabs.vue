@@ -291,7 +291,7 @@ export default {
 .rightContentB .rightContentB-1 .button{
   width: 10%;
   height: 50%;
-  /* padding: 8px 8px; */
+  cursor: pointer;
   margin: 0 100px;
   border-radius: 20px;
   border: 2px solid rgb(81, 222, 253);

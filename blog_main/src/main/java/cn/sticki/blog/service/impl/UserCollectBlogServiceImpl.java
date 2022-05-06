@@ -70,7 +70,12 @@ public class UserCollectBlogServiceImpl extends ServiceImpl<UserCollectBlogMappe
 		wrapper.eq(UserCollectBlog::getUserId, userId);
 		IPage<UserCollectBlog> iPage = new Page<>(page, pageSize);
 		userCollectBlogMapper.selectPage(iPage, wrapper);
+		BlogListVO blogListVO = BeanUtil.copyProperties(iPage, BlogListVO.class);
 		List<UserCollectBlog> userCollectBlogList = iPage.getRecords();
+		// 若为空，则直接返回
+		if (userCollectBlogList.isEmpty()) {
+			return blogListVO;
+		}
 		ArrayList<Integer> blogIdList = new ArrayList<>();
 		for (UserCollectBlog blog : userCollectBlogList) {
 			blogIdList.add(blog.getBlogId());
@@ -79,7 +84,7 @@ public class UserCollectBlogServiceImpl extends ServiceImpl<UserCollectBlogMappe
 		LambdaQueryWrapper<BlogBasic> blogWrapper = new LambdaQueryWrapper<>();
 		blogWrapper.in(BlogBasic::getId, blogIdList);
 		List<BlogBasic> blogBasicList = blogBasicMapper.selectList(blogWrapper);
-		BlogListVO blogListVO = BeanUtil.copyProperties(iPage, BlogListVO.class, "records");
+
 		blogListVO.setRecords(blogBasicList);
 		return blogListVO;
 	}
