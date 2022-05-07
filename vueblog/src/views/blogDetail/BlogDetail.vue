@@ -163,6 +163,7 @@
             </div>
           </el-card>
           <!-- 底部文章信息 -->
+
           <!-- <div id="testNavBar" :class="isfixTab == false ? 'fixed1' : 'fixed2'">
             <div>1234</div>
           </div> -->
@@ -206,7 +207,7 @@
             </div>
           </div>
           <!-- 评论 -->
-          <div class="test-box">1111111111111111111111</div>
+          <BlogComment/>
         </div>
       </div>
     </div>
@@ -215,12 +216,14 @@
 
 <script>
 import TopBar from "@/components/content/topbar/TopBar";
+import BlogComment from "@/views/blogDetail/childComps/BlogComment";
 import "github-markdown-css/github-markdown.css";
 import qs from "qs";
 export default {
   name: "BlogDetail",
   components: {
     TopBar,
+    BlogComment
   },
   data() {
     return {
@@ -307,7 +310,7 @@ export default {
     // 点赞
     addLikeNum() {
       this.$axios
-        .post("/blog/like", qs.stringify(this.blogIdForm), {
+        .post("/action/blog/like", qs.stringify(this.blogIdForm), {
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {
@@ -324,7 +327,7 @@ export default {
     // 收藏
     addCollectionNum() {
       this.$axios
-        .post("/blog/collect", qs.stringify(this.blogIdForm), {
+        .post("/action/blog/collect", qs.stringify(this.blogIdForm), {
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {
@@ -477,13 +480,7 @@ export default {
 
 /*文章点赞收藏底部结束*/
 
-/*评论开始*/
-.test-box {
-  width: 1070px;
-  height: 100px;
-  background-color: skyblue;
-}
-/*评论结束*/
+
 
 .text {
   font-size: 14px;

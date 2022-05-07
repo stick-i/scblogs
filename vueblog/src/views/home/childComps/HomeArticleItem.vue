@@ -112,7 +112,7 @@ export default {
     addLikeNum(id, index) {
       this.blogIdForm.blogId = id;
       this.$axios
-        .post("/blog/like", qs.stringify(this.blogIdForm), {
+        .post("/action/blog/like", qs.stringify(this.blogIdForm), {
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {
