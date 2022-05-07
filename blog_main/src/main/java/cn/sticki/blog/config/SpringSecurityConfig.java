@@ -1,11 +1,11 @@
 package cn.sticki.blog.config;
 
 import cn.sticki.blog.security.filter.AuthenticationTokenFilter;
+import cn.sticki.blog.security.filter.IPLimitFilter;
 import cn.sticki.blog.security.handler.AuthAccessDeniedHandler;
 import cn.sticki.blog.security.handler.AuthenticationEntryPointHandler;
 import cn.sticki.blog.security.handler.LoginFailureHandler;
 import cn.sticki.blog.security.handler.LoginSuccessHandler;
-import cn.sticki.blog.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,12 +57,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationEntryPointHandler authenticationEntryPointHandler;
 
-	/**
-	 * 自定义登录逻辑验证器
-	 */
+	// /**
+	//  * 自定义登录逻辑验证器
+	//  */
 	// @Autowired
 	// private UserAuthenticationProvider userAuthenticationProvider;
 
+	/**
+	 * 用户认证过滤器
+	 */
 	@Autowired
 	private AuthenticationTokenFilter authenticationTokenFilter;
 	//
@@ -73,7 +76,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	// private AccessDeniedHandler accessDeniedHandler;
 
 	@Autowired
-	private ResponseUtils responseUtils;
+	private IPLimitFilter ipLimitFilter;
 
 	// @Resource
 	// private AuthenticationFailureHandlerAdvice authenticationFailureHandlerAdvice;
@@ -114,6 +117,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().cacheControl();
 		// 添加JWT过滤器
 		http.addFilterAt(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+		// 添加ip限制过滤器
+		http.addFilterBefore(ipLimitFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Bean
