@@ -34,41 +34,26 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {
-      title: '登录'
-    }
   },
   {
     path: '/register',
     name: 'register',
     component: Register,
-    meta: {
-      title: '注册'
-    }
   },
   {
     path: '/blog/search',
     name: 'BlogSearch',
     component: BlogSearch,
-    meta: {
-      title: '博客搜索'
-    }
   },
   {
     path: '/blog/add',
     name: 'BlogAdd',
     component: BlogEdit,
-    meta: {
-      title: '创作博客'
-    }
   },
   {
     path: '/blog/publish',
     name: 'BlogPublishSuccess',
     component: BlogPublishSuccess,
-    meta: {
-      title: '发布成功'
-    }
   },
   {
     path: '/blog/:blogId',
@@ -84,9 +69,6 @@ const routes = [
     path: '/Personal_Blog',
     name: 'PersonalBlog',
     component: PersonalBlog,
-    meta: {
-      title: '个人中心'
-    }
   },
   {
     path: '/PersonalMessageEdit',
