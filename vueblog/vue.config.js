@@ -9,10 +9,7 @@ module.exports = {
     proxy: {
       '/api': {
         // target:'https://192.168.201.130/api/v1',
-        
-        // target: 'https://local.sticki.cn/api/v1',// 后端接口
-        target: 'https://api.scblogs.cn/v1/user?username=stick',// 后端接口
-
+        target: 'https://api.scblogs.cn/v1',// 后端接口
         changeOrigin: true, // 是否跨域
         pathRewrite: {
           '/api': ''

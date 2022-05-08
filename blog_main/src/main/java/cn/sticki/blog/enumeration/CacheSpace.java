@@ -27,4 +27,9 @@ public class CacheSpace {
 	 */
 	public static final String UserService_MailVerify = "userService:mailVerify:";
 
+	/**
+	 * ip 计数
+	 */
+	public static final String IpService_Count = "ipService:Count:";
+
 }
