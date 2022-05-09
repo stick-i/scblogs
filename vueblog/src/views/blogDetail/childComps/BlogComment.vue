@@ -38,7 +38,7 @@
                         <span class="name">{{ item.info.nickname }}</span>
                         <span class="date">{{ item.info.createTime }}</span>
                       </div>
-                      <div class="comment-btn" @click="showFirstEditBox()">
+                      <div class="comment-btn" @click="showFirstEditBox(index)">
                         <img
                           src="../../../assets/img/blogDetail/blogComment/commentReply.png"
                           alt=""
@@ -47,7 +47,7 @@
                       </div>
                       <div class="comment-like">
                         <img
-                          src="../../../assets/img/blogDetail/blogComment/commentLike.png"
+                          src="../../../assets/img/blsecondCommentogDetail/blogComment/commentLike.png"
                           alt=""
                         />
                         <span class="like-num">1</span>
