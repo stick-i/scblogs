@@ -1,13 +1,12 @@
 <template>
   <div>
     <div class="comment-container">
-      <div class="comment-title">评论 <span>3</span></div>
+      <div class="comment-title">
+        评论 <span>{{ facomment.allCount }}</span>
+      </div>
       <div class="comment-edit-box">
         <div class="user-img">
-          <img
-            src="https://local.sticki.cn/api/v1/resource/avatar/1_stick"
-            alt=""
-          />
+          <img src="https://api.scblogs.cn/v1/resource/avatar/1_stick" alt="" />
         </div>
         <div class="comment-form">
           <input
@@ -15,30 +14,31 @@
             name="comment_content"
             id="comment_content"
             type="text"
-            placeholder="请发表有价值的评论， 博客评论不欢迎灌水，良好的社区氛围需大家一起维护。"
+            v-model="comment.content"
+            placeholder="请发表有价值的评论，博客评论不欢迎灌水，良好的社区氛围需大家一起维护。"
           />
-          <div class="comment-operate-box">评论</div>
+          <div class="comment-operate-box" @click="firstComment()">评论</div>
         </div>
       </div>
       <div class="comment-list-container">
         <div class="comment-list-box">
-          <ul class="comment-list">
+          <ul
+            class="comment-list"
+            v-for="(item, index) in facomment.records"
+            :key="index"
+          >
             <!-- 父评论 -->
             <li class="comment-line-box">
               <div class="comment-list-item">
-                <img
-                  src="https://local.sticki.cn/api/v1/resource/avatar/1_stick"
-                  alt=""
-                  class="avatar"
-                />
+                <img :src="item.info.avatarUrl" alt="" class="avatar" />
                 <div class="right-box">
                   <div class="new-info-box">
                     <div class="comment-top">
                       <div class="user-box">
-                        <span class="name">取了个名字</span>
-                        <span class="date">2022.05.06</span>
+                        <span class="name">{{ item.info.nickname }}</span>
+                        <span class="date">{{ item.info.createTime }}</span>
                       </div>
-                      <div class="comment-btn">
+                      <div class="comment-btn" @click="showFirstEditBox()">
                         <img
                           src="../../../assets/img/blogDetail/blogComment/commentReply.png"
                           alt=""
@@ -54,28 +54,59 @@
                       </div>
                     </div>
                     <div class="comment-center">
-                      <div class="new-comment">为你点赞！！！</div>
+                      <div class="new-comment">{{ item.info.content }}</div>
                     </div>
                   </div>
                 </div>
               </div>
+              <!-- 评论input开始 -->
+              <div class="first-edit-box" v-if="isShowFirstEditBox">
+                <div class="comment-edit-box">
+                  <div class="user-img">
+                    <img
+                      src="https://api.scblogs.cn/v1/resource/avatar/1_stick"
+                      alt=""
+                    />
+                  </div>
+                  <div class="comment-form">
+                    <input
+                      class="comment-content"
+                      name="comment_content"
+                      type="text"
+                      placeholder="输入评论..."
+                      v-model="childComment.content"
+                    />
+                    <div
+                      class="comment-operate-box"
+                      @click="secondComment(item.info.id)"
+                    >
+                      评论
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 评论input结束 -->
             </li>
             <!-- 子评论 -->
-            <li class="replay-box">
+            <li
+              class="replay-box"
+              v-for="(child, index) in item.sub"
+              :key="index"
+            >
               <ul class="comment-list">
                 <li class="comment-line-box">
                   <div class="comment-list-item">
-                    <img
-                      src="https://local.sticki.cn/api/v1/resource/avatar/1_stick"
-                      alt=""
-                      class="avatar"
-                    />
+                    <img :src="child.avatarUrl" alt="" class="avatar" />
                     <div class="right-box">
                       <div class="new-info-box">
                         <div class="comment-top">
                           <div class="user-box">
-                            <span class="name">取了个名字</span>
-                            <span class="date">2022.05.06</span>
+                            <span class="name">{{ child.nickname }}</span>
+                            <span class="text">回复</span>
+                            <span class="nick-name">{{
+                              child.parentNickname
+                            }}</span>
+                            <span class="date">{{ child.createTime }}</span>
                           </div>
                           <div class="comment-btn">
                             <img
@@ -89,47 +120,11 @@
                               src="../../../assets/img/blogDetail/blogComment/commentLike.png"
                               alt=""
                             />
-                            <!--                            <span class="like-num">1</span>-->
+                            <span class="like-num">1</span>
                           </div>
                         </div>
                         <div class="comment-center">
-                          <div class="new-comment">为你点赞！！！</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li class="comment-line-box">
-                  <div class="comment-list-item">
-                    <img
-                      src="https://local.sticki.cn/api/v1/resource/avatar/1_stick"
-                      alt=""
-                      class="avatar"
-                    />
-                    <div class="right-box">
-                      <div class="new-info-box">
-                        <div class="comment-top">
-                          <div class="user-box">
-                            <span class="name">取了个名字</span>
-                            <span class="date">2022.05.06</span>
-                          </div>
-                          <div class="comment-btn">
-                            <img
-                              src="../../../assets/img/blogDetail/blogComment/commentReply.png"
-                              alt=""
-                            />
-                            <span class="btn-reply">回复</span>
-                          </div>
-                          <div class="comment-like">
-                            <img
-                              src="../../../assets/img/blogDetail/blogComment/commentLike.png"
-                              alt=""
-                            />
-                            <!--                            <span class="like-num">1</span>-->
-                          </div>
-                        </div>
-                        <div class="comment-center">
-                          <div class="new-comment">为你点赞！！！</div>
+                          <div class="new-comment">{{ child.content }}</div>
                         </div>
                       </div>
                     </div>
@@ -145,8 +140,67 @@
 </template>
 
 <script>
+import qs from "qs";
+
 export default {
   name: "",
+  props: ["facomment"],
+  data() {
+    return {
+      // 父评论
+      comment: {
+        blogId: this.$route.params.blogId,
+        content: "",
+        parentId: "",
+      },
+      // 子评论
+      childComment: {
+        blogId: this.$route.params.blogId,
+        content: "",
+        parentId: "",
+      },
+      isShowFirstEditBox: false,
+      isComment: {},
+    };
+  },
+  watch: {
+    // facomment(a, b) {
+    //   this.isComment = a.records;
+    // },
+  },
+  methods: {
+    // 发布一级评论
+    firstComment() {
+      this.$axios
+        .post("/comment", this.comment, {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log(res);
+          this.comment.content = "";
+          // 更新评论列表
+          this.$emit("func");
+        });
+    },
+    showFirstEditBox() {
+      this.isShowFirstEditBox = !this.isShowFirstEditBox;
+    },
+    // 发布二级评论
+    secondComment(parentId) {
+      this.childComment.parentId = parentId;
+      this.$axios
+        .post("/comment", this.childComment, {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log(res);
+          this.childComment.content = "";
+          this.isShowFirstEditBox = false;
+          // 更新评论列表
+          this.$emit("func");
+        });
+    },
+  },
 };
 </script>
 
@@ -157,6 +211,7 @@ export default {
   /*height: 100px;*/
   /*background-color: skyblue;*/
   margin-top: 10px;
+  margin-bottom: 10px;
   padding: 16px 24px 24px 24px;
   border-radius: 2px;
   background: #fff;
@@ -172,6 +227,13 @@ export default {
 }
 
 /*评论标题结束*/
+
+/* 回复一级评论开始 */
+.first-edit-box {
+  padding-left: 40px;
+  padding-bottom: 14px;
+}
+/* 回复一级评论结束 */
 
 /*写评论开始*/
 .comment-edit-box {
@@ -277,6 +339,10 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.right-box .comment-top .user-box .date {
+  font-size: 14px;
+  color: #777888;
+}
 .right-box .comment-top img {
   width: 16px;
   height: 16px;
@@ -325,6 +391,17 @@ export default {
 .replay-box .comment-list-item .right-box {
   border-top: 0;
   padding-top: 0;
+}
+.replay-box .right-box .comment-top .user-box .name {
+  margin-right: 0;
+}
+.replay-box .right-box .comment-top .user-box .text {
+  color: #999aaa;
+  margin: 0 6px;
+}
+.replay-box .right-box .comment-top .user-box .nick-name {
+  color: #777888;
+  margin-right: 10px;
 }
 /* 评论显示结束 */
 /*评论盒子结束*/
