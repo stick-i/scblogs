@@ -45,12 +45,15 @@ public class IPLimitFilter extends OncePerRequestFilter {
 		if (ipCount > count) {
 			// ip访问超过限制
 			responseUtils.objectToJson(response, new RestTemplate(408, "访问频繁，请稍后再试"));
+			response.sendError(403, "Reject request");
 		} else {
 			ipCount++;
 			cache.put(ip, ipCount);
 			//放行
 			filterChain.doFilter(request, response);
 		}
+		// 打印访问情况
+		log.info("{} {} {}  {}", request.getRemoteAddr(), request.getMethod(), response.getStatus(), request.getServletPath());
 	}
 
 }
