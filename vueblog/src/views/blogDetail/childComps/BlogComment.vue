@@ -6,7 +6,7 @@
       </div>
       <div class="comment-edit-box">
         <div class="user-img">
-          <img src="https://api.scblogs.cn/v1/resource/avatar/1_stick" alt="" />
+          <img :src="avatarUrl" alt="" />
         </div>
         <div class="comment-form">
           <input
@@ -38,12 +38,20 @@
                         <span class="name">{{ item.info.nickname }}</span>
                         <span class="date">{{ item.info.createTime }}</span>
                       </div>
-                      <div class="comment-btn" @click="showFirstEditBox(index)">
-                        <img
-                          src="../../../assets/img/blogDetail/blogComment/commentReply.png"
-                          alt=""
-                        />
-                        <span class="btn-reply">回复</span>
+                      <div class="comment-btn">
+                        <div
+                          class="delete"
+                          @click="deleteComment(item.info.id)"
+                        >
+                          删除
+                        </div>
+                        <div @click="showFirstEditBox(item.info.id)">
+                          <img
+                            src="../../../assets/img/blogDetail/blogComment/commentReply.png"
+                            alt=""
+                          />
+                          <span class="btn-reply">回复</span>
+                        </div>
                       </div>
                       <div class="comment-like">
                         <img
@@ -60,13 +68,10 @@
                 </div>
               </div>
               <!-- 评论input开始 -->
-              <div class="first-edit-box" v-if="index==a?true:false">
+              <div class="first-edit-box" v-if="item.info.id == firstId">
                 <div class="comment-edit-box">
                   <div class="user-img">
-                    <img
-                      src="https://api.scblogs.cn/v1/resource/avatar/1_stick"
-                      alt=""
-                    />
+                    <img :src="avatarUrl" alt="" />
                   </div>
                   <div class="comment-form">
                     <input
@@ -109,11 +114,19 @@
                             <span class="date">{{ child.createTime }}</span>
                           </div>
                           <div class="comment-btn">
-                            <img
-                              src="../../../assets/img/blogDetail/blogComment/commentReply.png"
-                              alt=""
-                            />
-                            <span class="btn-reply">回复</span>
+                            <div
+                              class="delete"
+                              @click="deleteComment(child.id)"
+                            >
+                              删除
+                            </div>
+                            <div @click="showSecondEditBox(child.id)">
+                              <img
+                                src="../../../assets/img/blogDetail/blogComment/commentReply.png"
+                                alt=""
+                              />
+                              <span class="btn-reply">回复</span>
+                            </div>
                           </div>
                           <div class="comment-like">
                             <img
@@ -129,19 +142,51 @@
                       </div>
                     </div>
                   </div>
+                  <!-- 评论input开始 -->
+                  <div class="first-edit-box" v-if="child.id == secondId">
+                    <div class="comment-edit-box">
+                      <div class="user-img">
+                        <img :src="avatarUrl" alt="" />
+                      </div>
+                      <div class="comment-form">
+                        <input
+                          class="comment-content"
+                          name="comment_content"
+                          type="text"
+                          placeholder="输入评论..."
+                          v-model="childComment2.content"
+                        />
+                        <div
+                          class="comment-operate-box"
+                          @click="thirdComment(child.id)"
+                        >
+                          评论
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 评论input结束 -->
                 </li>
               </ul>
             </li>
           </ul>
         </div>
         <!-- 分页开始 -->
-        <div class="pagination-box">
-          <el-pagination background layout="prev, pager, next" :total="50">
+        <div class="pagination-box" v-if="facomment.records != null">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :current-page="facomment.current"
+            :page-size="facomment.size"
+            :total="facomment.total"
+            @current-change="page1"
+          >
           </el-pagination>
         </div>
         <!-- 分页结束 -->
       </div>
     </div>
+    <div @click="deleteComment()">123</div>
   </div>
 </template>
 
@@ -153,6 +198,8 @@ export default {
   props: ["facomment"],
   data() {
     return {
+      // 头像
+      avatarUrl: "",
       // 父评论
       comment: {
         blogId: this.$route.params.blogId,
@@ -165,17 +212,29 @@ export default {
         content: "",
         parentId: "",
       },
-      a:null,
-      isShowFirstEditBox: false,
-      isComment: {},
+      childComment2: {
+        blogId: this.$route.params.blogId,
+        content: "",
+        parentId: "",
+      },
+      firstId: null,
+      secondId: null,
+      // 分页
+      blogId: this.$route.params.blogId,
+      page: "2",
+      pageSize: "3",
     };
   },
-  watch: {
-    // facomment(a, b) {
-    //   this.isComment = a.records;
-    // },
+  created() {
+    this.avatarUrl = window.localStorage.avatarUrl;
   },
   methods: {
+    showFirstEditBox(id) {
+      this.firstId = id;
+    },
+    showSecondEditBox(id) {
+      this.secondId = id;
+    },
     // 发布一级评论
     firstComment() {
       this.$axios
@@ -189,10 +248,6 @@ export default {
           this.$emit("func");
         });
     },
-    showFirstEditBox(index) {
-      // this.isShowFirstEditBox = !this.isShowFirstEditBox;
-      this.a = index;
-    },
     // 发布二级评论
     secondComment(parentId) {
       this.childComment.parentId = parentId;
@@ -203,9 +258,48 @@ export default {
         .then((res) => {
           console.log(res);
           this.childComment.content = "";
-          this.isShowFirstEditBox = false;
           // 更新评论列表
           this.$emit("func");
+        });
+    },
+    // 发布三级评论
+    thirdComment(parentId) {
+      this.childComment2.parentId = parentId;
+      this.$axios
+        .post("/comment", this.childComment2, {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log(res);
+          this.childComment2.content = "";
+          // 更新评论列表
+          this.$emit("func");
+        });
+    },
+    // 删除评论
+    deleteComment(id) {
+      this.$axios
+        .delete("/comment", {
+          params: { id: id },
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log("删除", res);
+          this.$emit("func");
+        });
+    },
+    // 分页
+    page1(page) {
+      this.$axios
+        .get("/comment/list", {
+          params: {
+            blogId: this.blogId,
+            page: page,
+            pageSize: this.pageSize,
+          },
+        })
+        .then((res) => {
+          this.$emit("recordsChange", res.data.data);
         });
     },
   },
@@ -377,11 +471,16 @@ export default {
   line-height: 22px;
   word-break: break-word;
 }
+
+.comment-list-item .comment-btn .delete {
+  color: #999aaa;
+  margin-right: 10px;
+}
 .comment-list-item .comment-btn {
   display: none;
 }
 .comment-list-item:hover .comment-btn {
-  display: block;
+  display: flex;
 }
 
 /* 子评论 */
@@ -417,7 +516,12 @@ export default {
 .pagination-box {
   text-align: center;
 }
-.comment-list-container .pagination-box .el-pagination .is-background .el-pager li:not(.disabled).active {
+.comment-list-container
+  .pagination-box
+  .el-pagination
+  .is-background
+  .el-pager
+  li:not(.disabled).active {
   background-color: #555666;
 }
 

@@ -207,7 +207,7 @@
             </div>
           </div>
           <!-- 评论 -->
-          <BlogComment :facomment="comment" @func = "getComment"/>
+          <BlogComment :facomment="comment" @func = "getComment" @recordsChange="recordsChange"/>
 
         </div>
       </div>
@@ -300,6 +300,9 @@
     // 滚动结束
 
     methods: {
+      recordsChange(records) {
+        this.comment = records
+      },
       // 获取评论
       getComment(){
         console.log("获取评论")
