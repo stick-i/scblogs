@@ -60,7 +60,7 @@
                 </div>
               </div>
               <!-- 评论input开始 -->
-              <div class="first-edit-box" v-if="isShowFirstEditBox">
+              <div class="first-edit-box" v-if="index==a?true:false">
                 <div class="comment-edit-box">
                   <div class="user-img">
                     <img
@@ -134,6 +134,12 @@
             </li>
           </ul>
         </div>
+        <!-- 分页开始 -->
+        <div class="pagination-box">
+          <el-pagination background layout="prev, pager, next" :total="50">
+          </el-pagination>
+        </div>
+        <!-- 分页结束 -->
       </div>
     </div>
   </div>
@@ -159,6 +165,7 @@ export default {
         content: "",
         parentId: "",
       },
+      a:null,
       isShowFirstEditBox: false,
       isComment: {},
     };
@@ -182,8 +189,9 @@ export default {
           this.$emit("func");
         });
     },
-    showFirstEditBox() {
-      this.isShowFirstEditBox = !this.isShowFirstEditBox;
+    showFirstEditBox(index) {
+      // this.isShowFirstEditBox = !this.isShowFirstEditBox;
+      this.a = index;
     },
     // 发布二级评论
     secondComment(parentId) {
@@ -404,5 +412,16 @@ export default {
   margin-right: 10px;
 }
 /* 评论显示结束 */
+
+/* 分页开始 */
+.pagination-box {
+  text-align: center;
+}
+.comment-list-container .pagination-box .el-pagination .is-background .el-pager li:not(.disabled).active {
+  background-color: #555666;
+}
+
+/* 分页结束 */
+
 /*评论盒子结束*/
 </style>
