@@ -47,7 +47,7 @@
                       </div>
                       <div class="comment-like">
                         <img
-                          src="../../../assets/img/blsecondCommentogDetail/blogComment/commentLike.png"
+                          src="../../../assets/img/blogDetail/blogComment/commentLike.png"
                           alt=""
                         />
                         <span class="like-num">1</span>
