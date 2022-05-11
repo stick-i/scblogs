@@ -186,7 +186,7 @@
         <!-- 分页结束 -->
       </div>
     </div>
-    <div @click="deleteComment()">123</div>
+    <div>123</div>
   </div>
 </template>
 

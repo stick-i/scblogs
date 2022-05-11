@@ -46,6 +46,7 @@
 
 <script>
 import qs from "qs";
+
 export default {
   name: "",
   data() {
@@ -71,10 +72,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // alert('submit!');
           this.$axios
             .post("/login/login", qs.stringify(this.ruleForm))
-          // { headers: { 'token': sessionStorage.getItem("token") } }
             .then((res) => {
               console.log(res);
               if (res.data.code == 200 && res.data.status == false) {
@@ -91,7 +90,7 @@ export default {
                   type: "success",
                 });
                 console.log(res.headers.token);
-                localStorage.setItem('token', res.headers.token);
+                localStorage.setItem("token", res.headers.token);
 
                 this.avatarUrl = res.data.data.avatarUrl;
                 this.bus.$emit("avatarlink", this.avatarUrl);
