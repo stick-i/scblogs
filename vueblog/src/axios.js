@@ -2,6 +2,7 @@ import axios from "axios";
 import ElementUI from 'element-ui';
 
 // axios.defaults.baseURL="https://local.sticki.cn/api/v1"
+// axios.defaults.baseURL="https://api.scblogs.cn/v1"
 axios.defaults.baseURL = "/api"
 
 // 前置拦截

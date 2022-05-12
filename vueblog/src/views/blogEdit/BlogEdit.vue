@@ -30,6 +30,9 @@
       <!-- markdown编辑器  -->
       <mavon-editor
         v-model="ruleForm.content"
+        ref="md"
+        @imgAdd="imgAdd"
+        @imgDel="imgDel"
         style="height: calc(100vh - 56px)"
       ></mavon-editor>
 
@@ -74,6 +77,26 @@ export default {
     this.avatarUrl = window.localStorage.avatarUrl;
   },
   methods: {
+    // md文档开始
+    // 将图片上传到服务器，返回地址替换到md中
+    imgAdd(pos, $file) {
+      var _this = this
+      var formdata = new FormData();
+      formdata.append('file', $file);
+      this.$axios.post("https://local.sticki.cn/api/v1/blog-console/img",formdata,{
+        headers: { token: localStorage.getItem("token") },
+      }).then((response) => {
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        if (response.status === 200) {
+          var url = response.data.data;
+          _this.$refs.md.$img2Url(pos,url)
+        }
+      })
+    },
+    imgDel(pos) {
+
+    },
+    // md文档结束
     dialogShowChange(val) {
       this.dialogShow = val;
     },
