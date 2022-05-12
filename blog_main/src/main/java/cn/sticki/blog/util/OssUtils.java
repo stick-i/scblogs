@@ -70,13 +70,13 @@ public class OssUtils {
 	/**
 	 * 上传文件，请手动关闭inputStream
 	 */
-	public void upload(String objectName, InputStream inputStream, long objectSize, long partSize, String contentType)
+	public void upload(String filePath, InputStream inputStream, long objectSize, long partSize, String contentType)
 			throws MinioException {
 		try {
 			minioClient.putObject(PutObjectArgs
 					.builder()
 					.bucket(MinioConfig.bucketName)
-					.object(objectName)
+					.object(filePath)
 					// 文件大小和分片大小，填-1默认为5Mib
 					.stream(inputStream, objectSize, partSize)
 					.contentType(contentType)
@@ -108,14 +108,28 @@ public class OssUtils {
 		}
 	}
 
+	public void upload(MultipartFile multipartFile, String filePath) throws MinioException, IOException {
+		try (
+				InputStream inputStream = multipartFile.getInputStream()
+		) {
+			this.upload(
+					filePath,
+					inputStream,
+					multipartFile.getSize(),
+					-1,
+					multipartFile.getContentType()
+			);
+		}
+	}
+
 	/**
 	 * 下载文件
 	 *
-	 * @param fileName     文件名
+	 * @param filePath     文件名(包括路径)
 	 * @param outputStream 输出流
 	 */
-	public void download(String fileName, ServletOutputStream outputStream) throws MinioException, IOException {
-		InputStream inputStream = this.download(fileName);
+	public void download(String filePath, ServletOutputStream outputStream) throws MinioException, IOException {
+		InputStream inputStream = this.download(filePath);
 		IOUtils.copy(inputStream, outputStream);
 		inputStream.close();
 	}
@@ -123,14 +137,14 @@ public class OssUtils {
 	/**
 	 * 下载文件，需要手动关闭流，否则会一直占用资源
 	 *
-	 * @param fileName 文件名
+	 * @param filePath 文件名(包括路径)
 	 */
-	public InputStream download(String fileName) throws MinioException {
+	public InputStream download(String filePath) throws MinioException {
 		try {
 			return minioClient.getObject(GetObjectArgs
 					.builder()
 					.bucket(MinioConfig.bucketName)
-					.object(fileName)
+					.object(filePath)
 					.build());
 		} catch (Exception e) {
 			// e.printStackTrace();

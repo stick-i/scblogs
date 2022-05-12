@@ -7,14 +7,13 @@ import cn.sticki.blog.exception.systemException.DAOException;
 import cn.sticki.blog.exception.userException.UserIllegalException;
 import cn.sticki.blog.mapper.BlogContentMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.mapper.BlogImgMapper;
 import cn.sticki.blog.mapper.BlogMapper;
-import cn.sticki.blog.pojo.domain.Blog;
-import cn.sticki.blog.pojo.domain.BlogContent;
-import cn.sticki.blog.pojo.domain.BlogCount;
-import cn.sticki.blog.pojo.domain.BlogGeneral;
+import cn.sticki.blog.pojo.domain.*;
 import cn.sticki.blog.pojo.dto.BlogCountDTO;
 import cn.sticki.blog.pojo.dto.BlogSaveDTO;
 import cn.sticki.blog.service.BlogConsoleService;
+import cn.sticki.blog.util.EncryptUtils;
 import cn.sticki.blog.util.FileUtils;
 import cn.sticki.blog.util.OssUtils;
 import cn.sticki.blog.util.RandomUtils;
@@ -52,6 +51,9 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 
 	@Resource
 	private FileUtils fileUtils;
+
+	@Resource
+	private BlogImgMapper blogImgMapper;
 
 	@Override
 	public void saveBlog(BlogSaveDTO blogDTO) throws UserException, DAOException {
@@ -184,6 +186,29 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 					-1,
 					coverImage.getContentType()
 			);
+		}
+	}
+
+	@SneakyThrows
+	@Override
+	public String uploadImage(MultipartFile coverImage) {
+		try (InputStream stream = coverImage.getInputStream()) {
+			String md5 = EncryptUtils.toMD5(stream);
+			// 存数据库，上传图片
+			// 先判断数据库是否存在这条记录，存在的话直接返回链接就行了
+			LambdaQueryWrapper<BlogImg> wrapper = new LambdaQueryWrapper<>();
+			wrapper.eq(BlogImg::getImg, md5);
+			if (!blogImgMapper.exists(wrapper)) {
+				// 不存在，则新增
+				BlogImg blogImg = new BlogImg();
+				blogImg.setImg(md5);
+				blogImg.setCreate_time(new Timestamp(System.currentTimeMillis()));
+				blogImgMapper.insert(blogImg);
+				// 上传图片
+				ossUtils.upload(coverImage, ResourcePath.blogImage + md5);
+			}
+			// 返回访问链接
+			return ResourcePath.blogImageUrlBase + md5;
 		}
 	}
 
