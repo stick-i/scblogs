@@ -27,7 +27,6 @@ public class EncryptUtils {
 		try {
 			return DigestUtils.md5DigestAsHex(inputStream);
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new FileException("空文件");
 		}
 	}

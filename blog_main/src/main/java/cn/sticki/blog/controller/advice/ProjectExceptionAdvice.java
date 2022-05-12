@@ -5,6 +5,7 @@ import cn.sticki.blog.exception.userException.SqlLimitException;
 import cn.sticki.blog.exception.userException.UserIllegalException;
 import cn.sticki.blog.pojo.vo.RestTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindException;
@@ -82,6 +83,12 @@ public class ProjectExceptionAdvice {
 	public RestTemplate doConnectException(ConnectException e) {
 		log.warn("服务连接失败,{}", e.getMessage());
 		return new RestTemplate(501, "服务器连接故障，请联系管理员", null, false);
+	}
+
+	@ExceptionHandler(ClientAbortException.class)
+	public RestTemplate doClientAbortException(ClientAbortException e) {
+		log.warn("连接被关闭,{}", e.getMessage());
+		return new RestTemplate(501, "连接被关闭", null, false);
 	}
 
 	@ExceptionHandler(SqlLimitException.class)
