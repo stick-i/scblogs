@@ -4,7 +4,8 @@ module.exports = defineConfig({
 })
 const webpack = require("webpack")
 module.exports = {
-
+  // baseUrl:"./",
+  // publicPath:"./",
   devServer: {
     proxy: {
       '/api': {
@@ -16,5 +17,5 @@ module.exports = {
         }
       }
     }
-  }
+  },
 }
