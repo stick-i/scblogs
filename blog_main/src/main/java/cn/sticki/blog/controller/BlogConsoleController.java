@@ -140,4 +140,14 @@ public class BlogConsoleController {
 		return new RestTemplate(blogConsoleService.remove(wrapper));
 	}
 
+	@PostMapping("/img")
+	public RestTemplate uploadBlogImg(@NotNull MultipartFile file) {
+		log.debug("uploadBlogImg, fileName->{}, userId->{}", file.getOriginalFilename(), authenticationFacade.getUser().getId());
+		if (fileUtils.isNotEmpty(file)) {
+			fileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
+		}
+		String url = blogConsoleService.uploadImage(file);
+		return new RestTemplate(url);
+	}
+
 }

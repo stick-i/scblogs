@@ -29,16 +29,10 @@
           <div class="box related-list">
             <h3>全站热搜榜</h3>
             <ul>
-              <li><span>1</span><a>计算机毕业设计</a></li>
-              <li><span>2</span><a>计算机毕业设计</a></li>
-              <li><span>3</span><a>计算机毕业设计</a></li>
-              <li><span>4</span><a>计算机毕业设计</a></li>
-              <li><span>5</span><a>计算机毕业设计</a></li>
-              <li><span>6</span><a>计算机毕业设计</a></li>
-              <li><span>7</span><a>计算机毕业设计</a></li>
-              <li><span>8</span><a>计算机毕业设计</a></li>
-              <li><span>9</span><a>计算机毕业设计</a></li>
-              <li><span>10</span><a>计算机毕业设计</a></li>
+              <li v-for="(item, index) in relatedList" :key="index" @click="relatedSearch(item)">
+                <span>{{ index + 1 }}</span>
+                <a>{{ item }}</a>
+              </li>
             </ul>
           </div>
           <div class="box">关于我们-{{ key }}</div>
@@ -64,6 +58,18 @@ export default {
     return {
       key: this.$store.state.searchKey,
       blogSearchList: [],
+      relatedList: [
+        "蓝桥杯历年真题",
+        "计算机毕业设计",
+        "微信小程序商城搭建",
+        "数据可视化工具",
+        "彻底搞懂背包问题",
+        "队列的基本操作",
+        "迷宫问题求解",
+        "前端练手项目合集",
+        "凯撒密码实现",
+        "数据库从入门到精通",
+      ],
     };
   },
   watch: {
@@ -80,11 +86,21 @@ export default {
       // 保存key
       this.$store.commit("copySearchKey", this.key);
       sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+
       this.$axios.get("/blog/search?key=" + this.key).then((res) => {
         console.log("加载后再次点击搜索", res);
         this.blogSearchList = res.data.data;
       });
     },
+    // 点击热搜榜搜索博客
+    relatedSearch(key) {
+      this.key = key;
+      // 状态保持清除后刷新页面
+      window.location.reload();
+      // 保存key
+      this.$store.commit("copySearchKey", this.key);
+      sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+    }
   },
 };
 </script>
@@ -93,8 +109,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  /* min-height: 100vh; */
-  min-height: calc(100vh - 65px);
+  min-height: calc(100vh - 48px);
   background-color: #f2f2f2;
 }
 

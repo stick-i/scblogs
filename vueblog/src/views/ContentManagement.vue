@@ -98,15 +98,16 @@ export default {
 </script>
 
 <style scoped>
+
 .top{
     width: 100%;
     /* height: 50px; */
-    background: white;
+    background: rgb(255, 255, 255);
 }
 .body-content{
   width: 100%;
-    height: 100vh;
-    background: rgb(243,244,246);
+  min-height: 100vh;
+  background: rgb(75, 84, 102);
 }
 .top-mid{
     margin: 0 auto;

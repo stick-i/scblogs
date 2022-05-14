@@ -42,44 +42,6 @@
           <el-input type="textarea" v-model="ruleForm.description"></el-input>
         </el-form-item>
 
-        <!-- 标签开始 -->
-        <!-- <el-form-item label="文章标签：" prop="desc">
-          <el-tag
-            :key="tag"
-            v-for="tag in dynamicTags"
-            closable
-            :disable-transitions="false"
-            @close="handleClose(tag)"
-            >{{ tag }}
-          </el-tag>
-          <el-input
-            class="input-new-tag"
-            v-if="inputVisible"
-            v-model="inputValue"
-            ref="saveTagInput"
-            size="small"
-            @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"
-          >
-          </el-input>
-          <el-button
-            v-else
-            class="button-new-tag"
-            size="small"
-            @click="showInput"
-            >+ 添加文章标签</el-button
-          >
-        </el-form-item> -->
-        <!-- 标签结束 -->
-        <!-- 文章类型开始 -->
-        <!-- <el-form-item label="文章类型：" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="原创"></el-radio>
-            <el-radio label="转载"></el-radio>
-          </el-radio-group>
-        </el-form-item> -->
-        <!-- 文章类型结束 -->
-
         <el-form-item label="发布形式：" prop="status" style="margin-top: 10px;">
           <el-radio-group v-model="ruleForm.status">
             <el-radio :label="1">公开</el-radio>

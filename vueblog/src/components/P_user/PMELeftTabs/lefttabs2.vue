@@ -13,7 +13,7 @@
                     <div class="password">
                         <div class="text">密码</div>
                         <div class="right">
-                            <span>{{}}</span>
+                            <span></span>
                             <span @click="ChangePassword">修改密码</span>
                         </div>
                     </div>

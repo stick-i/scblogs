@@ -54,3 +54,13 @@ a {
 .right {
     float: right;
 }
+ol, ul {
+  list-style: none;
+}
+* {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

@@ -13,6 +13,8 @@ const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 
+// const Test = () => import('@/views/Test')
+
 
 Vue.use(VueRouter)
 
@@ -26,47 +28,47 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
   },
   {
     path: '/register',
     name: 'register',
-    component: Register
+    component: Register,
   },
   {
     path: '/blog/search',
     name: 'BlogSearch',
-    component: BlogSearch
+    component: BlogSearch,
   },
   {
     path: '/blog/add',
     name: 'BlogAdd',
-    component: BlogEdit
+    component: BlogEdit,
   },
   {
     path: '/blog/publish',
     name: 'BlogPublishSuccess',
-    component: BlogPublishSuccess
+    component: BlogPublishSuccess,
   },
   {
     path: '/blog/:blogId',
     name: 'BlogDetail',
-    component: BlogDetail
+    component: BlogDetail,
   },
   {
     path: '/blog/:blogId/edit',
     name: 'BlogEdit',
-    component: BlogEdit
+    component: BlogEdit,
   },
   {
     path: '/Personal_Blog',
     name: 'PersonalBlog',
-    component: PersonalBlog
+    component: PersonalBlog,
   },
   {
     path: '/PersonalMessageEdit',
@@ -78,10 +80,16 @@ const routes = [
     name: 'ContentManagement',
     component: ContentManagement
   },
+  // {
+  //   path: '/test',
+  //   name: 'Test',
+  //   component: Test
+  // },
 ]
 
 const router = new VueRouter({
   mode: 'history',
+  // mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

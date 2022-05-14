@@ -103,9 +103,11 @@ minio:
   bucket-name: xxx
 
 resource-path:
-  avatar: avatar/
   default-avatar: default_avatar.jpg
+  avatar: avatar/
   blog-cover-image: blogCover/
+  blog-image: blog/
+  blog-image-url-base: https://local.sticki.cn/api/v1/resource/blog-img/
 
 security:
   # JWT配置
@@ -119,7 +121,7 @@ security:
     # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
     expiration: 604800
     # 配置不需要认证的接口，中间不能加空格
-    ant-matchers: /login/**,/blog/**,/resource/**,/user,/register/**
+    ant-matchers: /login/**,/blog/**,/resource/**,/user,/register/**,/comment/list
 
 jetcache:
   statIntervalMinutes: 15
