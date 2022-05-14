@@ -45,7 +45,7 @@ public class UserController {
 	public RestTemplate getByUsername(String username) {
 		User user = authenticationFacade.getUser();
 		User getUser = null;
-		if ((username == null || username.length() != 0) && user != null) {
+		if ((username == null || username.length() == 0) && user != null) {
 			getUser = user;
 			log.debug("getByUsername, sessionUser ,user->{}", getUser.getClass());
 		} else if (username != null && username.length() != 0) {

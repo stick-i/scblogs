@@ -48,7 +48,7 @@ public class RegisterController {
 			registerService.sendMailVerify(mail);
 			return new RestTemplate(true);
 		}
-		return new RestTemplate(false, "发送频繁");
+		return new RestTemplate(400, "发送频繁");
 	}
 
 	/**
