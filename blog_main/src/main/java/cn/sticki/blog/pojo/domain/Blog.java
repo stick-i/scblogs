@@ -8,23 +8,50 @@ import java.sql.Timestamp;
 @Data
 public class Blog {
 
+	/**
+	 * 博客id
+	 */
 	@TableId
-	Integer id; //   博客id
+	Integer id;
 
-	String author; //   作者
+	/**
+	 * 作者
+	 */
+	String author;
 
-	String title; //   标题
+	/**
+	 * 标题
+	 */
+	String title;
 
-	String description; //   描述
+	/**
+	 * 描述
+	 */
+	String description;
 
-	String coverImage; // 封面图
+	/**
+	 * 封面图
+	 */
+	String coverImage;
 
-	Timestamp createTime; //   创建时间
+	/**
+	 * 创建时间
+	 */
+	Timestamp createTime;
 
-	Timestamp releaseTime; //  发表时间
+	/**
+	 * 发表时间
+	 */
+	Timestamp releaseTime;
 
-	Timestamp modifiedTime; //  修改时间
+	/**
+	 * 修改时间
+	 */
+	Timestamp modifiedTime;
 
-	Integer status; // 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
+	/**
+	 * 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
+	 */
+	Integer status;
 
 }

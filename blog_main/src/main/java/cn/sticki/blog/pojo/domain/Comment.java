@@ -7,18 +7,39 @@ import java.sql.Timestamp;
 @Data
 public class Comment {
 
-	Integer id; // 评论id
+	/**
+	 * 评论id
+	 */
+	Integer id;
 
-	Integer userId; // 用户id
+	/**
+	 * 用户id
+	 */
+	Integer userId;
 
-	Integer blogId; // 博客id
+	/**
+	 * 博客id
+	 */
+	Integer blogId;
 
-	String content; // 评论内容
+	/**
+	 * 评论内容
+	 */
+	String content;
 
-	Integer parentId; // 父评论id
+	/**
+	 * 父评论id
+	 */
+	Integer parentId;
 
-	Integer parentUserId; // 回复的用户id
+	/**
+	 * 回复的用户id
+	 */
+	Integer parentUserId;
 
-	Timestamp createTime; // 创建时间
+	/**
+	 * 创建时间
+	 */
+	Timestamp createTime;
 
 }

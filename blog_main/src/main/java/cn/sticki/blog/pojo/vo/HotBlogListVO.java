@@ -10,6 +10,9 @@ import java.util.Map;
 @Data
 public class HotBlogListVO extends BlogListVO {
 
+	/**
+	 * 用户行为字典
+	 */
 	Map<Integer, UserBlogActionStatusDTO> userAction;
 
 }

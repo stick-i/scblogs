@@ -8,29 +8,65 @@ import java.sql.Timestamp;
 @Data
 public class UserEducation {
 
+	/**
+	 * 用户名
+	 */
 	@TableId
-	String username; //  '用户名'
+	String username;
 
-	Timestamp createTime; //  '创建时间'
+	/**
+	 * 创建时间
+	 */
+	Timestamp createTime;
 
-	String school; //  '学校名称'
+	/**
+	 * 学校名称
+	 */
+	String school;
 
-	Integer schoolId; //  '学校id'
+	/**
+	 * 学校id
+	 */
+	Integer schoolId;
 
-	String profession; //  '专业'
+	/**
+	 * 专业
+	 */
+	String profession;
 
-	String degree; //  '学位程度'
+	/**
+	 * 学位程度
+	 */
+	String degree;
 
-	Timestamp startTime; //  '入学时间'
+	/**
+	 * 入学时间
+	 */
+	Timestamp startTime;
 
-	Timestamp endTime; //  '毕业时间'
+	/**
+	 * 毕业时间
+	 */
+	Timestamp endTime;
 
-	String auditImgUrl; // '图片链接'
+	/**
+	 * 图片链接
+	 */
+	String auditImgUrl;
 
-	String safetyAuditStatus; //   '安全审核状态'
+	/**
+	 * 安全审核状态
+	 */
+	String safetyAuditStatus;
 
-	String status; // '状态码'
+	/**
+	 * 状态码
+	 */
+	String status;
 
-	Timestamp modifiedTime; //  '更新时间'
+	/**
+	 * 更新时间
+	 */
+	Timestamp modifiedTime;
 
 }

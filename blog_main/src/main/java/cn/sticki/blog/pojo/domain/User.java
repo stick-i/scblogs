@@ -15,15 +15,30 @@ import java.sql.Timestamp;
 @TableName("user_vo")
 public class User implements Serializable {
 
+	/**
+	 * 用户id
+	 */
 	@TableId
 	Integer id;
 
+	/**
+	 * 用户名
+	 */
 	String username;
 
+	/**
+	 * 用户昵称
+	 */
 	String nickname;
 
+	/**
+	 * 头像链接
+	 */
 	String avatarUrl;
 
+	/**
+	 * 注册时间
+	 */
 	Timestamp registerTime;
 
 }

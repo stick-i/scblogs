@@ -6,17 +6,35 @@ import lombok.Data;
 @Data
 public class BlogGeneral {
 
+	/**
+	 * 博客id
+	 */
 	@TableId
-	Integer blogId; // 博客id
+	Integer blogId;
 
-	Integer viewNum; // 浏览量
+	/**
+	 * 浏览量
+	 */
+	Integer viewNum;
 
-	Integer likeNum; // 点赞量
+	/**
+	 * 点赞量
+	 */
+	Integer likeNum;
 
-	Integer commentNum; // 评论量
+	/**
+	 * 评论量
+	 */
+	Integer commentNum;
 
-	Integer collectionNum; // 收藏量
+	/**
+	 * 收藏量
+	 */
+	Integer collectionNum;
 
-	Integer score; // 评分
+	/**
+	 * 评分
+	 */
+	Integer score;
 
 }

@@ -8,6 +8,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CommentListVO extends ListVO<CommentDTO> {
 
-	long allCount = 0; // 总评论数量（包括二级评论）
+	/**
+	 * 总评论数量（包括二级评论）
+	 */
+	long allCount = 0;
 
 }
