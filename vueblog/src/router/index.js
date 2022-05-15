@@ -13,7 +13,6 @@ const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 
-// const Test = () => import('@/views/Test')
 
 
 Vue.use(VueRouter)
@@ -80,11 +79,6 @@ const routes = [
     name: 'ContentManagement',
     component: ContentManagement
   },
-  // {
-  //   path: '/test',
-  //   name: 'Test',
-  //   component: Test
-  // },
 ]
 
 const router = new VueRouter({

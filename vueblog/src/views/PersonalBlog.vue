@@ -129,7 +129,7 @@ export default {
       let params = {
         username: "123",
         password: "123456",
-      };  
+      };
     await this.$axios
         .post("/login/login", qs.stringify(params))
         .then((res) => {
@@ -142,7 +142,7 @@ export default {
           );
           this.userMessage = res.data.data;
         });
-        
+
      await this.$axios
         .get("/user", this.config)
         .then((res) => {

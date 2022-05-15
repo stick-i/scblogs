@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-    <!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
     <div class="top-content">
       <!-- navbar -->
       <div class="top-navbar">
@@ -123,7 +122,6 @@
         <Swiper />
       </div>
     </div>
-    <!--<swiper></swiper>-->
 
     <div class="content">
       <!-- 左边-->
@@ -142,6 +140,15 @@
           </el-tabs>
         </div>
       </div>
+
+<!--      <div class="content">-->
+<!--        &lt;!&ndash; 左边&ndash;&gt;-->
+<!--        <div class="article-left">-->
+<!--          &lt;!&ndash; tabs标签&ndash;&gt;-->
+<!--          <HomeArticleItem />-->
+<!--        </div>-->
+<!--      </div>-->
+
       <!-- 右边-->
       <div class="article-right">
         <!--        卡片1-->
@@ -175,6 +182,21 @@
               <div class="hot-cont">
                 <a target="_blank" href="#">
                   <div>【JS】求斐波那契数列中的奇数之和</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--        关于我们-->
+        <div class="template">
+          <div class="template-title">
+            <span>关于我们</span>
+          </div>
+          <div class="template-cont">
+            <div class="hot">
+              <div class="our-content">
+                <a href="https://beian.miit.gov.cn" target="_blank">
+                  <div style="color: #fc5531">湘ICP备2021015916号-2</div>
                 </a>
               </div>
             </div>
