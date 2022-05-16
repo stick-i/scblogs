@@ -1,0 +1,10 @@
+server:
+  port: 10086
+spring:
+  application:
+    name: blog-register # eureka服务名称
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka/  # eureka地址信息
