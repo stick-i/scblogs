@@ -164,17 +164,6 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-/*.a{*/
-/*    width: 2400px;*/
-/*    height: 3000px;*/
-/*    background-color: blue;*/
-/*}*/
-/* 导航栏顶部固定 */
-/* .header{
-    position: fixed;
-    top: 0;
-} */
-
 .body {
   background: rgb(243, 244, 246);
   width: 100%;
@@ -206,11 +195,6 @@ export default {
 .content .content-intro2 {
   height: 40%;
   width: 100%;
-}
-
-.content .content-intro2 el-collapse {
-  /* height: 100%;
-    width: 60%; */
 }
 .content .intro1-left {
   float: left;
@@ -279,8 +263,6 @@ export default {
   margin-right: 20px;
 }
 .intro1-right button {
-  /* display: inline-block;
-    display: flex; */
   margin: 20px;
   align-items: center;
   border: 1px solid rgb(204, 204, 216);
