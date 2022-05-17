@@ -32,4 +32,9 @@ public interface BlogConsoleService extends IService<Blog> {
 	 */
 	void uploadCoverImage(String name, MultipartFile coverImage);
 
+	/**
+	 * 上传博客图片，自动命名为文件的md5值，返回图片路径
+	 */
+	String uploadImage(MultipartFile coverImage);
+
 }

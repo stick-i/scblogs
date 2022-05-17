@@ -14,7 +14,6 @@ const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonalBlog = () => import('@/views/NewPersonBlog')
 
-// const Test = () => import('@/views/Test')
 
 
 Vue.use(VueRouter)
@@ -86,15 +85,11 @@ const routes = [
     name: 'ContentManagement',
     component: ContentManagement
   },
-  // {
-  //   path: '/test',
-  //   name: 'Test',
-  //   component: Test
-  // },
 ]
 
 const router = new VueRouter({
   mode: 'history',
+  // mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

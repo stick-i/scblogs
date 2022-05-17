@@ -103,9 +103,11 @@ minio:
   bucket-name: xxx
 
 resource-path:
-  avatar: avatar/
   default-avatar: default_avatar.jpg
+  avatar: avatar/
   blog-cover-image: blogCover/
+  blog-image: blog/
+  blog-image-url-base: https://local.sticki.cn/api/v1/resource/blog-img/
 
 security:
   # JWT配置

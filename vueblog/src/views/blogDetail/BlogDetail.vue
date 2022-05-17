@@ -75,7 +75,10 @@
             <!-- 关注按钮 -->
             <div class="focus-btn">
               <div class="btn">私信</div>
-              <div class="btn">关注</div>
+              <div class="btn" @click="followUser()">
+                <a href="javascript:;" v-if="isShowFollow" style="color: #999aaa">已关注</a>
+                <a href="javascript:;" v-else style="color: #555666">关注</a>
+              </div>
             </div>
           </div>
           <!-- 侧边盒子2 搜索 -->
@@ -163,18 +166,15 @@
             </div>
           </el-card>
           <!-- 底部文章信息 -->
-
-          <!-- <div id="testNavBar" :class="isfixTab == false ? 'fixed1' : 'fixed2'">
-            <div>1234</div>
-          </div> -->
           <div class="right-toolbox">
             <div class="toolbox-left">
               <div class="profile-box">
                 <img class="profile-img" :src="profile.avatarUrl" alt=""/>
                 <span class="profile-name">{{ profile.author }}</span>
               </div>
-              <div class="profile-attend">
-                <a href="javascript:;">关注</a>
+              <div class="profile-attend" @click="followUser()">
+                <a href="javascript:;" v-if="isShowFollow" style="color: #999aaa">已关注</a>
+                <a href="javascript:;" v-else >关注</a>
               </div>
             </div>
             <div class="toolbox-middle">
@@ -207,7 +207,7 @@
             </div>
           </div>
           <!-- 评论 -->
-          <BlogComment :facomment="comment" @func = "getComment"/>
+          <BlogComment :facomment="comment" @func="getComment" @recordsChange="recordsChange"/>
 
         </div>
       </div>
@@ -252,6 +252,11 @@
         },
         // 评论
         comment: {},
+        // 关注用户的id
+        followIdForm: {
+          followId: ''
+        },
+        isShowFollow: false,
       };
     },
     created() {
@@ -282,6 +287,9 @@
           author: blog.info.author,
           avatarUrl: blog.author.avatarUrl,
         };
+        _this.followIdForm = {
+          followId: blog.author.id,
+        };
         _this.comment = blog.comment
         console.log(_this.comment)
       })
@@ -300,8 +308,28 @@
     // 滚动结束
 
     methods: {
+      recordsChange(records) {
+        this.comment = records
+      },
+      // 关注
+      followUser() {
+        this.$axios
+          .post("/user/follow", qs.stringify(this.followIdForm), {
+            headers: {token: localStorage.getItem("token")},
+          }).then(res => {
+          if (res.data.code == 200 && res.data.data == true && res.data.status == true) {
+            this.isShowFollow = res.data.data
+            console.log("关注成功")
+          } else if (res.data.code == 200 && res.data.data == false && res.data.status == true) {
+            this.isShowFollow = res.data.data
+            console.log("取消关注成功")
+          } else if (res.data.code == 200 && res.data.data == null && res.data.status == false) {
+            console.log("不能关注自己哦~")
+          }
+        })
+      },
       // 获取评论
-      getComment(){
+      getComment() {
         console.log("获取评论")
         const blogId = this.$route.params.blogId;
         const _this = this;

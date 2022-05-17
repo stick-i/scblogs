@@ -1,7 +1,5 @@
 # 接口文档
 
-
-
 # 接口规约
 
 起始点：http://host:port/api/v1
@@ -45,8 +43,6 @@
 |   PUT    | fromdata |      更新资源      |
 |  DELETE  | fromdata |      删除资源      |
 
-
-
 # 注册相关 `/register`
 
 ## 发送邮箱验证码 `√`
@@ -67,8 +63,6 @@
 
 无
 
-
-
 ## 提交注册 `√`
 
 终结点：`/register`
@@ -88,8 +82,6 @@
 **响应数据**
 
 无
-
-
 
 # 登录相关 `/login`
 
@@ -129,13 +121,9 @@
 
 无
 
-
-
 # 用户信息相关`/user`
 
 ==**注意：此类型下所有方法均需要登录后才可以成功调用，除非有特殊说明**==
-
-
 
 ## 获取公开信息 `√`
 
@@ -176,7 +164,6 @@
 
 无
 
-
 ## 修改头像 `√`
 
 **上传的文件请小于1Mib，支持的格式：png、jpg、jpeg**
@@ -195,8 +182,6 @@
 
 无
 
-
-
 ## 修改密码 `√`
 
 终结点：`/password`
@@ -213,8 +198,6 @@
 **响应数据**
 
 无
-
-
 
 ## 修改邮箱 `√`
 
@@ -235,8 +218,6 @@
 
 无
 
-
-
 ## 发送邮箱验证码 `√`
 
 **该邮箱验证码有60s内只能发送一次的限制**
@@ -253,23 +234,13 @@
 
 无
 
-
-
 ## 获取基本信息
-
-
 
 ## 修改基本信息
 
-
-
 ## 获取教育信息
 
-
-
 ## 修改教育信息
-
-
 
 ## 删除用户 `√`
 
@@ -287,7 +258,245 @@
 
 无
 
+# 关注和粉丝
 
+## 获取关注列表
+
+### 请求信息
+
+#### 请求地址
+
+```
+/user/follow?page=98
+```
+
+#### 请求方法
+
+```
+GET
+```
+
+#### 入参字段说明
+
+| **字段** | **类型** | **必填** | **含义** | **其他参考信息** |
+| -------- | -------- | -------- | -------- | ---------------- |
+| page     | **int**  | 否       | 当前页   |                  |
+
+### 出参
+
+#### 出参示例
+
+```json
+{
+  "code": 110,
+  "message": "响应信息36",
+  "data": {
+    "records": [
+      {
+        "id": 28,
+        "userId": 90,
+        "followId": 4,
+        "note": "备注21",
+        "status": 59,
+        "createTime": {
+          "nanos": 60
+        },
+        "username": "关注者用户名52",
+        "nickname": "关注者昵称62",
+        "avatarUrl": "关注者头像链接114",
+        "registerTime": {}
+      },
+      {
+        "id": 28,
+        "userId": 90,
+        "followId": 4,
+        "note": "备注21",
+        "status": 59,
+        "createTime": {
+          "nanos": 60
+        },
+        "username": "关注者用户名52",
+        "nickname": "关注者昵称62",
+        "avatarUrl": "关注者头像链接114",
+        "registerTime": {}
+      }
+    ],
+    "total": 920,
+    "size": 538,
+    "current": 298
+  },
+  "status": true
+}
+```
+
+#### 出参字段说明
+
+| **字段**                                                 | **类型**                  | **
+含义**                              | **其他参考信息** | | -------------------------------------------------------- |
+------------------------- | ------------------------------------- | ---------------- | | code | **
+Integer**               | 状态码 | | | message | **
+String**                | 响应信息 | | | data | **
+ListVO\<FollowBasic\>** | 响应数据 | | | └─ records | **
+List\<FollowBasic\>**   | 查询数据列表 | | | &ensp;&ensp;&ensp;&ensp;└─ id | **
+Integer**               | id | | | &ensp;&ensp;&ensp;&ensp;└─ userId | **
+Integer**               | 用户id | | | &ensp;&ensp;&ensp;&ensp;└─ followId | **
+Integer**               | 关注者id | | | &ensp;&ensp;&ensp;&ensp;└─ note | **
+String**                | 备注 | | | &ensp;&ensp;&ensp;&ensp;└─ status | **
+Integer**               | 关注状态码 | | | &ensp;&ensp;&ensp;&ensp;└─ createTime | **
+Timestamp**             | 创建时间 | | | &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;└─ nanos | **
+int**                   | | | | &ensp;&ensp;&ensp;&ensp;└─ username | **
+String**                | 关注者用户名 | | | &ensp;&ensp;&ensp;&ensp;└─ nickname | **
+String**                | 关注者昵称 | | | &ensp;&ensp;&ensp;&ensp;└─ avatarUrl | **
+String**                | 关注者头像链接 | | | &ensp;&ensp;&ensp;&ensp;└─ registerTime | **
+Timestamp**             | 关注者注册时间 | | | └─ total | **
+long**                  | 总数 | | | └─ size | **
+long**                  | 每页显示条数，默认 20 | | | └─ current | **
+long**                  | 当前页 | | | status | **
+Boolean**               | 请求状态，操作成功为true，否则为false | |
+
+## 获取粉丝列表
+
+### 请求信息
+
+#### 请求地址
+
+```
+/user/fans?page=68
+```
+
+#### 请求方法
+
+```
+GET
+```
+
+#### 入参字段说明
+
+| **字段** | **类型** | **必填** | **含义** | **其他参考信息** |
+| -------- | -------- | -------- | -------- | ---------------- |
+| page     | **int**  | 否       | 当前页   |                  |
+
+### 出参
+
+#### 出参示例
+
+```json
+{
+  "code": 87,
+  "message": "响应信息92",
+  "data": {
+    "records": [
+      {
+        "id": 40,
+        "userId": 13,
+        "fansId": 112,
+        "note": "备注85",
+        "status": 111,
+        "createTime": {
+          "nanos": 74
+        },
+        "username": "粉丝用户名6",
+        "nickname": "粉丝昵称71",
+        "avatarUrl": "粉丝头像链接100",
+        "registerTime": {}
+      },
+      {
+        "id": 40,
+        "userId": 13,
+        "fansId": 112,
+        "note": "备注85",
+        "status": 111,
+        "createTime": {
+          "nanos": 74
+        },
+        "username": "粉丝用户名6",
+        "nickname": "粉丝昵称71",
+        "avatarUrl": "粉丝头像链接100",
+        "registerTime": {}
+      }
+    ],
+    "total": 396,
+    "size": 306,
+    "current": 30
+  },
+  "status": true
+}
+```
+
+#### 出参字段说明
+
+| **字段**                                                 | **类型**                | **
+含义**                              | **其他参考信息** | | -------------------------------------------------------- |
+----------------------- | ------------------------------------- | ---------------- | | code | **
+Integer**             | 状态码 | | | message | **
+String**              | 响应信息 | | | data | **
+ListVO\<FansBasic\>** | 响应数据 | | | └─ records | **
+List\<FansBasic\>**   | 查询数据列表 | | | &ensp;&ensp;&ensp;&ensp;└─ id | **
+Integer**             | id | | | &ensp;&ensp;&ensp;&ensp;└─ userId | **
+Integer**             | 用户id | | | &ensp;&ensp;&ensp;&ensp;└─ fansId | **
+Integer**             | 粉丝id | | | &ensp;&ensp;&ensp;&ensp;└─ note | **
+String**              | 备注 | | | &ensp;&ensp;&ensp;&ensp;└─ status | **
+Integer**             | 状态码 | | | &ensp;&ensp;&ensp;&ensp;└─ createTime | **
+Timestamp**           | 创建时间 | | | &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;└─ nanos | **
+int**                 | | | | &ensp;&ensp;&ensp;&ensp;└─ username | **
+String**              | 粉丝用户名 | | | &ensp;&ensp;&ensp;&ensp;└─ nickname | **
+String**              | 粉丝昵称 | | | &ensp;&ensp;&ensp;&ensp;└─ avatarUrl | **
+String**              | 粉丝头像链接 | | | &ensp;&ensp;&ensp;&ensp;└─ registerTime | **
+Timestamp**           | 粉丝注册时间 | | | └─ total | **
+long**                | 总数 | | | └─ size | **
+long**                | 每页显示条数，默认 20 | | | └─ current | **
+long**                | 当前页 | | | status | **
+Boolean**             | 请求状态，操作成功为true，否则为false | |
+
+## 关注其他用户
+
+### 请求信息
+
+#### 请求地址
+
+```
+/user/follow
+```
+
+#### 请求方法
+
+```
+POST
+```
+
+#### 请求体类型
+
+```
+application/x-www-form-urlencoded
+```
+
+#### 入参字段说明
+
+| **字段** | **类型**    | **必填** | **含义**       | **其他参考信息** |
+| -------- | ----------- | -------- | -------------- | ---------------- |
+| followId | **Integer** | 否       | 被关注的用户id |                  |
+
+### 出参
+
+#### 出参示例
+
+```json
+{
+  "code": 36,
+  "message": "响应信息20",
+  "data": {},
+  "status": false
+}
+```
+
+#### 出参字段说明
+
+| **字段** | **类型**    | **含义**                              | **其他参考信息** |
+| -------- | ----------- | ------------------------------------- | ---------------- |
+| code     | **Integer** | 状态码                                |                  |
+| message  | **String**  | 响应信息                              |                  |
+| data     | **Object**  | 响应数据                              |                  |
+| status   | **Boolean** | 请求状态，操作成功为true，否则为false |                  |
 
 # 浏览博客相关`/blog`
 
@@ -311,9 +520,7 @@
 | :----------------------: | :------: | :----------: |
 |      `blogList`      |   List[Blog]    |    博客列表    |
 
-Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog** 
-
-
+Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 
 ## 搜索博客 `√`
 
@@ -329,8 +536,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 | :----: | :------: | :----: | :------: |
 | `key`  |  string  |  null  | 搜索内容 |
 
-
-
 **响应数据**
 
 |   字段名   |  数据类型  |      说明      |
@@ -339,8 +544,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 |   `page`   |    int     |     当前页     |
 | `pageSize` |    int     |     页大小     |
 |  `total`   |    int     |    博客总数    |
-
-
 
 ## 获取博客内容 `√`
 
@@ -354,8 +557,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 | :----: | :------: | :----: | :----: |
 |  `id`  |   int    |   -    | 博客id |
 
-
-
 **响应数据**
 
 |   字段名   |  数据类型  |      说明      |
@@ -363,7 +564,7 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 |   `info`   |    Blog     |    博客信息    |
 | `content` |  BlogContent    |    博客内容    |
 
-Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog** 
+Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 
 **BlogContent：**
 
@@ -372,8 +573,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 |  `blogId`  |   int    |   博客id   |
 | `content` |   string   |  博客内容  |
 | `modifiedTime` |   DataTime   |  修改时间   |
-
-
 
 # 博客控制台`/blog-console`
 
@@ -400,8 +599,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 | `yesterdayFavoriteCount` |   int    | 昨天新增收藏 |
 |   `yesterdayViewCount`   |   int    |  昨日阅读量  |
 
-
-
 ## 获取博客列表 `√`
 
 终结点：`/blog-list`
@@ -418,7 +615,7 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 | `sortStatus` |   int    |   0    | 排序状态码 |
 |              |          |        |            |
 
-博客状态码参见：**状态码说明** -> **博客状态码** 
+博客状态码参见：**状态码说明** -> **博客状态码**
 
 **响应数据**
 
@@ -462,8 +659,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 | `collectionNum` |    int     |     收藏量     |
 | `score` |    int     |     评分     |
 
-
-
 ## 新建/保存博客 `√`
 
 若填写id则为保存博客，若不填写id则为新建博客。
@@ -485,15 +680,11 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 |   `content`   |  string  |   -    |  内容(md格式)   |
 |   `status`    |  int  |   -    |    博客状态码    |
 
-博客状态码参见：**状态码说明** -> **博客状态码** 
-
-
+博客状态码参见：**状态码说明** -> **博客状态码**
 
 **响应数据**
 
 无
-
-
 
 ## 删除博客 `√`
 
@@ -513,8 +704,6 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 
 无
 
-
-
 ## 彻底删除博客 `√`
 
 **只有回收站中的博客可以被彻底删除**
@@ -533,13 +722,7 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 
 无
 
-
-
 # 评论相关
-
-
-
-
 
 # 状态码说明
 
@@ -555,6 +738,7 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 |   5    |  `audit`   |   审核中   |
 
 ## 排序状态码
+
 **x0表示升序，x1表示降序**
 
 |       状态码    |          对应字段            |            说 明        |
@@ -562,5 +746,4 @@ Blog数据结构参见：**博客控制台 -> 获取博客列表 -> Blog**
 |         0      |            `all`            |          不进行排序     |
 |         10     |          `releaseTime`      |       按照发布时间来排序  |
 |       20       |           `viewNum`         |       按照浏览量来排序   |
-
 

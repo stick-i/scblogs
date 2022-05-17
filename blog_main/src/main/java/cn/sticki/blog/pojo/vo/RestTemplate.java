@@ -5,11 +5,26 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RestTemplate {
+public class RestTemplate<T> {
 
+	/**
+	 * 状态码
+	 */
 	Integer code;
+
+	/**
+	 * 响应信息
+	 */
 	String message;
-	Object data;
+
+	/**
+	 * 响应数据
+	 */
+	T data;
+
+	/**
+	 * 请求状态，操作成功为true，否则为false
+	 */
 	Boolean status;
 
 	public RestTemplate() {
@@ -19,7 +34,7 @@ public class RestTemplate {
 		this.status = true;
 	}
 
-	public RestTemplate(Object data) {
+	public RestTemplate(T data) {
 		this.code = 200;
 		this.message = "success";
 		this.data = data;

@@ -5,17 +5,35 @@ import lombok.Data;
 @Data
 public class BlogCountDTO {
 
-	int all; // 全部的
+	/**
+	 * 全部的
+	 */
+	int all;
 
-	int publish; // 公开的，已发表的
+	/**
+	 * 公开的，已发表的
+	 */
+	int publish;
 
-	int draft; // 未发表的（草稿箱）
+	/**
+	 * 未发表的（草稿箱）
+	 */
+	int draft;
 
-	int personal; // 私有的，仅自己可见
+	/**
+	 * 私有的，仅自己可见
+	 */
+	int personal;
 
-	int deleted; // 被删除的（回收站里的）
+	/**
+	 * 被删除的（回收站里的）
+	 */
+	int deleted;
 
-	int audit; // 审核中的
+	/**
+	 * 审核中的
+	 */
+	int audit;
 
 	// （1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
 

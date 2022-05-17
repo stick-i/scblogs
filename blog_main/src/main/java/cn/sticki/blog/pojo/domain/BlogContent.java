@@ -8,11 +8,20 @@ import java.sql.Timestamp;
 @Data
 public class BlogContent {
 
+	/**
+	 * 博客id
+	 */
 	@TableId
-	Integer blogId; // '博客id'
+	Integer blogId;
 
-	String content; // '博客内容'
+	/**
+	 * 博客内容
+	 */
+	String content;
 
-	Timestamp modifiedTime; // '修改时间'
+	/**
+	 * 修改时间
+	 */
+	Timestamp modifiedTime;
 
 }

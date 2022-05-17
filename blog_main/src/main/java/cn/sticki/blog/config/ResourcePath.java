@@ -13,6 +13,10 @@ public class ResourcePath {
 
 	public static String defaultAvatar;
 
+	public static String blogImage;
+
+	public static String blogImageUrlBase;
+
 	public void setAvatar(String avatar) {
 		ResourcePath.avatar = avatar;
 	}
@@ -23,6 +27,14 @@ public class ResourcePath {
 
 	public void setDefaultAvatar(String defaultAvatar) {
 		ResourcePath.defaultAvatar = defaultAvatar;
+	}
+
+	public void setBlogImage(String blogImage) {
+		ResourcePath.blogImage = blogImage;
+	}
+
+	public void setBlogImageUrlBase(String blogImageUrlBase) {
+		ResourcePath.blogImageUrlBase = blogImageUrlBase;
 	}
 
 }
