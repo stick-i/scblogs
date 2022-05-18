@@ -1,0 +1,37 @@
+server:
+  port: 10010
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 # nacos地址
+    gateway:
+      routes:
+        - id: blogmain # 路由标识，必须唯一
+          uri: lb://blogmain # 路由的目标地址，lb为load balance，负载均衡
+          predicates: # 路由断言，判断请求是否符合规则
+            - Path=/api/**  # 判断请求是否以/user开头
+        - id: blogtest # 路由标识，必须唯一
+          uri: lb://blogtest # 路由的目标地址，lb为load balance，负载均衡
+          predicates: # 路由断言，判断请求是否符合规则
+            - Path=/test/**  # 判断请求是否以/user开头
+
+      globalcors:
+        add-to-simple-url-handler-mapping: true # 放行options请求
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: # 允许哪些网站的跨域请求
+              - "http://www.scblogs.cn"
+              - "http://"
+            allowedMethods: # 允许的跨域ajax请求方式
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*" # 允许在请求中携带的头信息
+            allowCredentials: true # 是否允许携带cookie
+            maxAge: 360000 # 本次跨域检查的有效期
+
