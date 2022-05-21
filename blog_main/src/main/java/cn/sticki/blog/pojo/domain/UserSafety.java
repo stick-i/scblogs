@@ -10,15 +10,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserSafety {
 
+	/**
+	 * 用户id
+	 */
 	@TableId
 	Integer userId;
 
+	/**
+	 * 用户名
+	 */
 	String username;
 
+	/**
+	 * 密码
+	 */
 	String password;
 
+	/**
+	 * 邮箱
+	 */
 	String mail;
 
+	/**
+	 * 手机号
+	 */
 	String mobile;
 
 }

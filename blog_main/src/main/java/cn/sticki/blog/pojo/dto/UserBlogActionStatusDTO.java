@@ -8,8 +8,14 @@ import lombok.Data;
 @Data
 public class UserBlogActionStatusDTO {
 
+	/**
+	 * 是否点赞
+	 */
 	boolean isLike;
 
+	/**
+	 * 是否收藏
+	 */
 	boolean isCollect;
 
 }

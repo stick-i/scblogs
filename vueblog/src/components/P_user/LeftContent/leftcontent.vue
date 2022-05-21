@@ -5,7 +5,12 @@
 </template>
 <script>
 export default {
-    name:"leftcontent"
+    name:"leftcontent",
+    data(){
+        return{
+            
+        }
+    }
 }
 </script>
 <style scoped>

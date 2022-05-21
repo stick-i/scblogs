@@ -9,23 +9,50 @@ import java.util.Date;
 @Data
 public class MailDTO {
 
-	private Integer id;//邮件id
+	/**
+	 * 邮件id
+	 */
+	private Integer id;
 
-	private String from;//邮件发送人
+	/**
+	 * 邮件发送人
+	 */
+	private String from;
 
-	private String to;//邮件接收人
+	/**
+	 * 邮件接收人
+	 */
+	private String to;
 
-	private String subject;//邮件主题
+	/**
+	 * 邮件主题
+	 */
+	private String subject;
 
-	private String text;//邮件内容
+	/**
+	 * 邮件内容
+	 */
+	private String text;
 
-	private Date sentDate;//发送时间
+	/**
+	 * 发送时间
+	 */
+	private Date sentDate;
 
-	private String cc; //抄送
+	/**
+	 * 抄送
+	 */
+	private String cc;
 
-	private String bcc; //密送
+	/**
+	 * 密送
+	 */
+	private String bcc;
 
+	/**
+	 * 邮件附件
+	 */
 	@JsonIgnore
-	private MultipartFile[] multipartFiles;//邮件附件
+	private MultipartFile[] multipartFiles;
 
 }

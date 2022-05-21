@@ -8,6 +8,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class BlogListConsoleVO extends BlogListVO {
 
-	BlogCountDTO count;// 各状态博客数量
+	/**
+	 * 各状态博客数量
+	 */
+	BlogCountDTO count;
 
 }

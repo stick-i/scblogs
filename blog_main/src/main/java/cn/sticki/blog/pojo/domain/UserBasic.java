@@ -8,25 +8,55 @@ import java.sql.Timestamp;
 @Data
 public class UserBasic {
 
+	/**
+	 * 用户名
+	 */
 	@TableId
-	String username; //  COMMENT '用户名'
+	String username;
 
-	String realname; //  COMMENT '真实姓名'
+	/**
+	 * 真实姓名
+	 */
+	String realname;
 
-	Timestamp birthday; //  COMMENT '生日时间戳'
+	/**
+	 * 生日时间戳
+	 */
+	Timestamp birthday;
 
-	String intro; //  DEFAULT NULL COMMENT '个人简介'
+	/**
+	 * 个人简介
+	 */
+	String intro;
 
-	String gender; //  COMMENT '性别'
+	/**
+	 * 性别
+	 */
+	String gender;
 
-	Integer cityId; //  COMMENT '城市id'
+	/**
+	 * 城市id
+	 */
+	Integer cityId;
 
-	Integer provinceId; //  COMMENT '省份id'
+	/**
+	 * 省份id
+	 */
+	Integer provinceId;
 
-	Timestamp modifiedTime; //  COMMENT '信息修改时间'
+	/**
+	 * 信息修改时间
+	 */
+	Timestamp modifiedTime;
 
-	Timestamp nameModifyTime; //  COMMENT '昵称修改时间'
+	/**
+	 * 昵称修改时间
+	 */
+	Timestamp nameModifyTime;
 
-	Timestamp startWorkTime; //  COMMENT '开始工作的时间'
+	/**
+	 * 开始工作的时间
+	 */
+	Timestamp startWorkTime;
 
 }

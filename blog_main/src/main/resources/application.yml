@@ -2,10 +2,6 @@ server:
   port: 443
   servlet:
     context-path: /api/v1
-  ssl:
-    key-store: xxx
-    key-store-type: "PKCS12"
-    key-store-password: xxx
 
 mybatis-plus:
   global-config:
@@ -19,11 +15,19 @@ mybatis-plus:
   type-aliases-package: cn.sticki.blog.pojo  # 实体对象的扫描包
 
 spring:
+#  application:
+  #    name: @artifactId@
+  #  cloud:
+  #    nacos:
+  #      server-addr: 127.0.0.1:8848 # nacos地址
+  #  config:
+  #    import:
+  #      - nacos:blogmain-dev.yaml  # 对应nacos中的配置文件
+
   #  main:
   #    allow-circular-references: true
-  # 404时不跳转，直接抛出异常
   mvc:
-    throw-exception-if-no-handler-found: true
+    throw-exception-if-no-handler-found: true  # 404时不跳转，直接抛出异常
   web:
     resources:
       add-mappings: false
@@ -36,7 +40,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
   devtools:
     restart:
-      enabled: true  # 是否启用热部署
+      enabled: false  # 是否启用热部署
   #  redis相关
   #  redis:
   #    host: 127.0.0.1
@@ -62,11 +66,6 @@ spring:
         smtp:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
-  # spring-boot-admin 相关配置
-  boot:
-    admin:
-      client:
-        url: xxx
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss #时间戳统一转换为指定格式
     time-zone: GMT+8 # 时区修改为东8 区

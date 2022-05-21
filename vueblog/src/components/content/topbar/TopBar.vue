@@ -341,7 +341,7 @@ export default {
     handleCommand(command) {
       if (command == "a") {
         console.log("个人中心");
-        this.$router.push('/Personal_Blog')
+        this.$router.push('/NewPersonBlog')
       }
       if (command == "b") {
         console.log("退出登录");

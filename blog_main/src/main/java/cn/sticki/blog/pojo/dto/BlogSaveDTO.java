@@ -10,18 +10,39 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class BlogSaveDTO {
 
-	Integer id; // 博客id(若无则不填)
+	/**
+	 * 博客id(若无则不填)
+	 */
+	Integer id;
 
-	String author; // 作者
+	/**
+	 * 作者
+	 */
+	String author;
 
-	String title; // 标题
+	/**
+	 * 标题
+	 */
+	String title;
 
-	String description; // 描述
+	/**
+	 * 描述
+	 */
+	String description;
 
-	String content; // 内容(md格式)
+	/**
+	 * 内容(md格式)
+	 */
+	String content;
 
-	Integer status; // 博客状态码
+	/**
+	 * 博客状态码
+	 */
+	Integer status;
 
-	MultipartFile coverImageFile; // 封面图
+	/**
+	 * 封面图
+	 */
+	MultipartFile coverImageFile;
 
 }
