@@ -151,7 +151,7 @@ export default {
   width: 120px;
   height: 44px;
   border: 0 none;
-  background-color: #fc5531;
+  background-color: #16a0f8;
   color: #ffffff;
   border-radius: 0 2px 2px 0;
   font-size: 20px;

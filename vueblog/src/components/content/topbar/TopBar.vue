@@ -12,37 +12,37 @@
             /></a>
           </div>
           <ul class="toolbar-menus csdn-toolbar-fl">
-            <li class="" title="阅读深度、前沿文章">
-              <a
-                data-report-click='{"mod":"popu_336","dest":"https://blog.csdn.net/nav/cloud-native","spm":"3001.4477"}'
-                data-report-query="spm=3001.4477"
-                href="https://blog.csdn.net/nav/cloud-native"
-              >
-                博客
-              </a>
-            </li>
+<!--            <li class="" title="阅读深度、前沿文章">-->
+<!--              <a-->
+<!--                data-report-click='{"mod":"popu_336","dest":"https://blog.csdn.net/nav/cloud-native","spm":"3001.4477"}'-->
+<!--                data-report-query="spm=3001.4477"-->
+<!--                href="https://blog.csdn.net/nav/cloud-native"-->
+<!--              >-->
+<!--                博客-->
+<!--              </a>-->
+<!--            </li>-->
 
-            <li class="" title="马上开始系统学习">
-              <a
-                data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'
-                data-report-query="spm=3001.4482"
-                href="https://edu.csdn.net/"
-              >
-                专题
-                <!-- 学习分享 -->
-              </a>
-            </li>
+<!--            <li class="" title="马上开始系统学习">-->
+<!--              <a-->
+<!--                data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'-->
+<!--                data-report-query="spm=3001.4482"-->
+<!--                href="https://edu.csdn.net/"-->
+<!--              >-->
+<!--                专题-->
+<!--                &lt;!&ndash; 学习分享 &ndash;&gt;-->
+<!--              </a>-->
+<!--            </li>-->
 
-            <li class="" title="热门文章">
-              <a
-                data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'
-                data-report-query="spm=3001.4482"
-                href="https://edu.csdn.net/"
-              >
-                热榜
-                <!-- 资源分享 -->
-              </a>
-            </li>
+<!--            <li class="" title="热门文章">-->
+<!--              <a-->
+<!--                data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'-->
+<!--                data-report-query="spm=3001.4482"-->
+<!--                href="https://edu.csdn.net/"-->
+<!--              >-->
+<!--                热榜-->
+<!--                &lt;!&ndash; 资源分享 &ndash;&gt;-->
+<!--              </a>-->
+<!--            </li>-->
 
             <li class="" title="技术问题，有问必答">
               <a
@@ -61,7 +61,7 @@
                 data-report-query="spm=3001.6068"
                 href="https://bbs.csdn.net/"
               >
-                社区
+                表白墙
                 <!-- 关于我们 -->
               </a>
             </li>
@@ -75,6 +75,18 @@
                 校园风采
               </a>
             </li>
+
+             <li class="" title="热门文章">
+              <a
+                data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'
+                data-report-query="spm=3001.4482"
+                href="https://edu.csdn.net/"
+              >
+                长沙学院<>
+                <!-- 资源分享 -->
+              </a>
+            </li>
+
           </ul>
         </div>
 
@@ -116,12 +128,52 @@
 
         <div class="toolbar-container-right">
           <div class="toolbar-btns onlyUser">
+
+
+<!--            <div class="toolbar-btn toolbar-btn-vip csdn-toolbar-fl">-->
+<!--              <a-->
+<!--                data-report-click='{"mod":"popu_336","dest":"https://mall.csdn.net/vip","spm":"3001.4496"}'-->
+<!--                data-report-query="spm=3001.4496"-->
+<!--                href="https://mall.csdn.net/vip"-->
+<!--                >积分中心-->
+<!--              </a>-->
+<!--            </div>-->
+<!--            <div class="toolbar-btn toolbar-btn-collect csdn-toolbar-fl">-->
+<!--              <a-->
+<!--                data-report-click='{"spm":"3001.7480"}'-->
+<!--                data-report-query="spm=3001.7480"-->
+<!--                href="https://i.csdn.net/#/user-center/collection-list?type=1"-->
+<!--                >足迹</a-->
+<!--              >-->
+<!--              <div-->
+<!--                id="csdn-toolbar-collection-nologin"-->
+<!--                class="csdn-toolbar-plugin"-->
+<!--                style="display: none"-->
+<!--              >-->
+<!--                <div class="csdn-toolbar-plugin-triangle"></div>-->
+<!--                <div class="csdn-toolbar-collection-top">-->
+<!--                  登录即可查看浏览历史和收藏-->
+<!--                </div>-->
+<!--                <a-->
+<!--                  href="https://passport.csdn.net/account/login"-->
+<!--                  class="csdn-toolbar-loginbtn"-->
+<!--                  >立即登录</a-->
+<!--                >-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="toolbar-btn toolbar-btn-dynamic csdn-toolbar-fl">-->
+<!--              <a-->
+<!--                data-report-click='{"spm":"3001.4507"}'-->
+<!--                data-report-query="spm=3001.4507"-->
+<!--                href="https://blink.csdn.net"-->
+<!--                >动态</a-->
+<!--              >-->
+<!--            </div>-->
+
             <div
               class="toolbar-btn toolbar-btn-login csdn-toolbar-fl"
               v-if="!isShowAvatar"
             >
-              <!--              <a data-report-click="{&quot;spm&quot;:&quot;3001.5105&quot;}" data-report-query="spm=3001.5105"-->
-              <!--                 href="https://passport.csdn.net/account/login">登录/注册</a>-->
               <router-link to="/login"><a>登录/注册</a></router-link>
             </div>
 
@@ -136,52 +188,13 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="a">个人中心</el-dropdown-item>
                   <el-dropdown-item command="b" divided
-                    >退出登录</el-dropdown-item
+                  >退出登录</el-dropdown-item
                   >
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
             <!-- 显示头像 下拉菜单结束 -->
 
-            <div class="toolbar-btn toolbar-btn-vip csdn-toolbar-fl">
-              <a
-                data-report-click='{"mod":"popu_336","dest":"https://mall.csdn.net/vip","spm":"3001.4496"}'
-                data-report-query="spm=3001.4496"
-                href="https://mall.csdn.net/vip"
-                >积分中心
-              </a>
-            </div>
-            <div class="toolbar-btn toolbar-btn-collect csdn-toolbar-fl">
-              <a
-                data-report-click='{"spm":"3001.7480"}'
-                data-report-query="spm=3001.7480"
-                href="https://i.csdn.net/#/user-center/collection-list?type=1"
-                >足迹</a
-              >
-              <div
-                id="csdn-toolbar-collection-nologin"
-                class="csdn-toolbar-plugin"
-                style="display: none"
-              >
-                <div class="csdn-toolbar-plugin-triangle"></div>
-                <div class="csdn-toolbar-collection-top">
-                  登录即可查看浏览历史和收藏
-                </div>
-                <a
-                  href="https://passport.csdn.net/account/login"
-                  class="csdn-toolbar-loginbtn"
-                  >立即登录</a
-                >
-              </div>
-            </div>
-            <div class="toolbar-btn toolbar-btn-dynamic csdn-toolbar-fl">
-              <a
-                data-report-click='{"spm":"3001.4507"}'
-                data-report-query="spm=3001.4507"
-                href="https://blink.csdn.net"
-                >动态</a
-              >
-            </div>
 
             <div class="toolbar-btn toolbar-btn-write csdn-toolbar-fl">
               <a
@@ -256,6 +269,9 @@
                 </ul>
               </div> -->
             </div>
+
+
+
           </div>
         </div>
 <!--        <div>{{key}}</div>-->

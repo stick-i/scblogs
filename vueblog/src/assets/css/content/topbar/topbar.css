@@ -587,12 +587,12 @@
     border-right: none;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    border-radius: 16px 0 0 16px
+    border-radius: 5px 0 0 5px
 }
 
 #csdn-toolbar .toolbar-search .toolbar-search-container input:focus,
 #csdn_tool_otherPlace .toolbar-search .toolbar-search-container input:focus {
-    border: 1px solid #fc5531;
+    border: 1px solid #16a0f8;
     border-right: none
 }
 
@@ -603,19 +603,20 @@
     height: 100%;
     outline: 0;
     border: 0 none;
-    border-radius: 0 16px 16px 0;
+  /*border-radius: 0 16px 16px 0;*/
+    border-radius: 0 5px 5px 0;
     font-size: 14px;
     line-height: 32px;
     cursor: pointer;
     -webkit-transition: all .2s ease-in;
     transition: all .2s ease-in;
-    background-color: #fc5531;
+    background-color: #16a0f8;
     text-align: left
 }
 
 #csdn-toolbar .toolbar-search .toolbar-search-container button:hover,
 #csdn_tool_otherPlace .toolbar-search .toolbar-search-container button:hover {
-    background-color: #fc1944
+    background-color: #2F80ED
 }
 
 #csdn-toolbar .toolbar-search .toolbar-search-container button i,
@@ -1000,19 +1001,19 @@
 #csdn-toolbar .toolbar-btns .toolbar-btn-write>a,
 #csdn_tool_otherPlace .toolbar-btns .toolbar-btn-write>a {
     display: block;
-    min-width: 88px;
+    min-width: 105px;
     height: 32px;
     line-height: 32px;
     text-align: center;
     color: #fff;
-    background-color: #fc5531;
-    border-radius: 20px;
+    background-color: #16a0f8;
+    border-radius: 5px;
     margin-top: calc((48px - 32px)/ 2)
 }
 
 #csdn-toolbar .toolbar-btns .toolbar-btn-write>a.btn-write-new,
 #csdn_tool_otherPlace .toolbar-btns .toolbar-btn-write>a.btn-write-new {
-    background: url('../../../img/btn-write-new.png') no-repeat center center;
+    background: url('../../../img/btn-write-new1.png') no-repeat center center;
     background-size: 100% auto
 }
 
