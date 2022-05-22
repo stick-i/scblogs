@@ -33,6 +33,7 @@ build/
 .vscode/
 
 ### 配置文件 ###
+**/resources/config/application.yml
 **/resources/*.yml
 !**/resources/application.yml
 
