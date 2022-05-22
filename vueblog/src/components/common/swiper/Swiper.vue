@@ -3,7 +3,7 @@
     <!-- 右边轮播图 -->
     <div class="main-right">
       <el-carousel indicator-position="outside" height="380px">
-        <el-carousel-item v-for="item in 4" :key="item">
+        <el-carousel-item v-for="item in 6" :key="item">
           <h3>{{ item }}</h3>
         </el-carousel-item>
       </el-carousel>
@@ -20,7 +20,8 @@ export default {
 <style scoped>
 /* 轮播图开始 */
 .main-right {
-  width: 335px;
+  /*width: 510px;*/
+  width: 100%;
 }
 .el-carousel__item h3 {
   color: #475669;

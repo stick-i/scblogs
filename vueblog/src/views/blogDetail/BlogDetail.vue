@@ -82,14 +82,14 @@
             </div>
           </div>
           <!-- 侧边盒子2 搜索 -->
-          <div class="box asideSearchArticle">
-            <div class="search-box">
-              <input type="text" placeholder="搜博主文章"/>
-              <a href="#">
-                <img src="../../assets/img/blogDetail/search.png" alt=""/>
-              </a>
-            </div>
-          </div>
+<!--          <div class="box asideSearchArticle">-->
+<!--            <div class="search-box">-->
+<!--              <input type="text" placeholder="搜博主文章"/>-->
+<!--              <a href="#">-->
+<!--                <img src="../../assets/img/blogDetail/search.png" alt=""/>-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
           <!-- 侧边盒子3 热门文章 -->
           <div class="box asideHotArticle">
             <h3 class="aside-title">热门文章</h3>
@@ -309,7 +309,7 @@
 
     methods: {
       recordsChange(records) {
-        this.comment = records
+        this.comment = records; //在父组件修改值
       },
       // 关注
       followUser() {
@@ -557,8 +557,9 @@
     width: 1380px;
     display: flex;
     margin: auto;
-    flex-direction: row;
+    /*flex-direction: row;*/
     justify-content: space-between;
+    flex-direction: row-reverse;
     /*background-color: palevioletred;*/
   }
 
