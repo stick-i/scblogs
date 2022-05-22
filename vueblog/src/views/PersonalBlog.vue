@@ -79,7 +79,7 @@ import TopBarA from "@/components/content/topbar/TopBar";
 import ButtomA from "@/components/P_user/ButtomView/ButtomView.vue";
 import FixedRightA from "@/components/P_user/FixedRight/FixedRight";
 import navigationbar from "@/components/P_user/NavigationBar/navigationbar";
-import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
+// import leftcontent from "@/components/P_user/LeftContent/leftcontent.vue";
 import qs from "qs";
 export default {
   components: {

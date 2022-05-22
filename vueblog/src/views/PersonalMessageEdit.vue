@@ -9,7 +9,7 @@
                     <div class="contentleft">
                         <ul class="contentleftA">
                             <!-- :style="{'background-color': (index2+1) ==item[0].rightChoice[0] ? '#1cbe29': ''}" -->
-                            <li :style="{'background-color': item.chose==true ? 'rgb(240,240,245)': ''}"
+                            <li :style="{'background-color': item.chose ? 'rgb(240,240,245)': ''}"
                                 v-for="(item,index) in leftNavigation" @click="ChoseModel(index)" :key="index">
                                 <a href="#">{{item.name}}</a>
                              </li>
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div ref="tabs1" v-show="leftNavigation[0].chose" class="contentright">
                         <TabsContent></TabsContent>
                         <!-- && content1Seens -->
@@ -60,7 +60,7 @@
             <!-- 页面底部视图 -->
             <ButtomView></ButtomView>
         </div>
-        
+
     </div>
 </template>
 <script>
@@ -87,13 +87,13 @@ export default{
             {name:"内容管理",chose:false},{name:"我的点赞",chose:false}],
             userMessage:{
                 username:"默认参数P",
-                nickname:"默认参数P",   
+                nickname:"默认参数P",
                 // 获取的个人头像照片地址
                 avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
                 registerTime:""
             },
             config:{
-                headers:{   
+                headers:{
                     'token':localStorage.getItem('token')
                 }
             },
@@ -125,7 +125,7 @@ export default{
                 this.leftNavigation[i].chose=false
             }
             this.leftNavigation[index].chose=true
-            
+
             if(index==6){
                 this.$router.push('/ContentManagement')
             }
@@ -134,7 +134,7 @@ export default{
 }
 </script>
 
-<style >
+<style scoped>
 *{
     padding: 0;
     margin:0;
@@ -159,20 +159,19 @@ body{
 }
 .centerContent{
     display: -webkit-box;
-    display: -ms-flexbox; 
+    display: -ms-flexbox;
     /* display: flex;
     justify-content: center;
      align-items: center; */
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
-    flex-direction: column; 
+    flex-direction: column;
     min-height: calc(100% - 200px);
     margin-bottom: 32px;
 }
 .contentMiddle{
     position: relative;
-    width: auto;
     width: 1280px;
     min-height: 800px;
     background: transparent;
@@ -182,14 +181,14 @@ body{
     position: absolute;
     width: 200px;
     top: 0;
-    left: 0px;
+    left: 0;
     float: left;
     /* background: white; */
 }
 .contentleftA{
     list-style: none;
-    width: 100%; 
-    background: white;  
+    width: 100%;
+    background: white;
     border-radius: 5px;
 }
 .contentleftA li{

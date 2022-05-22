@@ -8,7 +8,7 @@
                 <div class="screening-conditions">
                     <ul>
                         <li v-for="(item,index) in ScreenList" :key="index" @click="ChoseScreen(index)"
-                        :style="{'color':item.chose==true?'black':''}">{{item.title}}</li>
+                        :style="{'color':item.chose?'black':''}">{{item.title}}</li>
                     </ul>
                 </div>
                 <div class="screening-conditionsB">
@@ -53,7 +53,7 @@
                                     placement="top"
                                     width="160"
                                     v-model="visible2">
-                                    <p>这是一段内容这是一段内容确定删除吗？</p>
+                                    <p>确定删除吗？</p>
                                     <div style="text-align: right; margin: 0">
                                     <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
                                     <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
@@ -155,7 +155,7 @@ export default {
         // 手动选择部分
         handleClick(tab, event) {
         console.log(tab, event);
-      },
+        },
     //   滑动触底时调用
     async infiniteHandler($state) {
         await this.$axios
@@ -275,7 +275,7 @@ export default {
     height: 500px;
     font-size: 20px;
     font-weight: 800;
-    color: red;                 
+    color: red;
     text-align: center;
     /* display: flex;
     align-items: center;

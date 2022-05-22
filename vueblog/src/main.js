@@ -16,6 +16,9 @@ import "./axios"
 import "./assets/css/iconfont/iconfont.css"
 
 import global from './global.js'   //注意文件路径，实际路径以项目目录结构为准
+
+import '@/assets/svg/iconfont.js'
+import '@/assets/svg/icon.css'
 Vue.prototype.$global = global;
 
 Vue.use(ElementUI);

@@ -12,7 +12,7 @@ const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
 const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
-const NewPersonalBlog = () => import('@/views/NewPersonBlog')
+const NewPersonBlog = () => import('@/views/NewPersonBlog')
 
 
 
@@ -71,9 +71,9 @@ const routes = [
     component: PersonalBlog,
   },
   {
-    path: '/NewPersonalBlog',
-    name: 'NewPersonalBlog',
-    component: NewPersonalBlog,
+    path: '/NewPersonBlog',
+    name: 'NewPersonBlog',
+    component: NewPersonBlog,
   },
   {
     path: '/PersonalMessageEdit',
