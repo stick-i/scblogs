@@ -37,7 +37,7 @@ public class RegisterController {
 	 * @param mail 邮箱
 	 */
 	@PostMapping("/send-mail-verify")
-	public RestResult<Object> sendMailVerify(String mail) throws Exception {
+	public RestResult<Object> sendMailVerify(String mail) {
 		log.debug("mail->{}", mail);
 		// todo 检查邮箱是否为合法邮箱
 		Long sendTime = cache.get(mail);
@@ -58,7 +58,7 @@ public class RegisterController {
 	 * @param mailVerify 接收到的验证码
 	 */
 	@PostMapping("/register")
-	public RestResult<Object> register(UserSafety userSafety, @NotNull String mailVerify) throws UserException {
+	public RestResult<Object> register(UserSafety userSafety, @NotNull String mailVerify) {
 		if (userService.getByUsername(userSafety.getUsername()) != null)
 			throw new UserException("用户名已存在");
 		if (!registerService.checkMailVerify(userSafety.getMail(), mailVerify)) {

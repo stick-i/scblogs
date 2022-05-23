@@ -17,7 +17,7 @@ public interface RegisterService extends IService<UserSafety> {
 	 *
 	 * @param mailAddress 邮箱地址
 	 */
-	void sendMailVerify(String mailAddress) throws Exception;
+	void sendMailVerify(String mailAddress);
 
 	/**
 	 * 验证码检查

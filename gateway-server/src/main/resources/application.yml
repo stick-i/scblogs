@@ -4,6 +4,9 @@ server:
 spring:
   cloud:
     gateway:
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 10s
       routes:
         - id: blogmain # 路由标识，必须唯一
           uri: lb://blogmain # 路由的目标地址，lb为load balance，负载均衡
