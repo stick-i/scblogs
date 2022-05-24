@@ -9,12 +9,11 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>resource-service</artifactId>
+	<artifactId>user-service</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>resource-server</module>
-		<module>resource-client</module>
-		<module>resource-sdk</module>
+		<module>user-server</module>
+		<module>user-client</module>
 	</modules>
 
 	<properties>

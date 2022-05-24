@@ -26,7 +26,6 @@
 			<groupId>cn.sticki</groupId>
 			<artifactId>common-core</artifactId>
 			<version>1.0.0</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

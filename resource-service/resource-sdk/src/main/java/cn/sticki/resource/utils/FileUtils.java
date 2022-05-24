@@ -1,8 +1,6 @@
 package cn.sticki.resource.utils;
 
-import cn.sticki.resource.exception.FileMaxSizeException;
-import cn.sticki.resource.exception.FileNullException;
-import cn.sticki.resource.exception.FileTypeException;
+import cn.sticki.resource.exception.FileException;
 import cn.sticki.resource.type.FileType;
 import lombok.SneakyThrows;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +77,7 @@ public class FileUtils {
 	 * @param ableTypes 允许的文件类型
 	 */
 	public static void checkFile(MultipartFile file, Long maxSize, FileType... ableTypes) {
-		if (!isNotEmpty(file)) throw new FileNullException("file is null");
+		if (!isNotEmpty(file)) throw new FileException("文件为空");
 		if (maxSize != null) checkFileSize(file, maxSize);
 		if (ableTypes.length > 0) checkFileTypes(file, ableTypes);
 	}
@@ -92,7 +90,7 @@ public class FileUtils {
 	 */
 	public static void checkFileSize(MultipartFile file, Long maxSize) {
 		if (file.getSize() > maxSize) {
-			throw new FileMaxSizeException();
+			throw new FileException("文件过大");
 		}
 	}
 
@@ -108,7 +106,7 @@ public class FileUtils {
 		for (FileType ableType : ableTypes) {
 			if (fileType == ableType) return;
 		}
-		throw new FileTypeException();
+		throw new FileException("不支持的文件类型");
 	}
 
 	/**

@@ -23,7 +23,7 @@ public class IPLimitFilter extends OncePerRequestFilter {
 
 	private final static int count = 30;
 
-	@CreateCache(name = "IpService:Count:", expire = time)
+	@CreateCache(name = "gateway:ipLimit:", expire = time)
 	private Cache<String, Integer> cache;
 
 	/**
