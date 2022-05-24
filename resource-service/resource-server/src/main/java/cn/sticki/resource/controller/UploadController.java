@@ -1,9 +1,9 @@
 package cn.sticki.resource.controller;
 
-import cn.sticki.common.enumeration.type.FileType;
-import cn.sticki.common.pojo.RestResult;
-import cn.sticki.common.utils.FileUtils;
+import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.service.UploadService;
+import cn.sticki.resource.type.FileType;
+import cn.sticki.resource.utils.FileUtils;
 import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

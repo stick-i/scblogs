@@ -1,6 +1,5 @@
 package cn.sticki.resource.service;
 
-import cn.sticki.common.utils.EncryptUtils;
 import cn.sticki.resource.config.ResourcePath;
 import cn.sticki.resource.mapper.ImageMapper;
 import cn.sticki.resource.pojo.Image;
@@ -8,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -43,7 +43,7 @@ public class UploadService {
 
 	private String uploadImage(MultipartFile image, String bucketName) throws IOException, MinioException {
 		try (InputStream stream = image.getInputStream()) {
-			String md5 = EncryptUtils.toMD5(stream);
+			String md5 = DigestUtils.md5DigestAsHex(stream);
 			// 存数据库，上传图片
 			// 先判断数据库是否存在这条记录，存在的话直接返回链接就行了
 			LambdaQueryWrapper<Image> wrapper = new LambdaQueryWrapper<>();
