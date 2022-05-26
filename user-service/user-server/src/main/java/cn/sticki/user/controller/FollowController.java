@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-public class UserFollowController {
+public class FollowController {
 
 	// 默认每页20条
 	private final int pageSize = 20;
