@@ -12,12 +12,14 @@
 
 	<!-- 管理的工程列表 -->
 	<modules>
-		<module>gateway-server</module>
+		<module>gateway-service</module>
 		<module>common</module>
-		<module>resource-server</module>
-		<module>user-server</module>
+		<module>resource-service</module>
+		<module>user-service</module>
 		<module>blog-server</module>
-		<module>message-server</module>
+		<module>message-service</module>
+		<module>resource-service</module>
+		<module>message-service</module>
 	</modules>
 
 	<parent>
@@ -122,23 +124,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies>
-		<!-- nacos客户端依赖包 -->
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<pluginManagement>

@@ -6,20 +6,19 @@
 		<artifactId>scblogs</artifactId>
 		<groupId>cn.sticki</groupId>
 		<version>1.0.0</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>common</artifactId>
+	<artifactId>message-service</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>common-core</module>
-		<module>common-tool</module>
+		<module>message-client</module>
+		<module>message-server</module>
 	</modules>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
 	</properties>
 
 </project>
