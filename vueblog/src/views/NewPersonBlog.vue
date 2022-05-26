@@ -4,6 +4,11 @@
         <!-- 将此页面分成上，中，下三个部分 -->
       <div class="main">
             <div class="up">
+                <div class="decoration">
+                    <div class="bgimage" v-for="item in bookList" :key="item.id">
+                        <Book :text="item.text" :imgone="item.img"></Book>
+                    </div>
+                </div>
                 <div class="my">
                     <div class="ke">
                         <div class="img">
@@ -31,7 +36,7 @@
             </div>
             <div class="middle">
                 <!-- 中部导航部分使用封装的子组件NewPersonBlogContent-->
-                <NewPersonBlogContent></NewPersonBlogContent>
+                <NewPersonBlogContent :avatarUrl="userMessage.avatarUrl" :username="userMessage.nickname"></NewPersonBlogContent>
             </div>
             <div class="down">
                 <!-- 底部信息 -->
@@ -44,6 +49,7 @@
 // 导入顶部导航条
 import TopBar from "../components/content/topbar/TopBar.vue"
 import qs from 'qs'
+import Book from '@/components/P_user/CssAnimation/PageTurnBook.vue'
 // 引入中部大导航
 import NewPersonBlogContent from "@/components/P_user/NewPersonBlogContent/NewPersonBlogContent.vue"
 export default {
@@ -54,19 +60,54 @@ export default {
                 headers:{
                     token: localStorage.getItem("token"),
                 }
-            }
+            },
+            // 书的信息
+            bookList:[{
+                text:'菩提本无树，明镜亦非台',
+                img:'https://tse4-mm.cn.bing.net/th/id/OIP-C.LWGT942vEnu7BJUpYbAyogHaFP?w=213&h=180&c=7&r=0&o=5&dpr=1.12&pid=1.7',
+                id:1
+            },
+            {
+                text:'每天都有不一样的答案',
+                // img:'',
+                id:2
+            },
+            {
+                text:'你想看啥',
+                img:'https://img2.baidu.com/it/u=3496011114,654559464&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=800',
+                id:3
+            },
+            {
+                text:'就知道你忍不住看',
+                img:'https://img1.baidu.com/it/u=907523513,3087938631&fm=253&fmt=auto&app=138&f=JPEG?w=231&h=500',
+                id:4
+            },
+            {
+                text:'三万里河东入海，五千仞岳上摩天。',
+                img:'https://img0.baidu.com/it/u=3872372553,3353954591&fm=253&fmt=auto&app=138&f=JPEG?w=485&h=500',
+                id:5
+            },
+            {
+                text:'昆仑山上玉楼前，五色祥光混紫烟。',
+                img:'https://img1.baidu.com/it/u=1637045404,3074886103&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889',
+                id:6
+            },]
         };
     },
     components: {
          TopBar,
-         NewPersonBlogContent
+         NewPersonBlogContent,
+         Book
+    },
+    created(){
+        this.GetData();
+        console.log("所有数据处理完毕",this.userMessage)
     },
     mounted() {
-    this.GetData();
     console.log("主页回去完成的数据",this.userMessage);
   },
     methods:{
-        GetData() {
+        async GetData() {
             let params = {
                 username: "123",
                 password: "123456",
@@ -84,7 +125,7 @@ export default {
                 this.userMessage = res.data.data;
                 });
             // 获取用户个人信息
-            this.$axios
+             this.$axios
                 .get("/user", this.config)
                 .then((res) => {
                 localStorage.setItem("userMessage", JSON.stringify(res.data.data));
@@ -110,14 +151,28 @@ export default {
 }
 .up{
     width: 1300px;
-    height: 200px;
+    /* height: 200px; */
     margin:0 auto;
-    background: url('../assets/img/newPersonBlog/tip.webp');
+    position: relative;
+    /* background: url('../assets/img/newPersonBlog/tip.webp') no-repeat; */
+    background: linear-gradient(135deg,rgb(246, 167, 180),white,rgb(125, 224, 251));
+    border-radius: 5px;
+}
+.up .decoration{
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+}
+.up .bgimage{
+    margin:20px 20px 20px 0;
+    border: none;
 }
 .my{
     width: 100%;
     height: 100px;
-    padding:100px 0 0;
+
 }
 /* 包裹上部分文字头像显示部分的壳 */
 .ke{
