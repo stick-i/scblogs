@@ -15,7 +15,7 @@
           </a>
         </div>
         <div class="article-content-item">
-          <div class="article-img-left">
+          <div class="article-img-left" v-show="isShowImg">
             <router-link
               :to="{ name: 'BlogDetail', params: { blogId: item.id } }"
               target="_blank"
@@ -35,7 +35,8 @@
             <div class="article-evaluation">
               <div class="article-good" @click="addLikeNum(item.id, index)">
                 <!--登录显示-->
-                <img v-if="isShow"
+                <img
+                  v-if="isShow"
                   :src="
                     userAction[item.id].like
                       ? require('../../../assets/img/home/good_active.png')
@@ -44,7 +45,11 @@
                   alt=""
                 />
                 <!--未登录显示-->
-                <img v-if="!isShow" src="../../../assets/img/home/good.png" alt="">
+                <img
+                  v-if="!isShow"
+                  src="../../../assets/img/home/good.png"
+                  alt=""
+                />
                 {{ item.likeNum }} <span>赞</span>
               </div>
               <div class="article-author">
@@ -66,8 +71,8 @@
       :distance="200"
       class="infinite-loading-wrap"
     >
-      <div slot="spinner">Loading...</div>
-      <div slot="no-more">No more Data</div>
+      <div slot="spinner">加载中...</div>
+      <div slot="no-more">暂无更多数据</div>
       <div slot="no-results">No results Data</div>
       <div slot="error" slot-scope="{ trigger }">
         Error Data, click
@@ -92,21 +97,16 @@ export default {
         blogId: "",
       },
       userAction: {},
-      isLike:false,
-      isShow:false,
+      isLike: false,
+      isShow: false,
+      isShowImg:false,
     };
   },
   components: {
     InfiniteLoading,
   },
   mounted() {},
-  computed:{
-    // blogList1:function (){
-    //   return this.blogList.filter(function (item) {
-    //     return item.isShow
-    //   })
-    // }
-  },
+  computed: {},
   methods: {
     // 点赞
     addLikeNum(id, index) {
@@ -117,23 +117,22 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if(res.data.code == 400 && res.data.status == false) {
+          if (res.data.code == 400 && res.data.status == false) {
             this.$message({
               showClose: true,
               message: "请先登录哦~",
               type: "warning",
             });
-          };
-          if(res.data.code == 200 && res.data.status == true) {
+          }
+          if (res.data.code == 200 && res.data.status == true) {
             if (this.userAction[id].like == false) {
               this.blogList[index].likeNum++;
-              this.userAction[id].like = true
+              this.userAction[id].like = true;
             } else {
               this.blogList[index].likeNum--;
-              this.userAction[id].like = false
+              this.userAction[id].like = false;
             }
           }
-
         });
     },
     async infiniteHandler($state) {
@@ -144,11 +143,15 @@ export default {
         .then((res) => {
           console.log(res);
           // console.log(res.data.data.userAction)
-          if(res.data.data.userAction == null) {
-            this.isShow = false
+          if (res.data.data.userAction == null) {
+            this.isShow = false;
           } else {
             this.isShow = true;
           }
+          // res.data.data.records.forEach((item,index)=>{
+          //   // console.log(item.coverImage)
+          //   this.isShowImg = item.coverImage;
+          // })
           if (res.data.data.records.length) {
             this.page += 1; // 下一页
             this.blogList = this.blogList.concat(res.data.data.records);
@@ -157,6 +160,20 @@ export default {
               ...res.data.data.userAction,
             };
             console.log(this.blogList);
+            // this.blogList.forEach((item,index)=>{
+            //   console.log(item.coverImage)
+            //   if(item.coverImage != null) {
+            //     this.isShowImg = true;
+            //     console.log("0")
+            //     console.log(this.isShowImg)
+            //   } else {
+            //     this.isShowImg = false;
+            //     console.log("1")
+            //   }
+            // })
+            // this.blogList.forEach((item,index)=>{
+            //   this.isShowImg = index;
+            // })
             $state.loaded();
           } else {
             $state.complete();
@@ -171,13 +188,29 @@ export default {
 .article-main {
   border-radius: 5px;
   margin-right: 15px;
-  border-bottom: 1px solid #f0f0f2;
-  /*padding: 15px 10px 0;*/
-  padding: 15px 0px 0;
+  margin-left: 3px;
+  /* border-bottom: 1px solid #f0f0f2; */
+  background-color: #ffffff;
+  padding: 15px 0px 0 15px;
+  margin-bottom: 15px;
+
+  /* display: inline-block; */
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
 }
 
 .article-main:hover {
   background-color: #fafafa;
+
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .article-title a {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import CampusScenery from "@/views/campusScenery/CampusScenery";
 
 // 路由懒加载
 const Home = () => import('@/views/home/Home')
@@ -13,7 +14,7 @@ const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonalBlog = () => import('@/views/NewPersonBlog')
-
+// const CampusScenery = () => import('@/views/campusScenery/CampusScenery')
 
 
 Vue.use(VueRouter)
@@ -65,6 +66,11 @@ const routes = [
     name: 'BlogEdit',
     component: BlogEdit,
   },
+  // {
+  //   path: '/campus/scenery',
+  //   name: 'CampusScenery',
+  //   component: CampusScenery,
+  // },
   {
     path: '/Personal_Blog',
     name: 'PersonalBlog',

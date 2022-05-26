@@ -54,7 +54,7 @@ a {
 .right {
     float: right;
 }
-ol, ul {
+ol, ul,li {
   list-style: none;
 }
 * {
