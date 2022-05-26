@@ -13,12 +13,6 @@
 
 	<dependencies>
 
-		<!-- nacos客户端依赖包 -->
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
@@ -43,7 +37,6 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>1.2.8</version>
 		</dependency>
 
 		<dependency>
@@ -133,7 +126,6 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.8.0.M3</version>
 		</dependency>
 
 		<!-- session 设置 SameSite=None; Secure 的依赖 -->
@@ -158,6 +150,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alicp.jetcache</groupId>
+			<artifactId>jetcache-starter-redis</artifactId>
 		</dependency>
 
 		<!-- MongoDB -->
@@ -188,11 +185,6 @@
 		<!-- 	<artifactId>ehcache</artifactId> -->
 		<!-- </dependency> -->
 
-		<dependency>
-			<groupId>com.alicp.jetcache</groupId>
-			<artifactId>jetcache-starter-redis</artifactId>
-			<version>2.6.4</version>
-		</dependency>
 
 		<!-- ActiveMQ -->
 		<!-- <dependency> -->

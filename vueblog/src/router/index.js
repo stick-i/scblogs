@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CampusScenery from "@/views/campusScenery/CampusScenery";
 
 // 路由懒加载
 const Home = () => import('@/views/home/Home')
@@ -10,10 +9,11 @@ const BlogSearch = () => import('@/views/blogSearch/BlogSearch')
 const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
 const BlogPublishSuccess = () => import('@/views/blogPublishSuccess/BlogPublishSuccess')
 const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
-const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
-const NewPersonalBlog = () => import('@/views/NewPersonBlog')
+const NewPersonBlog = () => import('@/views/NewPersonBlog')
+const HeartSay=()=>import('@/views/HeartSay')
+const Dynamic=()=>import('@/views/DynamicEdit')
 // const CampusScenery = () => import('@/views/campusScenery/CampusScenery')
 
 
@@ -72,14 +72,9 @@ const routes = [
   //   component: CampusScenery,
   // },
   {
-    path: '/Personal_Blog',
-    name: 'PersonalBlog',
-    component: PersonalBlog,
-  },
-  {
-    path: '/NewPersonalBlog',
-    name: 'NewPersonalBlog',
-    component: NewPersonalBlog,
+    path: '/NewPersonBlog',
+    name: 'NewPersonBlog',
+    component: NewPersonBlog,
   },
   {
     path: '/PersonalMessageEdit',
@@ -90,6 +85,16 @@ const routes = [
     path: '/ContentManagement',
     name: 'ContentManagement',
     component: ContentManagement
+  },
+  {
+    path: '/HeartSay',
+    name: 'HeartSay',
+    component: HeartSay
+  },
+  {
+    path: '/DynamicEdit',
+    name: 'DynamicEdit',
+    component: Dynamic
   },
 ]
 

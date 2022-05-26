@@ -1,0 +1,24 @@
+server:
+  port: 59002
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto  # 全局id增长策略
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志配置
+    map-underscore-to-camel-case: true  # 配置驼峰命名自动映射
+  mapper-locations: classpath*:mapper/*.xml  # 指定xml文件的路径
+  type-aliases-package: cn.sticki.resource.pojo  # 实体对象的扫描包
+
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true  # 404时不跳转，直接抛出异常
+  web:
+    resources:
+      add-mappings: false # 是否启用默认资源处理
+  # servlet文件传输限制
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB

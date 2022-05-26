@@ -57,9 +57,7 @@
 
             <li class="" title="找到志同道合的伙伴">
               <a
-                data-report-click='{"mod":"popu_336","dest":"https://bbs.csdn.net/","spm":"3001.6068"}'
-                data-report-query="spm=3001.6068"
-                href="https://bbs.csdn.net/"
+                @click="ToHeart()"
               >
                 表白墙
                 <!-- 关于我们 -->
@@ -330,7 +328,10 @@ export default {
         this.isShowInput = "block";
       }
     },
-
+    // 跳转表白墙页面
+    ToHeart(){
+      this.$router.push('/HeartSay')
+    },
     // 跳转搜索博客
     goSearchBlogs() {
       this.$store.commit('copySearchKey',this.key)
@@ -390,6 +391,13 @@ export default {
 @import "../../../assets/css/content/topbar/topbar.css";
 .test-div {
   height: 48px;
+}
+#csdn-toolbar{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+  width: 100%;
 }
 #csdn-toolbar
   .toolbar-inside

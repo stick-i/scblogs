@@ -7,14 +7,20 @@
 	<artifactId>scblogs</artifactId>
 	<version>1.0.0</version>
 
-	<modules>
-		<module>blog_main</module>
-		<module>blog_admin</module>
-		<module>blog_register</module>
-		<module>blog_gateway</module>
-	</modules>
-
+	<!-- 定义该工程用于进行构建管理 -->
 	<packaging>pom</packaging>
+
+	<!-- 管理的工程列表 -->
+	<modules>
+		<module>gateway-service</module>
+		<module>common</module>
+		<module>resource-service</module>
+		<module>user-service</module>
+		<module>blog-server</module>
+		<module>message-service</module>
+		<module>resource-service</module>
+		<module>message-service</module>
+	</modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -38,7 +44,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<hutool.version>5.8.0.M3</hutool.version>
+		<hutool.version>5.8.0</hutool.version>
 		<dynamic-ds.version>3.5.1</dynamic-ds.version>
 		<captcha.version>2.2.2</captcha.version>
 		<velocity.version>2.3</velocity.version>
@@ -46,9 +52,14 @@
 		<configuration.version>1.10</configuration.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<docker.plugin.version>0.32.0</docker.plugin.version>
+		<minio.version>8.3.8</minio.version>
+		<okhttp3.version>4.8.1</okhttp3.version>
+		<druid.version>1.2.9</druid.version>
+		<jetcache.version>2.6.4</jetcache.version>
 
 	</properties>
 
+	<!-- 依赖管理 -->
 	<dependencyManagement>
 		<dependencies>
 			<!-- spring boot 依赖 -->
@@ -88,19 +99,49 @@
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis-plus.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>${okhttp3.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alicp.jetcache</groupId>
+				<artifactId>jetcache-starter-redis</artifactId>
+				<version>${jetcache.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<dependencies>
-		<!-- ConfigurationProperties注解需要 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>
