@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+/**
+ * 评论相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/comment")

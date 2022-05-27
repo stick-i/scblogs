@@ -1,4 +1,4 @@
-package cn.sticki.message;
+package cn.sticki.message.client;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.message.pojo.MailDTO;

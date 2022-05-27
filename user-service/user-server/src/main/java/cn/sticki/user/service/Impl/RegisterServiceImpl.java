@@ -1,7 +1,7 @@
 package cn.sticki.user.service.Impl;
 
 import cn.sticki.common.tool.utils.RandomUtils;
-import cn.sticki.message.MessageClient;
+import cn.sticki.message.client.MessageClient;
 import cn.sticki.message.pojo.MailDTO;
 import cn.sticki.user.config.UserConfig;
 import cn.sticki.user.exception.UserException;

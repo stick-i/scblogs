@@ -1,5 +1,5 @@
 server:
-  port: 45136
+  port: 40012
 
 user:
   default-avatar: default_avatar.jpg # 注册时自动填充的头像文件名

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+/**
+ * 获取博客信息的相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/blog")

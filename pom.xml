@@ -18,6 +18,7 @@
 		<module>blog-service</module>
 		<module>resource-service</module>
 		<module>message-service</module>
+		<module>comment-service</module>
 	</modules>
 
 	<parent>

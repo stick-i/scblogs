@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 登录相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/login")

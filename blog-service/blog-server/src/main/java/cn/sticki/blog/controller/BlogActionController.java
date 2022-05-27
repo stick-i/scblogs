@@ -1,19 +1,20 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.pojo.BlogListVO;
 import cn.sticki.blog.service.CollectBlogService;
 import cn.sticki.blog.service.LikeBlogService;
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 用户对博客的行为相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/blog/action")
@@ -24,6 +25,8 @@ public class BlogActionController {
 
 	@Resource
 	private CollectBlogService collectBlogService;
+
+	private final int pageSize = 20;
 
 	/**
 	 * 点赞博客
@@ -53,6 +56,28 @@ public class BlogActionController {
 		map.put("num", collectBlogService.getCollectNum(blogId));
 		map.put("status", status);
 		return new RestResult<>(map);
+	}
+
+	/**
+	 * 获取点赞列表
+	 *
+	 * @param page 第几页（默认每页20条）
+	 */
+	@GetMapping("/like")
+	public RestResult<BlogListVO> getLikeList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+		BlogListVO blogList = likeBlogService.getLikeBlogList(id, page, pageSize);
+		return new RestResult<>(blogList);
+	}
+
+	/**
+	 * 获取收藏列表
+	 *
+	 * @param page 第几页（默认每页20条）
+	 */
+	@GetMapping("/collect")
+	public RestResult<BlogListVO> getCollectList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+		BlogListVO blogList = collectBlogService.getCollectBlogList(id, page, pageSize);
+		return new RestResult<>(blogList);
 	}
 
 }

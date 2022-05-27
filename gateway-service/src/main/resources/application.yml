@@ -17,12 +17,12 @@ spring:
         - id: resource-server
           uri: lb://resource-server
           predicates:
-            - Path=/avatar/**,/image/**
-        # 消息服务
-        - id: message-server
-          uri: lb://message-server
+            - Path=/resource/**
+        # 评论服务
+        - id: comment-server
+          uri: lb://comment-server
           predicates:
-            - Path=/send/**
+            - Path=/comment/**
         # 博客服务
         - id: blog-server
           uri: lb://blog-server

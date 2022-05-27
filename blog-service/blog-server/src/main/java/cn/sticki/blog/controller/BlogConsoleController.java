@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
+/**
+ * 博客控制台相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/blog/console")

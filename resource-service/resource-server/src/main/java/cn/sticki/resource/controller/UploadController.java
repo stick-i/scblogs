@@ -8,14 +8,19 @@ import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 
+/**
+ * 上传图片相关接口
+ */
 @Slf4j
 @RestController
+@RequestMapping("/private/resource")
 public class UploadController {
 
 	@Resource
