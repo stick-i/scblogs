@@ -36,6 +36,10 @@
 
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
 		<!--添加读取bootstrap配置文件的依赖-->

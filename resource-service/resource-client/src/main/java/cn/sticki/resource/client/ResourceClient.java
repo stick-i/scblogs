@@ -1,4 +1,4 @@
-package cn.sticki.resource;
+package cn.sticki.resource.client;
 
 import cn.sticki.common.result.RestResult;
 import org.springframework.cloud.openfeign.FeignClient;

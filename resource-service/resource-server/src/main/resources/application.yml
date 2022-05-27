@@ -1,12 +1,11 @@
 server:
-  port: 59002
+  port: 40010
 
 mybatis-plus:
   global-config:
     db-config:
       id-type: auto  # 全局id增长策略
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志配置
     map-underscore-to-camel-case: true  # 配置驼峰命名自动映射
   mapper-locations: classpath*:mapper/*.xml  # 指定xml文件的路径
   type-aliases-package: cn.sticki.resource.pojo  # 实体对象的扫描包

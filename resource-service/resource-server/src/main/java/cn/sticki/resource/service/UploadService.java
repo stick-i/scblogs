@@ -47,11 +47,11 @@ public class UploadService {
 			// 存数据库，上传图片
 			// 先判断数据库是否存在这条记录，存在的话直接返回链接就行了
 			LambdaQueryWrapper<Image> wrapper = new LambdaQueryWrapper<>();
-			wrapper.eq(Image::getImg, md5);
+			wrapper.eq(Image::getUrl, md5);
 			if (!imageMapper.exists(wrapper)) {
 				// 不存在，则新增
 				Image img = new Image();
-				img.setImg(md5);
+				img.setUrl(md5);
 				img.setCreateTime(new Timestamp(System.currentTimeMillis()));
 				imageMapper.insert(img);
 				// 上传图片

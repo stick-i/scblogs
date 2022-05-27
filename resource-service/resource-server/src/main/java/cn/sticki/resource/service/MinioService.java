@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -129,11 +130,27 @@ public class MinioService {
 	 * @param filePath     文件名(包括路径)
 	 * @param bucketName   储存桶
 	 * @param outputStream 输出流
+	 * @deprecated 请使用 {@link MinioService#download(java.lang.String, java.lang.String, javax.servlet.http.HttpServletResponse) }
 	 */
 	public void download(String filePath, String bucketName, ServletOutputStream outputStream) throws MinioException, IOException {
 		InputStream inputStream = this.download(filePath, bucketName);
 		IOUtils.copy(inputStream, outputStream);
 		inputStream.close();
+	}
+
+	/**
+	 * 下载文件,使用response
+	 *
+	 * @param filePath   文件路径
+	 * @param bucketName 桶名称
+	 * @param response   输出的响应体
+	 */
+	public void download(String filePath, String bucketName, HttpServletResponse response) throws MinioException, IOException {
+		try (InputStream inputStream = this.download(filePath, bucketName)) {
+			try (ServletOutputStream outputStream = response.getOutputStream()) {
+				IOUtils.copy(inputStream, outputStream);
+			}
+		}
 	}
 
 	/**
