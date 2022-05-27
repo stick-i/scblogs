@@ -44,7 +44,7 @@
       <div class="main-container">
         <div class="grid-content">
           <Swiper class="swiper" />
-          <div class="main-right-item" v-for="(item,index) in 6" :key="index">
+          <div class="main-right-item" v-for="(item, index) in 6" :key="index">
             <div class="item-img">
               <img src="../../assets/img/home/003.jpg" alt="" />
             </div>
@@ -144,7 +144,7 @@
               <HomeArticleItem />
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <HomeArticleItem />
+              <HomeArticleItem style="margin-top: 2px" />
             </el-tab-pane>
             <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
@@ -214,11 +214,44 @@
             <span>关于我们</span>
           </div>
           <div class="template-cont">
-            <div class="hot">
+            <div class="hot1">
               <div class="our-content">
-                <a href="https://beian.miit.gov.cn" target="_blank">
-                  <div style="color: #fc5531">湘ICP备2021015916号-2</div>
-                </a>
+                <!--                <a href="https://beian.miit.gov.cn" target="_blank">-->
+                <!--                  <div style="color: #fc5531">湘ICP备2021015916号-2</div>-->
+                <!--                </a>-->
+                <div style="width: 300px; margin: 0 auto; padding: 20px 0">
+                  <a
+                    target="_blank"
+                    href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010502001444"
+                    style="
+                      display: inline-block;
+                      text-decoration: none;
+                      height: 20px;
+                      line-height: 20px;
+                    "
+                  >
+                    <img
+                      src="../../assets/img/home/备案图标.png"
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        float: left;
+                      "
+                    />
+                    <p
+                      style="
+                        float: left;
+                        height: 20px;
+                        line-height: 20px;
+                        margin: 0px 0px 0px 5px;
+                        color: #939393;
+                      "
+                    >
+                      湘公网安备 43010502001444号
+                    </p>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -274,12 +307,21 @@ export default {
   height: 100%;
   /* background-color: pink; */
 }
+/*.main-right-item .item-img img {*/
+/*  !*width: 100%;*!*/
+/*  width: 266px;*/
+/*}*/
 .main-right-item .item-img img {
   width: 100%;
+  /*width: 266.4px;*/
   height: 140px;
   /* background-color: #d3dce6; */
   border-radius: 6px;
   object-fit: cover;
+  transition: all 0.3s;
+}
+.main-right-item .item-img img:hover {
+  transform: scale(1.05);
 }
 .main-right-item .item-title {
   height: 44px;
@@ -526,10 +568,22 @@ export default {
 .content .template {
   box-sizing: border-box;
   width: 336px;
-  /*height: 300px;*/
   border: 1px solid #f0f0f2;
   border-radius: 5px;
   margin-bottom: 16px;
+
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
+.content .template:hover {
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .template-title {
@@ -609,7 +663,7 @@ export default {
   height: 24px;
   background: #fff;
   line-height: 24px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid #ccccd8;
   font-size: 12px;
   margin-left: 16px;

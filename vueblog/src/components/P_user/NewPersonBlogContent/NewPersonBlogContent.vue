@@ -56,7 +56,7 @@
                         <!-- 头部头像条 -->
                         <div class="headurl">
                             <div class="img">
-                                <img :src="headurl" alt="">
+                                <img :src="avatarUrl" alt="">
                             </div>
                             <div class="username">
                                 {{username}}
@@ -92,9 +92,6 @@
                     </div>
                 </div>
             </div>
-            <div class="F-3" v-if="navList[2].chose">
-
-            </div>
             <!-- 给下拉刷新预留位置 -->
             <infinite-loading
                 spinner="spiral"
@@ -120,6 +117,18 @@ export default {
     components:{
         InfiniteLoading
     },
+    props:{
+        avatarUrl:{
+            require:true,
+            default:'https://img2.baidu.com/it/u=590821804,2188087390&fm=253&fmt=auto&app=138&f=JPEG?w=350&h=350',
+            type:String
+        },
+        username:{
+            require:true,
+            default:'ABC',
+            type:String
+        }
+    },
     data(){
         return{
             // 左侧导航条列表
@@ -138,18 +147,17 @@ export default {
             },
             // 是否允许他人查看
             allowview:false,
-            // 从父组件获取的用户头像
-            headurl:this.$parent.userMessage.avatarUrl,
-            // 从父元素获取到的用户昵称
-            username:this.$parent.userMessage.nickname,
             iconList:['#icon-dianzan_kuai','#icon-pinglun','#icon-zhuanfa','#icon-gengduo'],
             // 点赞的激活状态
             likeactive:false,
         }
     },
+    created(){
+    },
     async mounted(){
-        // await this.GetData()
+        await this.GetData()
         console.log("获取到的博客列表数据",this.List)
+        console.log("从父组件中获取到的数据",this.username,this.headurl)
     },
     methods:{
         Like(index){
@@ -197,10 +205,7 @@ export default {
             }else if(this.getmessageindex==1){
                 // 个人动态页面数据获取
                 this.$axios.get()
-            }else if(this.getmessageindex==2){
-                // 博客表白墙数据列表获取
             }
-
         },
         // 跳转去显示博客的详情
         TurnToShow(id){
@@ -379,8 +384,8 @@ export default {
     margin: auto 20px;
     line-height: 50px;
     font-size: 20px;
-    font-weight:400;
-    color: rgb(2, 157, 119);
+    font-weight:600;
+    color: rgb(79, 215, 239);
 }
 .F-2 .F-2-content .F-2-B  .textcontent{
     width: 900px;
@@ -412,7 +417,7 @@ export default {
 }
 .F-2 .F-2-content .F-2-B  .clickfunction li svg:hover{
     -webkit-transform:scale(1.3) translateY(-5px);
-    fill: rgb(1, 221, 67);
+    fill: rgb(79, 224, 234);
 }
 .F-2 .F-2-content .F-2-B  .clickfunction li:nth-child(1) svg:hover{
     -webkit-transform:rotate(360deg) scale(1.3);
@@ -428,12 +433,5 @@ export default {
     fill: rgb(5, 245, 253);
 }
 
-.F-3{
-    width: 100%;
-    max-height: 200px;
-    margin-bottom:20px;
-    border-radius: 5px;
-    display: flex;
-    background: rgb(255, 3, 3);
-}
+
 </style>

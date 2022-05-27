@@ -48,6 +48,4 @@
         border-radius: 20px;
         box-sizing: border-box;
     }
-
-
 </style>

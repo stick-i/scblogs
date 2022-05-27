@@ -1,6 +1,8 @@
 @font-face {
-  font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1650010539303') format('truetype');
+  font-family: "iconfont"; /* Project id 3332214 */
+  src: url('iconfont.woff2?t=1653486708474') format('woff2'),
+       url('iconfont.woff?t=1653486708474') format('woff'),
+       url('iconfont.ttf?t=1653486708474') format('truetype');
 }
 
 .iconfont {
@@ -11,12 +13,56 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-shipin:before {
+  content: "\e644";
+}
+
+.icon-lianjie:before {
+  content: "\eadc";
+}
+
+.icon-biaoqing:before {
+  content: "\e72d";
+}
+
+.icon-gengduo:before {
+  content: "\e603";
+}
+
+.icon-pinglun:before {
+  content: "\e6ad";
+}
+
+.icon-dianzan_kuai:before {
+  content: "\ec8c";
+}
+
+.icon-zhuanfa:before {
+  content: "\e628";
+}
+
+.icon-tupian:before {
+  content: "\e8ba";
+}
+
+.icon-xiangxia:before {
+  content: "\e602";
+}
+
+.icon-youjiantou:before {
+  content: "\e658";
+}
+
+.icon-zuojiantou:before {
+  content: "\e63b";
+}
+
 .icon-erweima:before {
-  content: "\f0030";
+  content: "\e600";
 }
 
 .icon-shezhi:before {
-  content: "\f018f";
+  content: "\e601";
 }
 
 .icon-wenbenbianji:before {

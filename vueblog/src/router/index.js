@@ -9,11 +9,12 @@ const BlogSearch = () => import('@/views/blogSearch/BlogSearch')
 const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
 const BlogPublishSuccess = () => import('@/views/blogPublishSuccess/BlogPublishSuccess')
 const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
-const PersonalBlog = () => import('@/views/PersonalBlog')
 const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonBlog = () => import('@/views/NewPersonBlog')
-
+const HeartSay=()=>import('@/views/HeartSay')
+const Dynamic=()=>import('@/views/DynamicEdit')
+// const CampusScenery = () => import('@/views/campusScenery/CampusScenery')
 
 
 Vue.use(VueRouter)
@@ -65,11 +66,11 @@ const routes = [
     name: 'BlogEdit',
     component: BlogEdit,
   },
-  {
-    path: '/Personal_Blog',
-    name: 'PersonalBlog',
-    component: PersonalBlog,
-  },
+  // {
+  //   path: '/campus/scenery',
+  //   name: 'CampusScenery',
+  //   component: CampusScenery,
+  // },
   {
     path: '/NewPersonBlog',
     name: 'NewPersonBlog',
@@ -84,6 +85,16 @@ const routes = [
     path: '/ContentManagement',
     name: 'ContentManagement',
     component: ContentManagement
+  },
+  {
+    path: '/HeartSay',
+    name: 'HeartSay',
+    component: HeartSay
+  },
+  {
+    path: '/DynamicEdit',
+    name: 'DynamicEdit',
+    component: Dynamic
   },
 ]
 
