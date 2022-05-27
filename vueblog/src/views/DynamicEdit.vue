@@ -31,6 +31,6 @@ export default {
 .editpart{
     width: 1300px;
     margin: 0 auto;
-    margin-top: 60px;
+    padding-top: 70px;
 }
 </style>
