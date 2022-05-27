@@ -13,3 +13,5 @@ spring:
             refresh: true
           - data-id: default-mysql.yaml
             refresh: true
+          - data-id: default-springmvc.yaml
+            refresh: true

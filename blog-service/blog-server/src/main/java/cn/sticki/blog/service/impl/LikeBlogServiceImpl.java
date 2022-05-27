@@ -3,11 +3,11 @@ package cn.sticki.blog.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.mapper.BlogBasicMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
-import cn.sticki.blog.mapper.UserLikeBlogMapper;
+import cn.sticki.blog.mapper.LikeBlogMapper;
 import cn.sticki.blog.pojo.BlogBasic;
 import cn.sticki.blog.pojo.BlogListVO;
-import cn.sticki.blog.pojo.UserLikeBlog;
-import cn.sticki.blog.service.UserLikeBlogService;
+import cn.sticki.blog.pojo.LikeBlog;
+import cn.sticki.blog.service.LikeBlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,13 +23,13 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class UserLikeBlogServiceImpl extends ServiceImpl<UserLikeBlogMapper, UserLikeBlog> implements UserLikeBlogService {
+public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> implements LikeBlogService {
 
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
 
 	@Resource
-	private UserLikeBlogMapper userLikeBlogMapper;
+	private LikeBlogMapper likeBlogMapper;
 
 	@Resource
 	private BlogBasicMapper blogBasicMapper;
@@ -37,22 +37,22 @@ public class UserLikeBlogServiceImpl extends ServiceImpl<UserLikeBlogMapper, Use
 	@Override
 	public boolean likeBlog(Integer userId, Integer blogId) {
 		// 查询是否已经点赞，若已点赞则取消点赞
-		LambdaQueryWrapper<UserLikeBlog> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(UserLikeBlog::getUserId, userId);
-		wrapper.eq(UserLikeBlog::getBlogId, blogId);
-		UserLikeBlog selectOne = userLikeBlogMapper.selectOne(wrapper);
+		LambdaQueryWrapper<LikeBlog> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(LikeBlog::getUserId, userId);
+		wrapper.eq(LikeBlog::getBlogId, blogId);
+		LikeBlog selectOne = likeBlogMapper.selectOne(wrapper);
 		if (selectOne != null) {
 			// 点赞已经存在
-			userLikeBlogMapper.deleteById(selectOne);
+			likeBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseLikeNum(blogId);
 			return false;
 		} else {
 			// 点赞不存在
-			UserLikeBlog likeBlog = new UserLikeBlog();
+			LikeBlog likeBlog = new LikeBlog();
 			likeBlog.setBlogId(blogId);
 			likeBlog.setUserId(userId);
 			likeBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
-			userLikeBlogMapper.insert(likeBlog);
+			likeBlogMapper.insert(likeBlog);
 			blogGeneralMapper.increaseLikeNum(blogId);
 			return true;
 		}
@@ -60,26 +60,26 @@ public class UserLikeBlogServiceImpl extends ServiceImpl<UserLikeBlogMapper, Use
 
 	@Override
 	public Long getLikeNum(Integer blogId) {
-		LambdaQueryWrapper<UserLikeBlog> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(UserLikeBlog::getBlogId, blogId);
-		return userLikeBlogMapper.selectCount(wrapper);
+		LambdaQueryWrapper<LikeBlog> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(LikeBlog::getBlogId, blogId);
+		return likeBlogMapper.selectCount(wrapper);
 	}
 
 	@Override
 	public BlogListVO getLikeBlogList(@NotNull Integer userId, int page, int pageSize) {
 		// 先查收藏表，获取收藏的博客id
-		LambdaQueryWrapper<UserLikeBlog> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(UserLikeBlog::getUserId, userId);
-		IPage<UserLikeBlog> iPage = new Page<>(page, pageSize);
-		userLikeBlogMapper.selectPage(iPage, wrapper);
+		LambdaQueryWrapper<LikeBlog> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(LikeBlog::getUserId, userId);
+		IPage<LikeBlog> iPage = new Page<>(page, pageSize);
+		likeBlogMapper.selectPage(iPage, wrapper);
 		BlogListVO blogListVO = BeanUtil.copyProperties(iPage, BlogListVO.class);
-		List<UserLikeBlog> records = iPage.getRecords();
+		List<LikeBlog> records = iPage.getRecords();
 		// 若为空，则直接返回
 		if (records.isEmpty()) {
 			return blogListVO;
 		}
 		ArrayList<Integer> blogIdList = new ArrayList<>();
-		for (UserLikeBlog blog : records) {
+		for (LikeBlog blog : records) {
 			blogIdList.add(blog.getBlogId());
 		}
 		// 查询blog表，把之前获取的博客id列表传入，获取blog数据

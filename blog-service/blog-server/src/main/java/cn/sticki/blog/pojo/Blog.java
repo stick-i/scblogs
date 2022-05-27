@@ -15,7 +15,7 @@ public class Blog {
 	Integer id;
 
 	/**
-	 * 作者
+	 * 作者id
 	 */
 	Integer authorId;
 

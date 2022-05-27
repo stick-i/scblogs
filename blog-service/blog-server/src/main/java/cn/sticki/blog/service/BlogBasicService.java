@@ -1,15 +1,16 @@
 package cn.sticki.blog.service;
 
-import cn.sticki.blog.pojo.BlogBasic;
-import cn.sticki.blog.pojo.BlogListVO;
+import cn.sticki.blog.pojo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.Map;
 
 public interface BlogBasicService extends IService<BlogBasic> {
 
 	/**
 	 * 获取推荐博客列表
 	 */
-	BlogListVO getRecommendBlogList(int page, int pageSize);
+	BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize);
 
 	/**
 	 * 获取搜索博客列表
@@ -19,10 +20,20 @@ public interface BlogBasicService extends IService<BlogBasic> {
 	BlogListVO searchBlog(String search, int page, int pageSize);
 
 	/**
-	 * 获取博客内容 todo 临时放一下
+	 * 获取用户对该博客的状态，是否点赞或者是否收藏
 	 *
-	 * @param id 博客id
+	 * @param userId  用户id
+	 * @param blogIds 博客id数组
+	 * @return 一个map，key为博客id，value为状态
 	 */
-	void getBlogContent(int id);
+	Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds);
+
+	/**
+	 * 获取博客内容的页面
+	 *
+	 * @param id     博客id
+	 * @param userId 查看的用户id（如果有）
+	 */
+	BlogContentVO getBlogContent(Integer id, Integer userId);
 
 }

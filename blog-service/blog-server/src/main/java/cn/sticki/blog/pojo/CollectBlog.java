@@ -4,8 +4,11 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+/**
+ * 博客收藏信息类
+ */
 @Data
-public class UserLikeBlog {
+public class CollectBlog {
 
 	/**
 	 * id

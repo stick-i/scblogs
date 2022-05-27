@@ -1,11 +1,11 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.dto;
 
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class BlogBasic {
+public class BlogDTO {
 
 	/**
 	 * 博客id
@@ -51,30 +51,5 @@ public class BlogBasic {
 	 * 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
 	 */
 	Integer status;
-
-	/**
-	 * 浏览量
-	 */
-	Integer viewNum;
-
-	/**
-	 * 点赞量
-	 */
-	Integer likeNum;
-
-	/**
-	 * 评论量
-	 */
-	Integer commentNum;
-
-	/**
-	 * 收藏量
-	 */
-	Integer collectionNum;
-
-	/**
-	 * 评分
-	 */
-	Integer score;
 
 }

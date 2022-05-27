@@ -5,11 +5,11 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class BlogListConsoleVO extends BlogListVO {
+public class BlogStatusBO extends BlogBasic {
 
 	/**
-	 * 各状态博客数量
+	 * 点赞收藏等状态
 	 */
-	BlogCountBO count;
+	ActionStatusBO actionStatus;
 
 }

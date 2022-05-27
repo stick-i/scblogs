@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.pojo.*;
 import cn.sticki.blog.service.BlogBasicService;
-import cn.sticki.blog.service.BlogConsoleService;
+import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.type.FileType;
@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 public class BlogConsoleController {
 
 	@Resource
-	private BlogConsoleService blogConsoleService;
+	private BlogService blogService;
 
 	@Resource
 	private BlogBasicService blogBasicService;
@@ -63,7 +63,7 @@ public class BlogConsoleController {
 		blogBasicService.page(blogIPage, wrapper);
 		BlogListConsoleVO blogListConsoleVO = BeanUtil.copyProperties(blogIPage, BlogListConsoleVO.class);
 		// 获取博客统计数据
-		blogListConsoleVO.setCount(blogConsoleService.getBlogCount(id));
+		blogListConsoleVO.setCount(blogService.getBlogCount(id));
 		return new RestResult<>(blogListConsoleVO);
 	}
 
@@ -86,7 +86,7 @@ public class BlogConsoleController {
 		if (FileUtils.isNotEmpty(blog.getCoverImageFile())) {
 			FileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		}
-		blogConsoleService.saveBlog(blog);
+		blogService.saveBlog(blog);
 		return new RestResult<>();
 	}
 
@@ -97,7 +97,7 @@ public class BlogConsoleController {
 	 */
 	@DeleteMapping("/blog")
 	public RestResult<Boolean> recoveryBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
-		Blog blog = blogConsoleService.getById(id);
+		Blog blog = blogService.getById(id);
 		// 权限校验
 		if (blog == null || !blog.getAuthorId().equals(userId)) throw new BlogException("非法删除他人博客");
 		// 判断博客当前状态,是否已经是存在回收站里了
@@ -105,7 +105,7 @@ public class BlogConsoleController {
 		// 更新数据库
 		LambdaUpdateWrapper<Blog> wrapper = new LambdaUpdateWrapper<>();
 		wrapper.eq(Blog::getId, id).eq(Blog::getAuthorId, userId).set(Blog::getStatus, BlogStatusType.DELETED.getValue());
-		return new RestResult<>(blogConsoleService.update(wrapper));
+		return new RestResult<>(blogService.update(wrapper));
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class BlogConsoleController {
 	 */
 	@DeleteMapping("/blog/delete")
 	public RestResult<Boolean> completelyDeleteBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
-		Blog blog = blogConsoleService.getById(id);
+		Blog blog = blogService.getById(id);
 		// 权限校验，博客不是属于该用户
 		if (blog == null || !blog.getAuthorId().equals(userId)) throw new BlogException("非法删除他人博客");
 		// 判断博客当前状态,是否已经是存在回收站里了
@@ -123,7 +123,7 @@ public class BlogConsoleController {
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, id);
 		// todo 这里删除博客应该连带另外两张表的数据一起删除
-		return new RestResult<>(blogConsoleService.remove(wrapper));
+		return new RestResult<>(blogService.remove(wrapper));
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class BlogConsoleController {
 	public RestResult<String> uploadBlogImg(@NotNull MultipartFile file, @RequestHeader Integer id) {
 		log.debug("uploadBlogImg, fileName->{}, userId->{}", file.getOriginalFilename(), id);
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		String url = blogConsoleService.uploadImage(file);
+		String url = blogService.uploadImage(file);
 		return new RestResult<>(url);
 	}
 

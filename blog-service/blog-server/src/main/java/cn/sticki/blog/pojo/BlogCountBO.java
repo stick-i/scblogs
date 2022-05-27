@@ -3,7 +3,7 @@ package cn.sticki.blog.pojo;
 import lombok.Data;
 
 @Data
-public class BlogCountDTO {
+public class BlogCountBO {
 
 	/**
 	 * 全部的

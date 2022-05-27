@@ -16,4 +16,17 @@
 		<maven.compiler.target>8</maven.compiler.target>
 	</properties>
 
+	<dependencies>
+		<!--feign客户端依赖-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.sticki</groupId>
+			<artifactId>common-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
 </project>

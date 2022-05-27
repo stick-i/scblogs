@@ -1,7 +1,7 @@
 package cn.sticki.blog.controller;
 
-import cn.sticki.blog.service.UserCollectBlogService;
-import cn.sticki.blog.service.UserLikeBlogService;
+import cn.sticki.blog.service.CollectBlogService;
+import cn.sticki.blog.service.LikeBlogService;
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -20,25 +20,37 @@ import java.util.Map;
 public class BlogActionController {
 
 	@Resource
-	private UserLikeBlogService userLikeBlogService;
+	private LikeBlogService likeBlogService;
 
 	@Resource
-	private UserCollectBlogService userCollectBlogService;
+	private CollectBlogService collectBlogService;
 
+	/**
+	 * 点赞博客
+	 *
+	 * @param blogId 博客id
+	 * @param id     用户id
+	 */
 	@PostMapping("/like")
 	public RestResult<Object> likeBlog(@NotNull Integer blogId, @RequestHeader int id) {
-		boolean status = userLikeBlogService.likeBlog(id, blogId);
+		boolean status = likeBlogService.likeBlog(id, blogId);
 		Map<String, Object> map = new HashMap<>();
-		map.put("num", userLikeBlogService.getLikeNum(blogId));
+		map.put("num", likeBlogService.getLikeNum(blogId));
 		map.put("status", status);
 		return new RestResult<>(map);
 	}
 
+	/**
+	 * 收藏博客
+	 *
+	 * @param blogId 博客id
+	 * @param id     用户id
+	 */
 	@PostMapping("/collect")
 	public RestResult<Object> collectBlog(@NotNull Integer blogId, @RequestHeader int id) {
-		boolean status = userCollectBlogService.collectBlog(id, blogId);
+		boolean status = collectBlogService.collectBlog(id, blogId);
 		Map<String, Object> map = new HashMap<>();
-		map.put("num", userCollectBlogService.getCollectNum(blogId));
+		map.put("num", collectBlogService.getCollectNum(blogId));
 		map.put("status", status);
 		return new RestResult<>(map);
 	}

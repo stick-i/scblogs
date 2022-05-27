@@ -6,10 +6,10 @@ import cn.sticki.blog.mapper.BlogContentMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
 import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.pojo.*;
-import cn.sticki.blog.service.BlogConsoleService;
+import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
-import cn.sticki.resource.ResourceClient;
+import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.resource.utils.FileUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
-public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogConsoleService {
+public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
 
 	@Resource
 	private BlogMapper blogMapper;
@@ -116,36 +116,36 @@ public class BlogConsoleServiceImpl extends ServiceImpl<BlogMapper, Blog> implem
 	}
 
 	@Override
-	public BlogCountDTO getBlogCount(int authorId) {
+	public BlogCountBO getBlogCount(int authorId) {
 		List<BlogCount> blogCountList = blogMapper.selectBlogCountListByAuthorId(authorId);
-		BlogCountDTO blogCountDTO = new BlogCountDTO();
+		BlogCountBO blogCountBO = new BlogCountBO();
 		// 0表示全部，1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中
 		int all = 0;
 		for (BlogCount count : blogCountList) {
 			switch (count.getStatus()) {
 				case 0:
-					blogCountDTO.setAll(count.getNumber());
+					blogCountBO.setAll(count.getNumber());
 					break;
 				case 1:
-					blogCountDTO.setPublish(count.getNumber());
+					blogCountBO.setPublish(count.getNumber());
 					break;
 				case 2:
-					blogCountDTO.setDraft(count.getNumber());
+					blogCountBO.setDraft(count.getNumber());
 					break;
 				case 3:
-					blogCountDTO.setPersonal(count.getNumber());
+					blogCountBO.setPersonal(count.getNumber());
 					break;
 				case 4:
-					blogCountDTO.setDeleted(count.getNumber());
+					blogCountBO.setDeleted(count.getNumber());
 					break;
 				case 5:
-					blogCountDTO.setAudit(count.getNumber());
+					blogCountBO.setAudit(count.getNumber());
 					break;
 			}
 			all += count.getNumber();
 		}
-		blogCountDTO.setAll(all);
-		return blogCountDTO;
+		blogCountBO.setAll(all);
+		return blogCountBO;
 	}
 
 	@Override
