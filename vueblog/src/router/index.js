@@ -14,6 +14,7 @@ const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonBlog = () => import('@/views/NewPersonBlog')
 const HeartSay=()=>import('@/views/HeartSay')
 const Dynamic=()=>import('@/views/DynamicEdit')
+// const CampusScenery = () => import('@/views/campusScenery/CampusScenery')
 
 
 Vue.use(VueRouter)
@@ -65,6 +66,11 @@ const routes = [
     name: 'BlogEdit',
     component: BlogEdit,
   },
+  // {
+  //   path: '/campus/scenery',
+  //   name: 'CampusScenery',
+  //   component: CampusScenery,
+  // },
   {
     path: '/NewPersonBlog',
     name: 'NewPersonBlog',
