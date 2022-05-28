@@ -1,4 +1,4 @@
-package cn.sticki.common.tool.utils;
+package cn.sticki.common.web.utils;
 
 import javax.servlet.http.HttpServletRequest;
 

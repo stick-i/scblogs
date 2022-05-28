@@ -1,7 +1,7 @@
 package cn.sticki.resource.service;
 
 import cn.sticki.common.result.RestResult;
-import cn.sticki.common.tool.utils.ResponseUtils;
+import cn.sticki.common.web.utils.ResponseUtils;
 import cn.sticki.resource.mapper.ImageMapper;
 import io.minio.errors.MinioException;
 import lombok.SneakyThrows;

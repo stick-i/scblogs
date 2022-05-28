@@ -1,8 +1,8 @@
 package cn.sticki.blog.exception;
 
-import cn.sticki.common.tool.exception.BaseBusinessException;
+import cn.sticki.common.exception.ServiceException;
 
-public class BlogException extends BaseBusinessException {
+public class BlogException extends ServiceException {
 
 	public BlogException() {
 		super("blog service error");

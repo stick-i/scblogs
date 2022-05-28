@@ -1,8 +1,8 @@
 package cn.sticki.gateway.filter;
 
 import cn.sticki.common.result.RestResult;
-import cn.sticki.common.tool.utils.RequestUtils;
-import cn.sticki.common.tool.utils.ResponseUtils;
+import cn.sticki.common.web.utils.RequestUtils;
+import cn.sticki.common.web.utils.ResponseUtils;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;

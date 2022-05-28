@@ -35,38 +35,6 @@ public class MinioService {
 	}
 
 	/**
-	 * 创建存储bucket
-	 *
-	 * @param bucketName 存储bucket名称
-	 * @return Boolean
-	 */
-	public boolean makeBucket(String bucketName) throws MinioException {
-		try {
-			minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-			return true;
-		} catch (Exception e) {
-			// e.printStackTrace();
-			throw new MinioException();
-		}
-	}
-
-	/**
-	 * 删除存储bucket
-	 *
-	 * @param bucketName 存储bucket名称
-	 * @return Boolean
-	 */
-	public Boolean removeBucket(String bucketName) throws MinioException {
-		try {
-			minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
-			return true;
-		} catch (Exception e) {
-			// e.printStackTrace();
-			throw new MinioException();
-		}
-	}
-
-	/**
 	 * 上传文件，请手动关闭inputStream
 	 */
 	public void upload(String filePath, String bucketName, InputStream inputStream, long objectSize, long partSize, String contentType)

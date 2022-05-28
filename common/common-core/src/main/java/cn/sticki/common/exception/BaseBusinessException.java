@@ -1,4 +1,4 @@
-package cn.sticki.common.tool.exception;
+package cn.sticki.common.exception;
 
 /**
  * 所有异常的基类

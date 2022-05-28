@@ -1,4 +1,4 @@
-package cn.sticki.common.tool.utils;
+package cn.sticki.common.web.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -60,8 +60,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			Blog blogSelect = blogMapper.selectOne(wrapper);
 			if (blogSelect == null) {
 				// 身份核实失败，拒绝操作
-				log.debug("blogId is error,refuse update,id->{}", blogDTO.getId());
-				throw new BlogException("用户非法修改他人博客, blogId->" + blogDTO.getId() + ",userId->" + blogDTO.getAuthorId());
+				log.warn("blogId is error,refuse update,id->{}", blogDTO.getId());
+				throw new BlogException("非法修改他人博客");
 			}
 			blog.setId(blogDTO.getId());
 			blogContent.setBlogId(blogDTO.getId());

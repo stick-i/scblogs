@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>cn.sticki</groupId>
-			<artifactId>common-core</artifactId>
+			<artifactId>common-web</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 

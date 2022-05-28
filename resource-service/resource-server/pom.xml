@@ -30,7 +30,7 @@
 
 		<dependency>
 			<groupId>cn.sticki</groupId>
-			<artifactId>common-tool</artifactId>
+			<artifactId>common-web</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 

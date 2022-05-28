@@ -1,6 +1,6 @@
 package cn.sticki.blog.exception;
 
-import cn.sticki.common.tool.exception.MapperException;
+import cn.sticki.common.exception.MapperException;
 
 public class BlogMapperException extends MapperException {
 

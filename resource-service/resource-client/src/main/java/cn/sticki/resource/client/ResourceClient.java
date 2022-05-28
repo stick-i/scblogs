@@ -17,7 +17,7 @@ public interface ResourceClient {
 	 * @param file 图片
 	 * @return 图片链接
 	 */
-	@PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/private/resource/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	RestResult<String> uploadBlogImage(MultipartFile file);
 
 	/**
@@ -27,7 +27,7 @@ public interface ResourceClient {
 	 * @param name 图片命名
 	 * @return 是否上传成功
 	 */
-	@PostMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/private/resource/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	RestResult<Boolean> uploadAvatarImage(@RequestBody MultipartFile file, @RequestParam String name);
 
 }
