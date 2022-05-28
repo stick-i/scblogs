@@ -1,129 +1,138 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-    <!--    <router-link to="/blog/add"><a>点击</a></router-link>-->
     <div class="top-content">
       <!-- navbar -->
+      <!--      <div class="top-navbar">-->
+      <!--        <div class="small-box"></div>-->
+      <!--        <div class="nav-content">-->
+      <!--          <ul>-->
+      <!--            <li><a href="#">前端</a></li>-->
+      <!--            <li><a href="#">前端</a></li>-->
+      <!--            <li><a href="#">前端</a></li>-->
+      <!--            <li><a href="#">前端</a></li>-->
+      <!--            <li><a href="#">前端</a></li>-->
+      <!--            <li><a href="#">前端</a></li>-->
+      <!--          </ul>-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="top-navbar">
-        <div class="small-box"></div>
-        <div class="nav-content">
-          <ul>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">后端</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">游戏开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-            <li><a href="#">嵌入式开发</a></li>
-          </ul>
+        <ul class="li-content">
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端前端前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+          <li><a href="#">前端</a></li>
+        </ul>
+      </div>
+
+      <div class="main-container">
+        <div class="grid-content">
+          <Swiper class="swiper" />
+          <div class="main-right-item" v-for="(item, index) in 6" :key="index">
+            <div class="item-img">
+              <img src="../../assets/img/home/003.jpg" alt="" />
+            </div>
+            <div class="item-title">
+              标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
+            </div>
+            <div class="item-name">作者</div>
+          </div>
+        </div>
+        <div class="roll-btn">
+          <button>
+            <>
+            <span>换一换</span>
+          </button>
         </div>
       </div>
 
       <!--  -->
-      <div class="main">
-        <!-- 左边头条 -->
-        <div class="main-left">
-          <!-- 图片展示 -->
-          <div class="main-left-left">
-            <div class="main-left-top">
-              <img src="../../assets/img/home/toutiao.png" alt="头条" />
-              <span>头条</span>
-            </div>
-            <div class="main-left-center">
-              <img src="../../assets/img/home/003.jpg" alt="" />
-            </div>
-            <div class="main-left-bottom">
-              <span class="left-title">好好学习天天向上</span>
-              <span class="left-span">早睡早起身体好</span>
-            </div>
-          </div>
-          <!-- 头条item展示 -->
-          <div class="main-left-right1">
-            <div class="headswiper">
-              <div class="headswiper-top">头条左右箭头</div>
-              <div class="headswiper-content">
-                <div class="headswiper-item item-first">
-                  <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九饭后走一走活到九十九</a
-                  >
-                  <a target="_blank" href="#" class="item-name">活到九十九</a>
-                </div>
-                <div class="headswiper-item" v-for="item in 4">
-                  <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九</a
-                  >
-                  <a target="_blank" href="#" class="item-name">活到九十九</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 中间热点 -->
-        <div class="main-center">
-          <!-- 热点item展示 -->
-          <div class="main-left-right2">
-            <div class="main-left-top">
-              <img src="../../assets/img/home/redian.png" alt="头条" />
-              <span>热点</span>
-            </div>
+      <!--      <div class="main">-->
+      <!--        &lt;!&ndash; 左边头条 &ndash;&gt;-->
+      <!--        <div class="main-left">-->
+      <!--          &lt;!&ndash; 图片展示 &ndash;&gt;-->
+      <!--          <div class="main-left-left">-->
+      <!--            <div class="main-left-top">-->
+      <!--              <img src="../../assets/img/home/toutiao.png" alt="头条" />-->
+      <!--              <span>头条</span>-->
+      <!--            </div>-->
+      <!--            <div class="main-left-center">-->
+      <!--              <img src="../../assets/img/home/003.jpg" alt="" />-->
+      <!--            </div>-->
+      <!--            <div class="main-left-bottom">-->
+      <!--              <span class="left-title">好好学习天天向上</span>-->
+      <!--              <span class="left-span">早睡早起身体好</span>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--          &lt;!&ndash; 头条item展示 &ndash;&gt;-->
+      <!--          <div class="main-left-right1">-->
+      <!--            <div class="headswiper">-->
+      <!--              <div class="headswiper-top">头条左右箭头</div>-->
+      <!--              <div class="headswiper-content">-->
+      <!--                <div class="headswiper-item item-first">-->
+      <!--                  <a target="_blank" href="#" class="item-title"-->
+      <!--                    >饭后走一走活到九十九饭后走一走活到九十九</a-->
+      <!--                  >-->
+      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
+      <!--                </div>-->
+      <!--                <div class="headswiper-item" v-for="item in 4">-->
+      <!--                  <a target="_blank" href="#" class="item-title"-->
+      <!--                    >饭后走一走活到九十九</a-->
+      <!--                  >-->
+      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
+      <!--                </div>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--        &lt;!&ndash; 中间热点 &ndash;&gt;-->
+      <!--        <div class="main-center">-->
+      <!--          &lt;!&ndash; 热点item展示 &ndash;&gt;-->
+      <!--          <div class="main-left-right2">-->
+      <!--            <div class="main-left-top">-->
+      <!--              <img src="../../assets/img/home/redian.png" alt="头条" />-->
+      <!--              <span>热点</span>-->
+      <!--            </div>-->
 
-            <div class="headswiper hotswiper">
-              <!--              <div class="headswiper-top">热点左右箭头</div>-->
-              <div class="headswiper-content">
-                <div class="headswiper-item item-first">
-                  <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九</a
-                  >
-                  <a target="_blank" href="#" class="item-name">活到九十九</a>
-                </div>
-                <div class="headswiper-item" v-for="item in 4">
-                  <a target="_blank" href="#" class="item-title"
-                    >饭后走一走活到九十九</a
-                  >
-                  <a target="_blank" href="#" class="item-name">活到九十九</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 右边轮播图 -->
-        <Swiper />
-      </div>
+      <!--            <div class="headswiper hotswiper">-->
+      <!--              &lt;!&ndash;              <div class="headswiper-top">热点左右箭头</div>&ndash;&gt;-->
+      <!--              <div class="headswiper-content">-->
+      <!--                <div class="headswiper-item item-first">-->
+      <!--                  <a target="_blank" href="#" class="item-title"-->
+      <!--                    >饭后走一走活到九十九</a-->
+      <!--                  >-->
+      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
+      <!--                </div>-->
+      <!--                <div class="headswiper-item" v-for="item in 4">-->
+      <!--                  <a target="_blank" href="#" class="item-title"-->
+      <!--                    >饭后走一走活到九十九</a-->
+      <!--                  >-->
+      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
+      <!--                </div>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--        &lt;!&ndash; 右边轮播图 &ndash;&gt;-->
+      <!--        <Swiper />-->
+      <!--      </div>-->
     </div>
-    <!--<swiper></swiper>-->
 
     <div class="content">
       <!-- 左边-->
@@ -135,16 +144,53 @@
               <HomeArticleItem />
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <HomeArticleItem />
+              <HomeArticleItem style="margin-top: 2px" />
             </el-tab-pane>
             <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
             <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
           </el-tabs>
         </div>
       </div>
+
       <!-- 右边-->
       <div class="article-right">
         <!--        卡片1-->
+        <div class="template">
+          <div class="template-title">
+            <span>热门推荐</span>
+          </div>
+          <div class="template-cont">
+            <div class="hot" v-for="item in 5">
+              <a target="_blank" href="#" class="hot-img">
+                <img src="../../assets/img/home/003.jpg" alt="" />
+              </a>
+              <div class="hot-cont">
+                <a target="_blank" href="#">
+                  <div>【JS】求斐波那契数列中的奇数之和</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--        卡片2-->
+        <div class="template">
+          <div class="template-title">
+            <span>热更作者</span>
+          </div>
+          <div class="template-cont">
+            <div class="recommendation" v-for="item in 5">
+              <a target="_blank" href="#" class="recommendation-img">
+                <img src="../../assets/img/home/default_avatar.jpg" alt="" />
+              </a>
+              <div class="recommendation-cont">
+                <div><a target="_blank" href="#">大哥</a></div>
+                <div class="intro">这月已更博55篇</div>
+              </div>
+              <div class="recommendation-btn">关注</div>
+            </div>
+          </div>
+        </div>
+        <!--        卡片3-->
         <div class="template">
           <div class="template-title">
             <span>作者推荐</span>
@@ -162,20 +208,50 @@
             </div>
           </div>
         </div>
-        <!--        卡片2-->
+        <!--        关于我们-->
         <div class="template">
           <div class="template-title">
-            <span>热门推荐</span>
+            <span>关于我们</span>
           </div>
           <div class="template-cont">
-            <div class="hot" v-for="item in 5">
-              <a target="_blank" href="#" class="hot-img">
-                <img src="../../assets/img/home/003.jpg" alt="" />
-              </a>
-              <div class="hot-cont">
-                <a target="_blank" href="#">
-                  <div>【JS】求斐波那契数列中的奇数之和</div>
-                </a>
+            <div class="hot1">
+              <div class="our-content">
+                <!--                <a href="https://beian.miit.gov.cn" target="_blank">-->
+                <!--                  <div style="color: #fc5531">湘ICP备2021015916号-2</div>-->
+                <!--                </a>-->
+                <div style="width: 300px; margin: 0 auto; padding: 20px 0">
+                  <a
+                    target="_blank"
+                    href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010502001444"
+                    style="
+                      display: inline-block;
+                      text-decoration: none;
+                      height: 20px;
+                      line-height: 20px;
+                    "
+                  >
+                    <img
+                      src="../../assets/img/home/备案图标.png"
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        float: left;
+                      "
+                    />
+                    <p
+                      style="
+                        float: left;
+                        height: 20px;
+                        line-height: 20px;
+                        margin: 0px 0px 0px 5px;
+                        color: #939393;
+                      "
+                    >
+                      湘公网安备 43010502001444号
+                    </p>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -209,7 +285,86 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+/* main新增开始 */
+.main-container {
+  position: relative;
+  width: 1380px;
+  margin: 0 auto;
+  padding: 15px 0;
+}
+.grid-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 20px 12px;
+}
+.grid-content .swiper {
+  grid-row: 1/3;
+  grid-column: 1/3;
+}
+.main-right-item {
+  width: 100%;
+  height: 100%;
+  /* background-color: pink; */
+}
+/*.main-right-item .item-img img {*/
+/*  !*width: 100%;*!*/
+/*  width: 266px;*/
+/*}*/
+.main-right-item .item-img img {
+  width: 100%;
+  /*width: 266.4px;*/
+  height: 140px;
+  /* background-color: #d3dce6; */
+  border-radius: 6px;
+  object-fit: cover;
+  transition: all 0.3s;
+}
+.main-right-item .item-img img:hover {
+  transform: scale(1.05);
+}
+.main-right-item .item-title {
+  height: 44px;
+  color: #18191c;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  word-break: break-all;
+}
+.main-right-item .item-name {
+  color: #9499a0;
+  line-height: 16px;
+}
+.main-container .roll-btn {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 2;
+  transform: translateX(10px) translateY(15px);
+}
+.main-container .roll-btn button {
+  flex-direction: column;
+  margin-left: 0;
+  height: auto;
+  width: 40px;
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #18191c;
+  border: 1px solid #e3e5e7;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+.main-container .roll-btn button:hover {
+  background-color: #e3e5e7;
+}
+/* main新增结束 */
+
 .top-content {
   width: 100%;
   background-color: hsla(0, 0%, 98%, 0.8);
@@ -217,15 +372,47 @@ export default {
   /*background-color: #fc5531;*/
 }
 
-/* navbar开始 */
+/* navbar新增开始 */
 .top-navbar {
-  /* display: block; */
+  background-color: #ffffff;
+  width: 1380px;
+  margin: 0 auto;
+  padding: 10px;
+  box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
+}
+.li-content {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 10px;
+}
+.li-content li a {
+  font-size: 13px;
+  height: 26px;
+  line-height: 26px;
+  display: inline-block;
+  box-sizing: content-box;
+  width: 100%;
+  border: 1px solid #f1f2f3;
+  border-radius: 6px;
+  background-color: #f6f7f8;
+  color: #61666d;
+  text-align: center;
+  font-weight: 400;
+}
+.li-content li a:hover {
+  background-color: #e1e3e5;
+}
+
+/* navbar新增结束 */
+
+/* navbar开始 */
+/* .top-navbar {
   background-color: #ffffff;
   width: 1380px;
   height: 72px;
   margin: 0 auto;
   box-shadow: 0 4px 30px 0 rgb(232 232 237 / 50%);
-  /* background-color: greenyellow; */
   overflow: hidden;
   padding: 28px 0;
 }
@@ -261,7 +448,6 @@ export default {
   z-index: 11;
   width: 32px;
   height: 12px;
-  /* background-color: pink; */
   background-image: url("../../assets/img/home/down.png");
   background-size: 32px 12px;
   left: 50%;
@@ -271,12 +457,12 @@ export default {
 .top-navbar:hover .small-box {
   background-image: url("../../assets/img/home/up.png");
   top: 206px;
-}
+} */
 
 /* navbar结束 */
 
 /* 头条开始 */
-.main-left {
+/* .main-left {
   display: flex;
   flex-direction: row;
 }
@@ -301,7 +487,7 @@ export default {
   width: 413px;
   height: 240px;
   object-fit: cover;
-  /* 保持原有尺寸比例。保证替换内容尺寸一定大于容器尺寸，宽度和高度至少有一个和容器一致。因此，此参数可能会让替换内容（如图片）部分区域不可见。 */
+  保持原有尺寸比例。保证替换内容尺寸一定大于容器尺寸，宽度和高度至少有一个和容器一致。因此，此参数可能会让替换内容（如图片）部分区域不可见。
 }
 
 .main-left-bottom .left-title {
@@ -319,7 +505,6 @@ export default {
   margin-top: 10px;
 }
 
-/* item */
 .main-left-right2 .hotswiper {
   padding-left: 0px;
 }
@@ -333,7 +518,6 @@ export default {
 .headswiper-content {
   height: 340px;
   width: 280px;
-  /* background-color: pink; */
 }
 .headswiper-item {
   margin-top: 24px;
@@ -343,7 +527,6 @@ export default {
   font-size: 16px;
   font-weight: 700;
   color: #222226;
-  /*显示省略号*/
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -359,7 +542,7 @@ export default {
 }
 .headswiper-content .item-first {
   margin-top: 16px;
-}
+} */
 
 /* 头条结束 */
 
@@ -385,10 +568,22 @@ export default {
 .content .template {
   box-sizing: border-box;
   width: 336px;
-  /*height: 300px;*/
   border: 1px solid #f0f0f2;
   border-radius: 5px;
   margin-bottom: 16px;
+
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
+.content .template:hover {
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .template-title {
@@ -440,7 +635,7 @@ export default {
   font-size: 14px;
   margin-bottom: 16px;
 }
-.recommendation recommendation-img {
+.recommendation .recommendation-img {
   position: relative;
 }
 .recommendation img {
@@ -468,7 +663,7 @@ export default {
   height: 24px;
   background: #fff;
   line-height: 24px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid #ccccd8;
   font-size: 12px;
   margin-left: 16px;

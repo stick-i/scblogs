@@ -33,7 +33,7 @@
     <el-tab-pane label="文章" name="2">
       <el-tabs v-model="activeName2" @tab-click="handleClick">
         <el-tab-pane label="按最后发布时间" name="1">
-            <div class="F-1" v-for="(item,index) in LastPublishTimeList"  @click="TurnToShow(item.id)">
+            <div class="F-1" v-for="(item,index) in LastPublishTimeList"  @click="TurnToShow(item.id)" :key="index">
             <div class="BlogContent-a">
               <div class="BlogContent-1">{{ item.title }}</div>
               <div class="BlogContent-2">{{ item.description }}</div>

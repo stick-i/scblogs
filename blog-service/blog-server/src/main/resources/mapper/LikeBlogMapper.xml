@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.sticki.blog.mapper.LikeBlogMapper">
+
+	<select id="selectMapByUserIdAndBlogIdList" resultType="integer">
+		select blog_id
+		from user_like_blog where user_id = #{userId} and blog_id in
+		<foreach collection="blogIdList" item="blogId" open="(" separator="," close=")">
+			#{blogId}
+		</foreach>
+		;
+	</select>
+
+	<select id="selectUserLikeBlogList" resultType="cn.sticki.blog.pojo.BlogBasic">
+		select *
+		from blog_basic where id in (
+		select blog_id
+		from user_like_blog where user_id = #{userId}
+		)
+		<if test="lastSql != null">
+			${lastSql}
+		</if>;
+	</select>
+
+</mapper>

@@ -179,7 +179,7 @@ export default {
   height: 36px;
   width: 100%;
   margin-left: 4px;
-  border-radius: 18px;
+  border-radius: 5px;
   padding: 8px;
   padding-left: 16px;
   box-sizing: border-box;
@@ -200,9 +200,9 @@ export default {
   margin-right: 16px;
   padding: 0 16px;
   font-size: 16px;
-  color: #fc5531;
-  border: 1px solid #fc5531;
-  border-radius: 18px;
+  color: #16a0f8;
+  border: 1px solid #16a0f8;
+  border-radius: 5px;
   white-space: nowrap;
   background-color: #fff;
   margin-left: 20px;
@@ -214,9 +214,9 @@ export default {
   font-size: 16px;
   color: #fff;
   border: none;
-  border-radius: 18px;
+  border-radius: 5px;
   white-space: nowrap;
-  background: #fc5531;
+  background: #16a0f8;
 }
 .article-bar .bar-img img {
   height: 38px;

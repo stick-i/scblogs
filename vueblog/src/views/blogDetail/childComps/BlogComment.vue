@@ -299,6 +299,7 @@ export default {
           },
         })
         .then((res) => {
+          // this.facomment = res.data.data
           this.$emit("recordsChange", res.data.data);
         });
     },
@@ -382,7 +383,7 @@ export default {
   margin: 0 10px;
   background: #e1e2e6;
   color: #222226;
-  border-radius: 16px;
+  border-radius: 6px;
   font-size: 14px;
   text-align: center;
   line-height: 32px;
@@ -390,7 +391,7 @@ export default {
 }
 .comment-form:focus-within .comment-operate-box {
   color: #ffffff;
-  background: #fc5531;
+  background: #16a0f8;
 }
 
 /*写评论结束*/

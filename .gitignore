@@ -33,9 +33,15 @@ build/
 .vscode/
 
 ### 配置文件 ###
-**/resources/*.yml
-!**/resources/application.yml
+**/resources/config/application.yml
+**/resources/application-*.yml
 
 ### 测试文件 ###
 **/test/
 *test/**
+
+### 自动生成的文档 ###
+**/api-doc/
+
+### 便于测试的配置文件 ###
+/config/**
