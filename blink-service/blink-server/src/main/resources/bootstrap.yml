@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 # nacos地址
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: public-mybatis-plus.yaml
+            refresh: true
+          - data-id: default-springmvc.yaml
+            refresh: true
