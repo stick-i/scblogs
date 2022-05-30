@@ -1,6 +1,6 @@
 package cn.sticki.resource.controller;
 
-import cn.sticki.resource.service.DownloadService;
+import cn.sticki.resource.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DownloadController {
 
 	@Resource
-	private DownloadService downloadService;
+	private ImageService imageService;
 
 	/**
 	 * 获取头像资源
@@ -30,7 +30,7 @@ public class DownloadController {
 	 */
 	@GetMapping("/avatar/{file}")
 	public void getAvatar(@PathVariable String file, @NotNull HttpServletResponse response) {
-		downloadService.getAvatarImage(file, response);
+		imageService.getAvatarImage(file, response);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class DownloadController {
 	 */
 	@GetMapping("/image/{file}")
 	public void getImage(@PathVariable String file, @NotNull HttpServletResponse response) {
-		downloadService.getGeneralImage(file, response);
+		imageService.getGeneralImage(file, response);
 	}
 
 }

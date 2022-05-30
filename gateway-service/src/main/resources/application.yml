@@ -38,9 +38,10 @@ spring:
         add-to-simple-url-handler-mapping: true # 放行options请求
         cors-configurations:
           '[/**]':
-            allowedOrigins: # 允许哪些网站的跨域请求
-              - "http://www.scblogs.cn"
-              - "http://127.0.0.1"
+            allowedOriginPatterns: "*"
+            #            allowedOrigins: # 允许哪些网站的跨域请求
+            #              - "http://www.scblogs.cn"
+            #              - "http://127.0.0.1"
             allowedMethods: # 允许的跨域ajax请求方式
               - "GET"
               - "POST"

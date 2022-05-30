@@ -12,6 +12,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.ServletException;
@@ -78,6 +79,12 @@ public class ExceptionDefaultAdvice {
 	public RestResult<Object> doNoHandlerFoundException(Exception e) {
 		log.warn("页面不存在,{}", e.getMessage());
 		return new RestResult<>(404, "操作异常", null, false);
+	}
+
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public RestResult<Object> doMaxUploadSizeExceededException(Exception e) {
+		log.warn("文件过大,{}", e.getMessage());
+		return new RestResult<>(403, "文件过大", null, false);
 	}
 
 }
