@@ -28,6 +28,11 @@ spring:
           uri: lb://blog-server
           predicates:
             - Path=/blog/**
+        # 动态服务（表白墙）
+        - id: blink-server
+          uri: lb://blink-server
+          predicates:
+            - Path=/blink/**
 
       globalcors:
         add-to-simple-url-handler-mapping: true # 放行options请求

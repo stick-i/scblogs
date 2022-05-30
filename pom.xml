@@ -19,6 +19,7 @@
 		<module>resource-service</module>
 		<module>message-service</module>
 		<module>comment-service</module>
+		<module>blink-service</module>
 	</modules>
 
 	<parent>
