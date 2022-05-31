@@ -143,7 +143,6 @@ export default {
       },
       submit(){
         // 修改用户名称,需要添加ID元素
-        console.log("点击成功修改用户昵称")
         let formdata = new FormData()
         formdata.append("nickname",this.form.nickname)
         this.$axios.put('/user/nickname',formdata,this.config).then(res=>{
@@ -172,7 +171,6 @@ export default {
         // this.form.nickname=this.userMessage.nickname
         this.formchange=true
         this.buttonSeen=true
-        console.log("点击了取消按钮")
       }
   }
 }

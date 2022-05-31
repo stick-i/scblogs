@@ -94,6 +94,7 @@ export default {
             this.fileList.map(item=>{
                 fromdata.append('',item.raw)
             })
+            
         }
     }
 }

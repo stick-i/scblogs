@@ -4,18 +4,17 @@ module.exports = defineConfig({
 })
 const webpack = require("webpack")
 module.exports = {
-  // baseUrl:"./",
-  // publicPath:"./",
-  devServer: {
-    proxy: {
-      '/api': {
-        // target:'https://192.168.201.130/api/v1',
-        target: 'https://api.scblogs.cn/v1',// 后端接口
-        changeOrigin: true, // 是否跨域
-        pathRewrite: {
-          '/api': ''
-        }
-      }
-    }
-  },
+  publicPath:"./",
+  // devServer: {
+  //   proxy: {
+  //     '/api': {
+  //       // target:'https://192.168.201.130/api/v1',
+  //       target: 'https://api.scblogs.cn/v1',// 后端接口
+  //       changeOrigin: true, // 是否跨域
+  //       pathRewrite: {
+  //         '/api': ''
+  //       }
+  //     }
+  //   }
+  // },
 }
