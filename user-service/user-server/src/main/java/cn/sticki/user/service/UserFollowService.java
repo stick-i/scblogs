@@ -1,8 +1,8 @@
 package cn.sticki.user.service;
 
 import cn.sticki.common.result.ListVO;
-import cn.sticki.user.pojo.FansBasic;
-import cn.sticki.user.pojo.FollowBasic;
+import cn.sticki.user.pojo.FansView;
+import cn.sticki.user.pojo.FollowView;
 
 public interface UserFollowService {
 
@@ -20,13 +20,13 @@ public interface UserFollowService {
 	 *
 	 * @return 关注列表
 	 */
-	ListVO<FollowBasic> getFollowList(int userId, int page, int pageSize);
+	ListVO<FollowView> getFollowList(int userId, int page, int pageSize);
 
 	/**
 	 * 获取粉丝列表
 	 *
 	 * @return 粉丝列表
 	 */
-	ListVO<FansBasic> getFansList(int userId, int page, int pageSize);
+	ListVO<FansView> getFansList(int userId, int page, int pageSize);
 
 }

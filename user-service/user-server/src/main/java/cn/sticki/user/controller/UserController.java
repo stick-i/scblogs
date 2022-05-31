@@ -94,6 +94,16 @@ public class UserController {
 	}
 
 	/**
+	 * 更新用户院校代码
+	 *
+	 * @param code 院校代码
+	 */
+	@PutMapping("/school/code")
+	public RestResult<Object> updateSchoolCode(@NotNull Integer code, @RequestHeader Integer id) {
+		return new RestResult<>(userService.updateSchoolCode(id, code));
+	}
+
+	/**
 	 * 修改邮箱
 	 *
 	 * @param mail       新邮箱

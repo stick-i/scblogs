@@ -8,13 +8,16 @@ import cn.sticki.user.exception.UserException;
 import cn.sticki.user.mapper.UserMapper;
 import cn.sticki.user.mapper.UserSafetyMapper;
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserRegisterBO;
 import cn.sticki.user.pojo.UserSafety;
 import cn.sticki.user.service.RegisterService;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,21 +62,31 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	}
 
 	@Override
-	public boolean register(UserSafety userSafety) {
+	public boolean register(UserRegisterBO userRegisterBO) {
+		// 判断一下手机号，因为暂时没有核实手机号码的验证码，所以就先将就一下。
+		LambdaQueryWrapper<UserSafety> wrapper = new LambdaQueryWrapper<>();
+		String mobile = userRegisterBO.getMobile();
+		wrapper.eq(UserSafety::getMobile, mobile);
+		if (mobile == null || userSafetyMapper.exists(wrapper)) {
+			throw new UserException("该手机号已被注册");
+		}
 		User user = new User();
-		user.setUsername(userSafety.getUsername());
-		user.setNickname(userSafety.getUsername());
+		user.setSchoolCode(userRegisterBO.getSchoolCode());
+		user.setUsername(userRegisterBO.getUsername());
+		user.setNickname(userRegisterBO.getUsername());
 		user.setAvatarUrl(UserConfig.DefaultAvatar);
 		user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 		if (userMapper.insert(user) > 0) {
-			log.debug("新用户注册：id->{}", user.getId());
+			log.info("新用户注册：id->{}", user.getId());
+			UserSafety userSafety = new UserSafety();
+			BeanUtils.copyProperties(userRegisterBO, userSafety);
 			userSafety.setUserId(user.getId());
-			userSafety.setPassword(passwordEncoder.encode(userSafety.getPassword()));
+			// 密码加密后再存入数据库
+			userSafety.setPassword(passwordEncoder.encode(userRegisterBO.getPassword()));
 			if (userSafetyMapper.insert(userSafety) > 0) return true;
 			else {
 				log.debug("注册失败，操作回滚");
-				userMapper.deleteById(user);
-				throw new RuntimeException("该手机号已被注册");
+				throw new UserException("注册失败，数据异常");
 			}
 		}
 		return false;
