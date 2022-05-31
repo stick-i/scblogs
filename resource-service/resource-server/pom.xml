@@ -24,16 +24,14 @@
 
 		<dependency>
 			<groupId>cn.sticki</groupId>
-			<artifactId>common-core</artifactId>
+			<artifactId>common-web</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
-			<groupId>cn.sticki</groupId>
-			<artifactId>common-tool</artifactId>
-			<version>1.0.0</version>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>

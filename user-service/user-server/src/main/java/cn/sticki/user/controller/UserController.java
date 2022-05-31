@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
+/**
+ * 用户信息相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -32,16 +35,16 @@ public class UserController {
 	/**
 	 * 获取公开信息
 	 *
-	 * @param username 用户名
+	 * @param id 用户名id
 	 */
 	@GetMapping
-	public RestResult<Object> getByUsername(String username, @RequestHeader(required = false) Integer id) {
+	public RestResult<User> getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
 		User getUser = null;
-		if ((username == null || username.length() == 0) && id != null) {
-			getUser = userService.getById(id);
+		if (id == null && userId != null) {
+			getUser = userService.getById(userId);
 			log.debug("getByUsername, sessionUser ,user->{}", getUser);
-		} else if (username != null && username.length() != 0) {
-			getUser = userService.getByUsername(username);
+		} else if (id != null) {
+			getUser = userService.getById(id);
 			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
 		}
 		return new RestResult<>(getUser);

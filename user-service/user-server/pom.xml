@@ -37,8 +37,19 @@
 
 		<dependency>
 			<groupId>cn.sticki</groupId>
-			<artifactId>common-core</artifactId>
+			<artifactId>common-web</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.sticki</groupId>
+			<artifactId>common-tool</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 
 		<dependency>
@@ -98,12 +109,6 @@
 		<dependency>
 			<groupId>com.alicp.jetcache</groupId>
 			<artifactId>jetcache-starter-redis</artifactId>
-		</dependency>
-
-		<!--feign客户端依赖-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
 		<dependency>

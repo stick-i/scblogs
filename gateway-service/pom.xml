@@ -27,6 +27,11 @@
 			<version>1.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>cn.sticki</groupId>
+			<artifactId>common-web</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- 网关gateway依赖 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -58,6 +63,11 @@
 
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
 
@@ -73,6 +83,12 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

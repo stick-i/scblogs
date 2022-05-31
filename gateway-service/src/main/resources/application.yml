@@ -1,5 +1,5 @@
 server:
-  port: 10010
+  port: 80
 
 spring:
   cloud:
@@ -8,21 +8,40 @@ spring:
         connect-timeout: 1000
         response-timeout: 10s
       routes:
-        - id: blogmain # 路由标识，必须唯一
-          uri: lb://blogmain # 路由的目标地址，lb为load balance，负载均衡
+        # 用户服务
+        - id: user-server # 路由标识，必须唯一
+          uri: lb://user-server # 路由的目标地址，lb为load balance，负载均衡
           predicates: # 路由断言，判断请求是否符合规则
-            - Path=/api/**  # 判断请求是否以/user开头
-        - id: user-server
-          uri: lb://user-server
+            - Path=/user/**,/register/**,/login/**  # 判断请求路径
+        # 资源服务（图片）
+        - id: resource-server
+          uri: lb://resource-server
           predicates:
-            - Path=/user/**,/register/**,/login/**
+            - Path=/resource/**
+        # 评论服务
+        - id: comment-server
+          uri: lb://comment-server
+          predicates:
+            - Path=/comment/**
+        # 博客服务
+        - id: blog-server
+          uri: lb://blog-server
+          predicates:
+            - Path=/blog/**
+        # 动态服务（表白墙）
+        - id: blink-server
+          uri: lb://blink-server
+          predicates:
+            - Path=/blink/**
+
       globalcors:
         add-to-simple-url-handler-mapping: true # 放行options请求
         cors-configurations:
           '[/**]':
-            allowedOrigins: # 允许哪些网站的跨域请求
-              - "http://www.scblogs.cn"
-              - "http://127.0.0.1"
+            allowedOriginPatterns: "*"
+            #            allowedOrigins: # 允许哪些网站的跨域请求
+            #              - "http://www.scblogs.cn"
+            #              - "http://127.0.0.1"
             allowedMethods: # 允许的跨域ajax请求方式
               - "GET"
               - "POST"

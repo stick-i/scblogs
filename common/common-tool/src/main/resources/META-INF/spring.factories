@@ -1,2 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.sticki.common.tool.feignconfig.FeignAutoConfiguration
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+#  cn.sticki.common.tool.feignconfig.FeignAutoConfiguration

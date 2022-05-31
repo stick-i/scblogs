@@ -15,7 +15,7 @@ public class Image {
 	/**
 	 * 图片链接
 	 */
-	String img;
+	String url;
 
 	/**
 	 * 访问次数

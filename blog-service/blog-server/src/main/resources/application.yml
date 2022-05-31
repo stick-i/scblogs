@@ -1,0 +1,9 @@
+server:
+  port: 40014
+
+spring:
+  servlet:
+    # 修改默认允许的文件大小
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB

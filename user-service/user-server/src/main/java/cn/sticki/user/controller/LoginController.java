@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 登录相关接口
+ */
 @Slf4j
 @RestController
 @RequestMapping("/login")
@@ -26,6 +29,12 @@ public class LoginController {
 	@Resource
 	private PasswordEncoder encoder;
 
+	/**
+	 * 用户登录
+	 *
+	 * @param username 账号
+	 * @param password 密码
+	 */
 	@PostMapping("/login")
 	public RestResult<Object> loginHandle(String username, String password, HttpServletResponse response) {
 		LambdaQueryWrapper<UserSafety> wrapper = new LambdaQueryWrapper<>();
