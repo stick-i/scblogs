@@ -88,7 +88,7 @@ export default {
       userMessage: {
         username: "默认参数P",
         nickname: "默认参数P",
-        // 获取的个人头像照片地址
+        // 默认获取的个人头像照片地址
         avatarUrl: "https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
         registerTime: ""
       },
