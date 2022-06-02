@@ -14,7 +14,7 @@ public interface ImageService extends IService<Image> {
 
 	void getGeneralImage(String file, HttpServletResponse response);
 
-	boolean uploadAvatar(MultipartFile image, String name);
+	String uploadAvatar(MultipartFile image, String name);
 
 	String uploadBlogImage(MultipartFile image) throws MinioException, IOException;
 

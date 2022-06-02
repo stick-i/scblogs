@@ -3,10 +3,12 @@ package cn.sticki.resource.service.impl;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.utils.ResponseUtils;
 import cn.sticki.resource.config.ResourcePath;
+import cn.sticki.resource.exception.UploadException;
 import cn.sticki.resource.mapper.ImageMapper;
 import cn.sticki.resource.pojo.Image;
 import cn.sticki.resource.service.ImageService;
 import cn.sticki.resource.service.MinioService;
+import cn.sticki.resource.service.QiNiuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.minio.errors.MinioException;
@@ -29,6 +31,9 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 
 	@Resource
 	private MinioService minioService;
+
+	@Resource
+	private QiNiuService qiNiuService;
 
 	@Resource
 	private ImageMapper imageMapper;
@@ -61,15 +66,13 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 		return false;
 	}
 
-	public boolean uploadAvatar(MultipartFile image, String name) {
+	public String uploadAvatar(MultipartFile image, String name) {
 		try {
 			// 上传图片
-			minioService.upload(image, name, "avatar");
-			// 返回结果
-			return true;
+			return qiNiuService.upload(image, name, "scblogs-avatar");
 		} catch (Exception e) {
-			log.error("头像上传失败:{}", e.getMessage());
-			return false;
+			log.error("头像上传失败:{},{}", name, e.getMessage());
+			throw new UploadException("头像上传失败");
 		}
 	}
 
