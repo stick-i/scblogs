@@ -1,7 +1,7 @@
 package cn.sticki.resource.controller;
 
 import cn.sticki.common.result.RestResult;
-import cn.sticki.resource.service.UploadService;
+import cn.sticki.resource.service.ImageService;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import io.minio.errors.MinioException;
@@ -24,7 +24,7 @@ import java.io.IOException;
 public class UploadController {
 
 	@Resource
-	private UploadService uploadService;
+	private ImageService imageService;
 
 	/**
 	 * 上传图片
@@ -36,7 +36,7 @@ public class UploadController {
 	public RestResult<String> uploadBlogImage(@NotNull MultipartFile file) throws MinioException, IOException {
 		log.debug("uploadBlogImage, fileName->{}", file.getOriginalFilename());
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		String url = uploadService.uploadBlogImage(file);
+		String url = imageService.uploadBlogImage(file);
 		return new RestResult<>(url);
 	}
 
@@ -47,10 +47,11 @@ public class UploadController {
 	 * @return 图片链接
 	 */
 	@PostMapping("/avatar")
-	public RestResult<Boolean> uploadAvatar(@NotNull MultipartFile file, @NotNull String name) {
+	public RestResult<String> uploadAvatar(@NotNull MultipartFile file, @NotNull String name) {
 		log.debug("uploadAvatar, fileName->{}", file.getOriginalFilename());
+		log.info("上传了头像{}", name);
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		return new RestResult<>(uploadService.uploadAvatar(file, name));
+		return new RestResult<>(imageService.uploadAvatar(file, name));
 	}
 
 }

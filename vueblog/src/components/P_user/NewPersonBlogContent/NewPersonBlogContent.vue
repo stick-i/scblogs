@@ -432,6 +432,4 @@ export default {
 .F-2 .F-2-content .F-2-B  .clickfunction li:nth-child(1) svg.active{
     fill: rgb(5, 245, 253);
 }
-
-
 </style>

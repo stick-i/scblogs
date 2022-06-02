@@ -19,6 +19,7 @@
 		<module>resource-service</module>
 		<module>message-service</module>
 		<module>comment-service</module>
+		<module>blink-service</module>
 	</modules>
 
 	<parent>
@@ -120,6 +121,12 @@
 				<groupId>com.alicp.jetcache</groupId>
 				<artifactId>jetcache-starter-redis</artifactId>
 				<version>${jetcache.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jetbrains</groupId>
+				<artifactId>annotations</artifactId>
+				<version>23.0.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

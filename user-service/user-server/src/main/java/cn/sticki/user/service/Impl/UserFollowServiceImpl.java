@@ -6,8 +6,8 @@ import cn.sticki.user.exception.UserIllegalException;
 import cn.sticki.user.mapper.FansBasicMapper;
 import cn.sticki.user.mapper.FollowBasicMapper;
 import cn.sticki.user.mapper.UserFollowMapper;
-import cn.sticki.user.pojo.FansBasic;
-import cn.sticki.user.pojo.FollowBasic;
+import cn.sticki.user.pojo.FansView;
+import cn.sticki.user.pojo.FollowView;
 import cn.sticki.user.pojo.UserFollow;
 import cn.sticki.user.service.UserFollowService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -57,26 +57,26 @@ public class UserFollowServiceImpl implements UserFollowService {
 	}
 
 	@Override
-	public ListVO<FollowBasic> getFollowList(int userId, int page, int pageSize) {
+	public ListVO<FollowView> getFollowList(int userId, int page, int pageSize) {
 		// 获取关注列表
-		LambdaQueryWrapper<FollowBasic> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(FollowBasic::getUserId, userId);
-		IPage<FollowBasic> iPage = new Page<>(page, pageSize);
+		LambdaQueryWrapper<FollowView> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(FollowView::getUserId, userId);
+		IPage<FollowView> iPage = new Page<>(page, pageSize);
 		followBasicMapper.selectPage(iPage, wrapper);
 		// 赋值返回
-		ListVO<FollowBasic> listVO = new ListVO<>();
+		ListVO<FollowView> listVO = new ListVO<>();
 		BeanUtil.copyProperties(iPage, listVO);
 		return listVO;
 	}
 
 	@Override
-	public ListVO<FansBasic> getFansList(int userId, int page, int pageSize) {
+	public ListVO<FansView> getFansList(int userId, int page, int pageSize) {
 		// 获取粉丝列表
-		LambdaQueryWrapper<FansBasic> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(FansBasic::getUserId, userId);
-		IPage<FansBasic> iPage = new Page<>(page, pageSize);
+		LambdaQueryWrapper<FansView> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(FansView::getUserId, userId);
+		IPage<FansView> iPage = new Page<>(page, pageSize);
 		fansBasicMapper.selectPage(iPage, wrapper);
-		ListVO<FansBasic> listVO = new ListVO<>();
+		ListVO<FansView> listVO = new ListVO<>();
 		BeanUtil.copyProperties(iPage, listVO);
 		return listVO;
 	}

@@ -116,6 +116,12 @@
 			<artifactId>spring-cloud-loadbalancer</artifactId>
 		</dependency>
 
+		<!-- 参数校验依赖 -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -7,15 +7,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.ServletException;
 import java.net.ConnectException;
+import java.util.List;
 
 /**
  * 默认的SpringMVC的异常处理器
@@ -61,10 +64,21 @@ public class ExceptionDefaultAdvice {
 		return new RestResult<>(402, "请求方式异常", null, false);
 	}
 
-	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, NullPointerException.class, TypeMismatchException.class, BindException.class})
+	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, NullPointerException.class, TypeMismatchException.class})
 	public RestResult<Object> doIllegalArgumentException(Exception e) {
 		log.warn("参数异常,{}", e.getMessage());
 		return new RestResult<>(402, "参数异常", null, false);
+	}
+
+	@ExceptionHandler(BindException.class)
+	public RestResult<Object> doBindException(BindException e) {
+		List<FieldError> allErrors = e.getFieldErrors();
+		StringBuilder info = new StringBuilder();
+		for (FieldError errorMessage : allErrors) {
+			info.append(errorMessage.getDefaultMessage()).append("; ");
+		}
+		log.info("数据异常,{}", info);
+		return new RestResult<>(402, "数据异常:" + info, null, false);
 	}
 
 	@ExceptionHandler(HttpMessageConversionException.class)
@@ -78,6 +92,12 @@ public class ExceptionDefaultAdvice {
 	public RestResult<Object> doNoHandlerFoundException(Exception e) {
 		log.warn("页面不存在,{}", e.getMessage());
 		return new RestResult<>(404, "操作异常", null, false);
+	}
+
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public RestResult<Object> doMaxUploadSizeExceededException(Exception e) {
+		log.warn("文件过大,{}", e.getMessage());
+		return new RestResult<>(403, "文件过大", null, false);
 	}
 
 }
