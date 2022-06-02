@@ -5,7 +5,12 @@ import cn.sticki.blog.exception.BlogMapperException;
 import cn.sticki.blog.mapper.BlogContentMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
 import cn.sticki.blog.mapper.BlogMapper;
-import cn.sticki.blog.pojo.*;
+import cn.sticki.blog.pojo.bo.BlogCountBO;
+import cn.sticki.blog.pojo.bo.BlogSaveBO;
+import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogContent;
+import cn.sticki.blog.pojo.domain.BlogCount;
+import cn.sticki.blog.pojo.domain.BlogGeneral;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
@@ -41,7 +46,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 	private ResourceClient resourceClient;
 
 	@Override
-	public void saveBlog(BlogSaveDTO blogDTO) {
+	public void saveBlog(BlogSaveBO blogDTO) {
 		log.debug("saveBlog, id->{}", blogDTO.getId());
 		Blog blog = new Blog();
 		// BeanUtil.copyProperties(blogDTO, blog);  // 使用hutool工具直接复制属性

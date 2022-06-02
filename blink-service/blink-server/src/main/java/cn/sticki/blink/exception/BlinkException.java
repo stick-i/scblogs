@@ -5,7 +5,7 @@ import cn.sticki.common.exception.ServiceException;
 public class BlinkException extends ServiceException {
 
 	public BlinkException() {
-		super("操作异常");
+		super("动态异常");
 	}
 
 	public BlinkException(String errorMessage) {

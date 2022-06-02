@@ -1,7 +1,7 @@
 package cn.sticki.blog.mapper;
 
-import cn.sticki.blog.pojo.BlogBasic;
-import cn.sticki.blog.pojo.LikeBlog;
+import cn.sticki.blog.pojo.domain.BlogView;
+import cn.sticki.blog.pojo.domain.LikeBlog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,6 +21,6 @@ public interface LikeBlogMapper extends BaseMapper<LikeBlog> {
 	 * @param userId  用户id
 	 * @param lastSql 添加到末尾的sql
 	 */
-	List<BlogBasic> selectUserLikeBlogList(Integer userId, String lastSql);
+	List<BlogView> selectUserLikeBlogList(Integer userId, String lastSql);
 
 }

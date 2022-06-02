@@ -1,7 +1,7 @@
 package cn.sticki.blog.service;
 
-import cn.sticki.blog.pojo.BlogListVO;
-import cn.sticki.blog.pojo.LikeBlog;
+import cn.sticki.blog.pojo.domain.LikeBlog;
+import cn.sticki.blog.pojo.vo.BlogListVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface LikeBlogService extends IService<LikeBlog> {

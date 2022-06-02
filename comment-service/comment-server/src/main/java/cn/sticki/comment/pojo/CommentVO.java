@@ -10,12 +10,12 @@ public class CommentVO {
 	/**
 	 * 父评论信息
 	 */
-	CommentView info;
+	CommentBO info;
 
 	/**
 	 * 子评论信息列表
 	 */
-	List<CommentView> sub;
+	List<CommentBO> sub;
 
 	/**
 	 * 子评论信息条数

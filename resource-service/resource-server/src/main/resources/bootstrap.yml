@@ -7,5 +7,7 @@ spring:
       config:
         file-extension: yaml
         shared-configs:
-          - data-id: default-mysql.yaml
+          - data-id: public-mybatis-plus.yaml
+            refresh: true
+          - data-id: default-springmvc.yaml
             refresh: true

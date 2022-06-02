@@ -1,5 +1,5 @@
 <template>
-    <div class="body">
+    <div class="bottom">
         <div class="content">
                 <ul class="content-list">
                     <li><a href="#">关于我们</a></li>
@@ -23,14 +23,13 @@
     padding: 0;
     box-sizing: border-box;
 }
-.body{
+.bottom{
     width: 100%;
     height: 150px;
     background: rgb(255, 255, 255);
 }
 .content{
-    width: 1280px;
-    height: 100%;
+    height: 150px;
     margin:0 auto;
 }
 .content-list{

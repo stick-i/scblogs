@@ -4,6 +4,7 @@ import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.UserService;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息相关接口
@@ -51,6 +55,14 @@ public class UserController {
 	}
 
 	/**
+	 * 批量获取用户信息
+	 */
+	@PostMapping("/list")
+	public RestResult<Map<Integer, UserView>> getUserList(@RequestParam List<Integer> userIdList) {
+		return new RestResult<>(userService.getUserListMap(new HashSet<>(userIdList)));
+	}
+
+	/**
 	 * 修改昵称
 	 *
 	 * @param nickname 昵称
@@ -70,12 +82,16 @@ public class UserController {
 	 * @param avatarFile 文件流
 	 */
 	@PutMapping("/avatar")
-	public RestResult<Object> updateAvatar(@NotNull MultipartFile avatarFile, @RequestHeader Integer id) {
+	public RestResult<String> updateAvatar(@NotNull MultipartFile avatarFile, @RequestHeader Integer id) {
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
 		// 检查文件，小于1Mib ,仅支持JPEG和PNG
 		FileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		// cache.put(id, user);
-		return new RestResult<>(userService.updateAvatar(id, avatarFile));
+		String avatar = userService.updateAvatar(id, avatarFile);
+		if (avatar != null)
+			return new RestResult<>(avatar);
+		else
+			return new RestResult<>(false, "上传失败");
 	}
 
 	/**
@@ -91,6 +107,16 @@ public class UserController {
 			return new RestResult<>(result);
 		}
 		return new RestResult<>(false, "修改失败");
+	}
+
+	/**
+	 * 更新用户院校代码
+	 *
+	 * @param code 院校代码
+	 */
+	@PutMapping("/school/code")
+	public RestResult<Object> updateSchoolCode(@NotNull Integer code, @RequestHeader Integer id) {
+		return new RestResult<>(userService.updateSchoolCode(id, code));
 	}
 
 	/**

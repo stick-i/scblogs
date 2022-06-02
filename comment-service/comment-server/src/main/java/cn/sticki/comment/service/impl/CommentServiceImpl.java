@@ -5,13 +5,14 @@ import cn.sticki.blog.client.BlogClient;
 import cn.sticki.blog.dto.BlogDTO;
 import cn.sticki.comment.exception.CommentException;
 import cn.sticki.comment.mapper.CommentMapper;
-import cn.sticki.comment.mapper.CommentViewMapper;
 import cn.sticki.comment.pojo.Comment;
+import cn.sticki.comment.pojo.CommentBO;
 import cn.sticki.comment.pojo.CommentListVO;
 import cn.sticki.comment.pojo.CommentVO;
-import cn.sticki.comment.pojo.CommentView;
 import cn.sticki.comment.service.CommentService;
 import cn.sticki.common.result.RestResult;
+import cn.sticki.user.client.UserClient;
+import cn.sticki.user.dto.UserDTO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,9 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -32,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
 	private CommentMapper commentMapper;
 
 	@Resource
-	private CommentViewMapper commentViewMapper;
+	private UserClient userClient;
 
 	@Resource
 	private BlogClient blogClient;
@@ -94,51 +93,83 @@ public class CommentServiceImpl implements CommentService {
 	public CommentListVO getList(int blogId, int page, int pageSize) {
 		CommentListVO vo = new CommentListVO();
 		// 先查总数量
-		LambdaQueryWrapper<CommentView> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(CommentView::getBlogId, blogId); // 只要博客id一致即可
-		Long count = commentViewMapper.selectCount(wrapper);
+		LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(Comment::getBlogId, blogId); // 只要博客id一致即可
+		Long count = commentMapper.selectCount(wrapper);
 		vo.setAllCount(count);
 		if (count == 0) return vo; // 若总数为0，直接返回
 
-		// 以时间排序，只查该博客下没有父评论id的，存入父评论组数中
-		wrapper.orderByDesc(CommentView::getCreateTime).isNull(CommentView::getParentId);
-		IPage<CommentView> iPage = new Page<>(page, pageSize);
-		commentViewMapper.selectPage(iPage, wrapper);
+		// 以时间排序(也可以按id倒序)，只查该博客下没有父评论id的，存入父评论组数中
+		wrapper.orderByDesc(Comment::getId).isNull(Comment::getParentId);
+		IPage<Comment> iPage = new Page<>(page, pageSize);
+		commentMapper.selectPage(iPage, wrapper);
 		BeanUtil.copyProperties(iPage, vo, "records");
+		// 收集有关评论的用户id，便于等会查询用户信息
+		Set<Integer> userIdList = new HashSet<>();
+		// 收集父评论id，用于查子评论
+		List<Integer> parentIdList = new ArrayList<>();
 		// 复制父评论
-		ArrayList<CommentVO> dtoList = new ArrayList<>();
-		for (CommentView record : iPage.getRecords()) {
-			CommentVO dto = new CommentVO();
-			dto.setInfo(record);
-			dtoList.add(dto);
+		List<CommentVO> dtoList = new ArrayList<>();
+		for (Comment record : iPage.getRecords()) {
+			CommentVO commentVO = new CommentVO();
+			commentVO.setInfo(BeanUtil.copyProperties(record, CommentBO.class));
+			dtoList.add(commentVO);
+			userIdList.add(record.getUserId());// 不用获取parentId，因为它们必为null
+			parentIdList.add(record.getId());
 		}
-		vo.setRecords(dtoList);
 
 		// 查询子评论
-		// 先获取父评论的id列表
-		ArrayList<Integer> idList = new ArrayList<>();
-		for (CommentView CommentView : iPage.getRecords()) {
-			idList.add(CommentView.getId());
-		}
-		// 以父评论id查询所有子评论，按时间排序
+		// 以父评论id查询所有子评论，按时间排序(也可以按id倒序)
 		wrapper.clear();
-		wrapper.eq(CommentView::getBlogId, blogId)
-				.in(CommentView::getParentId, idList)
-				.orderByDesc(CommentView::getCreateTime);
+		wrapper.eq(Comment::getBlogId, blogId)
+				.in(Comment::getParentId, parentIdList)
+				.orderByDesc(Comment::getId);
 		// 查询所有子评论
-		List<CommentView> subList = commentViewMapper.selectList(wrapper);
-		// 将子评论填充到父评论下
-		for (CommentVO CommentVO : dtoList) {
-			Integer parentId = CommentVO.getInfo().getId();
-			ArrayList<CommentView> tempSub = new ArrayList<>();
-			for (CommentView sub : subList) {
-				if (Objects.equals(parentId, sub.getParentId()))
-					tempSub.add(sub);
-			}
-			CommentVO.setSub(tempSub);
-			CommentVO.setSubCount(tempSub.size());
+		log.debug("查询子评论sql,{}", wrapper.getSqlSelect());
+		List<Comment> subList = commentMapper.selectList(wrapper);
+		List<CommentBO> subListBO = new ArrayList<>();
+		for (Comment comment : subList) {
+			subListBO.add(BeanUtil.copyProperties(comment, CommentBO.class));
+		}
+		// 将子评论列表转为map list，便于填充到父评论下，顺便获取用户id列表
+		Map<Integer, List<CommentBO>> listMap = new HashMap<>();
+		for (CommentBO commentBO : subListBO) {
+			if (!listMap.containsKey(commentBO.getParentId()))
+				listMap.put(commentBO.getParentId(), new ArrayList<>());
+			listMap.get(commentBO.getParentId()).add(commentBO);
+			userIdList.add(commentBO.getUserId());
+			userIdList.add(commentBO.getParentUserId());
 		}
 
+		// 将子评论填充到父评论下
+		for (CommentVO commentVO : dtoList) {
+			Integer parentId = commentVO.getInfo().getId();
+			if (listMap.containsKey(parentId)) {
+				commentVO.setSub(listMap.get(parentId));
+				commentVO.setSubCount(commentVO.getSub().size());
+			} else {
+				commentVO.setSub(new ArrayList<>());
+				commentVO.setSubCount(0);
+			}
+		}
+
+		// 获取并设置用户属性，垃圾代码。。。
+		RestResult<Map<Integer, UserDTO>> result = userClient.getUserList(userIdList);
+		if (result.getStatus()) {
+			Map<Integer, UserDTO> userMap = result.getData();
+			for (CommentVO commentVO : dtoList) {
+				CommentBO info = commentVO.getInfo();
+				info.setNickname(userMap.get(info.getUserId()).getNickname());
+				info.setAvatarUrl(userMap.get(info.getUserId()).getAvatarUrl());
+				if (commentVO.getSub() == null) continue;
+				for (CommentBO sub : commentVO.getSub()) {
+					sub.setNickname(userMap.get(sub.getUserId()).getNickname());
+					sub.setAvatarUrl(userMap.get(sub.getUserId()).getAvatarUrl());
+					sub.setParentNickname(userMap.get(sub.getParentUserId()).getNickname());
+				}
+			}
+		}
+		vo.setRecords(dtoList);
 		return vo;
 	}
 

@@ -2,9 +2,13 @@ package cn.sticki.blog.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.exception.BlogException;
-import cn.sticki.blog.pojo.*;
-import cn.sticki.blog.service.BlogBasicService;
+import cn.sticki.blog.pojo.bo.BlogSaveBO;
+import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogView;
+import cn.sticki.blog.pojo.vo.BlogListConsoleVO;
+import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.service.BlogService;
+import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.type.FileType;
@@ -32,7 +36,7 @@ public class BlogConsoleController {
 	private BlogService blogService;
 
 	@Resource
-	private BlogBasicService blogBasicService;
+	private BlogViewService blogViewService;
 
 	/**
 	 * 获取创作信息
@@ -57,13 +61,13 @@ public class BlogConsoleController {
 			@RequestHeader Integer id) {
 		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) return new RestResult<>(400, "参数异常");
 		// 获取博客列表
-		LambdaQueryWrapper<BlogBasic> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(BlogBasic::getAuthorId, id);
+		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(BlogView::getAuthorId, id);
 		// 若status为0，则查找显示全部博客，否则查找某部分博客
-		if (status != 0) wrapper.eq(BlogBasic::getStatus, status);
+		if (status != 0) wrapper.eq(BlogView::getStatus, status);
 		// 使用mybatis进行分页
-		IPage<BlogBasic> blogIPage = new Page<>(page, pageSize);
-		blogBasicService.page(blogIPage, wrapper);
+		IPage<BlogView> blogIPage = new Page<>(page, pageSize);
+		blogViewService.page(blogIPage, wrapper);
 		BlogListConsoleVO blogListConsoleVO = BeanUtil.copyProperties(blogIPage, BlogListConsoleVO.class);
 		// 获取博客统计数据
 		blogListConsoleVO.setCount(blogService.getBlogCount(id));
@@ -76,7 +80,7 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public RestResult<Object> saveBlog(BlogSaveDTO blog, MultipartFile coverImage, @RequestHeader Integer id) {
+	public RestResult<Object> saveBlog(BlogSaveBO blog, MultipartFile coverImage, @RequestHeader Integer id) {
 		blog.setCoverImageFile(coverImage);
 		blog.setAuthorId(id);
 		// 如果为新增博客，则需要全部参数

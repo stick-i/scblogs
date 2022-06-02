@@ -1,6 +1,6 @@
 package cn.sticki.blog.mapper;
 
-import cn.sticki.blog.pojo.BlogContent;
+import cn.sticki.blog.pojo.domain.BlogContent;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,8 +1,8 @@
 package cn.sticki.blog.service;
 
-import cn.sticki.blog.pojo.Blog;
-import cn.sticki.blog.pojo.BlogCountBO;
-import cn.sticki.blog.pojo.BlogSaveDTO;
+import cn.sticki.blog.pojo.bo.BlogCountBO;
+import cn.sticki.blog.pojo.bo.BlogSaveBO;
+import cn.sticki.blog.pojo.domain.Blog;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +13,7 @@ public interface BlogService extends IService<Blog> {
 	 *
 	 * @param blog 博客
 	 */
-	void saveBlog(BlogSaveDTO blog);
+	void saveBlog(BlogSaveBO blog);
 
 	/**
 	 * 获取作者博客数量

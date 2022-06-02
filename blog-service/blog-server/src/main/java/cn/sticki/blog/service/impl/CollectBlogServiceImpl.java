@@ -1,12 +1,12 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.BlogBasicMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.mapper.BlogViewMapper;
 import cn.sticki.blog.mapper.CollectBlogMapper;
-import cn.sticki.blog.pojo.BlogBasic;
-import cn.sticki.blog.pojo.BlogListVO;
-import cn.sticki.blog.pojo.CollectBlog;
+import cn.sticki.blog.pojo.domain.BlogView;
+import cn.sticki.blog.pojo.domain.CollectBlog;
+import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.service.CollectBlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -34,7 +34,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 	private CollectBlogMapper collectBlogMapper;
 
 	@Resource
-	private BlogBasicMapper blogBasicMapper;
+	private BlogViewMapper blogViewMapper;
 
 	@Override
 	public boolean collectBlog(Integer userId, Integer blogId) {
@@ -83,11 +83,11 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			blogIdList.add(blog.getBlogId());
 		}
 		// 查询blog表，把之前获取的博客id列表传入，获取blog数据
-		LambdaQueryWrapper<BlogBasic> blogWrapper = new LambdaQueryWrapper<>();
-		blogWrapper.in(BlogBasic::getId, blogIdList);
-		List<BlogBasic> blogBasicList = blogBasicMapper.selectList(blogWrapper);
+		LambdaQueryWrapper<BlogView> blogWrapper = new LambdaQueryWrapper<>();
+		blogWrapper.in(BlogView::getId, blogIdList);
+		List<BlogView> blogViewList = blogViewMapper.selectList(blogWrapper);
 
-		blogListVO.setRecords(blogBasicList);
+		blogListVO.setRecords(blogViewList);
 		return blogListVO;
 	}
 

@@ -17,7 +17,7 @@
           </div>
           <div class="boxdown">
               <div class="optionshow">
-                <div class="imgshow">
+                <div v-if="optionIndex==1" class="imgshow">
                     <el-upload
                         action="https://jsonplaceholder.typicode.com/posts/"
                         list-type="picture-card"
@@ -28,6 +28,8 @@
                         :on-change="ShowChange"
                         :file-list="fileList"
                         :http-request="HandleUpload"
+                        accept=".jpg,.jpeg,.png"
+                        :limit="9"
                         >
                         <i class="el-icon-plus"></i>
                     </el-upload>
@@ -43,7 +45,7 @@
                           <span>{{item.option}}</span>
                       </li>
                   </ul>
-                <button>发布动态</button>
+                  <button @click="PublishDynamic()">发布动态</button>
               </div>
           </div>
       </div>
@@ -57,22 +59,29 @@ export default {
         return {
             textarea:"",
             iconList:[{icon:' icon-tupian',option:'图片',id:1}],
-            // 预览的照片地址
+            // 预览的照片地址   
             dialogImageUrl: '',
             dialogVisible: false,
-            fileList:[]
+            fileList:[],
+            // 底部显示部分
+            optionIndex:1,
         }
     },
     methods:{
         Options(id){
                 switch(id){
                     case 1:
-                        this.AddPicture();
+                        this.optionIndex=id
                         break
                 }
         },
-        AddPicture(){
-
+        // 发布动态
+        PublishDynamic(){
+            if(this.textarea.trim()==''){
+                this.$message.error('请编辑内容！');
+                return
+            }
+            console.log("需要发布的部分:",this.textarea.length)
         },
         // 点击放大照片预览
          handlePictureCardPreview(file) {
@@ -96,7 +105,7 @@ export default {
             })
         }
     }
-}
+} 
 </script>
 
 <style scoped>
@@ -107,7 +116,7 @@ export default {
 }
 .contain .box{
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     padding: 20px 15px 20px;
 }
 .contain .box .boxup >>> .textedit{
@@ -117,7 +126,6 @@ export default {
 }
 .boxdown{
     width: 100%;
-
 }
 .boxdown .optionshow{
     width: 100%;
@@ -129,9 +137,9 @@ export default {
     height: 100px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 .boxdown .option ul{
-    width: 100%;
     height:100%;
     display: flex;
     align-items: center;
@@ -167,7 +175,7 @@ export default {
 }
 .boxdown .option  button:hover{
     box-shadow: 0 0 10px  grey;
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 .boxdown .option  button:active{
     transform: scale(0.9);
