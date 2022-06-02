@@ -12,19 +12,19 @@
               </div>
             </div>
         </div>
-        <div class="rightContentA-2">
-            <div class="rightContentA-2-container">
-                <div class="myMoney">
-                  <i></i>
-                  <span>我的余额{{mymoney}}</span>
-                </div>
-                <div class="click">
-                  <button>去充值</button>|
-                  <button>个人主页</button>|
-                  <button>我的勋章</button>
-                </div>
-            </div>
-        </div>
+<!--        <div class="rightContentA-2">-->
+<!--            <div class="rightContentA-2-container">-->
+<!--                <div class="myMoney">-->
+<!--                  <i></i>-->
+<!--                  <span>我的余额{{mymoney}}</span>-->
+<!--                </div>-->
+<!--                <div class="click">-->
+<!--                  <button>去充值</button>|-->
+<!--                  <button>个人主页</button>|-->
+<!--                  <button>我的勋章</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <div class="rightContentB">
         <div class="rightContentB-1">
@@ -75,7 +75,7 @@
 import uploadImg from "@/components/P_user/UploadImg/uploadImg.vue"
 import qs from "qs"
 export default {
-  name: "TabsContent",
+  name: "Information",
   components:{
     uploadImg,
   },
@@ -186,12 +186,10 @@ export default {
 .rightContentA{
   width: 100%;
   background: white;
-  height: 230px;
 }
 .rightContentA .rightContentA-1{
   width: 100%;
   height: 75%;
-  border-bottom: 3px solid rgb(245,246,247);
 }
 .rightContentA .rightContentA-1-container{
   padding: 24px 0 40px 30px;

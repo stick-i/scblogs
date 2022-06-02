@@ -7,8 +7,12 @@
                     <div class="publishlove">
                         <a @click="Publish">我要发布</a>
                     </div>
+                    <!-- 当没有数据时显示 -->
+                    <div class="nodata" v-if="DynamicList.length==0? true:false">
+                        <p>当前没有动态哦</p>
+                    </div>
                     <!-- 表白墙正文显示区域 -->
-                    <div class="heartsay" v-for="item in 6">
+                    <div class="heartsay"  v-for="item in 6" >
                         <div class="heartA">
                             <div class="img">
                                 <img :src="avatarUrl" alt="">
@@ -46,10 +50,38 @@ export default {
                 avatarUrl:'',
                 username:'',
                 iconList:['#icon-dianzan_kuai','#icon-pinglun','#icon-zhuanfa','#icon-gengduo'],
-                likeactive:false
+                likeactive:false,
+                config:{
+                    params:{
+                        page:0,
+                        schoolCode:1,
+                    }
+                },
+                // 动态列表
+                DynamicList:[]
             }
         },
+        created(){
+            this.GetData()
+        },
         methods:{
+            GetData(){
+                // 调用接口获取动态列表数据
+                this.$axios.get('/blink/list',this.config).then((res)=>{
+                    if(res.status){
+                        console.log("动态列表数据获取成功",res.data)
+                        if(res.data.total==0){
+                            console.timeLog("没有数据返回")
+                        }else{
+                            this.DynamicList=this.DynamicList.concat(res.data.data.records)
+                            console.log("当前动态列表数据",this.DynamicList)
+                        }
+                    }
+                }).catch((err)=>{
+                    console.log("获取动态列表数据出错了",err)
+                })
+            },
+            // 跳转至编辑动态页面
             Publish(){
                 var routeUrl= this.$router.resolve({path:'./DynamicEdit'})
                 window.open(routeUrl.href, '_blank');
@@ -65,7 +97,8 @@ export default {
                     // 执行取消点赞接口
                 }
             }
-        }
+        },
+        
 }
 </script>
 
@@ -82,7 +115,6 @@ export default {
 }
 .F-3 .F-3-content{
     width: 100%;
-    /* padding-top:px; */
 }
 .F-3 .F-3-content .publishlove{
     width: 100%;
@@ -100,6 +132,14 @@ export default {
     width: 100%;
     min-height: 200px;
     border-bottom: 1px solid white;
+} 
+.F-3 .F-3-content .nodata{
+    width: 100%;
+    line-height: 100%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: aliceblue;
 } 
 .F-3 .F-3-content .heartsay .heartA{
     width: 100%;

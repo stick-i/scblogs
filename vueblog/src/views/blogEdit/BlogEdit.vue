@@ -83,7 +83,7 @@ export default {
       var _this = this
       var formdata = new FormData();
       formdata.append('file', $file);
-      this.$axios.post("https://local.sticki.cn/api/v1/blog-console/img",formdata,{
+      this.$axios.post("/blog/console/image",formdata,{
         headers: { token: localStorage.getItem("token") },
       }).then((response) => {
         // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
@@ -91,6 +91,7 @@ export default {
           var url = response.data.data;
           _this.$refs.md.$img2Url(pos,url)
         }
+        console.log(response)
       })
     },
     imgDel(pos) {

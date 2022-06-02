@@ -283,7 +283,7 @@ export default {
     const blogId = this.$route.params.blogId;
     this.blogIdForm.blogId = this.$route.params.blogId;
     const _this = this;
-    this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
+    this.$axios.get("/blog/content?id=" + blogId).then((res) => {
       console.log(res);
       const blog = res.data.data;
 
@@ -375,7 +375,7 @@ export default {
     // 点赞
     addLikeNum() {
       this.$axios
-        .post("/action/blog/like", qs.stringify(this.blogIdForm), {
+        .post("/blog/action/like", qs.stringify(this.blogIdForm), {
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {
@@ -392,7 +392,7 @@ export default {
     // 收藏
     addCollectionNum() {
       this.$axios
-        .post("/action/blog/collect", qs.stringify(this.blogIdForm), {
+        .post("/blog/action/collect", qs.stringify(this.blogIdForm), {
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {

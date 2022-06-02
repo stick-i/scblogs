@@ -50,17 +50,6 @@ export default {
         transform: rotateZ(-20deg);
         box-shadow: inset 5px 0 30px  rgb(0, 0, 0,0.5),0 5px 100px  rgb(0, 0, 0,0.5);
     }
-    /* 头上黑边
-    .book:before{
-        content: '';
-        position: absolute;
-        top: -2px;
-        width: 100%;
-        height: 2px;
-        background: rgb(62, 62, 62);
-        transform-origin: bottom;
-        transform: skewX(-45px);
-    } */
     /* 右边黑边 */
     .book:after{
         content: '';
@@ -88,7 +77,6 @@ export default {
     .book .image img{
        width: 100%;
        height: 100%;
-
     }
     .book:hover .image{
        transform:rotateY(-140deg);

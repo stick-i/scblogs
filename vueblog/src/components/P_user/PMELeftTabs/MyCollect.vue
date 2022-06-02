@@ -8,7 +8,7 @@
             <div v-if="!noneCollect" class="myCollectA" v-for="(item,index) in collectList" :key="index" >
                 <div class="myCollectTitle" @click="TurnToDetail(item.id)">{{item.title}}</div>
                 <div class="myCollectStar">
-                    <img ref="star" @click="ChangeStar(index)" 
+                    <img ref="star" @click="ChangeStar(index)"
                     :src="item.starStation? collectStar1:collectStar2"
                      alt="">
                 </div>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-    name:"TabsContent2",
+    name:"MyCollect",
     data(){
         return {
             collectList:[],
@@ -38,7 +38,7 @@ export default {
     },
     methods:{
         GetData(){
-            this.$axios.get("/user/collect",this.config).then(res=>{
+            this.$axios.get("/blog/action/collect",this.config).then(res=>{
                 console.log("收藏列表返回数据",res)
                 if(res.data.data.records!=null){
                     if(res.data.data.records.length>0){
@@ -70,9 +70,9 @@ export default {
             if(this.collectList[index].starStation==true){
                 // 开始收藏，将blogid转化成form-data格式
                 let formdata = new FormData()
-				
-				formdata.append("blogid", this.collectList[index].id) 
-				
+
+				formdata.append("blogid", this.collectList[index].id)
+
                 this.$axios.post('/blog/collect',formdata,this.config).then(res=>{
                     this.$message({
                             message: '收藏成功',
@@ -110,7 +110,7 @@ export default {
     line-height: 500px;
     text-align: center;
     color: #ff0000;
-    -webkit-text-stroke: 1px rgb(11, 235, 255); 
+    -webkit-text-stroke: 1px rgb(11, 235, 255);
 }
 .myCollectB{
     width: 100%;
