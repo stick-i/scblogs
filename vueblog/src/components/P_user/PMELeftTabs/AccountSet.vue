@@ -1,8 +1,8 @@
 <template>
 <div>
   <div v-if="contentSeen" class="rightContent">
-    <div class="rightContentA">
-    </div>
+<!--    <div class="rightContentA">-->
+<!--    </div>-->
     <div class="rightContentB">
         <div class="rightContentB-1">
             账号设置
@@ -20,10 +20,10 @@
                 </li>
                 <li>
                     <div class="phone">
-                        <div class="text">手机</div>
+                        <div class="text">手机号</div>
                         <div class="right">
                             <span>{{}}</span>
-                            <span>修改手机</span>
+                            <span>修改手机号</span>
                         </div>
                     </div>
                 </li>
@@ -294,7 +294,6 @@ export default {
   width: 100%;
   height: 600px;
   background: white;
-  margin: 20px 0;
   /* box-sizing: border-box; */
 }
 .rightContentB-1{

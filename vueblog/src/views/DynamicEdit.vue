@@ -25,7 +25,7 @@ export default {
 <style scoped>
 .contain{
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background: rgb(247,248,249);
 }
 .editpart{

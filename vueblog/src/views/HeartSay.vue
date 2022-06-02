@@ -29,6 +29,6 @@ export default {
 .body{
     width: 1300px;
     margin: 0 auto;
-    margin-top: 60px;
+    padding-top: 60px;
 }
 </style>

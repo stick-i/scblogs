@@ -18,7 +18,8 @@ import "./assets/css/iconfont/iconfont.css"
 
 import '@/assets/svg/iconfont.js'
 import '@/assets/svg/icon.css'
-
+import less from 'less'
+Vue.use(less)
 Vue.use(ElementUI);
 Vue.use(mavonEditor);
 

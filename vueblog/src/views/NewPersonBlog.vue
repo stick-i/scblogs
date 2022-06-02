@@ -53,6 +53,11 @@ import Book from '@/components/P_user/CssAnimation/PageTurnBook.vue'
 // 引入中部大导航
 import NewPersonBlogContent from "@/components/P_user/NewPersonBlogContent/NewPersonBlogContent.vue"
 export default {
+    components: {
+         TopBar,
+         NewPersonBlogContent,
+         Book
+    },
     data() {
         return {
             userMessage:{},
@@ -94,18 +99,9 @@ export default {
             },]
         };
     },
-    components: {
-         TopBar,
-         NewPersonBlogContent,
-         Book
-    },
     created(){
         this.GetData();
-        console.log("所有数据处理完毕",this.userMessage)
     },
-    mounted() {
-    console.log("主页回去完成的数据",this.userMessage);
-  },
     methods:{
         async GetData() {
             let params = {
@@ -115,7 +111,7 @@ export default {
             this.$axios
                 .post("/login/login", qs.stringify(params))
                 .then((res) => {
-                console.log("登录成功",res.data.data)
+                console.log("登录成功",res)
                 // 将token设置到本地浏览器中
                 window.localStorage.setItem("token", res.headers.token);
                 window.localStorage.setItem(
@@ -130,11 +126,12 @@ export default {
                 .then((res) => {
                 localStorage.setItem("userMessage", JSON.stringify(res.data.data));
                 this.userMessage = res.data.data
+                console.log("返回的用户数据",this.userMessage)
                 })
             },
             // 跳转至编辑个人信息页面
             TurnToEdit(){
-                this.$router.push("/PersonalMessageEdit");
+                this.$router.push("/PersonalInfoEdit");
             }
     }
 }
@@ -148,6 +145,7 @@ export default {
 }
 .main{
     width: 100%;
+    padding-top: 10vh;
 }
 .up{
     width: 1300px;

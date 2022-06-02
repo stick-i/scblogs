@@ -8,13 +8,12 @@
         <div class="contentMiddle">
           <div class="contentleft">
             <ul class="contentleftA">
-              <!-- :style="{'background-color': (index2+1) ==item[0].rightChoice[0] ? '#1cbe29': ''}" -->
               <li :style="{'background-color': item.chose ? 'rgb(240,240,245)': ''}"
-                  v-for="(item,index) in leftNavigation" @click="ChoseModel(index)" :key="index">
+                  v-for="(item,index) in leftNavigation" @click="ChoseModel(index)" :key="item.id">
                 <a href="#">{{ item.name }}</a>
               </li>
             </ul>
-            <div class="contentleftB">
+            <!-- <div class="contentleftB">
               <div class="contentleftB-1">
                 <div class="contentleftB-1-a">
                   对我们的服务满意吗？
@@ -39,25 +38,28 @@
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
-          <div ref="tabs1" v-show="leftNavigation[0].chose" class="contentright">
-            <TabsContent></TabsContent>
-            <!-- && content1Seens -->
-          </div>
-          <div ref="tabs2" v-show="leftNavigation[1].chose" class="contentright">
-            <TabsContent2></TabsContent2>
-          </div>
-          <div ref="tabs5" v-show="leftNavigation[4].chose" class="contentright">
-            <TabsContent5></TabsContent5>
-          </div>
-          <div ref="tabs8" v-show="leftNavigation[7].chose" class="contentright">
-            <TabsContent8></TabsContent8>
+          <div class="contentright">
+              <div v-if="leftNavigation[0].chose">
+                <Information></Information>
+              </div>
+              <div v-if="leftNavigation[1].chose">
+                <AccountSet></AccountSet>
+              </div>
+              <div v-if="leftNavigation[2].chose">
+                <MyCollect></MyCollect>
+              </div>
+              <div v-if="leftNavigation[5].chose">
+                <MyThumbs></MyThumbs>
+              </div>
           </div>
         </div>
       </div>
       <!-- 页面底部视图 -->
-      <ButtomView></ButtomView>
+      <div class="contentbottom">
+        <ButtomView></ButtomView>
+      </div>
     </div>
 
   </div>
@@ -65,26 +67,25 @@
 <script>
 import TopBarA from "@/components/content/topbar/TopBar";
 import ButtomView from "@/components/P_user/ButtomView/ButtomView.vue"
-import TabsContent from "@/components/P_user/PMELeftTabs/lefttabs.vue";
-import TabsContent2 from "@/components/P_user/PMELeftTabs/lefttabs2.vue"
-import TabsContent5 from "@/components/P_user/PMELeftTabs/lefttabs5.vue"
-import TabsContent8 from "@/components/P_user/PMELeftTabs/lefttabs8.vue"
+import Information from "@/components/P_user/PMELeftTabs/Information.vue";
+import AccountSet from "@/components/P_user/PMELeftTabs/AccountSet.vue"
+import MyCollect from "@/components/P_user/PMELeftTabs/MyCollect.vue"
+import MyThumbs from "@/components/P_user/PMELeftTabs/MyThumbs_up.vue"
 
 export default {
   components: {
     TopBarA,
     ButtomView,
-    TabsContent,
-    TabsContent2,
-    TabsContent5,
-    TabsContent8,
+	  Information,
+	  AccountSet,
+	  MyCollect,
+	  MyThumbs,
   },
   data() {
     return {
-      leftNavigation: [{name: "个人资料", chose: true}, {name: "账号设置", chose: false},
-        {name: "隐私设置", chose: false}, {name: "信息认证", chose: false}
-        , {name: "我的收藏", chose: false}, {name: "浏览历史", chose: false},
-        {name: "内容管理", chose: false}, {name: "我的点赞", chose: false}],
+      leftNavigation: [{name: "个人资料", chose: true,id:1}, {name: "账号设置", chose: false,id:2}
+        , {name: "我的收藏", chose: false,id:3}, {name: "浏览历史", chose: false,id:4},
+        {name: "内容管理", chose: false,id:5}, {name: "我的点赞", chose: false,id:6}],
       userMessage: {
         username: "默认参数P",
         nickname: "默认参数P",
@@ -105,7 +106,6 @@ export default {
     await this.GetData()
     window.parentMounted = true	// _isMounted是当前实例mouned()是否执行 此时为true
     // 使得账号设置模块消失,模块选择可以变动
-    this.$refs.tabs2.style.display = "none"
   },
   beforeCreate() {
     window.parentMounted = this._isMounted  // _isMounted是当前实例mouned()是否执行 此时为false
@@ -126,7 +126,7 @@ export default {
       }
       this.leftNavigation[index].chose = true
 
-      if (index == 6) {
+      if (index == 4) {
         this.$router.push('/ContentManagement')
       }
     }
@@ -139,55 +139,33 @@ export default {
   padding: 0;
   margin: 0;
 }
-
-body {
-  padding: 0 !important;
-  /* overflow:  hidden; */
-}
-
 .body {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: rgb(243, 244, 246);
   display: flex;
   justify-content: center;
 }
-
 .ContentA {
   width: 1280px;
   height: 100%;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* background: #000; */
+  margin: 0 auto;
 }
-
 .centerContent {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  /* display: flex;
-  justify-content: center;
-   align-items: center; */
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-height: calc(100% - 200px);
-  margin-bottom: 32px;
+  width: 100%;
+  padding-top: 70px;
 }
-
+.contentbottom{
+  margin-top: auto;
+}
 .contentMiddle {
-  position: relative;
   width: 1280px;
-  min-height: 800px;
+  overflow: hidden;
   background: transparent;
   margin: 10px auto 0;
 }
-
 .contentleft {
-  position: absolute;
   width: 200px;
-  top: 0;
-  left: 0;
   float: left;
   /* background: white; */
 }
@@ -259,11 +237,7 @@ body {
 
 .contentright {
   width: 83%;
-  margin-left: 10px;
   min-height: 800px;
-  position: absolute;
-  top: 0;
-  left: 200px;
-  float: left;
+  float: right;
 }
 </style>

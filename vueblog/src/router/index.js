@@ -9,7 +9,7 @@ const BlogSearch = () => import('@/views/blogSearch/BlogSearch')
 const BlogEdit = () => import('@/views/blogEdit/BlogEdit')
 const BlogPublishSuccess = () => import('@/views/blogPublishSuccess/BlogPublishSuccess')
 const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
-const PersonalMessageEdit = () => import('@/views/PersonalMessageEdit')
+const PersonalInfoEdit = () => import('@/views/PersonalInfoEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonBlog = () => import('@/views/NewPersonBlog')
 const HeartSay=()=>import('@/views/HeartSay')
@@ -77,9 +77,9 @@ const routes = [
     component: NewPersonBlog,
   },
   {
-    path: '/PersonalMessageEdit',
-    name: 'PersonalMessageEdit',
-    component: PersonalMessageEdit
+    path: '/PersonalInfoEdit',
+    name: 'PersonalInfoEdit',
+    component: PersonalInfoEdit
   },
   {
     path: '/ContentManagement',
