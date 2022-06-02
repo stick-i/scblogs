@@ -36,7 +36,7 @@ public interface UserService {
 	 * @param id         用户id
 	 * @param avatarFile 头像文件
 	 */
-	boolean updateAvatar(Integer id, MultipartFile avatarFile);
+	String updateAvatar(Integer id, MultipartFile avatarFile);
 
 	/**
 	 * 更新用户昵称

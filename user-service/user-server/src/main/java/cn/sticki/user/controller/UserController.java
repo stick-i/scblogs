@@ -70,12 +70,16 @@ public class UserController {
 	 * @param avatarFile 文件流
 	 */
 	@PutMapping("/avatar")
-	public RestResult<Object> updateAvatar(@NotNull MultipartFile avatarFile, @RequestHeader Integer id) {
+	public RestResult<String> updateAvatar(@NotNull MultipartFile avatarFile, @RequestHeader Integer id) {
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
 		// 检查文件，小于1Mib ,仅支持JPEG和PNG
 		FileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		// cache.put(id, user);
-		return new RestResult<>(userService.updateAvatar(id, avatarFile));
+		String avatar = userService.updateAvatar(id, avatarFile);
+		if (avatar != null)
+			return new RestResult<>(avatar);
+		else
+			return new RestResult<>(false, "上传失败");
 	}
 
 	/**

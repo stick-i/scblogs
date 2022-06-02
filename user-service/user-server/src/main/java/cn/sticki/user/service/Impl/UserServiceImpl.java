@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateAvatar(Integer id, MultipartFile avatarFile) {
+	public String updateAvatar(Integer id, MultipartFile avatarFile) {
 		log.debug("updateAvatar,id->{}, fileName->{}", id, avatarFile.getOriginalFilename());
 		// 默认头像才需要更新数据库，非默认头像无需更新数据库
 		User user = userMapper.selectById(id);
@@ -89,8 +89,8 @@ public class UserServiceImpl implements UserService {
 			user.setAvatarUrl(user.getId() + "_" + user.getUsername());
 			userMapper.updateById(user);
 		}
-		RestResult<Boolean> result = resourceClient.uploadAvatarImage(avatarFile, user.getAvatarUrl());
-		return result.getStatus();
+		RestResult<String> result = resourceClient.uploadAvatarImage(avatarFile, user.getAvatarUrl());
+		return result.getStatus() ? result.getData() : null;
 	}
 
 	@Override
