@@ -4,8 +4,8 @@ import cn.sticki.common.result.RestResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 @FeignClient(value = "resource-server")
@@ -18,7 +18,7 @@ public interface ResourceClient {
 	 * @return 图片链接
 	 */
 	@PostMapping(value = "/private/resource/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	RestResult<String> uploadBlogImage(MultipartFile file);
+	RestResult<String> uploadBlogImage(@RequestPart MultipartFile file);
 
 	/**
 	 * 上传头像接口
@@ -28,6 +28,6 @@ public interface ResourceClient {
 	 * @return 是否上传成功
 	 */
 	@PostMapping(value = "/private/resource/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	RestResult<Boolean> uploadAvatarImage(@RequestBody MultipartFile file, @RequestParam String name);
+	RestResult<String> uploadAvatarImage(@RequestPart MultipartFile file, @RequestParam String name);
 
 }

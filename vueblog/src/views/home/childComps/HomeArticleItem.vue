@@ -15,7 +15,7 @@
           </a>
         </div>
         <div class="article-content-item">
-          <div class="article-img-left" v-show="isShowImg">
+          <div class="article-img-left" v-if="item.coverImage!=null&&item.coverImage.trim().length>10">
             <router-link
               :to="{ name: 'BlogDetail', params: { blogId: item.id } }"
               target="_blank"
@@ -33,23 +33,22 @@
               </div>
             </router-link>
             <div class="article-evaluation">
-              <div class="article-good" @click="addLikeNum(item.id, index)">
+              <div class="article-good" @click="addLikeNum(item.actionStatus.like,item.id, index)">
                 <!--登录显示-->
                 <img
-                  v-if="isShow"
                   :src="
-                    userAction[item.id].like
+                    item.actionStatus.like
                       ? require('../../../assets/img/home/good_active.png')
                       : require('../../../assets/img/home/good.png')
                   "
                   alt=""
                 />
                 <!--未登录显示-->
-                <img
-                  v-if="!isShow"
-                  src="../../../assets/img/home/good.png"
-                  alt=""
-                />
+<!--                <img-->
+<!--                  v-if="!isShow"-->
+<!--                  src="../../../assets/img/home/good.png"-->
+<!--                  alt=""-->
+<!--                />-->
                 {{ item.likeNum }} <span>赞</span>
               </div>
               <div class="article-author">
@@ -98,8 +97,8 @@ export default {
       },
       userAction: {},
       isLike: false,
-      isShow: false,
-      isShowImg:false,
+      isShow: true,
+      isShowImg:true,
     };
   },
   components: {
@@ -109,15 +108,15 @@ export default {
   computed: {},
   methods: {
     // 点赞
-    addLikeNum(id, index) {
+    addLikeNum(isLike,id, index) {
       this.blogIdForm.blogId = id;
       this.$axios
-        .post("/action/blog/like", qs.stringify(this.blogIdForm), {
+        .post("/blog/action/like", qs.stringify(this.blogIdForm), {
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {
           console.log(res);
-          if (res.data.code == 400 && res.data.status == false) {
+          if (res.data.code == 402 && res.data.status == false) {
             this.$message({
               showClose: true,
               message: "请先登录哦~",
@@ -125,12 +124,12 @@ export default {
             });
           }
           if (res.data.code == 200 && res.data.status == true) {
-            if (this.userAction[id].like == false) {
-              this.blogList[index].likeNum++;
-              this.userAction[id].like = true;
-            } else {
+            if (isLike) {
               this.blogList[index].likeNum--;
-              this.userAction[id].like = false;
+              this.blogList[index].actionStatus.like = false;
+            } else {
+              this.blogList[index].likeNum++;
+              this.blogList[index].actionStatus.like = true;
             }
           }
         });
@@ -148,10 +147,7 @@ export default {
           } else {
             this.isShow = true;
           }
-          // res.data.data.records.forEach((item,index)=>{
-          //   // console.log(item.coverImage)
-          //   this.isShowImg = item.coverImage;
-          // })
+
           if (res.data.data.records.length) {
             this.page += 1; // 下一页
             this.blogList = this.blogList.concat(res.data.data.records);
@@ -160,20 +156,6 @@ export default {
               ...res.data.data.userAction,
             };
             console.log(this.blogList);
-            // this.blogList.forEach((item,index)=>{
-            //   console.log(item.coverImage)
-            //   if(item.coverImage != null) {
-            //     this.isShowImg = true;
-            //     console.log("0")
-            //     console.log(this.isShowImg)
-            //   } else {
-            //     this.isShowImg = false;
-            //     console.log("1")
-            //   }
-            // })
-            // this.blogList.forEach((item,index)=>{
-            //   this.isShowImg = index;
-            // })
             $state.loaded();
           } else {
             $state.complete();

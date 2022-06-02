@@ -5,7 +5,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class FollowBasic {
+public class FansView {
 
 	/**
 	 * id
@@ -18,9 +18,9 @@ public class FollowBasic {
 	Integer userId;
 
 	/**
-	 * 关注者id
+	 * 粉丝id
 	 */
-	Integer followId;
+	Integer fansId;
 
 	/**
 	 * 备注
@@ -28,7 +28,7 @@ public class FollowBasic {
 	String note;
 
 	/**
-	 * 关注状态码
+	 * 状态码
 	 */
 	Integer status;
 
@@ -38,22 +38,27 @@ public class FollowBasic {
 	Timestamp createTime;
 
 	/**
-	 * 关注者用户名
+	 * 粉丝用户名
 	 */
 	String username;
 
 	/**
-	 * 关注者昵称
+	 * 粉丝昵称
 	 */
 	String nickname;
 
 	/**
-	 * 关注者头像链接
+	 * 粉丝院校代码
+	 */
+	Integer schoolCode;
+
+	/**
+	 * 粉丝头像链接
 	 */
 	String avatarUrl;
 
 	/**
-	 * 关注者注册时间
+	 * 粉丝注册时间
 	 */
 	Timestamp registerTime;
 

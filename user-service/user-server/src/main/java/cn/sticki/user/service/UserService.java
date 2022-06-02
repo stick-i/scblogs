@@ -18,13 +18,6 @@ public interface UserService {
 	boolean removeById(Integer id);
 
 	/**
-	 * 移除用户
-	 *
-	 * @param username 用户名
-	 */
-	boolean removeByUsername(String username);
-
-	/**
 	 * 检查密码是否正确
 	 */
 	boolean checkPassword(Integer id, String password);
@@ -43,7 +36,7 @@ public interface UserService {
 	 * @param id         用户id
 	 * @param avatarFile 头像文件
 	 */
-	boolean updateAvatar(Integer id, MultipartFile avatarFile);
+	String updateAvatar(Integer id, MultipartFile avatarFile);
 
 	/**
 	 * 更新用户昵称
@@ -52,6 +45,14 @@ public interface UserService {
 	 * @param nickname 用户昵称
 	 */
 	boolean updateNickname(Integer id, String nickname);
+
+	/**
+	 * 更新用户的院校代码
+	 *
+	 * @param id         用户id
+	 * @param schoolCode 院校代码
+	 */
+	boolean updateSchoolCode(Integer id, Integer schoolCode);
 
 	/**
 	 * 更新用户邮箱

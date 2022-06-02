@@ -1,7 +1,6 @@
 package cn.sticki.user.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("user_vo")
 public class User implements Serializable {
 
 	/**
@@ -30,6 +28,11 @@ public class User implements Serializable {
 	 * 用户昵称
 	 */
 	String nickname;
+
+	/**
+	 * 院校代码
+	 */
+	Integer schoolCode;
 
 	/**
 	 * 头像链接

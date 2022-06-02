@@ -83,13 +83,20 @@ export default {
                   type: "warning",
                 });
               }
+              if (res.data.code == 402) {
+                this.$message({
+                  showClose: true,
+                  message: "用户名或密码错误",
+                  type: "warning",
+                });
+              }
               if (res.data.code == 200 && res.data.status == true) {
                 this.$message({
                   showClose: true,
                   message: "恭喜您，登录成功~",
                   type: "success",
                 });
-                console.log(res.headers.token);
+                // console.log(res.headers.token);
                 localStorage.setItem("token", res.headers.token);
 
                 this.avatarUrl = res.data.data.avatarUrl;

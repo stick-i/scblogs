@@ -15,4 +15,13 @@ public interface BlinkViewService extends IService<BlinkView> {
 	 */
 	BlinkViewListVO getListByTime(int page, int pageSize, Integer schoolCode);
 
+	/**
+	 * 获取个人的动态列表
+	 *
+	 * @param userId   用户id
+	 * @param page     第几页
+	 * @param pageSize 页大小
+	 */
+	BlinkViewListVO getSelfList(int userId, int page, int pageSize);
+
 }

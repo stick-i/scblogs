@@ -12,8 +12,8 @@ const BlogDetail = () => import('@/views/blogDetail/BlogDetail')
 const PersonalInfoEdit = () => import('@/views/PersonalInfoEdit')
 const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonBlog = () => import('@/views/NewPersonBlog')
-const HeartSay=()=>import('@/views/HeartSay')
-const Dynamic=()=>import('@/views/DynamicEdit')
+const HeartSay = () => import('@/views/HeartSay')
+const Dynamic = () => import('@/views/DynamicEdit')
 // const CampusScenery = () => import('@/views/campusScenery/CampusScenery')
 
 
@@ -23,7 +23,7 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect:{name:"Home"}
+    redirect: { name: "Home" }
   },
 
   {
@@ -105,9 +105,9 @@ const router = new VueRouter({
   routes
 })
 
-const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch((err) => err);
-};
+// const originalPush = VueRouter.prototype.push;
+// VueRouter.prototype.push = function push(location) {
+//   return originalPush.call(this, location).catch((err) => err);
+// };
 
 export default router

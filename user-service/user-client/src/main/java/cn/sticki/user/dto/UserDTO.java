@@ -23,6 +23,11 @@ public class UserDTO {
 	String nickname;
 
 	/**
+	 * 院校代码
+	 */
+	Integer schoolCode;
+
+	/**
 	 * 头像链接
 	 */
 	String avatarUrl;

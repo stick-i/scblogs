@@ -2,8 +2,8 @@ package cn.sticki.user.controller;
 
 import cn.sticki.common.result.ListVO;
 import cn.sticki.common.result.RestResult;
-import cn.sticki.user.pojo.FansBasic;
-import cn.sticki.user.pojo.FollowBasic;
+import cn.sticki.user.pojo.FansView;
+import cn.sticki.user.pojo.FollowView;
 import cn.sticki.user.service.UserFollowService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +32,8 @@ public class FollowController {
 	 * @return 关注列表数据
 	 */
 	@GetMapping("/follow")
-	public RestResult<ListVO<FollowBasic>> getFollowList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
-		ListVO<FollowBasic> listVO = userFollowService.getFollowList(id, page, pageSize);
+	public RestResult<ListVO<FollowView>> getFollowList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+		ListVO<FollowView> listVO = userFollowService.getFollowList(id, page, pageSize);
 		return new RestResult<>(listVO);
 	}
 
@@ -44,8 +44,8 @@ public class FollowController {
 	 * @return 粉丝列表数据
 	 */
 	@GetMapping("/fans")
-	public RestResult<ListVO<FansBasic>> getFansList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
-		ListVO<FansBasic> listVO = userFollowService.getFansList(id, page, pageSize);
+	public RestResult<ListVO<FansView>> getFansList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+		ListVO<FansView> listVO = userFollowService.getFansList(id, page, pageSize);
 		return new RestResult<>(listVO);
 	}
 

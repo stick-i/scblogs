@@ -47,8 +47,9 @@ public class UploadController {
 	 * @return 图片链接
 	 */
 	@PostMapping("/avatar")
-	public RestResult<Boolean> uploadAvatar(@NotNull MultipartFile file, @NotNull String name) {
+	public RestResult<String> uploadAvatar(@NotNull MultipartFile file, @NotNull String name) {
 		log.debug("uploadAvatar, fileName->{}", file.getOriginalFilename());
+		log.info("上传了头像{}", name);
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		return new RestResult<>(imageService.uploadAvatar(file, name));
 	}

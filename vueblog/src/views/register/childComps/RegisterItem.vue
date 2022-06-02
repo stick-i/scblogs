@@ -27,7 +27,53 @@
           </el-form-item>
 
           <el-form-item label="所在学校">
-            <el-input></el-input>
+            <el-row>
+              <el-col :span="8">
+                <el-select
+                  v-model="provinceId"
+                  @focus="getProvinces"
+                  placeholder="请选择省份"
+                >
+                  <el-option
+                    v-for="item in provinceList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="8">
+                <el-select
+                  v-model="cityId"
+                  @focus="getCities"
+                  placeholder="请选择城市"
+                >
+                  <el-option
+                    v-for="item in cityList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="8">
+                <el-select
+                  v-model="ruleForm.schoolCode"
+                  @focus="getSchools"
+                  placeholder="请选择学校"
+                >
+                  <el-option
+                    v-for="item in schoolList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="邮箱" prop="mail" ref="mailItem">
@@ -70,7 +116,7 @@
 
 <script>
 import qs from "qs";
-const TIME_COUNT = 60; // 倒计时的时间
+const TIME_COUNT = 90; // 倒计时的时间
 export default {
   name: "",
   data() {
@@ -89,6 +135,15 @@ export default {
       }
     };
     return {
+      // 学校开始
+      value: "",
+      provinceList: [], // 省份列表
+      cityList: [], // 城市列表
+      schoolList: [], // 学校列表
+      provinceId: "", // 省份编码
+      cityId: "", // 城市编码
+      schoolCode: "", // 学校编码
+      // 学校结束
       isShowTime: true,
       count: "",
       timer: null,
@@ -98,11 +153,12 @@ export default {
         mail: "",
         mailVerify: "",
         mobile: "",
+        schoolCode:"",
       },
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 25, message: "最少3个字符", trigger: "blur" },
+          { min: 5, max: 25, message: "最少5个字符", trigger: "blur" },
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -128,6 +184,49 @@ export default {
     };
   },
   methods: {
+    // 获取省份
+    getProvinces() {
+      this.$axios.get("/resource/province").then((res) => {
+        this.provinceList = res.data.data;
+      });
+    },
+    // 获取城市
+    getCities() {
+      if(this.provinceId == '') {
+        // console.log("请先选取省份")
+        this.$message({
+          showClose: true,
+          message: "请先选取省份",
+          type: "warning",
+        });
+      } else {
+        this.$axios
+          .get("/resource/city?provinceId=" + this.provinceId)
+          .then((res) => {
+            this.cityList = res.data.data;
+            // console.log(res);
+          });
+      }
+    },
+    // 获取学校
+    getSchools() {
+      if(this.cityId == '') {
+        // console.log("请先选取城市")
+        this.$message({
+          showClose: true,
+          message: "请先选取城市",
+          type: "warning",
+        });
+      } else {
+        this.$axios
+          .get("/resource/university?cityId=" + this.cityId)
+          .then((res) => {
+            this.schoolList = res.data.data;
+            // console.log(res);
+            // console.log(this.schoolCode)
+          });
+      }
+    },
     obtainCode(mailItem) {
       if (this.ruleForm.mail == "") {
         this.$message({
@@ -154,10 +253,12 @@ export default {
                 type: "warning",
               });
             }
-            if (res.data.code == 400 && res.data.status == false) {
+            if (res.data.code == 401 && res.data.status == false) {
+              console.log(res.data.message)
+              let message = res.data.message
               this.$message({
                 showClose: true,
-                message: "该邮箱已被注册",
+                message: message,
                 type: "error",
               });
             }
@@ -201,6 +302,15 @@ export default {
                 this.$message({
                   showClose: true,
                   message: "验证码错误",
+                  type: "error",
+                });
+              }
+              if (res.data.code == 401 && res.data.status == false) {
+                console.log(res.data.message)
+                let message = res.data.message
+                this.$message({
+                  showClose: true,
+                  message: message,
                   type: "error",
                 });
               }
