@@ -1,5 +1,5 @@
 server:
-  port: 40014
+  port: ${random.int(40001,49999)}
 
 spring:
   servlet:

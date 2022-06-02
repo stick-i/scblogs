@@ -1,7 +1,7 @@
 package cn.sticki.blog.service;
 
-import cn.sticki.blog.pojo.BlogListVO;
-import cn.sticki.blog.pojo.CollectBlog;
+import cn.sticki.blog.pojo.domain.CollectBlog;
+import cn.sticki.blog.pojo.vo.BlogListVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface CollectBlogService extends IService<CollectBlog> {

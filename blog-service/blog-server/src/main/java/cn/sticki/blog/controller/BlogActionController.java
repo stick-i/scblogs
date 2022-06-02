@@ -1,6 +1,6 @@
 package cn.sticki.blog.controller;
 
-import cn.sticki.blog.pojo.BlogListVO;
+import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.service.CollectBlogService;
 import cn.sticki.blog.service.LikeBlogService;
 import cn.sticki.common.result.RestResult;

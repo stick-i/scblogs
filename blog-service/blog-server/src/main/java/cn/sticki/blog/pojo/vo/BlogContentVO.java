@@ -1,5 +1,7 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.pojo.vo;
 
+import cn.sticki.blog.pojo.bo.BlogStatusBO;
+import cn.sticki.blog.pojo.domain.BlogContent;
 import cn.sticki.user.dto.UserDTO;
 import lombok.Data;
 

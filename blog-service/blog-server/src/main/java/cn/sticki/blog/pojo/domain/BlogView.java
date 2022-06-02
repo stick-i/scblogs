@@ -1,11 +1,11 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.pojo.domain;
 
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class BlogBasic {
+public class BlogView {
 
 	/**
 	 * 博客id

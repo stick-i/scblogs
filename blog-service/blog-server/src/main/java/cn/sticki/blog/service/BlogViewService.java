@@ -1,11 +1,15 @@
 package cn.sticki.blog.service;
 
-import cn.sticki.blog.pojo.*;
+import cn.sticki.blog.pojo.bo.ActionStatusBO;
+import cn.sticki.blog.pojo.domain.BlogView;
+import cn.sticki.blog.pojo.vo.BlogContentVO;
+import cn.sticki.blog.pojo.vo.BlogInfoListVO;
+import cn.sticki.blog.pojo.vo.BlogStatusListVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Map;
 
-public interface BlogBasicService extends IService<BlogBasic> {
+public interface BlogViewService extends IService<BlogView> {
 
 	/**
 	 * 获取推荐博客列表
@@ -17,7 +21,7 @@ public interface BlogBasicService extends IService<BlogBasic> {
 	 *
 	 * @param search 搜索值
 	 */
-	BlogListVO searchBlog(String search, int page, int pageSize);
+	BlogInfoListVO searchBlog(String search, int page, int pageSize);
 
 	/**
 	 * 获取用户对该博客的状态，是否点赞或者是否收藏

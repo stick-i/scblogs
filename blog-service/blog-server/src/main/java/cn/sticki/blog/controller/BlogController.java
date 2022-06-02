@@ -1,11 +1,11 @@
 package cn.sticki.blog.controller;
 
-import cn.sticki.blog.pojo.Blog;
-import cn.sticki.blog.pojo.BlogContentVO;
-import cn.sticki.blog.pojo.BlogListVO;
-import cn.sticki.blog.pojo.BlogStatusListVO;
-import cn.sticki.blog.service.BlogBasicService;
+import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.vo.BlogContentVO;
+import cn.sticki.blog.pojo.vo.BlogInfoListVO;
+import cn.sticki.blog.pojo.vo.BlogStatusListVO;
 import cn.sticki.blog.service.BlogService;
+import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -27,7 +27,7 @@ public class BlogController {
 	private BlogService blogService;
 
 	@Resource
-	private BlogBasicService blogBasicService;
+	private BlogViewService blogViewService;
 
 	private final int pageSize = 20;
 
@@ -41,19 +41,8 @@ public class BlogController {
 			@RequestParam(defaultValue = "1") int page,
 			@RequestHeader(required = false) Integer id) {
 		log.debug("searchBlog,page->{}", page);
-		BlogStatusListVO recommendBlogList = blogBasicService.getRecommendBlogList(id, page, pageSize);
+		BlogStatusListVO recommendBlogList = blogViewService.getRecommendBlogList(id, page, pageSize);
 		return new RestResult<>(recommendBlogList);
-		// BlogStatusListVO blogStatusListVO = BeanUtil.copyProperties(blogListVO, BlogStatusListVO.class);
-		// if (id != null) {
-		// 	List<BlogBasic> blogList = blogListVO.getRecords();
-		// 	List<Integer> blogIdList = new ArrayList<>();
-		// 	for (BlogBasic blogBasic : blogList) {
-		// 		blogIdList.add(blogBasic.getId());
-		// 	}
-		// 	Map<Integer, ActionStatus> userBlogActionStatus = blogActionService.getUserBlogActionStatus(id, blogIdList);
-		// 	blogStatusListVO.setUserAction(userBlogActionStatus);
-		// }
-		// return new RestResult<>(blogStatusListVO);
 	}
 
 	/**
@@ -63,10 +52,9 @@ public class BlogController {
 	 * @return 博客列表
 	 */
 	@GetMapping("/search")
-	public RestResult<BlogListVO> searchBlog(@NotNull String key, @RequestParam(defaultValue = "1") int page) {
+	public RestResult<BlogInfoListVO> searchBlog(@NotNull String key, @RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,search->{},page->{}", key, page);
-		BlogListVO blogListVO = blogBasicService.searchBlog(key, page, pageSize);
-		return new RestResult<>(blogListVO);
+		return new RestResult<>(blogViewService.searchBlog(key, page, pageSize));
 	}
 
 	/**
@@ -76,7 +64,7 @@ public class BlogController {
 	 */
 	@GetMapping("/content")
 	public RestResult<BlogContentVO> getBlogContentVO(@RequestParam Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
-		BlogContentVO blogContent = blogBasicService.getBlogContent(id, userId);
+		BlogContentVO blogContent = blogViewService.getBlogContent(id, userId);
 		return new RestResult<>(blogContent);
 	}
 

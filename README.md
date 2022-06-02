@@ -2,7 +2,7 @@
 
 <p align=center>
   <a href="http://www.scblogs.cn">
-    <img src="http://image.scblogs.cn/scblogs-logo.png" alt="校园博客">
+    <img src="http://cdn.scblogs.cn/scblogs-logo.png" alt="校园博客">
   </a>
 </p>
 
@@ -21,7 +21,8 @@
 
 ## 项目特点
 
-- 微服务架构开发，友好的代码结构及注释，便于阅读及二次开发
+- 采用微服务架构开发，友好的代码结构及注释，便于阅读及二次开发
+- 各服务所使用的数据库完全分离，且不相互调用
 - 前后端分离，通过 **Json** 进行数据交互，前端无需关注后端技术
 - 引入**RabbitMQ** 消息队列，用于邮件发送、更新 **Redis** 和 **Solr**
 - 采用Minio搭建对象存储服务，同时引入七牛云对象存储

@@ -1,5 +1,6 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.pojo.vo;
 
+import cn.sticki.blog.pojo.bo.BlogCountBO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

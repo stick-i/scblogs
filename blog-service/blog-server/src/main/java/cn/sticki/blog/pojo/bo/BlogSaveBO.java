@@ -1,4 +1,4 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.pojo.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BlogSaveDTO {
+public class BlogSaveBO {
 
 	/**
 	 * 博客id(若无则不填)

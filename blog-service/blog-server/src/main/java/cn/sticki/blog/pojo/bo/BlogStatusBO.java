@@ -1,11 +1,11 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.pojo.bo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class BlogStatusBO extends BlogBasic {
+public class BlogStatusBO extends BlogInfoBO {
 
 	/**
 	 * 点赞收藏等状态

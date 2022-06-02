@@ -14,7 +14,7 @@
 		;
 	</select>
 
-	<select id="selectUserLikeBlogList" resultType="cn.sticki.blog.pojo.BlogBasic">
+	<select id="selectUserLikeBlogList" resultType="cn.sticki.blog.pojo.domain.BlogView">
 		select *
 		from blog_basic where id in (
 		select blog_id

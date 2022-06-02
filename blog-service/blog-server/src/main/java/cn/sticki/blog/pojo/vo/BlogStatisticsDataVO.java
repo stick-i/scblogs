@@ -1,4 +1,4 @@
-package cn.sticki.blog.pojo;
+package cn.sticki.blog.pojo.vo;
 
 import lombok.Data;
 
