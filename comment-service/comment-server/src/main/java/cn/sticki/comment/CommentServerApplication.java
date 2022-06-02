@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableMybatisPlusIPage
 @EnableExceptionDefaultAdvice
-@EnableFeignClients(basePackages = "cn.sticki.blog.client")
+@EnableFeignClients(basePackages = {"cn.sticki.blog.client", "cn.sticki.user.client"})
 public class CommentServerApplication {
 
 	public static void main(String[] args) {

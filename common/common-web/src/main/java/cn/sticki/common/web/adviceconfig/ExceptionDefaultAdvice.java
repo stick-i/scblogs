@@ -64,7 +64,7 @@ public class ExceptionDefaultAdvice {
 		return new RestResult<>(402, "请求方式异常", null, false);
 	}
 
-	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, NullPointerException.class, TypeMismatchException.class})
+	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, TypeMismatchException.class})
 	public RestResult<Object> doIllegalArgumentException(Exception e) {
 		log.warn("参数异常,{}", e.getMessage());
 		return new RestResult<>(402, "参数异常", null, false);
