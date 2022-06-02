@@ -393,7 +393,7 @@ export default {
   height: 48px;
 }
 #csdn-toolbar{
-  position: fixed;
+  /*position: fixed;*/
   top: 0px;
   left: 0px;
   z-index: 100;
