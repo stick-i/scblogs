@@ -47,13 +47,13 @@ public class BlogBasicServiceImpl extends ServiceImpl<BlogBasicMapper, BlogBasic
 		// todo 最好根据用户标签来推
 		BlogListVO blogListVO = searchBlog(null, page, pageSize);
 		List<BlogBasic> blogList = blogListVO.getRecords();
+		BlogStatusListVO blogStatusListVO = BeanUtil.copyProperties(blogListVO, BlogStatusListVO.class);
 		// 构造博客id列表
 		// List<Integer> blogIdList = blogList.stream().map(BlogBasic::getId).collect(Collectors.toList());
 		Integer[] blogIdList = blogList.stream().map(BlogBasic::getId).toArray(Integer[]::new);
 		// 查询这些博客的点赞状态
 		Map<Integer, ActionStatusBO> blogActionStatus = getBlogActionStatus(userId, blogIdList);
 
-		BlogStatusListVO blogStatusListVO = BeanUtil.copyProperties(blogListVO, BlogStatusListVO.class);
 		for (BlogStatusBO record : blogStatusListVO.getRecords()) {
 			ActionStatusBO actionStatus = blogActionStatus.get(record.getId());
 			record.setActionStatus(actionStatus);
@@ -75,9 +75,13 @@ public class BlogBasicServiceImpl extends ServiceImpl<BlogBasicMapper, BlogBasic
 	}
 
 	public Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds) {
+		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
+		// 空列表不走数据，会报错
+		if (blogIds.length == 0) {
+			return map;
+		}
 		Map<Integer, Integer> likeMap = likeBlogMapper.selectMapByUserIdAndBlogIdList(userId, blogIds);
 		Map<Integer, Integer> collectMap = collectBlogMapper.selectMapByUserIdAndBlogIdList(userId, blogIds);
-		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
 		for (Integer blogId : blogIds) {
 			ActionStatusBO statusDTO = new ActionStatusBO();
 			statusDTO.setLike(likeMap.containsKey(blogId));

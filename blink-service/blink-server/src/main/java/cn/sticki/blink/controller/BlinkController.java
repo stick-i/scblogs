@@ -89,4 +89,15 @@ public class BlinkController {
 		return new RestResult<>(viewList);
 	}
 
+	/**
+	 * 获取自己的动态列表
+	 *
+	 * @param page 第几页
+	 */
+	@GetMapping("/list/self")
+	public RestResult<BlinkViewListVO> getSelfList(@RequestParam(defaultValue = "1") Integer page, @RequestHeader Integer id) {
+		BlinkViewListVO viewList = blinkViewService.getSelfList(id, page, pageSize);
+		return new RestResult<>(viewList);
+	}
+
 }

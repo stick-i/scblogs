@@ -7,7 +7,7 @@
 
 	<select id="selectMapByUserIdAndBlogIdList" resultType="integer">
 		select blog_id
-		from user_like_blog where user_id = #{userId} and blog_id in
+		from like_blog where user_id = #{userId} and blog_id in
 		<foreach collection="blogIdList" item="blogId" open="(" separator="," close=")">
 			#{blogId}
 		</foreach>
@@ -18,7 +18,7 @@
 		select *
 		from blog_basic where id in (
 		select blog_id
-		from user_like_blog where user_id = #{userId}
+		from like_blog where user_id = #{userId}
 		)
 		<if test="lastSql != null">
 			${lastSql}
