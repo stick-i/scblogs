@@ -4,6 +4,7 @@ import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.UserService;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息相关接口
@@ -48,6 +52,14 @@ public class UserController {
 			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
 		}
 		return new RestResult<>(getUser);
+	}
+
+	/**
+	 * 批量获取用户信息
+	 */
+	@PostMapping("/list")
+	public RestResult<Map<Integer, UserView>> getUserList(@RequestParam List<Integer> userIdList) {
+		return new RestResult<>(userService.getUserListMap(new HashSet<>(userIdList)));
 	}
 
 	/**

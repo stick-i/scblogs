@@ -1,5 +1,5 @@
 server:
-  port: ${random.int[40001,49999]}
+  port: ${random.int(40001,49999)}
 
 user:
   default-avatar: default_avatar.jpg # 注册时自动填充的头像文件名

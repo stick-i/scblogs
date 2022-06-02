@@ -1,14 +1,25 @@
 package cn.sticki.user.service;
 
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserView;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
-// public interface UserService extends IService<User> {
-public interface UserService {
+import java.util.Map;
+import java.util.Set;
+
+public interface UserService extends IService<UserView> {
 
 	User getById(Integer id);
 
 	User getByUsername(String username);
+
+	/**
+	 * 批量获取用户信息，并封装成key为userId,value为user的map
+	 *
+	 * @param userIdList 用户id列表
+	 */
+	Map<Integer, UserView> getUserListMap(Set<Integer> userIdList);
 
 	/**
 	 * 移除用户

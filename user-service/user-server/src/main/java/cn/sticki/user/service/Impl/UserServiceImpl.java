@@ -17,6 +17,7 @@ import cn.sticki.user.service.UserService;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,11 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> implements UserService {
 
 	@Resource
 	private UserMapper userMapper;
@@ -58,6 +63,16 @@ public class UserServiceImpl implements UserService {
 		LambdaQueryWrapper<UserView> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(UserView::getUsername, username);
 		return userViewMapper.selectOne(wrapper);
+	}
+
+	@Override
+	public Map<Integer, UserView> getUserListMap(Set<Integer> userIdList) {
+		List<UserView> userViewList = userViewMapper.selectBatchIds(userIdList);
+		HashMap<Integer, UserView> userMap = new HashMap<>();
+		for (UserView user : userViewList) {
+			userMap.put(user.getId(), user);
+		}
+		return userMap;
 	}
 
 	@Override
