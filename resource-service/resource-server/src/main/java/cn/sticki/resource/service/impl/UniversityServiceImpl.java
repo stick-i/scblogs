@@ -47,4 +47,12 @@ public class UniversityServiceImpl extends ServiceImpl<UniversityMapper, Univers
 		return universityMapper.selectList(wrapper);
 	}
 
+	@Override
+	public String getUniversityName(int schoolCode) {
+		LambdaQueryWrapper<University> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(University::getCode, schoolCode);
+		University university = universityMapper.selectOne(wrapper);
+		return university == null ? null : university.getName();
+	}
+
 }

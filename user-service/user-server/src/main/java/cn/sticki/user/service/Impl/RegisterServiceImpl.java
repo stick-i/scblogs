@@ -85,7 +85,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 			userSafety.setPassword(passwordEncoder.encode(userRegisterBO.getPassword()));
 			if (userSafetyMapper.insert(userSafety) > 0) return true;
 			else {
-				log.debug("注册失败，操作回滚");
+				log.info("注册失败，操作回滚");
 				throw new UserException("注册失败，数据异常");
 			}
 		}
@@ -96,11 +96,12 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	public boolean checkMailVerify(@NotNull String mailAddress, @NotNull String code) {
 		// 此处读取缓存中的数据，并在读取成功之后从缓存中删除
 		String verify = cache.get(mailAddress);
-		if (code.equals(verify)) {
-			cache.remove(mailAddress);
-			return true;
-		}
-		return false;
+		return code.equals(verify);
+		// if (code.equals(verify)) {
+		// 	cache.remove(mailAddress);
+		// 	return true;
+		// }
+		// return false;
 	}
 
 }

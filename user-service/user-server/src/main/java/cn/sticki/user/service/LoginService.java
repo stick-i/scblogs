@@ -1,9 +1,9 @@
 package cn.sticki.user.service;
 
-import cn.sticki.user.pojo.UserView;
+import cn.sticki.user.pojo.UserLoginBO;
 
 public interface LoginService {
 
-	UserView login(String username, String password);
+	UserLoginBO login(String username, String password);
 
 }
