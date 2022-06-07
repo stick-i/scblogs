@@ -67,6 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 
 	@Override
 	public Map<Integer, UserView> getUserListMap(Set<Integer> userIdList) {
+		if (userIdList == null || userIdList.size() == 0) return null;
 		List<UserView> userViewList = userViewMapper.selectBatchIds(userIdList);
 		HashMap<Integer, UserView> userMap = new HashMap<>();
 		for (UserView user : userViewList) {

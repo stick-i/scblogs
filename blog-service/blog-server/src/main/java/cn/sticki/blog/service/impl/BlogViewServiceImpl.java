@@ -1,7 +1,7 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.BlogContentMapper;
+import cn.sticki.blog.mapper.BlogContentHtmlMapper;
 import cn.sticki.blog.mapper.BlogViewMapper;
 import cn.sticki.blog.mapper.CollectBlogMapper;
 import cn.sticki.blog.mapper.LikeBlogMapper;
@@ -46,7 +46,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	private CollectBlogMapper collectBlogMapper;
 
 	@Resource
-	private BlogContentMapper blogContentMapper;
+	private BlogContentHtmlMapper blogContentHtmlMapper;
 
 	@Resource
 	private UserClient userClient;
@@ -117,12 +117,13 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	}
 
 	@Override
-	public BlogContentVO getBlogContent(Integer id, Integer userId) {
+	public BlogContentVO getBlogContentHtml(Integer id, Integer userId) {
 		BlogContentVO blog = new BlogContentVO();
 		// 博客内容
-		blog.setContent(blogContentMapper.selectById(id));
+		blog.setContent(blogContentHtmlMapper.selectById(id));
 		// 博客基本信息
 		BlogView blogView = blogViewMapper.selectById(id);
+		if (blogView == null) return null;
 		BlogStatusBO blogStatusBO = BeanUtil.copyProperties(blogView, BlogStatusBO.class);
 		if (userId != null) {
 			// 获取该用户对该博客的状态

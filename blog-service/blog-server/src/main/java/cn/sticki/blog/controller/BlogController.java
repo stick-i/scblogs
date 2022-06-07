@@ -89,7 +89,7 @@ public class BlogController {
 	 */
 	@GetMapping("/content")
 	public RestResult<BlogContentVO> getBlogContentVO(@RequestParam Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
-		BlogContentVO blogContent = blogViewService.getBlogContent(id, userId);
+		BlogContentVO blogContent = blogViewService.getBlogContentHtml(id, userId);
 		return new RestResult<>(blogContent);
 	}
 

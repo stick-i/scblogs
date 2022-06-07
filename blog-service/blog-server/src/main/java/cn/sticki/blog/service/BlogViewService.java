@@ -48,6 +48,6 @@ public interface BlogViewService extends IService<BlogView> {
 	 * @param id     博客id
 	 * @param userId 查看的用户id（如果有）
 	 */
-	BlogContentVO getBlogContent(Integer id, Integer userId);
+	BlogContentVO getBlogContentHtml(Integer id, Integer userId);
 
 }

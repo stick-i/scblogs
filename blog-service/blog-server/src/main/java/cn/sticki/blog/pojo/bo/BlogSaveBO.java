@@ -36,6 +36,11 @@ public class BlogSaveBO {
 	String content;
 
 	/**
+	 * 内容(html格式)
+	 */
+	String contentHtml;
+
+	/**
 	 * 博客状态码
 	 */
 	Integer status;
