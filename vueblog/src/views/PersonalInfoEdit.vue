@@ -1,8 +1,8 @@
 <template>
   <div class="body">
+	<!-- 顶部导航栏部分 -->
+	<TopBarA></TopBarA>
     <div class="ContentA">
-      <!-- 顶部导航栏部分 -->
-      <TopBarA></TopBarA>
       <!-- 中间部分内容区域 -->
       <div class="centerContent">
         <div class="contentMiddle">
@@ -143,8 +143,6 @@ export default {
   width: 100%;
   min-height: 100vh;
   background: rgb(243, 244, 246);
-  display: flex;
-  justify-content: center;
 }
 .ContentA {
   width: 1280px;
@@ -153,7 +151,7 @@ export default {
 }
 .centerContent {
   width: 100%;
-  padding-top: 70px;
+  padding-top: 2vh;
 }
 .contentbottom{
   margin-top: auto;
@@ -187,7 +185,7 @@ export default {
 }
 
 .contentleftA li a {
-  font-size: 16px;
+  font-size: 0.8rem;
   color: black;
 }
 

@@ -8,9 +8,10 @@
             <div v-if="!noneLike" class="myLikeA" v-for="(item,index) in likeList" :key="item.id" >
                 <div class="myLikeTitle" @click="TurnToDetail(item.id)">{{item.title}}</div>
                 <div class="myLikeStar">
-					<svg class="icon"
-						 :class="item.thumbs?'active':'unactive'"
-						 @click="Like(item.id,item.authorId,index)"
+					{{item.thumbs}}
+					<svg
+						:class="{active2:item.thumbs}"
+						 @click="Like(item.id,item.authorId,index,item.thumbs,start)"
 						 aria-hidden="true">
 						<use xlink:href="#icon-dianzan_kuai"></use>
 						<!-- use是复制一个图标的意思 -->
@@ -34,6 +35,7 @@ export default {
 			},
 			// 后端没有数据返回时显示此部分
 			noneLike: false,
+			start:true,
 		}
     },
     mounted(){
@@ -68,17 +70,19 @@ export default {
             // 开始收藏状态修正
             this.Like(index)
         },
-        Like(blogid,authorId,index){
+        Like(blogid,authorId,index,yesorno,we){
 			let formdata = new FormData()
-
+			console.log("传入的数据状态",yesorno,we)
 			formdata.append("blogId", blogid)
 			formdata.append("id",authorId)
 
 			this.$axios.post('/blog/action/like',formdata,this.config).then(res=>{
 					if(res.status){
 						this.likeList[index].thumbs=!this.likeList[index].thumbs
+						this.start=this.likeList[index].thumbs
+						console.log("变化之后的点赞激活状态",index,this.likeList[index].thumbs)
 						this.$message({
-							message: '操作失败',
+							message: '操作成功',
 							type:'success',
 						});
 					}else {
@@ -93,7 +97,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .content{
     width: 100%;
     background: linear-gradient(to top, rgb(230, 113, 186), #FF834FFF);
@@ -107,17 +111,17 @@ export default {
     width:100%;
     height: 500px;
     display:block;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: bold;
     line-height: 500px;
     text-align: center;
-    color: #9dffe4;
+    color: white;
 }
 .myLike .myLikeB{
     width: 100%;
     height: 100px;
     line-height: 100px;
-    font-size: 28px;
+    font-size: 1.5rem;
     font-weight: 800;
     color: #fff7ec;
 }
@@ -138,7 +142,7 @@ export default {
     box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .myLikeA .myLikeTitle{
-    font-size: 20px;
+    font-size: 1rem;
     margin-left: 40px;
     font-weight: 600;
     color: rgb(56, 52, 52);
@@ -154,12 +158,12 @@ export default {
 .myLikeA .myLikeStar svg{
 	width: 30px;
 	height: 30px;
-	fill: red;
+	fill: #ffffff;
+	//&.active{
+	//	fill: #25ff6e;
+	//}
 }
-active{
-	fill: red;
-}
-unactive{
-	fill: #0ec7ff;
+.active2{
+	fill: #7d00ff;
 }
 </style>

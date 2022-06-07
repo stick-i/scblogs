@@ -78,9 +78,67 @@
               <a
                 data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'
                 data-report-query="spm=3001.4482"
-                href="https://edu.csdn.net/"
-              >
-                长沙学院<>
+				@click="centerDialogVisible = true">
+				  <el-popover
+					  placement="top"
+					  width="500"
+					  v-model="visible"
+					  :key="showschool"
+				  >
+					  <el-row
+					  >
+						  <el-col :span="8">
+							  <el-select
+								  v-model="provinceId"
+								  @focus="getProvinces"
+								  placeholder="请选择省份"
+							  >
+								  <el-option
+									  v-for="item in provinceList"
+									  :key="item.id"
+									  :label="item.name"
+									  :value="item.id"
+								  >
+								  </el-option>
+							  </el-select>
+						  </el-col>
+						  <el-col :span="8">
+							  <el-select
+								  v-model="cityId"
+								  @focus="getCities"
+								  placeholder="请选择城市"
+							  >
+								  <el-option
+									  v-for="item in cityList"
+									  :key="item.id"
+									  :label="item.name"
+									  :value="item.id"
+								  >
+								  </el-option>
+							  </el-select>
+						  </el-col>
+						  <el-col :span="8">
+							  <el-select
+								  v-model="schoolCode"
+								  @focus="getSchools"
+								  placeholder="请选择学校"
+							  >
+								  <el-option
+									  v-for="item in schoolList"
+									  :key="item.id"
+									  :label="item.name"
+									  :value="item.code"
+								  >
+								  </el-option>
+							  </el-select>
+						  </el-col>
+					  </el-row>
+					  <div style="text-align: right; margin: 10px">
+						  <el-button size="mini" type="text" @click="Cancel()">取消</el-button>
+						  <el-button type="primary" size="mini" @click="ChangeSchool()">确定</el-button>
+					  </div>
+					  <el-text slot="reference">长沙学院</el-text>
+				  </el-popover>
                 <!-- 资源分享 -->
               </a>
             </li>
@@ -292,7 +350,22 @@ export default {
       key: "",
       // 是否显示搜索框
       isShowInput: "block",
-      path:this.$route.fullPath
+      path:this.$route.fullPath,
+	// 弹出框显示
+		showschool:0,
+		myschool:"",//用户学校
+		visible:false,
+		provinceId: "", // 省份编码
+		provinceList:[],//省份列表数据
+		schoolList:[],//学校列表
+		schoolCode:"",
+		cityId:"",//城市编码
+		cityList:[],//城市列表
+		config:{
+		  headers:{
+			  token:localStorage.getItem('token')
+		  }
+		}
     };
   },
 
@@ -302,6 +375,7 @@ export default {
     this.isShowAvatar = window.localStorage.isShowAvatar;
     console.log(this.$route.fullPath)
     this.showInput();
+	// this.GetMySchool()
   },
   mounted() {
     this.bus.$on("avatarlink", (data) => {
@@ -317,9 +391,85 @@ export default {
       this.path = to.fullPath;
       console.log(this.path)
       this.showInput();
-    }
+    },
+	  provinceId:{
+		  handler(newName, oldName) {
+			  this.cityId=''
+			  this.schoolCode=''
+		  },
+		  immediate: true
+	  },
+	  cityId:{
+		  handler(newName, oldName) {
+			  this.schoolCode=''
+		  },
+		  immediate: true
+	  }
   },
   methods: {
+	  //取消切换用户学校
+	  Cancel(){
+		  this.visible = !this.visible
+		  this.provinceId=''
+		  this.cityId=''
+		  this.schoolCode=''
+		  // this.showschool++
+	  },
+	  //获取用户学校
+	  GetMySchool(){
+		  this.myschool=JSON.parse(localStorage.getItem('userMessage')).schoolName
+	  },
+	  //修改用户学校
+	  ChangeSchool(){
+		  let formdata=new FormData()
+		  formdata.append('code',this.schoolCode)
+		  this.$axios.put('/user/school',formdata,this.config).then(res=>{
+			  // if()
+		  })
+		  this.visible=false
+	  },
+	  // 获取省份
+	  getProvinces() {
+		  this.$axios.get("/resource/province").then((res) => {
+			  this.provinceList = res.data.data;
+			  console.log("返回的省份数据",this.provinceList,"选中的省份id",this.provinceId)
+		  });
+
+	  },
+	  // 获取城市
+	  getCities() {
+		  if(this.provinceId == '') {
+			  // console.log("请先选取省份")
+			  this.$message({
+				  showClose: true,
+				  message: "请先选取省份",
+				  type: "warning",
+			  });
+		  } else {
+			  this.$axios
+				  .get("/resource/city?provinceId=" + this.provinceId)
+				  .then((res) => {
+					  this.cityList = res.data.data;
+				  });
+		  }
+	  },
+	  // 获取学校
+	  getSchools() {
+		  if(this.cityId == '') {
+			  // console.log("请先选取城市")
+			  this.$message({
+				  showClose: true,
+				  message: "请先选取城市",
+				  type: "warning",
+			  });
+		  } else {
+			  this.$axios
+				  .get("/resource/university?cityId=" + this.cityId)
+				  .then((res) => {
+					  this.schoolList = res.data.data;
+				  });
+		  }
+	  },
     // 显示搜索框
     showInput() {
       if(this.path == '/blog/search') {

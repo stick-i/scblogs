@@ -51,7 +51,7 @@ export default {
 			//博客列表显示部分
 			List: [],
 			config: {
-				params: {status: "0", page: "0"},
+				params: {status: 0, page: 0},
 				headers: {
 					'token': localStorage.getItem('token')
 				}
@@ -59,30 +59,22 @@ export default {
 		}
 	},
 	async created() {
-		await this.GetData()
+		// await this.GetData()
 		console.log("获取到的博客列表数据", this.List)
 	},
 	mounted() {
 
 	},
 	methods: {
-		// 初始化获取数据
-		async GetData() {
-			this.List = []
-			await this.$axios.get("/blog/list", this.config).then(res => {
-				this.List = res.data.data.records
-				// 将传参的页数标记增大1
-				this.config.params.page++
-			})
-		},
 		// 底部刷新函数
 		async infiniteHandler($state) {
 			// 个人博客列表数据获取
-			await this.$axios
-				.get("/blog/list", this.config)
+			this.$axios
+				.get("/blog/list/new", this.config)
 				.then((res) => {
+					console.log("下拉函数请求")
 					if (res.data.data.records.length > 0) {
-						this.config.params.page++;  // 下一页
+						this.config.params.page+=1;  // 下一页
 						this.List = this.List.concat(res.data.data.records);
 						$state.loaded();
 					} else {
@@ -117,10 +109,10 @@ export default {
 
 .contentright .F-1 {
 	width: 100%;
-	height: 200px;
+	height: 150px;
 	margin-bottom: 20px;
 	border-radius: 5px;
-	padding: 20px 20px;
+	padding: 10px 20px;
 	display: flex;
 	align-items: center;
 	background: white;
@@ -135,8 +127,8 @@ export default {
 }
 
 .contentright .F-1 .BlogContent-image {
-	width: 200px;
-	height: 150px;
+	width: 170px;
+	height: 120px;
 	border-radius: 10px;
 	overflow: hidden;
 	display: flex;
@@ -151,35 +143,34 @@ export default {
 	height: 100%;
 }
 .contentright .F-1 .BlogContent-a {
-	width:750px;
-	height: 150px;
+	width:50rem;
+	height: 100px;
 }
 
 .contentright .F-1 .BlogContent-a .BlogContent-1 {
 	/* width: 100%; */
-	height: 60px;
-	line-height: 60px;
-	font-size: 28px;
+	height: 30%;
+	line-height: 2rem;
+	font-size: 16px;
 	font-weight: 600;
 	color: black;
 }
 
 .contentright .F-1 .BlogContent-a .BlogContent-2 {
-	/* width: 100%; */
-	min-height: 40px;
-	line-height: 30px;
-	font-size: 20px;
+	height: 40%;
+	line-height: 2rem;
+	font-size: 14px;
 	font-weight: 500;
 	color: black;
 }
 
 .contentright .F-1 .BlogContent-a .BlogContent-3 {
-	/* width: 100%; */
-	height: 50px;
-	line-height: 50px;
-	font-size: 18px;
+	height: 30%;
+	line-height: 20px;
+	font-size: 14px;
 	font-weight: 400;
 	color: black;
+	bottom: 0;
 }
 
 .contentright .F-1 .BlogContent-a .BlogContent-3 span {

@@ -59,12 +59,17 @@ export default {
         return {
             textarea:"",
             iconList:[{icon:' icon-tupian',option:'图片',id:1}],
-            // 预览的照片地址   
+            // 预览的照片地址
             dialogImageUrl: '',
             dialogVisible: false,
             fileList:[],
             // 底部显示部分
             optionIndex:1,
+			config:{
+				headers:{
+					token:localStorage.getItem('token')
+				}
+			}
         }
     },
     methods:{
@@ -81,7 +86,14 @@ export default {
                 this.$message.error('请编辑内容！');
                 return
             }
-            console.log("需要发布的部分:",this.textarea.length)
+			let formdata=new FormData()
+			formdata.append('content',this.textarea)
+			formdata.append('schoolCode',)
+			//添加院校代码
+			this.$axios.post('/blink',this.config).then(res=>{
+				console.log(res)
+			})
+            console.log("需要发布的文字部分:",this.textarea)
         },
         // 点击放大照片预览
          handlePictureCardPreview(file) {
@@ -105,7 +117,7 @@ export default {
             })
         }
     }
-} 
+}
 </script>
 
 <style scoped>
