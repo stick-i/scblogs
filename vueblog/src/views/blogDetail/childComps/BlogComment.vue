@@ -1,8 +1,9 @@
 <template>
   <div>
     <div class="comment-container">
+			{{this.commentList}}
       <div class="comment-title">
-        评论 <span>{{ facomment.allCount }}</span>
+        评论 <span>{{ commentList.allCount }}</span>
       </div>
       <div class="comment-edit-box">
         <div class="user-img">
@@ -24,7 +25,7 @@
         <div class="comment-list-box">
           <ul
             class="comment-list"
-            v-for="(item, index) in facomment.records"
+            v-for="(item, index) in commentList.records"
             :key="index"
           >
             <!-- 父评论 -->
@@ -223,10 +224,42 @@ export default {
       blogId: this.$route.params.blogId,
       page: "2",
       pageSize: "3",
+      // 评论列表
+      commentList:{},
     };
   },
-  created() {
+	mounted() {
+		this.$axios
+			.get("/comment/list", {
+				params: {
+					blogId: this.blogId,
+					page: 1,
+					pageSize: this.pageSize,
+				},
+			})
+			.then((res) => {
+				console.log(res.data.data)
+				this.commentList = res.data.data
+				console.log("总",this.commentList.allCount)
+				// this.$emit("recordsChange", res.data.data);
+			});
+	},
+	created() {
     this.avatarUrl = window.localStorage.avatarUrl;
+    this.$axios
+      .get("/comment/list", {
+        params: {
+          blogId: this.blogId,
+          page: 1,
+          pageSize: this.pageSize,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data)
+        this.commentList = res.data.data
+        console.log("总",this.commentList.allCount)
+        // this.$emit("recordsChange", res.data.data);
+      });
   },
   methods: {
     showFirstEditBox(id) {
@@ -247,6 +280,7 @@ export default {
           // 更新评论列表
           this.$emit("func");
         });
+
     },
     // 发布二级评论
     secondComment(parentId) {
@@ -299,7 +333,7 @@ export default {
           },
         })
         .then((res) => {
-          // this.facomment = res.data.data
+          // console.log(res)
           this.$emit("recordsChange", res.data.data);
         });
     },

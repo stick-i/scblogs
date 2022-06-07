@@ -141,13 +141,15 @@
         <div class="tabs">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="关注" name="first">
-              <HomeArticleItem />
+              <FollowArticleItem />
             </el-tab-pane>
             <el-tab-pane label="推荐" name="second">
-              <HomeArticleItem style="margin-top: 2px" />
+              <RecommendArticleItem style="margin-top: 2px" />
             </el-tab-pane>
-            <el-tab-pane label="资讯" name="third">资讯</el-tab-pane>
-            <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>
+            <el-tab-pane label="最新" name="third">
+							<NewArticleItem/>
+						</el-tab-pane>
+<!--            <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>-->
           </el-tabs>
         </div>
       </div>
@@ -155,23 +157,23 @@
       <!-- 右边-->
       <div class="article-right">
         <!--        卡片1-->
-        <div class="template">
-          <div class="template-title">
-            <span>热门推荐</span>
-          </div>
-          <div class="template-cont">
-            <div class="hot" v-for="item in 5">
-              <a target="_blank" href="#" class="hot-img">
-                <img src="../../assets/img/home/003.jpg" alt="" />
-              </a>
-              <div class="hot-cont">
-                <a target="_blank" href="#">
-                  <div>【JS】求斐波那契数列中的奇数之和</div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+<!--        <div class="template">-->
+<!--          <div class="template-title">-->
+<!--            <span>热门推荐</span>-->
+<!--          </div>-->
+<!--          <div class="template-cont">-->
+<!--            <div class="hot" v-for="item in 5">-->
+<!--              <a target="_blank" href="#" class="hot-img">-->
+<!--                <img src="../../assets/img/home/003.jpg" alt="" />-->
+<!--              </a>-->
+<!--              <div class="hot-cont">-->
+<!--                <a target="_blank" href="#">-->
+<!--                  <div>【JS】求斐波那契数列中的奇数之和</div>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
         <!--        卡片2-->
         <div class="template">
           <div class="template-title">
@@ -216,18 +218,30 @@
           <div class="template-cont">
             <div class="hot1">
               <div class="our-content">
-                <!--                <a href="https://beian.miit.gov.cn" target="_blank">-->
-                <!--                  <div style="color: #fc5531">湘ICP备2021015916号-2</div>-->
-                <!--                </a>-->
-                <div style="width: 300px; margin: 0 auto; padding: 20px 0">
+                <div>
+									<div style="display: flex;justify-content: center;margin-bottom: 10px">
+										<a target="_blank" href="https://github.com/stick-i/scblogs" style="color:#555666;">GitHub地址&nbsp;</a>
+										|
+										<a target="_blank" href="https://gitee.com/sticki/scblogs" style="color:#555666;">&nbsp;Gitee地址</a>
+									</div>
+									<a target="_blank" href="#" style="
+												display:flex;
+												justify-content: center;
+                        height: 20px;
+                        line-height: 20px;
+                        color: #939393;
+                        margin-bottom: 10px
+                      ">湘ICP备2021015916号-2</a>
                   <a
                     target="_blank"
                     href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010502001444"
                     style="
-                      display: inline-block;
+                      display: flex;
+                      justify-content: center;
                       text-decoration: none;
                       height: 20px;
                       line-height: 20px;
+                      margin-bottom: 10px
                     "
                   >
                     <img
@@ -236,12 +250,10 @@
                         width: 20px;
                         height: 20px;
                         line-height: 20px;
-                        float: left;
                       "
                     />
                     <p
                       style="
-                        float: left;
                         height: 20px;
                         line-height: 20px;
                         margin: 0px 0px 0px 5px;
@@ -263,14 +275,18 @@
 <script>
 import TopBar from "../../components/content/topbar/TopBar";
 import Swiper from "@/components/common/swiper/Swiper";
-import HomeArticleItem from "@/views/home/childComps/HomeArticleItem";
+import RecommendArticleItem from "@/views/home/childComps/RecommendArticleItem";
+import NewArticleItem from "@/views/home/childComps/NewArticleItem";
+import FollowArticleItem from "@/views/home/childComps/FollowArticleItem";
 
 export default {
   name: "Home",
   components: {
     Swiper,
     TopBar,
-    HomeArticleItem,
+		RecommendArticleItem,
+		NewArticleItem,
+		FollowArticleItem,
   },
   data() {
     return {

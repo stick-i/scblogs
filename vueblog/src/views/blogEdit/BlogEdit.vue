@@ -41,6 +41,7 @@
         <blog-edit-dialog
           :blogTitle="ruleForm.title"
           :blogContent="ruleForm.content"
+					:blogContentHtml="ruleForm.contentHtml"
           :dialogShow="dialogShow"
           @dialogShowChange="dialogShowChange"
         ></blog-edit-dialog>
@@ -61,12 +62,16 @@ export default {
   },
   data() {
     return {
+			// 目录开始
+			tocs:[],
+			// 目录结束
       avatarUrl:'',
       ruleForm: {
         id:'',
         title: '',
         description:'',
         content: '',
+				contentHtml:'',
         status:2
       },
       dialogShow: false,
@@ -104,7 +109,7 @@ export default {
     // 保存文章
     saveForm() {
       this.$axios
-        .post("/blog-console/blog",
+        .post("/blog/console/blog",
           qs.stringify(this.ruleForm),
           { headers: { 'token': localStorage.getItem("token") } }
         ).then( res =>{
@@ -133,6 +138,8 @@ export default {
           type: "warning",
         });
       } else {
+				this.ruleForm.contentHtml = this.$refs.md.d_render
+				// console.log(this.ruleForm.contentHtml)
         this.dialogShow = true;
       }
     },
