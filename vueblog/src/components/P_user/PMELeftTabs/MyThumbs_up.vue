@@ -8,8 +8,9 @@
             <div v-if="!noneLike" class="myLikeA" v-for="(item,index) in likeList" :key="item.id" >
                 <div class="myLikeTitle" @click="TurnToDetail(item.id)">{{item.title}}</div>
                 <div class="myLikeStar">
+					{{item.thumbs}}
 					<svg class="icon"
-						 :class="item.thumbs?'active':'unactive'"
+						 :class="{'active':item.thumbs}"
 						 @click="Like(item.id,item.authorId,index)"
 						 aria-hidden="true">
 						<use xlink:href="#icon-dianzan_kuai"></use>
@@ -34,6 +35,7 @@ export default {
 			},
 			// 后端没有数据返回时显示此部分
 			noneLike: false,
+			// fff
 		}
     },
     mounted(){
@@ -55,6 +57,7 @@ export default {
                 }
                 //为所有数据添加字段状态thumbs
                 this.AddStation()
+				console.log("添加字段状态thumbs后",this.likeList)
             })
         },
         //添加收藏列表的初始状态true
@@ -93,7 +96,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .content{
     width: 100%;
     background: linear-gradient(to top, rgb(230, 113, 186), #FF834FFF);
@@ -154,12 +157,12 @@ export default {
 .myLikeA .myLikeStar svg{
 	width: 30px;
 	height: 30px;
-	fill: red;
+	fill: white;
+		&.active{
+			fill:red;
+		}
 }
-active{
-	fill: red;
-}
-unactive{
-	fill: #0ec7ff;
-}
+
+
+
 </style>
