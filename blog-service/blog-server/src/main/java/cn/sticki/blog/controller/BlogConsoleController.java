@@ -1,9 +1,9 @@
 package cn.sticki.blog.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogContent;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogListConsoleVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,7 +69,8 @@ public class BlogConsoleController {
 		// 使用mybatis进行分页
 		IPage<BlogView> blogIPage = new Page<>(page, pageSize);
 		blogViewService.page(blogIPage, wrapper);
-		BlogListConsoleVO blogListConsoleVO = BeanUtil.copyProperties(blogIPage, BlogListConsoleVO.class);
+		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
+		BeanUtils.copyProperties(blogIPage, BlogListConsoleVO.class);
 		// 获取博客统计数据
 		blogListConsoleVO.setCount(blogService.getBlogCount(id));
 		return new RestResult<>(blogListConsoleVO);
@@ -88,6 +90,9 @@ public class BlogConsoleController {
 			return new RestResult<>(400, "参数异常");
 		// 如果是修改博客，则需要有至少一个参数
 		if (blog.getId() != null && blog.getContent() == null && blog.getTitle() == null && blog.getDescription() == null && blog.getStatus() == null)
+			return new RestResult<>(400, "参数异常");
+		// html 和 md要不都为null，要不都不为null
+		if ((blog.getContent() == null) != (blog.getContentHtml() == null))
 			return new RestResult<>(400, "参数异常");
 		// 检查封面图
 		if (FileUtils.isNotEmpty(blog.getCoverImageFile())) {
@@ -145,6 +150,16 @@ public class BlogConsoleController {
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		String url = blogService.uploadImage(file);
 		return new RestResult<>(url);
+	}
+
+	/**
+	 * 获取博客可编辑内容，用于作者编辑博客时调用
+	 *
+	 * @param blogId 博客id
+	 */
+	@GetMapping("/content")
+	public RestResult<BlogContent> getBlogContent(@RequestParam Integer blogId, @RequestHeader Integer id) {
+		return new RestResult<>(blogService.getBlogContent(blogId, id));
 	}
 
 }

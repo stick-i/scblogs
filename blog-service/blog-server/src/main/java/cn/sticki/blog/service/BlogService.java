@@ -3,6 +3,7 @@ package cn.sticki.blog.service;
 import cn.sticki.blog.pojo.bo.BlogCountBO;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogContent;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,5 +29,10 @@ public interface BlogService extends IService<Blog> {
 	 * @param coverImage 封面图
 	 */
 	String uploadImage(MultipartFile coverImage);
+
+	/**
+	 * 获取博客md，用于作者编辑博客内容
+	 */
+	BlogContent getBlogContent(Integer blogId, Integer userId);
 
 }

@@ -26,12 +26,13 @@
             <el-input v-model="ruleForm.mobile"></el-input>
           </el-form-item>
 
-          <el-form-item label="所在学校">
+          <el-form-item label="所在学校" prop="school">
             <el-row>
               <el-col :span="8">
                 <el-select
                   v-model="provinceId"
                   @focus="getProvinces"
+                  @change="changeProvince"
                   placeholder="请选择省份"
                 >
                   <el-option
@@ -47,6 +48,7 @@
                 <el-select
                   v-model="cityId"
                   @focus="getCities"
+                  @change="changeCity"
                   placeholder="请选择城市"
                 >
                   <el-option
@@ -120,6 +122,38 @@ const TIME_COUNT = 90; // 倒计时的时间
 export default {
   name: "",
   data() {
+    // 用户名验证
+    let validateUserName = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("用户名不可为空"));
+      } else {
+        if (value !== "") {
+          let reg = /^[a-zA-Z0-9_-]{5,16}$/;
+          if (!reg.test(value)) {
+            callback(
+              new Error(
+                "只能是字母数字下划线中划线，且必须在5-16位之间的用户名"
+              )
+            );
+          }
+        }
+        callback();
+      }
+    };
+    // 密码验证
+    let validatePassWord = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("密码不可为空"));
+      } else {
+        if (value !== "") {
+          let reg = /^[a-zA-Z0-9!@#$%^&*?_-]{5,20}$/;
+          if (!reg.test(value)) {
+            callback(new Error("只能是数字字母和特殊字符，长度为5-20位"));
+          }
+        }
+        callback();
+      }
+    };
     // 手机号码验证
     let validateMobilePhone = (rule, value, callback) => {
       if (value === "") {
@@ -153,16 +187,16 @@ export default {
         mail: "",
         mailVerify: "",
         mobile: "",
-        schoolCode:"",
+        schoolCode: "",
       },
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 5, max: 25, message: "最少5个字符", trigger: "blur" },
+          // { required: true, message: "请输入用户名", trigger: "blur" },
+          { validator: validateUserName, trigger: "blur" },
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, message: "最少6个字符", trigger: "blur" },
+          // { required: true, message: "请输入密码", trigger: "blur" },
+          { validator: validatePassWord, trigger: "blur" },
         ],
         mobile: [{ validator: validateMobilePhone, trigger: "blur" }],
         mail: [
@@ -190,10 +224,17 @@ export default {
         this.provinceList = res.data.data;
       });
     },
+    // 省份修改，拉取对应城市列表
+    changeProvince() {
+      this.$axios.get("/resource/province").then((res) => {
+        this.provinceList = res.data.data;
+      });
+      this.cityId = "";
+      this.ruleForm.schoolCode = "";
+    },
     // 获取城市
     getCities() {
-      if(this.provinceId == '') {
-        // console.log("请先选取省份")
+      if (this.provinceId == "") {
         this.$message({
           showClose: true,
           message: "请先选取省份",
@@ -204,14 +245,21 @@ export default {
           .get("/resource/city?provinceId=" + this.provinceId)
           .then((res) => {
             this.cityList = res.data.data;
-            // console.log(res);
           });
       }
     },
+    // 城市修改，拉取对应区域列表
+    changeCity() {
+      this.$axios
+        .get("/resource/city?provinceId=" + this.provinceId)
+        .then((res) => {
+          this.cityList = res.data.data;
+        });
+      this.ruleForm.schoolCode = "";
+    },
     // 获取学校
     getSchools() {
-      if(this.cityId == '') {
-        // console.log("请先选取城市")
+      if (this.cityId == "") {
         this.$message({
           showClose: true,
           message: "请先选取城市",
@@ -222,11 +270,11 @@ export default {
           .get("/resource/university?cityId=" + this.cityId)
           .then((res) => {
             this.schoolList = res.data.data;
-            // console.log(res);
             // console.log(this.schoolCode)
           });
       }
     },
+
     obtainCode(mailItem) {
       if (this.ruleForm.mail == "") {
         this.$message({
@@ -254,8 +302,8 @@ export default {
               });
             }
             if (res.data.code == 401 && res.data.status == false) {
-              console.log(res.data.message)
-              let message = res.data.message
+              console.log(res.data.message);
+              let message = res.data.message;
               this.$message({
                 showClose: true,
                 message: message,
@@ -285,7 +333,7 @@ export default {
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid) {
+        if (valid&&this.ruleForm.schoolCode!='') {
           this.$axios
             .post("/register/register", qs.stringify(this.ruleForm))
             .then((res) => {
@@ -306,8 +354,8 @@ export default {
                 });
               }
               if (res.data.code == 401 && res.data.status == false) {
-                console.log(res.data.message)
-                let message = res.data.message
+                console.log(res.data.message);
+                let message = res.data.message;
                 this.$message({
                   showClose: true,
                   message: message,

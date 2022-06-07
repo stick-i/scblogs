@@ -2,7 +2,7 @@
 
 <p align=center>
   <a href="http://www.scblogs.cn">
-    <img src="http://cdn.scblogs.cn/scblogs-logo.png" alt="校园博客">
+    <img src="./document/image/scblogs-logo.png" alt="校园博客">
   </a>
 </p>
 

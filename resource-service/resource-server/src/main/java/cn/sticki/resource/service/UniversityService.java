@@ -32,4 +32,11 @@ public interface UniversityService extends IService<University> {
 	 */
 	List<University> getUniversityList(int cityId);
 
+	/**
+	 * 获取高校名称
+	 *
+	 * @param schoolCode 院校代码
+	 */
+	String getUniversityName(int schoolCode);
+
 }

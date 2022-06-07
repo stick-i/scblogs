@@ -343,6 +343,8 @@ export default {
   name: "TopBar",
   data() {
     return {
+    	// 信息
+			userMessage:{},
       // 头像
       avatarUrl: require("../../../assets/img/home/default_avatar.jpg"),
       isShowAvatar: false,
@@ -378,11 +380,13 @@ export default {
 	// this.GetMySchool()
   },
   mounted() {
-    this.bus.$on("avatarlink", (data) => {
-      this.avatarUrl = data;
+    this.bus.$on("userMessage", (data) => {
+      this.avatarUrl = JSON.parse(data).avatarUrl;
       this.isShowAvatar = true;
+      this.userMessage = data;
       window.localStorage.avatarUrl = this.avatarUrl;
       window.localStorage.isShowAvatar = this.isShowAvatar;
+      window.localStorage.userMessage = this.userMessage;
     });
   },
   // 监听

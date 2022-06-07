@@ -66,6 +66,7 @@ export default {
   props: {
     blogTitle: String,
     blogContent: String,
+		blogContentHtml:String,
     dialogShow: {
       type: Boolean,
       default: false,
@@ -82,6 +83,7 @@ export default {
         description: "",
         coverImage: null,
         content: this.blogContent,
+				contentHtml: this.blogContentHtml,
         status: 1,
       },
       rules: {
@@ -127,15 +129,17 @@ export default {
           this.formData.append('title',this.ruleForm.title);
           this.formData.append('description',this.ruleForm.description);
           this.formData.append('content',this.ruleForm.content);
+					this.formData.append('contentHtml',this.ruleForm.contentHtml);
           this.formData.append('status',this.ruleForm.status);
 
           this.$refs.uploadxls.submit();    // 提交表单
           // this.$refs.uploadxls.clearFiles();    // 清空图片数据
 
-          this.$axios.post('/blog-console/blog',this.formData,{
+          this.$axios.post('/blog/console/blog',this.formData,{
                 headers: { token: localStorage.getItem("token") },
               }).then(res=>{
             console.log(res)
+						// console.log(this.ruleForm.contentHtml)
             if(res.data.code == 200&& res.data.status==true) {
               // this.$message({
               //   showClose: true,

@@ -1,15 +1,15 @@
 package cn.sticki.user.controller;
 
-import cn.sticki.common.result.ListVO;
 import cn.sticki.common.result.RestResult;
-import cn.sticki.user.pojo.FansView;
-import cn.sticki.user.pojo.FollowView;
+import cn.sticki.user.pojo.FansViewListVO;
+import cn.sticki.user.pojo.FollowViewListVO;
 import cn.sticki.user.service.UserFollowService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 用户关注接口
@@ -32,8 +32,8 @@ public class FollowController {
 	 * @return 关注列表数据
 	 */
 	@GetMapping("/follow")
-	public RestResult<ListVO<FollowView>> getFollowList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
-		ListVO<FollowView> listVO = userFollowService.getFollowList(id, page, pageSize);
+	public RestResult<FollowViewListVO> getFollowList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+		FollowViewListVO listVO = userFollowService.getFollowList(id, page, pageSize);
 		return new RestResult<>(listVO);
 	}
 
@@ -44,8 +44,8 @@ public class FollowController {
 	 * @return 粉丝列表数据
 	 */
 	@GetMapping("/fans")
-	public RestResult<ListVO<FansView>> getFansList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
-		ListVO<FansView> listVO = userFollowService.getFansList(id, page, pageSize);
+	public RestResult<FansViewListVO> getFansList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+		FansViewListVO listVO = userFollowService.getFansList(id, page, pageSize);
 		return new RestResult<>(listVO);
 	}
 
@@ -63,6 +63,15 @@ public class FollowController {
 		} catch (Exception e) {
 			return new RestResult<>(200, "fail", null, false);
 		}
+	}
+
+	/**
+	 * 获取关注列表id
+	 */
+	@GetMapping("/followId")
+	public RestResult<List<Integer>> getFollowIdList(Integer userId) {
+		List<Integer> followIdList = userFollowService.getFollowIdList(userId);
+		return new RestResult<>(followIdList);
 	}
 
 }

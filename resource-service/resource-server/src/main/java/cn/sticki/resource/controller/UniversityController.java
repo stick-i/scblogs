@@ -53,4 +53,14 @@ public class UniversityController {
 		return new RestResult<>(universityService.getUniversityList(cityId));
 	}
 
+	/**
+	 * 通过院校代码获取名称
+	 *
+	 * @param schoolCode 院校代码
+	 */
+	@GetMapping("/university/name")
+	public RestResult<String> getUniversityName(@RequestParam Integer schoolCode) {
+		return new RestResult<>(universityService.getUniversityName(schoolCode));
+	}
+
 }
