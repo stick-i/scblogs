@@ -17,6 +17,16 @@ public interface BlogViewService extends IService<BlogView> {
 	BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize);
 
 	/**
+	 * 获取最新博客列表
+	 */
+	BlogStatusListVO getNewBlogList(Integer userId, Integer schoolCode, int page, int pageSize);
+
+	/**
+	 * 获取最新博客列表
+	 */
+	BlogStatusListVO getFollowBlogList(Integer userId, int page, int pageSize);
+
+	/**
 	 * 获取搜索博客列表
 	 *
 	 * @param search 搜索值

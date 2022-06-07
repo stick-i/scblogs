@@ -34,4 +34,10 @@ public interface UserClient {
 	@PostMapping("/user/list")
 	RestResult<Map<Integer, UserDTO>> getUserList(@RequestParam Set<Integer> userIdList);
 
+	/**
+	 * 获取用户关注者id列表
+	 */
+	@GetMapping("/user/followId")
+	RestResult<List<Integer>> getFollowIdList(@RequestParam Integer userId);
+
 }

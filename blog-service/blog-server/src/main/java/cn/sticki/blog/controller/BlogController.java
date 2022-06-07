@@ -36,12 +36,37 @@ public class BlogController {
 	 *
 	 * @return 博客列表
 	 */
-	@GetMapping("/list")
-	public RestResult<BlogStatusListVO> recommendBlog(
+	@GetMapping("/list/recommend")
+	public RestResult<BlogStatusListVO> getRecommendBlog(
 			@RequestParam(defaultValue = "1") int page,
 			@RequestHeader(required = false) Integer id) {
 		log.debug("searchBlog,page->{}", page);
 		BlogStatusListVO recommendBlogList = blogViewService.getRecommendBlogList(id, page, pageSize);
+		return new RestResult<>(recommendBlogList);
+	}
+
+	/**
+	 * 获取最新博客列表
+	 */
+	@GetMapping("/list/new")
+	public RestResult<BlogStatusListVO> getNewBlog(
+			@RequestParam(defaultValue = "1") int page,
+			@RequestHeader(required = false) Integer id,
+			@CookieValue(required = false) Integer schoolCode) {
+		log.debug("searchBlog,page->{}", page);
+		BlogStatusListVO recommendBlogList = blogViewService.getNewBlogList(id, schoolCode, page, pageSize);
+		return new RestResult<>(recommendBlogList);
+	}
+
+	/**
+	 * 获取关注用户发表的博客列表，这个必须得登录才行
+	 */
+	@GetMapping("/list/follow")
+	public RestResult<BlogStatusListVO> getFollowBlog(
+			@RequestParam(defaultValue = "1") int page,
+			@RequestHeader Integer id) {
+		log.debug("searchBlog,page->{}", page);
+		BlogStatusListVO recommendBlogList = blogViewService.getFollowBlogList(id, page, pageSize);
 		return new RestResult<>(recommendBlogList);
 	}
 

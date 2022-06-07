@@ -18,6 +18,13 @@ spring:
           uri: lb://resource-server
           predicates:
             - Path=/resource/**
+        # 图片直链
+        - id: resource-image
+          uri: lb://resource-server
+          predicates:
+            - Host=image.scblogs.cn
+          filters:
+            - PrefixPath=/resource/image
         # 评论服务
         - id: comment-server
           uri: lb://comment-server

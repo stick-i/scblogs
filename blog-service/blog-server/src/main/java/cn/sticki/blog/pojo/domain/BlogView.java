@@ -28,6 +28,11 @@ public class BlogView {
 	String description;
 
 	/**
+	 * 院校代码
+	 */
+	String schoolCode;
+
+	/**
 	 * 封面图
 	 */
 	String coverImage;

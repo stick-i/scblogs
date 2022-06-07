@@ -22,12 +22,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -53,19 +55,34 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
 		// todo 最好根据用户标签来推
 		BlogInfoListVO blogInfoListVO = searchBlog(null, page, pageSize);
-		List<BlogInfoBO> blogList = blogInfoListVO.getRecords();
 		BlogStatusListVO blogStatusListVO = BeanUtil.copyProperties(blogInfoListVO, BlogStatusListVO.class);
-		// 构造博客id列表
-		// List<Integer> blogIdList = blogList.stream().map(BlogBasic::getId).collect(Collectors.toList());
-		Integer[] blogIdList = blogList.stream().map(BlogView::getId).toArray(Integer[]::new);
-		// 查询这些博客的点赞状态
-		Map<Integer, ActionStatusBO> blogActionStatus = getBlogActionStatus(userId, blogIdList);
-
-		for (BlogStatusBO record : blogStatusListVO.getRecords()) {
-			ActionStatusBO actionStatus = blogActionStatus.get(record.getId());
-			record.setActionStatus(actionStatus);
-		}
+		addActionStatusToList(blogStatusListVO.getRecords(), userId);
 		return blogStatusListVO;
+	}
+
+	@Override
+	public BlogStatusListVO getNewBlogList(Integer userId, Integer schoolCode, int page, int pageSize) {
+		// 设置查询条件：schoolCode相同、状态为公开，并以id倒序（表示发布时间最新）
+		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(schoolCode != null, BlogView::getSchoolCode, schoolCode);
+		wrapper.eq(BlogView::getStatus, BlogStatusType.PUBLISH.getValue()).orderByDesc(BlogView::getId);
+		// 设置分页
+		IPage<BlogView> iPage = new Page<>(page, pageSize);
+		blogViewMapper.selectPage(iPage, wrapper);
+		// 整合信息
+		return viewListVOToActionStatusListVO(iPage, userId);
+	}
+
+	@Override
+	public BlogStatusListVO getFollowBlogList(@NotNull Integer userId, int page, int pageSize) {
+		// 设置查询条件：作者为关注的对象，状态为公开，并以id倒序（表示发布时间最新）
+		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
+		RestResult<List<Integer>> result = userClient.getFollowIdList(userId);
+		wrapper.in(result.getStatus() && result.getData().size() > 0, BlogView::getAuthorId, result.getData());
+		wrapper.eq(BlogView::getStatus, BlogStatusType.PUBLISH.getValue()).orderByDesc(BlogView::getId);
+		IPage<BlogView> iPage = new Page<>(page, pageSize);
+		blogViewMapper.selectPage(iPage, wrapper);
+		return viewListVOToActionStatusListVO(iPage, userId);
 	}
 
 	@Override
@@ -79,27 +96,12 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		IPage<BlogView> iPage = new Page<>(page, pageSize);
 		blogViewMapper.selectPage(iPage, wrapper);
 		// 开始整合信息
-		BlogInfoListVO blogListVO = BeanUtil.copyProperties(iPage, BlogInfoListVO.class);
-		// 获取用户id列表
-		List<Integer> userIdList = iPage.getRecords().stream().map(BlogView::getAuthorId).collect(Collectors.toList());
-		// 查询用户信息
-		RestResult<Map<Integer, UserDTO>> result = userClient.getUserList(userIdList);
-		// 判断信息是否正确
-		if (result.getStatus()) {
-			// 添加用户昵称
-			List<BlogInfoBO> blogInfoBOList = blogListVO.getRecords();
-			Map<Integer, UserDTO> userMap = result.getData();
-			for (BlogInfoBO blogInfoBO : blogInfoBOList) {
-				String nickname = userMap.get(blogInfoBO.getAuthorId()).getNickname();
-				blogInfoBO.setAuthorName(nickname);
-			}
-		}
-		return blogListVO;
+		return viewListToInfoListVO(iPage);
 	}
 
 	public Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds) {
 		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
-		// 空列表不走数据，会报错
+		// 空列表不查数据，会报错
 		if (blogIds.length == 0) {
 			return map;
 		}
@@ -131,9 +133,66 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		// 博客作者信息
 		RestResult<UserDTO> result = userClient.getByUserId(blogView.getAuthorId());
 		blog.setAuthor(result.getData());
-		// 博客评论信息
-		// blog.setComment(commentService.getList(id, 1, 3));
 		return blog;
+	}
+
+	/**
+	 * 将查询出来的数据添加上其他信息（此处只有作者信息）
+	 */
+	private BlogInfoListVO viewListToInfoListVO(IPage<BlogView> blogListVO) {
+		BlogInfoListVO blogInfoListVO = BeanUtil.copyProperties(blogListVO, BlogInfoListVO.class);
+		addAuthorNameToList(blogInfoListVO.getRecords());
+		return blogInfoListVO;
+	}
+
+	/**
+	 * 将查询出来的数据添加上作者信息和用户点赞的状态
+	 */
+	private BlogStatusListVO viewListVOToActionStatusListVO(IPage<BlogView> blogListVO, Integer userId) {
+		BlogInfoListVO blogInfoListVO = viewListToInfoListVO(blogListVO);
+		BlogStatusListVO blogStatusListVO = BeanUtil.copyProperties(blogInfoListVO, BlogStatusListVO.class);
+		if (userId != null) addActionStatusToList(blogStatusListVO.getRecords(), userId);
+		return blogStatusListVO;
+	}
+
+	/**
+	 * 批量添加作者信息数据
+	 */
+	private void addAuthorNameToList(List<BlogInfoBO> blogInfoList) {
+		// 获取用户id列表
+		Set<Integer> userIdList = blogInfoList.stream().map(BlogInfoBO::getAuthorId).collect(Collectors.toSet());
+		// 查询用户信息
+		RestResult<Map<Integer, UserDTO>> result = userClient.getUserList(userIdList);
+		// 判断信息是否正确
+		if (result.getStatus()) {
+			// 添加用户昵称
+			Map<Integer, UserDTO> userMap = result.getData();
+			for (BlogInfoBO blogInfoBO : blogInfoList) {
+				String nickname = userMap.get(blogInfoBO.getAuthorId()).getNickname();
+				blogInfoBO.setAuthorName(nickname);
+			}
+		}
+		// return blogInfoList;
+	}
+
+	/**
+	 * 批量添加用户点赞、收藏状态信息
+	 *
+	 * @param blogList 博客列表
+	 * @param userId   用户id
+	 */
+	private void addActionStatusToList(List<BlogStatusBO> blogList, Integer userId) {
+		// 构造博客id列表
+		// List<Integer> blogIdList = blogList.stream().map(BlogBasic::getId).collect(Collectors.toList());
+		Integer[] blogIdList = blogList.stream().map(BlogView::getId).toArray(Integer[]::new);
+		// 查询这些博客的点赞状态
+		Map<Integer, ActionStatusBO> blogActionStatus = getBlogActionStatus(userId, blogIdList);
+
+		for (BlogStatusBO record : blogList) {
+			ActionStatusBO actionStatus = blogActionStatus.get(record.getId());
+			record.setActionStatus(actionStatus);
+		}
+		// return blogList;
 	}
 
 }
