@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -41,6 +42,10 @@ public class LoginController {
 			return new RestResult<>(false, "用户名或密码错误");
 		response.setHeader(JwtConfig.headerName, JwtUtils.createToken("id", user.getId()));
 		response.setHeader("Access-Control-Expose-Headers", JwtConfig.headerName);
+		// 院校代码放到cookie去
+		Cookie cookie = new Cookie("schoolCode", user.getSchoolCode().toString());
+		cookie.setMaxAge(3600 * 7);
+		response.addCookie(cookie);
 		return new RestResult<>(user);
 	}
 

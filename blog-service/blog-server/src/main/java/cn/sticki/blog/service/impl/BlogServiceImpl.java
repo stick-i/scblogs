@@ -2,15 +2,13 @@ package cn.sticki.blog.service.impl;
 
 import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.exception.BlogMapperException;
+import cn.sticki.blog.mapper.BlogContentHtmlMapper;
 import cn.sticki.blog.mapper.BlogContentMapper;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
 import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.pojo.bo.BlogCountBO;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
-import cn.sticki.blog.pojo.domain.Blog;
-import cn.sticki.blog.pojo.domain.BlogContent;
-import cn.sticki.blog.pojo.domain.BlogCount;
-import cn.sticki.blog.pojo.domain.BlogGeneral;
+import cn.sticki.blog.pojo.domain.*;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
@@ -20,6 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +39,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 	private BlogContentMapper blogContentMapper;
 
 	@Resource
+	private BlogContentHtmlMapper blogContentHtmlMapper;
+
+	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
 
 	@Resource
@@ -49,14 +51,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 	public void saveBlog(BlogSaveBO blogDTO) {
 		log.debug("saveBlog, id->{}", blogDTO.getId());
 		Blog blog = new Blog();
-		// BeanUtil.copyProperties(blogDTO, blog);  // 使用hutool工具直接复制属性
-		blog.setAuthorId(blogDTO.getAuthorId());
-		blog.setTitle(blogDTO.getTitle());
-		blog.setDescription(blogDTO.getDescription());
-		blog.setStatus(blogDTO.getStatus());
+		BeanUtils.copyProperties(blogDTO, blog);
 
 		BlogContent blogContent = new BlogContent();
 		blogContent.setContent(blogDTO.getContent());
+		BlogContentHtml blogHtml = new BlogContentHtml();
+		blogHtml.setContent(blogDTO.getContentHtml());
 
 		if (blogDTO.getId() != null) {
 			// 博客是已经存在的，直接进行更新操作，需要先进行作者身份核实
@@ -70,6 +70,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			}
 			blog.setId(blogDTO.getId());
 			blogContent.setBlogId(blogDTO.getId());
+			blogHtml.setBlogId(blogDTO.getId());
 			// 更新封面图
 			if (FileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
 				String image = this.uploadImage(blogDTO.getCoverImageFile());
@@ -86,6 +87,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			}
 			if (blogContent.getContent() != null) {
 				blogContentMapper.updateById(blogContent);
+				blogContentHtmlMapper.updateById(blogHtml);
 			}
 			return;
 		}
@@ -104,9 +106,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		log.debug("insert blog success,id->{}", blog.getId());
 		// 新建博客内容
 		blogContent.setBlogId(blog.getId());
-		if (blogContentMapper.insert(blogContent) != 1) {
-			blogMapper.deleteById(blog.getId());
-			throw new BlogMapperException();
+		blogHtml.setBlogId(blog.getId());
+		if (blogContentMapper.insert(blogContent) != 1 || blogContentHtmlMapper.insert(blogHtml) != 1) {
+			throw new BlogMapperException("content insert error!");
 		}
 		// 插入博客浏览量、收藏量、评分等数据
 		BlogGeneral blogGeneral = new BlogGeneral();
@@ -157,7 +159,22 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 	public String uploadImage(MultipartFile coverImage) {
 		log.debug("uploadCoverImage,pic name->{}", coverImage.getOriginalFilename());
 		RestResult<String> result = resourceClient.uploadBlogImage(coverImage);
-		return result.getData();
+		if (result.getStatus() && result.getData() != null) {
+			String url = result.getData();
+			int index = url.lastIndexOf("/") + 1;
+			return url.substring(index);
+		}
+		return null;
+	}
+
+	@Override
+	public BlogContent getBlogContent(@NotNull Integer blogId, @NotNull Integer userId) {
+		LambdaQueryWrapper<Blog> blogWrapper = new LambdaQueryWrapper<>();
+		blogWrapper.eq(Blog::getId, blogId).eq(Blog::getAuthorId, userId);
+		// 判断是否存在（该博客是否为该用户发表的）
+		if (!blogMapper.exists(blogWrapper))
+			return null;
+		return blogContentMapper.selectById(blogId);
 	}
 
 }

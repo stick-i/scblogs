@@ -145,7 +145,7 @@ export default {
 }
 .main{
     width: 100%;
-    padding-top: 10vh;
+    padding-top: 2vh;
 }
 .up{
     width: 1300px;
