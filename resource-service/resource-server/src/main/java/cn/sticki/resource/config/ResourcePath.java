@@ -3,6 +3,9 @@ package cn.sticki.resource.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author 阿杆
+ */
 @Configuration
 @ConfigurationProperties(prefix = "resource.path")
 public class ResourcePath {

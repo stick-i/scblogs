@@ -2,6 +2,9 @@ package cn.sticki.blog.pojo.domain;
 
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class BlogCount {
 

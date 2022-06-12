@@ -8,6 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+/**
+ * @author 阿杆
+ */
+@SuppressWarnings("AlibabaCommentsMustBeJavadocFormat")
 @SpringBootApplication
 @EnableAsync // 开启异步控制
 @EnableCreateCacheAnnotation  // jetcache启用缓存的主开关

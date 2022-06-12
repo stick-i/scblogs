@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class Image {
 

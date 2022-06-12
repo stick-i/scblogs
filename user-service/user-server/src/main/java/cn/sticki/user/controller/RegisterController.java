@@ -18,6 +18,8 @@ import javax.annotation.Resource;
 
 /**
  * 注册相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -47,7 +49,8 @@ public class RegisterController {
 		Long nowTime = System.currentTimeMillis() / 1000;
 		// 判断是否发送过邮件，若上一次发送邮件的时间超过90s则允许发送
 		if (sendTime == null || nowTime - sendTime > 90) {
-			cache.put(mail, nowTime); // 将发送邮件的时间存到redis，先存时间，再发送
+			// 将发送邮件的时间存到redis，先存时间，再发送
+			cache.put(mail, nowTime);
 			registerService.sendMailVerify(mail);
 			return new RestResult<>(true);
 		}
@@ -59,8 +62,9 @@ public class RegisterController {
 	 */
 	@PostMapping("/register")
 	public RestResult<Object> register(@Validated UserRegisterBO userRegisterBO) {
-		if (userService.getByUsername(userRegisterBO.getUsername()) != null)
+		if (userService.getByUsername(userRegisterBO.getUsername()) != null) {
 			throw new UserException("用户名已存在");
+		}
 		if (!registerService.checkMailVerify(userRegisterBO.getMail(), userRegisterBO.getMailVerify())) {
 			return new RestResult<>(false, "验证码错误");
 		}

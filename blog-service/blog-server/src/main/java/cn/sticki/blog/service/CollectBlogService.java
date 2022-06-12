@@ -4,6 +4,9 @@ import cn.sticki.blog.pojo.domain.CollectBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+/**
+ * @author 阿杆
+ */
 public interface CollectBlogService extends IService<CollectBlog> {
 
 	/**
@@ -29,6 +32,7 @@ public interface CollectBlogService extends IService<CollectBlog> {
 	 * @param userId   用户id
 	 * @param page     第几页
 	 * @param pageSize 页大小
+	 * @return 收藏博客的列表
 	 */
 	BlogListVO getCollectBlogList(Integer userId, int page, int pageSize);
 

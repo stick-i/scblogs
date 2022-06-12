@@ -3,6 +3,9 @@ package cn.sticki.blog.pojo.domain;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class BlogGeneral {
 

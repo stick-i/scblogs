@@ -2,6 +2,9 @@ package cn.sticki.blink.pojo;
 
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class SaveBlinkBO {
 

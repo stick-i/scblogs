@@ -6,6 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class MailDTO {
 

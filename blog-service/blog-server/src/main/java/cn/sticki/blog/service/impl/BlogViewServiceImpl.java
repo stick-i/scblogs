@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> implements BlogViewService {
@@ -70,7 +73,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		IPage<BlogView> iPage = new Page<>(page, pageSize);
 		blogViewMapper.selectPage(iPage, wrapper);
 		// 整合信息
-		return viewListVOToActionStatusListVO(iPage, userId);
+		return viewListVoToActionStatusListVO(iPage, userId);
 	}
 
 	@Override
@@ -82,7 +85,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		wrapper.eq(BlogView::getStatus, BlogStatusType.PUBLISH.getValue()).orderByDesc(BlogView::getId);
 		IPage<BlogView> iPage = new Page<>(page, pageSize);
 		blogViewMapper.selectPage(iPage, wrapper);
-		return viewListVOToActionStatusListVO(iPage, userId);
+		return viewListVoToActionStatusListVO(iPage, userId);
 	}
 
 	@Override
@@ -99,6 +102,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		return viewListToInfoListVO(iPage);
 	}
 
+	@Override
 	public Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds) {
 		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
 		// 空列表不查数据，会报错
@@ -109,8 +113,8 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		Map<Integer, Integer> collectMap = collectBlogMapper.selectMapByUserIdAndBlogIdList(userId, blogIds);
 		for (Integer blogId : blogIds) {
 			ActionStatusBO statusDTO = new ActionStatusBO();
-			statusDTO.setLike(likeMap.containsKey(blogId));
-			statusDTO.setCollect(collectMap.containsKey(blogId));
+			statusDTO.setIsLike(likeMap.containsKey(blogId));
+			statusDTO.setIsCollect(collectMap.containsKey(blogId));
 			map.put(blogId, statusDTO);
 		}
 		return map;
@@ -123,7 +127,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		blog.setContent(blogContentHtmlMapper.selectById(id));
 		// 博客基本信息
 		BlogView blogView = blogViewMapper.selectById(id);
-		if (blogView == null) return null;
+		if (blogView == null) {
+			return null;
+		}
 		BlogStatusBO blogStatusBO = BeanUtil.copyProperties(blogView, BlogStatusBO.class);
 		if (userId != null) {
 			// 获取该用户对该博客的状态
@@ -149,10 +155,12 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	/**
 	 * 将查询出来的数据添加上作者信息和用户点赞的状态
 	 */
-	private BlogStatusListVO viewListVOToActionStatusListVO(IPage<BlogView> blogListVO, Integer userId) {
+	private BlogStatusListVO viewListVoToActionStatusListVO(IPage<BlogView> blogListVO, Integer userId) {
 		BlogInfoListVO blogInfoListVO = viewListToInfoListVO(blogListVO);
 		BlogStatusListVO blogStatusListVO = BeanUtil.copyProperties(blogInfoListVO, BlogStatusListVO.class);
-		if (userId != null) addActionStatusToList(blogStatusListVO.getRecords(), userId);
+		if (userId != null) {
+			addActionStatusToList(blogStatusListVO.getRecords(), userId);
+		}
 		return blogStatusListVO;
 	}
 
@@ -184,8 +192,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	 */
 	private void addActionStatusToList(List<BlogStatusBO> blogList, Integer userId) {
 		// 构造博客id列表
-		// List<Integer> blogIdList = blogList.stream().map(BlogBasic::getId).collect(Collectors.toList());
-		Integer[] blogIdList = blogList.stream().map(BlogView::getId).toArray(Integer[]::new);
+		Integer[] blogIdList = blogList.stream().map(BlogStatusBO::getId).toArray(Integer[]::new);
 		// 查询这些博客的点赞状态
 		Map<Integer, ActionStatusBO> blogActionStatus = getBlogActionStatus(userId, blogIdList);
 

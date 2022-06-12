@@ -5,6 +5,9 @@ import cn.sticki.blog.pojo.domain.BlogContentHtml;
 import cn.sticki.user.dto.UserDTO;
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class BlogContentVO {
 

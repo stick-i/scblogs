@@ -1,4 +1,4 @@
-package cn.sticki.user.service.Impl;
+package cn.sticki.user.service.impl;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.client.ResourceClient;
@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {

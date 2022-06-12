@@ -14,15 +14,4 @@
 		;
 	</select>
 
-	<select id="selectUserLikeBlogList" resultType="cn.sticki.blog.pojo.domain.BlogView">
-		select *
-		from blog_basic where id in (
-		select blog_id
-		from like_blog where user_id = #{userId}
-		)
-		<if test="lastSql != null">
-			${lastSql}
-		</if>;
-	</select>
-
 </mapper>

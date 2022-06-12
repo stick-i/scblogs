@@ -5,6 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author 阿杆
+ */
 @Configuration
 @ConfigurationProperties(prefix = "minio")
 public class MinioConfig {

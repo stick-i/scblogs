@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * @author 阿杆
+ */
 @Service
 public class BlinkViewServiceImpl extends ServiceImpl<BlinkViewMapper, BlinkView> implements BlinkViewService {
 

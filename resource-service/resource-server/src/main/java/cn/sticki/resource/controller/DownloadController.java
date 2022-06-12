@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 获取图片相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController

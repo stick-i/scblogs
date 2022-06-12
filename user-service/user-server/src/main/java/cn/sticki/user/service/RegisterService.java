@@ -4,11 +4,15 @@ import cn.sticki.user.pojo.UserRegisterBO;
 import cn.sticki.user.pojo.UserSafety;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+/**
+ * @author 阿杆
+ */
 public interface RegisterService extends IService<UserSafety> {
 
 	/**
 	 * 用户注册
 	 *
+	 * @param userRegisterBO 用户注册信息
 	 * @return 返回一个bool值，表示成功或失败
 	 */
 	boolean register(UserRegisterBO userRegisterBO);

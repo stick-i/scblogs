@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 网关配置
+ *
+ * @author 阿杆
  */
 @Configuration(proxyBeanMethods = false)
 public class GatewayConfig {

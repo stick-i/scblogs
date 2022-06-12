@@ -4,6 +4,9 @@ import cn.sticki.blog.pojo.domain.LikeBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+/**
+ * @author 阿杆
+ */
 public interface LikeBlogService extends IService<LikeBlog> {
 
 	/**
@@ -29,6 +32,7 @@ public interface LikeBlogService extends IService<LikeBlog> {
 	 * @param userId   用户id
 	 * @param page     第几页
 	 * @param pageSize 页大小
+	 * @return 点赞博客列表
 	 */
 	BlogListVO getLikeBlogList(Integer userId, int page, int pageSize);
 

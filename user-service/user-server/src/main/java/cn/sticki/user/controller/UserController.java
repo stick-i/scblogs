@@ -20,6 +20,8 @@ import java.util.Map;
 
 /**
  * 用户信息相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -32,7 +34,6 @@ public class UserController {
 	// @CreateCache(name = CacheSpace.Login_UserID)
 	// Cache<Integer, User> cache;
 
-	// @CreateCache(name = CacheSpace.UserService_SendMailTime, expire = 300)
 	@CreateCache(name = "user:user:sendMailTime", expire = 300)
 	private Cache<Integer, Long> sendMailTimeCache;
 
@@ -70,7 +71,7 @@ public class UserController {
 	@PutMapping("/nickname")
 	public RestResult<Object> updateNickname(@NotNull String nickname, @RequestHeader Integer id) {
 		if (userService.updateNickname(id, nickname)) {
-			// cache.put(id, user);
+			// todo cache.put(id, user)
 			return new RestResult<>(true);
 		}
 		return new RestResult<>(false);
@@ -86,12 +87,13 @@ public class UserController {
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
 		// 检查文件，小于1Mib ,仅支持JPEG和PNG
 		FileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		// cache.put(id, user);
+		// todo cache.put(id, user)
 		String avatar = userService.updateAvatar(id, avatarFile);
-		if (avatar != null)
+		if (avatar != null) {
 			return new RestResult<>(avatar);
-		else
+		} else {
 			return new RestResult<>(false, "上传失败");
+		}
 	}
 
 	/**
@@ -145,7 +147,8 @@ public class UserController {
 		if (sendTime == null || nowTime - sendTime > 60) {
 			boolean result = userService.sendMailVerify(id);
 			if (result) {
-				sendMailTimeCache.put(id, nowTime);// 将发送邮件的时间存到Cache(Redis)
+				// 将发送邮件的时间存到Cache(Redis)
+				sendMailTimeCache.put(id, nowTime);
 				return new RestResult<>(true, "发送成功");
 			}
 		}
@@ -157,8 +160,11 @@ public class UserController {
 	 */
 	@DeleteMapping("/user")
 	public RestResult<Object> delete(@NotNull String password, @RequestHeader Integer id) {
-		if (!userService.checkPassword(id, password)) return new RestResult<>(false, "密码错误");
-		else return new RestResult<>(userService.removeById(id));
+		if (!userService.checkPassword(id, password)) {
+			return new RestResult<>(false, "密码错误");
+		} else {
+			return new RestResult<>(userService.removeById(id));
+		}
 	}
 
 }

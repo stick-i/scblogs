@@ -3,6 +3,9 @@ package cn.sticki.comment.pojo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author 阿杆
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CommentBO extends Comment {

@@ -3,6 +3,10 @@ package cn.sticki.common.result;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author 阿杆
+ */
+@SuppressWarnings("AlibabaAbstractMethodOrInterfaceMethodMustUseJavadoc")
 public interface IListVO<T> extends Serializable {
 
 	/**
@@ -28,8 +32,6 @@ public interface IListVO<T> extends Serializable {
 
 	/**
 	 * 分页记录列表
-	 *
-	 * @return 分页对象记录列表
 	 */
 	List<T> getRecords();
 
@@ -40,8 +42,6 @@ public interface IListVO<T> extends Serializable {
 
 	/**
 	 * 当前满足条件总行数
-	 *
-	 * @return 总条数
 	 */
 	long getTotal();
 
@@ -52,8 +52,6 @@ public interface IListVO<T> extends Serializable {
 
 	/**
 	 * 获取每页显示条数
-	 *
-	 * @return 每页显示条数
 	 */
 	long getSize();
 
@@ -64,8 +62,6 @@ public interface IListVO<T> extends Serializable {
 
 	/**
 	 * 当前页
-	 *
-	 * @return 当前页
 	 */
 	long getCurrent();
 

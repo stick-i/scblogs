@@ -4,6 +4,9 @@ import cn.sticki.blog.pojo.domain.BlogView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author 阿杆
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class BlogInfoBO extends BlogView {
