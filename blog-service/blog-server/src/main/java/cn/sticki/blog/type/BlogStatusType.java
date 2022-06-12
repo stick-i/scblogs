@@ -2,6 +2,8 @@ package cn.sticki.blog.type;
 
 /**
  * 博客状态类型
+ *
+ * @author 阿杆
  */
 public enum BlogStatusType {
 

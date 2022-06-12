@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class CommentVO {
 
@@ -20,6 +23,6 @@ public class CommentVO {
 	/**
 	 * 子评论信息条数
 	 */
-	long subCount;
+	Long subCount;
 
 }

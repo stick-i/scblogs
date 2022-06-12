@@ -7,6 +7,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+/**
+ * @author 阿杆
+ */
+@SuppressWarnings("AlibabaCommentsMustBeJavadocFormat")
 @SpringBootApplication
 @EnableCreateCacheAnnotation  // jetcache启用缓存的主开关
 @EnableFeignClients(basePackages = {"cn.sticki.resource.client", "cn.sticki.user.client"}) // 开启feign

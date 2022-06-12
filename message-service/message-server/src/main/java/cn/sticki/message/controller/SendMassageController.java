@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @RestController
 @RequestMapping("/send")

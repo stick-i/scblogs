@@ -52,7 +52,7 @@
                 {{ item.likeNum }} <span>赞</span>
               </div>
               <div class="article-author">
-                作者：<span>{{ item.author }}</span>
+                作者：<span>{{ item.authorName }}</span>
               </div>
               <div class="article-date">
                 发布时间：<span>{{ item.releaseTime }}</span>
@@ -135,10 +135,14 @@ export default {
         });
     },
     async infiniteHandler($state) {
-      this.$axios
-        .get("/blog/list?page=" + this.page, {
-          headers: { token: localStorage.getItem("token") },
-        })
+      // this.$axios
+      //   .get("/blog/list?page=" + this.page, {
+      //     headers: { token: localStorage.getItem("token") },
+      //   })
+			this.$axios
+				.get("/blog/list/follow?page=" + this.page, {
+					headers: { token: localStorage.getItem("token") },
+				})
         .then((res) => {
           console.log(res);
           // console.log(res.data.data.userAction)
@@ -219,27 +223,21 @@ export default {
 .article-img-left a {
   position: relative;
   border-radius: 2px;
-  width: 134px;
+  /*width: 134px;*/
   height: 84px;
   display: inline-block;
   background-position: 50%;
   border: 1px solid #f5f6f7;
   overflow: hidden;
   background: #f5f6f7;
-  background-image: url("../../../assets/img/home/003.jpg");
+  /*background-image: url("../../../assets/img/home/003.jpg");*/
   background-size: cover;
 }
 
 .article-img-left img {
-  /*width: 132px;*/
-  /*height: 100px;*/
-  width: 100%;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  height: auto;
-  position: absolute;
+	width: 132px;
+	height: 100px;
+	object-fit: cover;
 }
 
 /*图片文章并排显示*/

@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * @author 阿杆
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

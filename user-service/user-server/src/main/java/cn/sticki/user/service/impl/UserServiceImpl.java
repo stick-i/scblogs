@@ -1,4 +1,4 @@
-package cn.sticki.user.service.Impl;
+package cn.sticki.user.service.impl;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.tool.utils.RandomUtils;
@@ -6,7 +6,7 @@ import cn.sticki.message.client.MessageClient;
 import cn.sticki.message.pojo.MailDTO;
 import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.user.config.UserConfig;
-import cn.sticki.user.exception.SQLHandleException;
+import cn.sticki.user.exception.SqlHandleException;
 import cn.sticki.user.mapper.UserMapper;
 import cn.sticki.user.mapper.UserSafetyMapper;
 import cn.sticki.user.mapper.UserViewMapper;
@@ -31,9 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> implements UserService {
 
 	@Resource
@@ -59,6 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		return userViewMapper.selectById(id);
 	}
 
+	@Override
 	public UserView getByUsername(String username) {
 		LambdaQueryWrapper<UserView> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(UserView::getUsername, username);
@@ -67,6 +71,9 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 
 	@Override
 	public Map<Integer, UserView> getUserListMap(Set<Integer> userIdList) {
+		if (userIdList == null || userIdList.size() == 0) {
+			return null;
+		}
 		List<UserView> userViewList = userViewMapper.selectBatchIds(userIdList);
 		HashMap<Integer, UserView> userMap = new HashMap<>();
 		for (UserView user : userViewList) {
@@ -77,9 +84,10 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 
 	@Override
 	public boolean removeById(Integer id) {
-		if (userSafetyMapper.deleteById(id) + userMapper.deleteById(id) == 2)
+		if (userSafetyMapper.deleteById(id) + userMapper.deleteById(id) == 2) {
 			return true;
-		throw new SQLHandleException("remove by id error,id->" + id);
+		}
+		throw new SqlHandleException("remove by id error,id->" + id);
 	}
 
 	@Override
@@ -129,7 +137,6 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		return userSafetyMapper.updateMailById(id, mail) > 0;
 	}
 
-	// @CreateCache(name = CacheSpace.UserService_MailVerify, expire = 300)
 	@CreateCache(name = "user:userService:mailVerifyCode", expire = 300)
 	private Cache<String, String> mailCache;
 
@@ -143,7 +150,8 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		mailDTO.setSubject("博客校园验证码");
 		mailDTO.setText("亲爱的用户：\n" + "你正在操作你的账户信息，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
 		mailCache.put(userSafety.getMail(), code);
-		RestResult<Object> result = messageClient.sendMail(mailDTO);// 发送邮件
+		// 发送邮件
+		RestResult<Object> result = messageClient.sendMail(mailDTO);
 		return result.getStatus();
 	}
 

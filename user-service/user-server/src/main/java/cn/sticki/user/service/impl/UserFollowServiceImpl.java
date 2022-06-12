@@ -1,14 +1,11 @@
-package cn.sticki.user.service.Impl;
+package cn.sticki.user.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.common.result.ListVO;
 import cn.sticki.user.exception.UserIllegalException;
-import cn.sticki.user.mapper.FansBasicMapper;
-import cn.sticki.user.mapper.FollowBasicMapper;
+import cn.sticki.user.mapper.FansViewMapper;
+import cn.sticki.user.mapper.FollowViewMapper;
 import cn.sticki.user.mapper.UserFollowMapper;
-import cn.sticki.user.pojo.FansView;
-import cn.sticki.user.pojo.FollowView;
-import cn.sticki.user.pojo.UserFollow;
+import cn.sticki.user.pojo.*;
 import cn.sticki.user.service.UserFollowService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,7 +15,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.List;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class UserFollowServiceImpl implements UserFollowService {
@@ -27,10 +28,10 @@ public class UserFollowServiceImpl implements UserFollowService {
 	private UserFollowMapper userFollowMapper;
 
 	@Resource
-	private FollowBasicMapper followBasicMapper;
+	private FollowViewMapper followViewMapper;
 
 	@Resource
-	private FansBasicMapper fansBasicMapper;
+	private FansViewMapper fansViewMapper;
 
 	@Override
 	public boolean follow(int userId, int followId) {
@@ -57,28 +58,33 @@ public class UserFollowServiceImpl implements UserFollowService {
 	}
 
 	@Override
-	public ListVO<FollowView> getFollowList(int userId, int page, int pageSize) {
+	public FollowViewListVO getFollowList(int userId, int page, int pageSize) {
 		// 获取关注列表
 		LambdaQueryWrapper<FollowView> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(FollowView::getUserId, userId);
 		IPage<FollowView> iPage = new Page<>(page, pageSize);
-		followBasicMapper.selectPage(iPage, wrapper);
+		followViewMapper.selectPage(iPage, wrapper);
 		// 赋值返回
-		ListVO<FollowView> listVO = new ListVO<>();
+		FollowViewListVO listVO = new FollowViewListVO();
 		BeanUtil.copyProperties(iPage, listVO);
 		return listVO;
 	}
 
 	@Override
-	public ListVO<FansView> getFansList(int userId, int page, int pageSize) {
+	public FansViewListVO getFansList(int userId, int page, int pageSize) {
 		// 获取粉丝列表
 		LambdaQueryWrapper<FansView> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(FansView::getUserId, userId);
 		IPage<FansView> iPage = new Page<>(page, pageSize);
-		fansBasicMapper.selectPage(iPage, wrapper);
-		ListVO<FansView> listVO = new ListVO<>();
+		fansViewMapper.selectPage(iPage, wrapper);
+		FansViewListVO listVO = new FansViewListVO();
 		BeanUtil.copyProperties(iPage, listVO);
 		return listVO;
+	}
+
+	@Override
+	public List<Integer> getFollowIdList(int userId) {
+		return followViewMapper.selectFollowIdByUserId(userId);
 	}
 
 }

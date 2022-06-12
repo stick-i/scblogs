@@ -12,6 +12,8 @@ import javax.annotation.Resource;
 
 /**
  * 评论相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -28,8 +30,9 @@ public class CommentController {
 	 */
 	@PostMapping
 	public RestResult<Object> createComment(@RequestBody Comment comment, @RequestHeader(value = "id") Integer id) {
-		if (comment.getBlogId() == null || comment.getContent() == null)
+		if (comment.getBlogId() == null || comment.getContent() == null) {
 			throw new CommentException();
+		}
 		comment.setUserId(id);
 		commentService.create(comment);
 		return new RestResult<>();

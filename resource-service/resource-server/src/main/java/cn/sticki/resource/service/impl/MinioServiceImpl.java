@@ -2,7 +2,7 @@ package cn.sticki.resource.service.impl;
 
 import cn.sticki.resource.service.MinioService;
 import io.minio.*;
-import io.minio.errors.*;
+import io.minio.errors.MinioException;
 import io.minio.messages.Item;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Component;
@@ -13,9 +13,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author 阿杆
+ */
 @Component
 public class MinioServiceImpl implements MinioService {
 
@@ -25,12 +26,11 @@ public class MinioServiceImpl implements MinioService {
 	/**
 	 * 判断bucket是否存在
 	 */
+	@Override
 	public boolean existBucket(String name) throws MinioException {
 		try {
 			return minioClient.bucketExists(BucketExistsArgs.builder().bucket(name).build());
-			// minioClient.makeBucket(MakeBucketArgs.builder().bucket(name).build());
 		} catch (Exception e) {
-			// e.printStackTrace();
 			throw new MinioException();
 		}
 	}
@@ -38,6 +38,7 @@ public class MinioServiceImpl implements MinioService {
 	/**
 	 * 上传文件，请手动关闭inputStream
 	 */
+	@Override
 	public void upload(String filePath, String bucketName, InputStream inputStream, long objectSize, long partSize, String contentType)
 			throws MinioException {
 		try {
@@ -63,6 +64,7 @@ public class MinioServiceImpl implements MinioService {
 	 * @throws MinioException minio异常
 	 * @throws IOException    字节流为空
 	 */
+	@Override
 	public void upload(MultipartFile multipartFile, String bucketName) throws MinioException, IOException {
 		try (
 				InputStream inputStream = multipartFile.getInputStream()
@@ -78,6 +80,7 @@ public class MinioServiceImpl implements MinioService {
 		}
 	}
 
+	@Override
 	public void upload(MultipartFile multipartFile, String filePath, String bucketName) throws MinioException, IOException {
 		try (
 				InputStream inputStream = multipartFile.getInputStream()
@@ -101,6 +104,7 @@ public class MinioServiceImpl implements MinioService {
 	 * @param outputStream 输出流
 	 * @deprecated 请使用 {@link MinioServiceImpl#download(String, String, HttpServletResponse) }
 	 */
+	@Override
 	public void download(String filePath, String bucketName, ServletOutputStream outputStream) throws MinioException, IOException {
 		InputStream inputStream = this.download(filePath, bucketName);
 		IOUtils.copy(inputStream, outputStream);
@@ -114,6 +118,7 @@ public class MinioServiceImpl implements MinioService {
 	 * @param bucketName 桶名称
 	 * @param response   输出的响应体
 	 */
+	@Override
 	public void download(String filePath, String bucketName, HttpServletResponse response) throws MinioException, IOException {
 		try (InputStream inputStream = this.download(filePath, bucketName)) {
 			try (ServletOutputStream outputStream = response.getOutputStream()) {
@@ -127,6 +132,7 @@ public class MinioServiceImpl implements MinioService {
 	 *
 	 * @param filePath 文件名(包括路径)
 	 */
+	@Override
 	public InputStream download(String filePath, String bucketName) throws MinioException {
 		try {
 			return minioClient.getObject(GetObjectArgs
@@ -139,19 +145,19 @@ public class MinioServiceImpl implements MinioService {
 		}
 	}
 
+	@Override
 	public void removeFile(String fileName, String bucketName) throws MinioException {
 		try {
 			minioClient.removeObject(
 					RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build()
 			);
 		} catch (Exception e) {
-			// e.printStackTrace();
 			throw new MinioException("文件删除异常," + e.getMessage());
 		}
 	}
 
-	public void getObjectList(String bucketName)
-			throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+	@Override
+	public void getObjectList(String bucketName) throws Exception {
 		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
 		for (Result<Item> result : results) {
 			Item item = result.get();

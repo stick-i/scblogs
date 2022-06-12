@@ -1,10 +1,13 @@
 package cn.sticki.blog.pojo.vo;
 
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
-import cn.sticki.blog.pojo.domain.BlogContent;
+import cn.sticki.blog.pojo.domain.BlogContentHtml;
 import cn.sticki.user.dto.UserDTO;
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class BlogContentVO {
 
@@ -16,7 +19,7 @@ public class BlogContentVO {
 	/**
 	 * 博客内容信息
 	 */
-	BlogContent content;
+	BlogContentHtml content;
 
 	/**
 	 * 作者信息

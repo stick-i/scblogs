@@ -2,9 +2,13 @@ package cn.sticki.common.web.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author 阿杆
+ */
+@SuppressWarnings("AlibabaUndefineMagicConstant")
 public class RequestUtils {
 
-	public static String getIPAddress(HttpServletRequest request) {
+	public static String getIpAddress(HttpServletRequest request) {
 		String ip = null;
 
 		//X-Forwarded-For：Squid 服务代理

@@ -83,14 +83,6 @@
                 <dd class="font">收藏</dd>
               </dl>
             </div>
-            <!-- 关注按钮 -->
-            <!-- <div class="focus-btn">
-              <div class="btn">私信</div>
-              <div class="btn" @click="followUser()">
-                <a href="javascript:;" v-if="isShowFollow" style="color: #999aaa">已关注</a>
-                <a href="javascript:;" v-else style="color: #555666">关注</a>
-              </div>
-            </div> -->
           </div>
           <!-- 侧边盒子2 搜索 -->
           <!--          <div class="box asideSearchArticle">-->
@@ -101,19 +93,32 @@
           <!--              </a>-->
           <!--            </div>-->
           <!--          </div>-->
-          <!-- 侧边盒子3 热门文章 -->
-          <div class="box asideHotArticle">
-            <h3 class="aside-title">热门文章</h3>
-            <div class="aside-content">
-              <ul>
-                <li v-for="(item, index) in 5" :key="index">
-                  WPF使用MaterialDesign -- 好看的控件先从button开始
-                  <img src="../../assets/img/blogDetail/view.png" alt="" />
-                  <span>124</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+
+					<!-- 侧边盒子2 目录 -->
+					<div class="box asideHotArticle" v-show="navList.length!=0">
+						<h3 class="aside-title">目录</h3>
+						<div class="aside-content">
+							<ul class="nav-list" v-for="item in navList" :key="item.name">
+								<li :class="item.localName=='h2'? 'h2active':item.localName=='h3'? 'h3active':item.localName=='h4'? 'h4active':item.localName=='h5'? 'h5active':item.localName=='h6'? 'h6active':''">
+									<a @click="scrollToPosition(item.href)">{{item.name}}</a>
+<!--									<a :href="'#'+item.href" >{{item.name}}</a>-->
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 侧边盒子3 热门文章 -->
+					<div class="box asideHotArticle">
+						<h3 class="aside-title">热门文章</h3>
+						<div class="aside-content">
+							<ul>
+								<li v-for="(item, index) in 5" :key="index">
+									WPF使用MaterialDesign -- 好看的控件先从button开始
+									<img src="../../assets/img/blogDetail/view.png" alt="" />
+									<span>124</span>
+								</li>
+							</ul>
+						</div>
+					</div>
           <!-- 侧边盒子4 推荐文章 -->
           <div class="box asideHotArticle">
             <h3 class="aside-title">推荐文章</h3>
@@ -135,11 +140,11 @@
               <h1>{{ blogDetail.title }}</h1>
               <!--文章信息开始-->
               <div class="article-info">
-                <img
-                  class="article-type-img"
-                  src="../../assets/img/blogDetail/original.png"
-                  alt=""
-                />
+<!--                <img-->
+<!--                  class="article-type-img"-->
+<!--                  src="../../assets/img/blogDetail/original.png"-->
+<!--                  alt=""-->
+<!--                />-->
                 <div class="info-box">{{ profile.author }}</div>
                 <img
                   class="icon"
@@ -173,7 +178,8 @@
               </div>
               <!--文章信息结束-->
               <el-divider></el-divider>
-              <div class="markdown-body" v-html="blogDetail.content"></div>
+							<!--文章内容-->
+              <div class="markdown-body" ref="content" v-html="blogDetail.content"></div>
             </div>
           </el-card>
           <!-- 底部文章信息 -->
@@ -231,7 +237,9 @@
         </div>
       </div>
     </div>
-  </div>
+
+
+	</div>
 </template>
 
 <script>
@@ -239,6 +247,7 @@ import TopBar from "@/components/content/topbar/TopBar";
 import BlogComment from "@/views/blogDetail/childComps/BlogComment";
 import "github-markdown-css/github-markdown.css";
 import qs from "qs";
+import { offsetDomTop, scrolltoToc } from "@/utils";
 
 export default {
   name: "BlogDetail",
@@ -276,43 +285,15 @@ export default {
         followId: "",
       },
       isShowFollow: false,
+			// 目录
+			navList:[],
     };
   },
   created() {
-    // 显示文章详情
-    const blogId = this.$route.params.blogId;
-    this.blogIdForm.blogId = this.$route.params.blogId;
-    const _this = this;
-    this.$axios.get("/blog/content?id=" + blogId).then((res) => {
-      console.log(res);
-      const blog = res.data.data;
-
-      // 渲染md文档
-      var MarkdownIt = require("markdown-it");
-      var md = new MarkdownIt();
-      var result = md.render(blog.content.content);
-
-      _this.blogDetail = {
-        id: blog.content.blogId,
-        title: blog.info.title,
-        content: result,
-        releaseTime: blog.info.releaseTime,
-        viewNum: blog.info.viewNum,
-        likeNum: blog.info.likeNum,
-        collectionNum: blog.info.collectionNum,
-        commentNum: blog.info.commentNum,
-      };
-      _this.profile = {
-        author: blog.info.author,
-        avatarUrl: blog.author.avatarUrl,
-      };
-      _this.followIdForm = {
-        followId: blog.author.id,
-      };
-      _this.comment = blog.comment;
-      console.log(_this.comment);
-    });
   },
+	mounted() {
+		this.getArticleDetail()
+	},
 
   // 滚动开始
   // 监听页面滚动
@@ -327,9 +308,67 @@ export default {
   // 滚动结束
 
   methods: {
-    recordsChange(records) {
-      this.comment = records; //在父组件修改值
-    },
+		async getArticleDetail() {
+			// 显示文章详情
+			const blogId = this.$route.params.blogId;
+			this.blogIdForm.blogId = this.$route.params.blogId;
+			const _this = this;
+			await this.$axios.get("/blog/content?id=" + blogId).then((res) => {
+				console.log(res);
+				const blog = res.data.data;
+
+				// 渲染md文档
+				// var MarkdownIt = require("markdown-it");
+				// var md = new MarkdownIt();
+				// var result = md.render(blog.content.content);
+				var result = blog.content.content;
+
+				_this.blogDetail = {
+					id: blog.content.blogId,
+					title: blog.info.title,
+					content: result,
+					releaseTime: blog.info.releaseTime,
+					viewNum: blog.info.viewNum,
+					likeNum: blog.info.likeNum,
+					collectionNum: blog.info.collectionNum,
+					commentNum: blog.info.commentNum,
+				};
+				_this.profile = {
+					author: blog.author.nickname,
+					avatarUrl: blog.author.avatarUrl,
+				};
+				_this.followIdForm = {
+					followId: blog.author.id,
+				};
+				// _this.comment = blog.comment;
+				// console.log(_this.comment);
+			});
+			// 获取目录
+			const aArr = this.$refs.content.querySelectorAll("a");
+			let navList = [];
+			for (let i = 0; i < aArr.length; i++) {
+				if (aArr[i].id) {
+					let href = aArr[i].id;
+					let name = aArr[i].parentNode.innerText;
+					let localName = aArr[i].parentNode.localName
+					navList.push({
+						localName,
+						href: href,
+						name,
+					});
+				}
+			}
+			this.navList = navList;
+		},
+		// 目录滚动
+		scrollToPosition(id) {
+			let position = offsetDomTop(document.getElementById(id));
+			position.top = position.top - 80;
+			scrolltoToc(position.top);
+		},
+    // recordsChange(records) {
+    //   this.comment = records; //在父组件修改值
+    // },
     // 关注
     followUser() {
       this.$axios
@@ -361,17 +400,17 @@ export default {
         });
     },
     // 获取评论
-    getComment() {
-      console.log("获取评论");
-      const blogId = this.$route.params.blogId;
-      const _this = this;
-      this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
-        console.log(res);
-        const blog = res.data.data;
-        _this.comment = blog.comment;
-        console.log(_this.comment);
-      });
-    },
+    // getComment() {
+    //   console.log("获取评论");
+    //   const blogId = this.$route.params.blogId;
+    //   const _this = this;
+    //   this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
+    //     console.log(res);
+    //     const blog = res.data.data;
+    //     _this.comment = blog.comment;
+    //     console.log(_this.comment);
+    //   });
+    // },
     // 点赞
     addLikeNum() {
       this.$axios
@@ -438,6 +477,30 @@ export default {
 [v-cloak] {
   display: none;
 }
+
+/*目录开始*/
+.h2active {
+	margin-left: 20px;
+}
+.h3active {
+	margin-left: 40px;
+}
+.h4active {
+	margin-left: 60px;
+}
+.h5active {
+	margin-left: 80px;
+}
+.h6active {
+	margin-left: 100px;
+}
+.nav-list a {
+	color: #555666;
+}
+.nav-list a:hover {
+	color: #16a0f8;
+}
+/*目录结束*/
 
 /*文章点赞收藏底部开始*/
 .fixed1 {

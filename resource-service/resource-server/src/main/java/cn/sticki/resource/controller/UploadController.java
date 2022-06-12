@@ -17,6 +17,8 @@ import java.io.IOException;
 
 /**
  * 上传图片相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController

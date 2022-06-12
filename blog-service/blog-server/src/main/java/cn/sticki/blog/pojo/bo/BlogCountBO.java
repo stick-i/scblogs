@@ -2,6 +2,10 @@ package cn.sticki.blog.pojo.bo;
 
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
+@SuppressWarnings("AlibabaPojoMustUsePrimitiveField")
 @Data
 public class BlogCountBO {
 

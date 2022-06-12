@@ -3,6 +3,9 @@ package cn.sticki.common.tool.utils;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * @author 阿杆
+ */
 public class RandomUtils {
 
 	public static String generator() {

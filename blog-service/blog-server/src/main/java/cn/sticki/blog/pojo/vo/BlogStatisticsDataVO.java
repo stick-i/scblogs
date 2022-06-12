@@ -2,6 +2,9 @@ package cn.sticki.blog.pojo.vo;
 
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class BlogStatisticsDataVO {
 

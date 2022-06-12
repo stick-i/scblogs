@@ -18,6 +18,9 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class QiNiuServiceImpl implements QiNiuService {

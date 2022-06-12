@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements ImageService {
@@ -38,18 +41,22 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 	@Resource
 	private ImageMapper imageMapper;
 
+	@Override
 	public void getAvatarImage(String file, HttpServletResponse response) {
 		// todo 这里做一个可以减小尺寸的
 		getImage(file, "avatar", response);
 	}
 
+	@Override
 	public void getGeneralImage(String file, HttpServletResponse response) {
 		boolean image = getImage(file, "image", response);
 		// 访问成功的话，图片访问量加1
-		if (image) imageMapper.increaseVisit(file);
+		if (image) {
+			imageMapper.increaseVisit(file);
+		}
 	}
 
-	@SneakyThrows
+	@SneakyThrows(value = IOException.class)
 	private boolean getImage(String file, String bucketName, @NotNull HttpServletResponse response) {
 		log.debug("getImg, fileName->{}, bucketName->{}", file, bucketName);
 		try {
@@ -66,6 +73,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 		return false;
 	}
 
+	@Override
 	public String uploadAvatar(MultipartFile image, String name) {
 		try {
 			// 上传图片
@@ -76,6 +84,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 		}
 	}
 
+	@Override
 	public String uploadBlogImage(MultipartFile image) throws MinioException, IOException {
 		return uploadImage(image, "image");
 	}

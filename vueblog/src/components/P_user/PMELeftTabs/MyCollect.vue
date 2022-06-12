@@ -94,7 +94,7 @@ export default {
 <style scoped>
 .content{
     width: 100%;
-    background: linear-gradient(to bottom right, rgb(233, 189, 189), rgb(255, 255, 255));
+    background: white;
     border-radius: 5px;
 }
 .myCollect{
@@ -105,18 +105,17 @@ export default {
     width:100%;
     height: 500px;
     display: block;
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: bold;
     line-height: 500px;
     text-align: center;
-    color: #ff0000;
-    -webkit-text-stroke: 1px rgb(11, 235, 255);
+    color: #ffafaf;
 }
 .myCollectB{
     width: 100%;
     height: 100px;
     line-height: 100px;
-    font-size: 28px;
+    font-size: 1.5rem;
     font-weight: 800;
     color: black;
 }
@@ -135,7 +134,7 @@ export default {
 }
 .myCollectA .myCollectTitle{
     width: 80%;
-    font-size: 20px;
+    font-size: 1rem;
     margin-left: 40px;
     font-weight: 600;
     color: rgb(56, 52, 52);

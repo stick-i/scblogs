@@ -100,7 +100,7 @@ export default {
     line-height: 50px;
     text-align: center;
     color: black;
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: 400;
     border-radius: 5px;
     background: white;

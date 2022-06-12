@@ -1,4 +1,4 @@
-package cn.sticki.user.service.Impl;
+package cn.sticki.user.service.impl;
 
 import cn.sticki.common.tool.utils.RandomUtils;
 import cn.sticki.message.client.MessageClient;
@@ -26,9 +26,12 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafety> implements RegisterService {
 
 	@Resource
@@ -40,7 +43,6 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	@Resource
 	private UserMapper userMapper;
 
-	// @CreateCache(name = CacheSpace.Register_MailVerify, expire = 300)
 	@CreateCache(name = "user:register:mailVerifyCode:", expire = 300)
 	private Cache<String, String> cache;
 
@@ -50,7 +52,9 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	@Override
 	public void sendMailVerify(String mailAddress) {
 		// 先判断该邮箱是否已经被注册，若已经被注册，则直接返回提示
-		if (userSafetyMapper.selectByMail(mailAddress) != null) throw new UserException("该邮箱已被注册");
+		if (userSafetyMapper.selectByMail(mailAddress) != null) {
+			throw new UserException("该邮箱已被注册");
+		}
 		String code = RandomUtils.generator(6, "0123456789");
 		MailDTO mailDTO = new MailDTO();
 		mailDTO.setFrom("博客校园");
@@ -58,7 +62,8 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		mailDTO.setSubject("博客校园注册验证码");
 		mailDTO.setText("亲爱的用户：\n" + "你正在注册博客校园，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
 		cache.put(mailAddress, code, 300, TimeUnit.SECONDS);
-		messageClient.sendMail(mailDTO);  // 发送邮件return ;
+		// 发送邮件return
+		messageClient.sendMail(mailDTO);
 	}
 
 	@Override
@@ -83,9 +88,10 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 			userSafety.setUserId(user.getId());
 			// 密码加密后再存入数据库
 			userSafety.setPassword(passwordEncoder.encode(userRegisterBO.getPassword()));
-			if (userSafetyMapper.insert(userSafety) > 0) return true;
-			else {
-				log.debug("注册失败，操作回滚");
+			if (userSafetyMapper.insert(userSafety) > 0) {
+				return true;
+			} else {
+				log.info("注册失败，操作回滚");
 				throw new UserException("注册失败，数据异常");
 			}
 		}
@@ -96,11 +102,12 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	public boolean checkMailVerify(@NotNull String mailAddress, @NotNull String code) {
 		// 此处读取缓存中的数据，并在读取成功之后从缓存中删除
 		String verify = cache.get(mailAddress);
-		if (code.equals(verify)) {
-			cache.remove(mailAddress);
-			return true;
-		}
-		return false;
+		return code.equals(verify);
+		// if (code.equals(verify)) {
+		// 	cache.remove(mailAddress);
+		// 	return true;
+		// }
+		// return false;
 	}
 
 }

@@ -1,5 +1,8 @@
 package cn.sticki.user.exception;
 
+/**
+ * @author 阿杆
+ */
 public class UserIllegalException extends UserException {
 
 	public UserIllegalException(String errorMessage) {

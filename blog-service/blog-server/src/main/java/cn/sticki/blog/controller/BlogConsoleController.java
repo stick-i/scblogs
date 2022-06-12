@@ -1,9 +1,9 @@
 package cn.sticki.blog.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogContent;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogListConsoleVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,8 @@ import javax.annotation.Resource;
 
 /**
  * 博客控制台相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -59,16 +62,21 @@ public class BlogConsoleController {
 			@RequestParam(defaultValue = "20") int pageSize,
 			@RequestParam(defaultValue = "0") int status,
 			@RequestHeader Integer id) {
-		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) return new RestResult<>(400, "参数异常");
+		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) {
+			return new RestResult<>(400, "参数异常");
+		}
 		// 获取博客列表
 		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(BlogView::getAuthorId, id);
 		// 若status为0，则查找显示全部博客，否则查找某部分博客
-		if (status != 0) wrapper.eq(BlogView::getStatus, status);
+		if (status != 0) {
+			wrapper.eq(BlogView::getStatus, status);
+		}
 		// 使用mybatis进行分页
 		IPage<BlogView> blogIPage = new Page<>(page, pageSize);
 		blogViewService.page(blogIPage, wrapper);
-		BlogListConsoleVO blogListConsoleVO = BeanUtil.copyProperties(blogIPage, BlogListConsoleVO.class);
+		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
+		BeanUtils.copyProperties(blogIPage, BlogListConsoleVO.class);
 		// 获取博客统计数据
 		blogListConsoleVO.setCount(blogService.getBlogCount(id));
 		return new RestResult<>(blogListConsoleVO);
@@ -84,11 +92,17 @@ public class BlogConsoleController {
 		blog.setCoverImageFile(coverImage);
 		blog.setAuthorId(id);
 		// 如果为新增博客，则需要全部参数
-		if (blog.getId() == null && (blog.getContent() == null || blog.getTitle() == null || blog.getDescription() == null || blog.getStatus() == null))
+		if (blog.getId() == null && (blog.getContent() == null || blog.getTitle() == null || blog.getDescription() == null || blog.getStatus() == null)) {
 			return new RestResult<>(400, "参数异常");
+		}
 		// 如果是修改博客，则需要有至少一个参数
-		if (blog.getId() != null && blog.getContent() == null && blog.getTitle() == null && blog.getDescription() == null && blog.getStatus() == null)
+		if (blog.getId() != null && blog.getContent() == null && blog.getTitle() == null && blog.getDescription() == null && blog.getStatus() == null) {
 			return new RestResult<>(400, "参数异常");
+		}
+		// html 和 md要不都为null，要不都不为null
+		if ((blog.getContent() == null) != (blog.getContentHtml() == null)) {
+			return new RestResult<>(400, "参数异常");
+		}
 		// 检查封面图
 		if (FileUtils.isNotEmpty(blog.getCoverImageFile())) {
 			FileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
@@ -106,9 +120,13 @@ public class BlogConsoleController {
 	public RestResult<Boolean> recoveryBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
 		Blog blog = blogService.getById(id);
 		// 权限校验
-		if (blog == null || !blog.getAuthorId().equals(userId)) throw new BlogException("非法删除他人博客");
+		if (blog == null || !blog.getAuthorId().equals(userId)) {
+			throw new BlogException("非法删除他人博客");
+		}
 		// 判断博客当前状态,是否已经是存在回收站里了
-		if (BlogStatusType.DELETED.getValue().equals(blog.getStatus())) return new RestResult<>(400, "操作失败，博客已经存入回收站");
+		if (BlogStatusType.DELETED.getValue().equals(blog.getStatus())) {
+			return new RestResult<>(400, "操作失败，博客已经存入回收站");
+		}
 		// 更新数据库
 		LambdaUpdateWrapper<Blog> wrapper = new LambdaUpdateWrapper<>();
 		wrapper.eq(Blog::getId, id).eq(Blog::getAuthorId, userId).set(Blog::getStatus, BlogStatusType.DELETED.getValue());
@@ -124,9 +142,13 @@ public class BlogConsoleController {
 	public RestResult<Boolean> completelyDeleteBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
 		Blog blog = blogService.getById(id);
 		// 权限校验，博客不是属于该用户
-		if (blog == null || !blog.getAuthorId().equals(userId)) throw new BlogException("非法删除他人博客");
+		if (blog == null || !blog.getAuthorId().equals(userId)) {
+			throw new BlogException("非法删除他人博客");
+		}
 		// 判断博客当前状态,是否已经是存在回收站里了
-		if (!BlogStatusType.DELETED.getValue().equals(blog.getStatus())) return new RestResult<>(400, "操作失败，只有在回收站里的博客可以删除");
+		if (!BlogStatusType.DELETED.getValue().equals(blog.getStatus())) {
+			return new RestResult<>(400, "操作失败，只有在回收站里的博客可以删除");
+		}
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, id);
 		// todo 这里删除博客应该连带另外两张表的数据一起删除
@@ -145,6 +167,16 @@ public class BlogConsoleController {
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		String url = blogService.uploadImage(file);
 		return new RestResult<>(url);
+	}
+
+	/**
+	 * 获取博客可编辑内容，用于作者编辑博客时调用
+	 *
+	 * @param blogId 博客id
+	 */
+	@GetMapping("/content")
+	public RestResult<BlogContent> getBlogContent(@RequestParam Integer blogId, @RequestHeader Integer id) {
+		return new RestResult<>(blogService.getBlogContent(blogId, id));
 	}
 
 }

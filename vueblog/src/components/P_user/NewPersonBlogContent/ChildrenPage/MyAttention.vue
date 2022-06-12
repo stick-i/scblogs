@@ -11,7 +11,7 @@
             </div>
             <div class="introduce">
                 <div class="nickname">{{item.nickname}}</div>
-                <div class="">占位符</div>
+                <div class="">关注时间:{{item.createTime}}</div>
             </div>
         </div>
     </div>
@@ -118,12 +118,13 @@ export default {
     height: 100%;
     margin-left: 20px;
     display: flex;
+	justify-content:flex-start;
     flex-direction: column;
 }
 .attention .nickname{
     font-size: 20px;
     font-weight: 400;
     color: white;
-    margin: 11px auto;
+    margin: 11px 0px;
 }
 </style>

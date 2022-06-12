@@ -15,15 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Component
-public class IPLimitFilter extends OncePerRequestFilter {
+public class IpLimitFilter extends OncePerRequestFilter {
 
-	private final static int time = 5;
+	private final static int TIME = 5;
 
-	private final static int count = 30;
+	private final static int COUNT = 30;
 
-	@CreateCache(name = "gateway:ipLimit:", expire = time)
+	@CreateCache(name = "gateway:ipLimit:", expire = TIME)
 	private Cache<String, Integer> cache;
 
 	/**
@@ -33,11 +36,13 @@ public class IPLimitFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		// todo 有待优化，目前逻辑为，连续访问30次，需要冷却5s
 		// 获取当前ip
-		String ip = RequestUtils.getIPAddress(request);
+		String ip = RequestUtils.getIpAddress(request);
 		// ip计数
 		Integer ipCount = cache.get(ip);
-		if (ipCount == null) ipCount = 0;
-		if (ipCount > count) {
+		if (ipCount == null) {
+			ipCount = 0;
+		}
+		if (ipCount > COUNT) {
 			// ip访问超过限制
 			ResponseUtils.objectToJson(response, new RestResult<>(408, "访问频繁，请稍后再试"));
 			response.sendError(403, "Reject request");

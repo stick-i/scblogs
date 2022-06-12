@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author 阿杆
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +37,11 @@ public class BlogSaveBO {
 	 * 内容(md格式)
 	 */
 	String content;
+
+	/**
+	 * 内容(html格式)
+	 */
+	String contentHtml;
 
 	/**
 	 * 博客状态码

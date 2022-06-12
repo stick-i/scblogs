@@ -175,7 +175,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 .PickerImg{
   margin :0 20px 30px 10px;
 }
@@ -280,19 +280,23 @@ export default {
   height: 80px;
   line-height: 80px;
   padding-left: 40px;
-  font-size: 24px;
+  font-size: 1.2rem;
   font-weight:800 ;
   border-bottom: 1px solid rgb(245,246,247);
 }
 .rightContentB .rightContentB-1 .button{
-  width: 10%;
-  height: 50%;
+  width: 70px;
+  height: 1.7rem;
   cursor: pointer;
   margin: 0 100px;
-  border-radius: 20px;
-  border: 2px solid rgb(81, 222, 253);
-  color: rgb(81, 222, 253);
-  background: white;
+  border-radius: 10px;
+  font-size: 1rem;
+  border: none;
+  color: white;
+  background: rgb(22,160,248);
+	&:hover{
+		box-shadow: 2px 0px 5px grey,-2px 0px 5px grey;
+	}
 }
 .rightContentB .rightContentB-2{
   width: 100%;
@@ -310,7 +314,7 @@ export default {
   height: 24px;
   line-height:24px;
   margin-bottom:38px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 .rightContentB .rightContentB-2 .rightContentB-2-form ul li form{
   width: 100%;

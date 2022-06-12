@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
+/**
+ * @author 阿杆
+ */
 public interface UniversityService extends IService<University> {
 
 	/**
@@ -31,5 +34,13 @@ public interface UniversityService extends IService<University> {
 	 * @return 高校信息列表
 	 */
 	List<University> getUniversityList(int cityId);
+
+	/**
+	 * 获取高校名称
+	 *
+	 * @param schoolCode 院校代码
+	 * @return 高校名称
+	 */
+	String getUniversityName(int schoolCode);
 
 }

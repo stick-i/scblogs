@@ -16,6 +16,8 @@ import java.util.List;
 
 /**
  * 选择高校信息相关
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -51,6 +53,16 @@ public class UniversityController {
 	@GetMapping("/university")
 	public RestResult<List<University>> getUniversityList(@RequestParam int cityId) {
 		return new RestResult<>(universityService.getUniversityList(cityId));
+	}
+
+	/**
+	 * 通过院校代码获取名称
+	 *
+	 * @param schoolCode 院校代码
+	 */
+	@GetMapping("/university/name")
+	public RestResult<String> getUniversityName(@RequestParam Integer schoolCode) {
+		return new RestResult<>(universityService.getUniversityName(schoolCode));
 	}
 
 }

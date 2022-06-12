@@ -51,6 +51,7 @@ export default {
   name: "",
   data() {
     return {
+      userMessage: '',
       avatarUrl: "",
       ruleForm: {
         username: "",
@@ -96,11 +97,10 @@ export default {
                   message: "恭喜您，登录成功~",
                   type: "success",
                 });
-                // console.log(res.headers.token);
                 localStorage.setItem("token", res.headers.token);
-
+                this.userMessage = JSON.stringify(res.data.data);
                 this.avatarUrl = res.data.data.avatarUrl;
-                this.bus.$emit("avatarlink", this.avatarUrl);
+                this.bus.$emit("userMessage", this.userMessage);
                 this.$router.push({ path: "home" });
               }
             });

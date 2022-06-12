@@ -2,6 +2,9 @@ package cn.sticki.resource.pojo;
 
 import lombok.Data;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class City {
 

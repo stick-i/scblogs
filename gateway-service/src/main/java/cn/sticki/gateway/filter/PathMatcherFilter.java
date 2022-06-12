@@ -12,9 +12,13 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author 阿杆
+ */
 @Component
 public class PathMatcherFilter implements GlobalFilter, Ordered {
 
+	@SuppressWarnings("AlibabaUndefineMagicConstant")
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		ServerHttpRequest request = exchange.getRequest();

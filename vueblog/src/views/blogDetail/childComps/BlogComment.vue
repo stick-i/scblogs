@@ -1,8 +1,9 @@
 <template>
   <div>
     <div class="comment-container">
+<!--			{{this.commentList}}-->
       <div class="comment-title">
-        评论 <span>{{ facomment.allCount }}</span>
+        评论 <span>{{ commentList.allCount }}</span>
       </div>
       <div class="comment-edit-box">
         <div class="user-img">
@@ -24,7 +25,7 @@
         <div class="comment-list-box">
           <ul
             class="comment-list"
-            v-for="(item, index) in facomment.records"
+            v-for="(item, index) in commentList.records"
             :key="index"
           >
             <!-- 父评论 -->
@@ -172,13 +173,13 @@
           </ul>
         </div>
         <!-- 分页开始 -->
-        <div class="pagination-box" v-if="facomment.records != null">
+        <div class="pagination-box" v-if="commentList.records != null">
           <el-pagination
             background
             layout="prev, pager, next"
-            :current-page="facomment.current"
-            :page-size="facomment.size"
-            :total="facomment.total"
+            :current-page="commentList.current"
+            :page-size="commentList.size"
+            :total="commentList.total"
             @current-change="page1"
           >
           </el-pagination>
@@ -223,10 +224,15 @@ export default {
       blogId: this.$route.params.blogId,
       page: "2",
       pageSize: "3",
+      // 评论列表
+      commentList:{},
     };
   },
-  created() {
+	mounted() {
+	},
+	created() {
     this.avatarUrl = window.localStorage.avatarUrl;
+    this.getCommentList();
   },
   methods: {
     showFirstEditBox(id) {
@@ -235,6 +241,21 @@ export default {
     showSecondEditBox(id) {
       this.secondId = id;
     },
+		// 展示评论列表
+		getCommentList() {
+			this.$axios
+				.get("/comment/list", {
+					params: {
+						blogId: this.blogId,
+						page: 1,
+						pageSize: this.pageSize,
+					},
+				})
+				.then((res) => {
+					// console.log(res.data.data)
+					this.commentList = res.data.data
+				});
+		},
     // 发布一级评论
     firstComment() {
       this.$axios
@@ -245,8 +266,10 @@ export default {
           console.log(res);
           this.comment.content = "";
           // 更新评论列表
-          this.$emit("func");
+          // this.$emit("func");
+					this.getCommentList()
         });
+
     },
     // 发布二级评论
     secondComment(parentId) {
@@ -259,7 +282,8 @@ export default {
           console.log(res);
           this.childComment.content = "";
           // 更新评论列表
-          this.$emit("func");
+          // this.$emit("func");
+					this.getCommentList()
         });
     },
     // 发布三级评论
@@ -273,7 +297,8 @@ export default {
           console.log(res);
           this.childComment2.content = "";
           // 更新评论列表
-          this.$emit("func");
+          // this.$emit("func");
+					this.getCommentList()
         });
     },
     // 删除评论
@@ -285,7 +310,8 @@ export default {
         })
         .then((res) => {
           console.log("删除", res);
-          this.$emit("func");
+					this.getCommentList()
+          // this.$emit("func");
         });
     },
     // 分页
@@ -299,8 +325,10 @@ export default {
           },
         })
         .then((res) => {
-          // this.facomment = res.data.data
-          this.$emit("recordsChange", res.data.data);
+					this.commentList = res.data.data
+          // console.log(res)
+					// this.getCommentList()
+          // this.$emit("recordsChange", res.data.data);
         });
     },
   },

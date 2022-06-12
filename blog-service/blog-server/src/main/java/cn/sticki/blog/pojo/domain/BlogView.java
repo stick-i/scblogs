@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+/**
+ * @author 阿杆
+ */
 @Data
 public class BlogView {
 
@@ -26,6 +29,11 @@ public class BlogView {
 	 * 描述
 	 */
 	String description;
+
+	/**
+	 * 院校代码
+	 */
+	String schoolCode;
 
 	/**
 	 * 封面图

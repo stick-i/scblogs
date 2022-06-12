@@ -3,11 +3,15 @@ package cn.sticki.resource.client;
 import cn.sticki.common.result.RestResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author 阿杆
+ */
 @FeignClient(value = "resource-server")
 public interface ResourceClient {
 
@@ -29,5 +33,14 @@ public interface ResourceClient {
 	 */
 	@PostMapping(value = "/private/resource/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	RestResult<String> uploadAvatarImage(@RequestPart MultipartFile file, @RequestParam String name);
+
+	/**
+	 * 通过院校代码获取名称
+	 *
+	 * @param schoolCode 院校代码
+	 * @return 高校名称
+	 */
+	@GetMapping("/resource/university/name")
+	RestResult<String> getUniversityName(@RequestParam Integer schoolCode);
 
 }
