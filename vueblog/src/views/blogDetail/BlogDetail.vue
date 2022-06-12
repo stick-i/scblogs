@@ -99,7 +99,7 @@
 						<h3 class="aside-title">目录</h3>
 						<div class="aside-content">
 							<ul class="nav-list" v-for="item in navList" :key="item.name">
-								<li :class="item.localName=='h2'? 'h2active':item.localName=='h3'? 'h3active':item.localName=='h4'? 'h4active':''">
+								<li :class="item.localName=='h2'? 'h2active':item.localName=='h3'? 'h3active':item.localName=='h4'? 'h4active':item.localName=='h5'? 'h5active':item.localName=='h6'? 'h6active':''">
 									<a @click="scrollToPosition(item.href)">{{item.name}}</a>
 <!--									<a :href="'#'+item.href" >{{item.name}}</a>-->
 								</li>
@@ -140,11 +140,11 @@
               <h1>{{ blogDetail.title }}</h1>
               <!--文章信息开始-->
               <div class="article-info">
-                <img
-                  class="article-type-img"
-                  src="../../assets/img/blogDetail/original.png"
-                  alt=""
-                />
+<!--                <img-->
+<!--                  class="article-type-img"-->
+<!--                  src="../../assets/img/blogDetail/original.png"-->
+<!--                  alt=""-->
+<!--                />-->
                 <div class="info-box">{{ profile.author }}</div>
                 <img
                   class="icon"
@@ -237,7 +237,9 @@
         </div>
       </div>
     </div>
-  </div>
+
+
+	</div>
 </template>
 
 <script>
@@ -332,14 +334,14 @@ export default {
 					commentNum: blog.info.commentNum,
 				};
 				_this.profile = {
-					author: blog.info.author,
+					author: blog.author.nickname,
 					avatarUrl: blog.author.avatarUrl,
 				};
 				_this.followIdForm = {
 					followId: blog.author.id,
 				};
-				_this.comment = blog.comment;
-				console.log(_this.comment);
+				// _this.comment = blog.comment;
+				// console.log(_this.comment);
 			});
 			// 获取目录
 			const aArr = this.$refs.content.querySelectorAll("a");
@@ -364,9 +366,9 @@ export default {
 			position.top = position.top - 80;
 			scrolltoToc(position.top);
 		},
-    recordsChange(records) {
-      this.comment = records; //在父组件修改值
-    },
+    // recordsChange(records) {
+    //   this.comment = records; //在父组件修改值
+    // },
     // 关注
     followUser() {
       this.$axios
@@ -398,17 +400,17 @@ export default {
         });
     },
     // 获取评论
-    getComment() {
-      console.log("获取评论");
-      const blogId = this.$route.params.blogId;
-      const _this = this;
-      this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
-        console.log(res);
-        const blog = res.data.data;
-        _this.comment = blog.comment;
-        console.log(_this.comment);
-      });
-    },
+    // getComment() {
+    //   console.log("获取评论");
+    //   const blogId = this.$route.params.blogId;
+    //   const _this = this;
+    //   this.$axios.get("/blog/blog?id=" + blogId).then((res) => {
+    //     console.log(res);
+    //     const blog = res.data.data;
+    //     _this.comment = blog.comment;
+    //     console.log(_this.comment);
+    //   });
+    // },
     // 点赞
     addLikeNum() {
       this.$axios
@@ -485,6 +487,12 @@ export default {
 }
 .h4active {
 	margin-left: 60px;
+}
+.h5active {
+	margin-left: 80px;
+}
+.h6active {
+	margin-left: 100px;
 }
 .nav-list a {
 	color: #555666;

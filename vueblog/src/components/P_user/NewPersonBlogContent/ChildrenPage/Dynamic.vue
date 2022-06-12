@@ -7,7 +7,8 @@
                     <div class="A-1">
                         我的动态
                     </div>
-                    <div class="A-2">
+                    <div @click="TurnToDynamicEdit"
+						 class="A-2">
                         +发布动态
                     </div>
                     <div class="A-3">
@@ -111,6 +112,11 @@ export default {
                 }
             }
         },
+	//	跳转至编辑动态页面
+		TurnToDynamicEdit(){
+			var routeUrl= this.$router.resolve({path:'./DynamicEdit'})
+			window.open(routeUrl.href, '_blank');
+		}
     }
 }
 </script>

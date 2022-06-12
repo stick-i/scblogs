@@ -8,11 +8,11 @@
                         <a @click="Publish">我要发布</a>
                     </div>
                     <!-- 当没有数据时显示 -->
-                    <div class="nodata" v-if="DynamicList.length==0? true:false">
+                    <div class="nodata" v-if="DynamicList.length==0">
                         <p>当前没有动态哦</p>
                     </div>
                     <!-- 表白墙正文显示区域 -->
-                    <div class="heartsay"  v-for="item in 6" >
+                    <div class="heartsay"  v-for="item in DynamicList" >
                         <div class="heartA">
                             <div class="img">
                                 <img :src="avatarUrl" alt="">
@@ -98,7 +98,7 @@ export default {
                 }
             }
         },
-        
+
 }
 </script>
 
@@ -132,7 +132,7 @@ export default {
     width: 100%;
     min-height: 200px;
     border-bottom: 1px solid white;
-} 
+}
 .F-3 .F-3-content .nodata{
     width: 100%;
     line-height: 100%;
@@ -140,7 +140,7 @@ export default {
     font-size: 20px;
     font-weight: 600;
     color: aliceblue;
-} 
+}
 .F-3 .F-3-content .heartsay .heartA{
     width: 100%;
     height: 100px;
@@ -148,7 +148,7 @@ export default {
     display: flex;
     align-items: center;
 
-} 
+}
 .F-3 .F-3-content .heartsay .heartA .img{
     width: 60px;
     height: 60px;
@@ -157,18 +157,18 @@ export default {
     border: 2px solid rgb(205, 205, 205,0.5);
     /* display: flex; */
     text-align: center;
-} 
+}
 .F-3 .F-3-content .heartsay .heartA .img img{
     width: 100%;
     height: 100%;
-} 
+}
 .F-3 .F-3-content .heartsay .heartA .username{
     line-height: 100%;
     text-align: center;
     font-size: 20px;
     font-weight: 600;
     margin-left: 20px;
-} 
+}
 .F-3 .F-3-content .heartsay .heartB{
     width: 95%;
     min-height: 200px;
@@ -177,23 +177,23 @@ export default {
     background: rgb(241, 234, 234,0.6);
     border-color: white;
     transition: all 0.3s;
-} 
+}
 .F-3 .F-3-content .heartsay .heartB:hover{
     border: 4px solid rgba(255, 255, 255);
-} 
+}
 .F-3 .F-3-content .heartsay .heartC{
     width: 100%;
-} 
+}
 .F-3 .F-3-content .heartsay .heartC ul{
     width: 100%;
     height: 60px;
     display: flex;
-} 
+}
 .F-3 .F-3-content .heartsay .heartC ul li{
     width: 25%;
     height: 100%;
     text-align: center;
-} 
+}
 .F-3 .F-3-content .heartsay .heartC ul li svg{
     width: 50%;
     height: 50%;
@@ -201,7 +201,7 @@ export default {
     fill: rgb(255, 255, 255);
     transition: all 0.2s linear;
     cursor: pointer;
-} 
+}
 .F-3 .F-3-content .heartsay .heartC ul li svg:hover{
     transform: scale(1.3) ;
     fill: rgb(51, 239, 236);
@@ -212,5 +212,5 @@ export default {
 }
 .F-3 .F-3-content .heartsay .heartC ul li:nth-child(1) svg.active{
     fill:rgb(51, 239, 236);
-} 
+}
 </style>
