@@ -1,15 +1,15 @@
 # 校园博客 [scblogs]
 
-<p style="text-align:center">
+<p align=center>
   <a href="http://www.scblogs.cn">
     <img src="./document/image/scblogs-logo.png" alt="校园博客">
   </a>
 </p>
 
-<p style="text-align:center">
+<p  align=center>
    基于微服务架构的前后端分离的博客系统
 </p>
-<p style="text-align:center">
+<p align="center">
 <a target="_blank" href="https://github.com/stick-i/scblogs">
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt=""/>
   <img src="https://img.shields.io/badge/JDK-1.8-green.svg" alt=""/>
