@@ -56,9 +56,10 @@
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 
+		<!-- redis依赖 -->
 		<dependency>
-			<groupId>com.alicp.jetcache</groupId>
-			<artifactId>jetcache-starter-redis</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
 		<dependency>
