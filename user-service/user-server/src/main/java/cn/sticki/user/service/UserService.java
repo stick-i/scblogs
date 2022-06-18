@@ -1,5 +1,6 @@
 package cn.sticki.user.service;
 
+import cn.sticki.common.result.RestResult;
 import cn.sticki.user.pojo.User;
 import cn.sticki.user.pojo.UserView;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -105,7 +106,7 @@ public interface UserService extends IService<UserView> {
 	 * @param id 用户id
 	 * @return 是否发送成功
 	 */
-	boolean sendMailVerify(Integer id);
+	RestResult<Object> sendMailVerify(Integer id);
 
 	/**
 	 * 检查验证码
