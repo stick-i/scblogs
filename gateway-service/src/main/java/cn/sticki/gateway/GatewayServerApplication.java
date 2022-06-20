@@ -1,6 +1,6 @@
 package cn.sticki.gateway;
 
-import cn.sticki.common.tool.redis.EnableRedisSerialize;
+import cn.sticki.common.redis.autoconfig.EnableRedisSerialize;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
