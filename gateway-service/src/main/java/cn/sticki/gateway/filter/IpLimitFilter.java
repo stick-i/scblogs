@@ -2,58 +2,89 @@ package cn.sticki.gateway.filter;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.utils.RequestUtils;
-import cn.sticki.common.web.utils.ResponseUtils;
-import com.alicp.jetcache.Cache;
-import com.alicp.jetcache.anno.CreateCache;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.Ordered;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import static cn.sticki.gateway.utils.RedisConstants.GATEWAY_IPLIMIT_KEY;
+import static cn.sticki.gateway.utils.RedisConstants.GATEWAY_IPLIMIT_TTL;
 
 /**
+ * ip访问限制过滤器
+ *
  * @author 阿杆
  */
 @Slf4j
 @Component
-public class IpLimitFilter extends OncePerRequestFilter {
+public class IpLimitFilter implements GlobalFilter, Ordered {
 
-	private final static int TIME = 5;
+	private final static int LIMIT_COUNT = 30;
 
-	private final static int COUNT = 30;
+	private final static int LIMIT_TIME = 10;
 
-	@CreateCache(name = "gateway:ipLimit:", expire = TIME)
-	private Cache<String, Integer> cache;
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	/**
-	 * ip访问限制过滤器
-	 */
+	@Resource
+	private RedisTemplate<String, Integer> redisTemplate;
+
+	@SneakyThrows(IOException.class)
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		// todo 有待优化，目前逻辑为，连续访问30次，需要冷却5s
-		// 获取当前ip
+	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		ServerHttpRequest request = exchange.getRequest();
+		ServerHttpResponse response = exchange.getResponse();
+		// 0.打印访问情况
+		log.info("{} {} {} {}", request.getRemoteAddress(), request.getMethod(), response.getStatusCode(), request.getPath());
+		// todo 有待优化，目前逻辑为，5s内连续访问30次，需要冷却10s
+		// 1. 获取当前ip
 		String ip = RequestUtils.getIpAddress(request);
-		// ip计数
-		Integer ipCount = cache.get(ip);
+		// 2. 获取ip计数
+		String key = GATEWAY_IPLIMIT_KEY + ip;
+		Integer ipCount = redisTemplate.opsForValue().get(key);
 		if (ipCount == null) {
 			ipCount = 0;
 		}
-		if (ipCount > COUNT) {
-			// ip访问超过限制
-			ResponseUtils.objectToJson(response, new RestResult<>(408, "访问频繁，请稍后再试"));
-			response.sendError(403, "Reject request");
+		// 3.判断ip访问次数
+		if (ipCount > LIMIT_COUNT) {
+			// 3.1 超过限制，禁止访问
+			// 3.10 重置当前ip的ttl为限制时长
+			redisTemplate.opsForValue().set(key, ipCount, LIMIT_TIME, TimeUnit.SECONDS);
+			// 3.11 设置状态码和响应类型
+			response.setStatusCode(HttpStatus.LOCKED);
+			response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+			// 3.12 构造返回体
+			DataBufferFactory bufferFactory = response.bufferFactory();
+			log.info("ip limit : {} {}", ip, exchange.getRequest().getPath());
+			DataBuffer wrap = bufferFactory.wrap(objectMapper.writeValueAsBytes(new RestResult<>(408, "访问频繁，请稍后再试")));
+			return response.writeWith(Mono.fromSupplier(() -> wrap));
 		} else {
+			// 3.2 未超过限制，正常访问，访问次数+1
 			ipCount++;
-			cache.put(ip, ipCount);
-			//放行
-			filterChain.doFilter(request, response);
+			redisTemplate.opsForValue().set(key, ipCount, GATEWAY_IPLIMIT_TTL, TimeUnit.SECONDS);
+			// 3.3 放行
+			return chain.filter(exchange);
 		}
-		// 打印访问情况
-		log.info("{} {} {} {}", request.getRemoteAddr(), request.getMethod(), response.getStatus(), request.getServletPath());
+	}
+
+	@Override
+	public int getOrder() {
+		return -1000;
 	}
 
 }

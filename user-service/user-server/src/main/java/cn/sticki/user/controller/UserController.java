@@ -6,8 +6,6 @@ import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
 import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.UserService;
-import com.alicp.jetcache.Cache;
-import com.alicp.jetcache.anno.CreateCache;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +29,6 @@ public class UserController {
 	@Resource
 	private UserService userService;
 
-	// @CreateCache(name = CacheSpace.Login_UserID)
-	// Cache<Integer, User> cache;
-
-	@CreateCache(name = "user:user:sendMailTime", expire = 300)
-	private Cache<Integer, Long> sendMailTimeCache;
-
 	/**
 	 * 获取公开信息
 	 *
@@ -44,15 +36,13 @@ public class UserController {
 	 */
 	@GetMapping
 	public RestResult<User> getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
-		User getUser = null;
+		Integer getId = null;
 		if (id == null && userId != null) {
-			getUser = userService.getById(userId);
-			log.debug("getByUsername, sessionUser ,user->{}", getUser);
+			getId = userId;
 		} else if (id != null) {
-			getUser = userService.getById(id);
-			log.debug("getByUsername, userService.getByUsername ,user->{}", getUser);
+			getId = id;
 		}
-		return new RestResult<>(getUser);
+		return new RestResult<>(userService.getById(getId));
 	}
 
 	/**
@@ -71,7 +61,6 @@ public class UserController {
 	@PutMapping("/nickname")
 	public RestResult<Object> updateNickname(@NotNull String nickname, @RequestHeader Integer id) {
 		if (userService.updateNickname(id, nickname)) {
-			// todo cache.put(id, user)
 			return new RestResult<>(true);
 		}
 		return new RestResult<>(false);
@@ -87,7 +76,6 @@ public class UserController {
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
 		// 检查文件，小于1Mib ,仅支持JPEG和PNG
 		FileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		// todo cache.put(id, user)
 		String avatar = userService.updateAvatar(id, avatarFile);
 		if (avatar != null) {
 			return new RestResult<>(avatar);
@@ -141,18 +129,7 @@ public class UserController {
 	 */
 	@PostMapping("/mail/send-mail-verify")
 	public RestResult<Object> sendMailVerifyForUpdateMail(@RequestHeader Integer id) {
-		Long sendTime = sendMailTimeCache.get(id);
-		Long nowTime = System.currentTimeMillis() / 1000;
-		// 判断是否发送过邮件，若上一次发送邮件的时间超过60s则允许发送
-		if (sendTime == null || nowTime - sendTime > 60) {
-			boolean result = userService.sendMailVerify(id);
-			if (result) {
-				// 将发送邮件的时间存到Cache(Redis)
-				sendMailTimeCache.put(id, nowTime);
-				return new RestResult<>(true, "发送成功");
-			}
-		}
-		return new RestResult<>(false, "发送失败");
+		return userService.sendMailVerify(id);
 	}
 
 	/**

@@ -48,6 +48,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>cn.sticki</groupId>
+			<artifactId>common-regex</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.sticki</groupId>
+			<artifactId>common-redis</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
@@ -105,9 +117,10 @@
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
+		<!-- redis依赖 -->
 		<dependency>
-			<groupId>com.alicp.jetcache</groupId>
-			<artifactId>jetcache-starter-redis</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
 		<dependency>

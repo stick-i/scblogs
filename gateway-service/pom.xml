@@ -29,6 +29,12 @@
 
 		<dependency>
 			<groupId>cn.sticki</groupId>
+			<artifactId>common-redis</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.sticki</groupId>
 			<artifactId>common-web</artifactId>
 			<version>1.0.0</version>
 		</dependency>
@@ -56,9 +62,10 @@
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 
+		<!-- redis依赖 -->
 		<dependency>
-			<groupId>com.alicp.jetcache</groupId>
-			<artifactId>jetcache-starter-redis</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
 		<dependency>

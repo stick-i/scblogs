@@ -8,6 +8,10 @@ import java.util.UUID;
  */
 public class RandomUtils {
 
+	public static Integer randomNumber(int size) {
+		return Integer.valueOf(generator(size, "0123456789"));
+	}
+
 	public static String generator() {
 		return generator(6);
 	}
