@@ -1,15 +1,15 @@
 # 校园博客 [scblogs]
 
-<p style="text-align:center">
+<p align=center>
   <a href="http://www.scblogs.cn">
     <img src="./document/image/scblogs-logo.png" alt="校园博客">
   </a>
 </p>
 
-<p style="text-align:center">
+<p  align=center>
    基于微服务架构的前后端分离的博客系统
 </p>
-<p style="text-align:center">
+<p align="center">
 <a target="_blank" href="https://github.com/stick-i/scblogs">
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt=""/>
   <img src="https://img.shields.io/badge/JDK-1.8-green.svg" alt=""/>
@@ -30,7 +30,7 @@
 - 采用 **JWT** 的方式进行用户鉴权，配合网关服务保证其他所有微服务都能准确识别用户身份
 - 采用 **Minio** 搭建对象存储服务，同时引入七牛云对象存储
 - 采用 **AOP** + 自定义注解 + **Redis** 实现限制IP接口访问次数
-
+- 基于 **Redis** 实现的分布式全局唯一ID生成器，保障ID可用性、安全性。
 - 页面交互使用 **Vue2.x**，极大的提高了开发效率。
 
 ## 项目地址
