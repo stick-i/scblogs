@@ -9,13 +9,18 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>common-tool</artifactId>
+	<artifactId>common-redis</artifactId>
+
+	<properties>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
+	</properties>
+
 	<dependencies>
 		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-extension</artifactId>
-			<version>${mybatis-plus.version}</version>
-			<optional>true</optional>
+			<groupId>cn.sticki</groupId>
+			<artifactId>common-core</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -24,21 +29,19 @@
 		</dependency>
 
 		<dependency>
-			<groupId>cn.sticki</groupId>
-			<artifactId>common-core</artifactId>
-			<version>1.0.0</version>
-			<scope>compile</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-json</artifactId>
 		</dependency>
 	</dependencies>
-
-	<properties>
-		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
-	</properties>
 
 </project>

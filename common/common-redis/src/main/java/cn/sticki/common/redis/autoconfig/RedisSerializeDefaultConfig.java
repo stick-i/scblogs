@@ -1,4 +1,4 @@
-package cn.sticki.common.tool.redis;
+package cn.sticki.common.redis.autoconfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
