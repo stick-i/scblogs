@@ -13,7 +13,7 @@
 <a target="_blank" href="https://github.com/stick-i/scblogs">
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt=""/>
   <img src="https://img.shields.io/badge/JDK-1.8-green.svg" alt=""/>
-  <img src="https://img.shields.io/badge/Springboot-2.6.6-green" alt=""/>
+  <img src="https://img.shields.io/badge/SpringBoot-2.6.6-green" alt=""/>
   <img src="https://img.shields.io/badge/SpringCloud-2021.0.2-green" alt=""/>
   <img src="https://img.shields.io/badge/SpringCloudAlibaba-2021.0.1.0-green" alt=""/>
   <img src="https://img.shields.io/badge/Vue-2.6.14-green" alt=""/>
