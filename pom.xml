@@ -30,7 +30,7 @@
 	</parent>
 
 	<properties>
-		<docker.image>sticki.scblogs</docker.image>
+		<docker.space>scblogs</docker.space>
 
 		<spring-boot.version>2.6.6</spring-boot.version>
 		<spring-cloud.version>2021.0.2</spring-cloud.version>
