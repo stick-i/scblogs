@@ -67,13 +67,17 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		String key = USER_SERVICE_INFO_KEY + id;
 		// 2. 尝试从redis获取
 		User user = (User) objectRedisTemplate.opsForValue().get(key);
-		if (user == null) {
-			// 2.1 若获取不到，从数据库取
-			user = query().getBaseMapper().selectById(id);
-			// 2.2 存入redis
+		if (user != null) {
+			// 3. 存在，直接返回
+			return user;
+		}
+		// 4. 不存在，查数据库
+		user = query().getBaseMapper().selectById(id);
+		if (user != null) {
+			// 4.1 查询成功，存入redis
 			objectRedisTemplate.opsForValue().set(key, user, USER_SERVICE_INFO_TTL, TimeUnit.SECONDS);
 		}
-		// 3. 返回信息
+		// 5. 返回信息
 		return user;
 	}
 
@@ -97,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 
 	@Override
 	public boolean removeById(Integer id) {
-		if (userSafetyMapper.deleteById(id) + userMapper.deleteById(id) == 2) {
+		if (userSafetyMapper.deleteById(id) == 1 && userMapper.deleteById(id) == 1) {
 			return true;
 		}
 		throw new SqlHandleException("remove by id error,id->" + id);
