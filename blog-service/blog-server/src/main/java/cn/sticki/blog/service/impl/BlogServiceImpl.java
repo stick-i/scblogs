@@ -171,9 +171,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		log.debug("uploadCoverImage,pic name->{}", coverImage.getOriginalFilename());
 		RestResult<String> result = resourceClient.uploadBlogImage(coverImage);
 		if (result.getStatus() && result.getData() != null) {
-			String url = result.getData();
-			int index = url.lastIndexOf("/") + 1;
-			return url.substring(index);
+			log.debug("uploadCoverImage OK, url:{}", result.getData());
+			return result.getData();
 		}
 		return null;
 	}
