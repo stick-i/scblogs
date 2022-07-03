@@ -2,18 +2,9 @@ server:
   port: ${random.int(40001,49999)}
 
 spring:
-  application:
-    name: @artifactId@
-  cloud:
-    nacos:
-      server-addr: 127.0.0.1:8848 # nacos地址
-
   # 邮箱相关
   mail:
-    host: xxx
-    username: xxx
-    password: xxx
-    port: 000
+    # 账号密码端口等配置在nacos上
     default-encoding: UTF-8
     properties:
       mail:
