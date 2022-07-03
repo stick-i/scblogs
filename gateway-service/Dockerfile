@@ -5,8 +5,6 @@ VOLUME /tmp
 # 拷贝运行JAR包
 ARG JAR_FILE
 ADD ${JAR_FILE} app.jar
-# 声明需要暴露的端口
-EXPOSE 80
 # 设置JVM运行参数， 这里限定下内存大小，减少开销
 ENV JAVA_OPTS="\
 -server \
