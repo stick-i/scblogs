@@ -34,6 +34,21 @@ Vue.prototype.bus = new Vue();
 
 Vue.config.productionTip = false
 
+Vue.directive('debounce', {
+  inserted(el, binding) {
+    let timeout=null
+    el.addEventListener('click', () => {
+      if(timeout){
+        clearTimeout(timeout)
+      }
+      timeout=setTimeout(() => {
+        console.log("这是防抖实现",binding)
+        binding.value.fn()
+      }, 5000);
+    })
+  }
+})
+
 new Vue({
   router,
   store,

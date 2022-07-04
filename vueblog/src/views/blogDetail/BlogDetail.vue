@@ -312,7 +312,7 @@ export default {
 			this.blogIdForm.blogId = this.$route.params.blogId;
 			const _this = this;
 			await this.$axios.get("/blog/content?id=" + blogId).then((res) => {
-				console.log(res);
+				console.log("返回的所有数据",res);
 				const blog = res.data.data;
 
 				// 渲染md文档
