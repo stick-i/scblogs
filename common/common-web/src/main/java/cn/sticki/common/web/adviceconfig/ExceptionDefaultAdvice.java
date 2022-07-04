@@ -22,6 +22,8 @@ import java.util.List;
 
 /**
  * 默认的SpringMVC的异常处理器
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestControllerAdvice
@@ -87,7 +89,9 @@ public class ExceptionDefaultAdvice {
 		return new RestResult<>(403, "数据异常", null, false);
 	}
 
-	// 访问不存在的页面
+	/**
+	 * 访问不存在的页面
+	 */
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public RestResult<Object> doNoHandlerFoundException(Exception e) {
 		log.warn("页面不存在,{}", e.getMessage());

@@ -2,6 +2,8 @@ package cn.sticki.resource.type;
 
 /**
  * 文件类型
+ *
+ * @author 阿杆
  */
 public enum FileType {
 	/**

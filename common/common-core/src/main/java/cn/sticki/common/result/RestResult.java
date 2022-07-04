@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author 阿杆
+ */
 @Data
 @AllArgsConstructor
 public class RestResult<T> implements Serializable {
@@ -62,6 +65,22 @@ public class RestResult<T> implements Serializable {
 		this.message = message;
 		this.data = null;
 		this.status = false;
+	}
+
+	public static RestResult<Object> ok() {
+		return new RestResult<>();
+	}
+
+	public static <T> RestResult<T> ok(T data) {
+		return new RestResult<>(200, "success", data, true);
+	}
+
+	public static RestResult<Object> fail() {
+		return new RestResult<>(400, "fail", null, false);
+	}
+
+	public static RestResult<Object> fail(String errorMessage) {
+		return new RestResult<>(400, errorMessage, null, false);
 	}
 
 }

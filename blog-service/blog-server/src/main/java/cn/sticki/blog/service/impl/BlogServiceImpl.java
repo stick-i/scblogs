@@ -27,9 +27,12 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
 
 	@Resource
@@ -82,7 +85,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 				if (blogSelect.getReleaseTime() == null && BlogStatusType.DRAFT.getValue().equals(blog.getStatus())) {
 					blog.setReleaseTime(new Timestamp(System.currentTimeMillis()));
 				}
-				blog.setAuthorId(null); // 作者不更新
+				// 作者不更新
+				blog.setAuthorId(null);
 				blogMapper.updateById(blog);
 			}
 			if (blogContent.getContent() != null) {
@@ -100,9 +104,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			blog.setCoverImage(image);
 		}
 		// 添加发表时间，若未发表则不添加
-		if (!BlogStatusType.DRAFT.getValue().equals(blogDTO.getStatus())) blog.setReleaseTime(timestamp);
+		if (!BlogStatusType.DRAFT.getValue().equals(blogDTO.getStatus())) {
+			blog.setReleaseTime(timestamp);
+		}
 		// 插入数据库
-		if (blogMapper.insert(blog) != 1) throw new BlogMapperException();
+		if (blogMapper.insert(blog) != 1) {
+			throw new BlogMapperException();
+		}
 		log.debug("insert blog success,id->{}", blog.getId());
 		// 新建博客内容
 		blogContent.setBlogId(blog.getId());
@@ -115,7 +123,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		blogGeneral.setBlogId(blog.getId());
 		// 设置初始评分
 		blogGeneral.setScore(ratingBlog(blogDTO.getContent()));
-		if (blogGeneralMapper.insert(blogGeneral) != 1) throw new BlogMapperException("blog_general insert error!");
+		if (blogGeneralMapper.insert(blogGeneral) != 1) {
+			throw new BlogMapperException("blog_general insert error!");
+		}
 	}
 
 	private int ratingBlog(@NotNull String blog) {
@@ -148,6 +158,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 				case 5:
 					blogCountBO.setAudit(count.getNumber());
 					break;
+				default:
 			}
 			all += count.getNumber();
 		}
@@ -160,9 +171,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		log.debug("uploadCoverImage,pic name->{}", coverImage.getOriginalFilename());
 		RestResult<String> result = resourceClient.uploadBlogImage(coverImage);
 		if (result.getStatus() && result.getData() != null) {
-			String url = result.getData();
-			int index = url.lastIndexOf("/") + 1;
-			return url.substring(index);
+			log.debug("uploadCoverImage OK, url:{}", result.getData());
+			return result.getData();
 		}
 		return null;
 	}
@@ -172,8 +182,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		LambdaQueryWrapper<Blog> blogWrapper = new LambdaQueryWrapper<>();
 		blogWrapper.eq(Blog::getId, blogId).eq(Blog::getAuthorId, userId);
 		// 判断是否存在（该博客是否为该用户发表的）
-		if (!blogMapper.exists(blogWrapper))
+		if (!blogMapper.exists(blogWrapper)) {
 			return null;
+		}
 		return blogContentMapper.selectById(blogId);
 	}
 

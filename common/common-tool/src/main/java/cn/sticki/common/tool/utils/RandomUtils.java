@@ -3,7 +3,14 @@ package cn.sticki.common.tool.utils;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * @author 阿杆
+ */
 public class RandomUtils {
+
+	public static Integer randomNumber(int size) {
+		return Integer.valueOf(generator(size, "0123456789"));
+	}
 
 	public static String generator() {
 		return generator(6);

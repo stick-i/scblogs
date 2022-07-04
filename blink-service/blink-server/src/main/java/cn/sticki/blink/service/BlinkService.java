@@ -5,6 +5,9 @@ import cn.sticki.blink.pojo.SaveBlinkBO;
 import cn.sticki.blink.pojo.UpdateBlinkBO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+/**
+ * @author 阿杆
+ */
 public interface BlinkService extends IService<Blink> {
 
 	/**

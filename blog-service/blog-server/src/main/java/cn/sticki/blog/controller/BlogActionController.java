@@ -14,6 +14,8 @@ import java.util.Map;
 
 /**
  * 用户对博客的行为相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -37,7 +39,7 @@ public class BlogActionController {
 	@PostMapping("/like")
 	public RestResult<Object> likeBlog(@NotNull Integer blogId, @RequestHeader int id) {
 		boolean status = likeBlogService.likeBlog(id, blogId);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("num", likeBlogService.getLikeNum(blogId));
 		map.put("status", status);
 		return new RestResult<>(map);
@@ -52,7 +54,7 @@ public class BlogActionController {
 	@PostMapping("/collect")
 	public RestResult<Object> collectBlog(@NotNull Integer blogId, @RequestHeader int id) {
 		boolean status = collectBlogService.collectBlog(id, blogId);
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(1);
 		map.put("num", collectBlogService.getCollectNum(blogId));
 		map.put("status", status);
 		return new RestResult<>(map);

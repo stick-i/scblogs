@@ -11,6 +11,8 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 用户注册业务类
+ *
+ * @author 阿杆
  */
 @Data
 public class UserRegisterBO {

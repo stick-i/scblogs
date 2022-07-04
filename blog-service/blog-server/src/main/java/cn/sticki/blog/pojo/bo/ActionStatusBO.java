@@ -4,6 +4,8 @@ import lombok.Data;
 
 /**
  * 用户操作博客的状态，是否点赞，是否收藏
+ *
+ * @author 阿杆
  */
 @Data
 public class ActionStatusBO {
@@ -11,11 +13,11 @@ public class ActionStatusBO {
 	/**
 	 * 是否点赞
 	 */
-	boolean isLike;
+	Boolean isLike;
 
 	/**
 	 * 是否收藏
 	 */
-	boolean isCollect;
+	Boolean isCollect;
 
 }

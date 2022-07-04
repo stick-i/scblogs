@@ -11,7 +11,7 @@ spring:
             refresh: true
           - data-id: default-redis.yaml
             refresh: true
-          - data-id: default-mysql.yaml
-            refresh: true
           - data-id: default-springmvc.yaml
+            refresh: true
+          - data-id: default-rabbitmq.yaml
             refresh: true

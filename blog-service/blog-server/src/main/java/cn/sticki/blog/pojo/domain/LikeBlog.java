@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 
 /**
  * 博客点赞信息类
+ *
+ * @author 阿杆
  */
 @Data
 public class LikeBlog {

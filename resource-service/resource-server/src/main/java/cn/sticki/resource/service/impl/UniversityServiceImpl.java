@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class UniversityServiceImpl extends ServiceImpl<UniversityMapper, University> implements UniversityService {

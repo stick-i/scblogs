@@ -13,13 +13,17 @@ import java.util.List;
 
 /**
  * 用户关注接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
 @RequestMapping("/user")
 public class FollowController {
 
-	// 默认每页20条
+	/**
+	 * 默认每页20条
+	 */
 	private final int pageSize = 20;
 
 	@Resource

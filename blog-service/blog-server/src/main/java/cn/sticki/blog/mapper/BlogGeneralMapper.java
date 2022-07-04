@@ -5,25 +5,58 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
+/**
+ * @author 阿杆
+ */
 @Mapper
 public interface BlogGeneralMapper extends BaseMapper<BlogGeneral> {
 
+	/**
+	 * 博客点赞数+1
+	 *
+	 * @param blogId 博客id
+	 */
 	@Update("update blog_general set like_num = like_num + 1 where blog_id = #{blogId};")
-	int increaseLikeNum(Integer blogId);
+	void increaseLikeNum(Integer blogId);
 
+	/**
+	 * 博客点赞数-1
+	 *
+	 * @param blogId 博客id
+	 */
 	@Update("update blog_general set like_num = like_num - 1 where blog_id = #{blogId};")
-	int decreaseLikeNum(Integer blogId);
+	void decreaseLikeNum(Integer blogId);
 
+	/**
+	 * 博客收藏数+1
+	 *
+	 * @param blogId 博客id
+	 */
 	@Update("update blog_general set collection_num = collection_num + 1 where blog_id = #{blogId};")
-	int increaseCollectionNum(Integer blogId);
+	void increaseCollectionNum(Integer blogId);
 
+	/**
+	 * 博客收藏数-1
+	 *
+	 * @param blogId 博客id
+	 */
 	@Update("update blog_general set collection_num = collection_num - 1 where blog_id = #{blogId};")
-	int decreaseCollectionNum(Integer blogId);
+	void decreaseCollectionNum(Integer blogId);
 
+	/**
+	 * 博客评论数+1
+	 *
+	 * @param blogId 博客id
+	 */
 	@Update("update blog_general set comment_num = comment_num + 1 where blog_id = #{blogId};")
-	int increaseCommentNum(Integer blogId);
+	void increaseCommentNum(Integer blogId);
 
+	/**
+	 * 博客评论数-1
+	 *
+	 * @param blogId 博客id
+	 */
 	@Update("update blog_general set comment_num = comment_num - 1 where blog_id = #{blogId};")
-	int decreaseCommentNum(Integer blogId);
+	void decreaseCommentNum(Integer blogId);
 
 }

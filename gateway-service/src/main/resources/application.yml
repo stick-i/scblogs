@@ -6,7 +6,7 @@ spring:
     gateway:
       httpclient:
         connect-timeout: 1000
-        response-timeout: 10s
+        response-timeout: 5s
       routes:
         # 用户服务
         - id: user-server # 路由标识，必须唯一

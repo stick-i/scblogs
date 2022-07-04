@@ -6,14 +6,19 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author 阿杆
+ */
 @Configuration
 public class MybatisPlusDefaultConfig {
 
 	@Bean
 	public MybatisPlusInterceptor mybatisPlusDefaultInterceptor() {
 		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-		interceptor.addInnerInterceptor(new PaginationInnerInterceptor()); // 配置分页助手
-		interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor()); // 阻止恶意的全表更新删除
+		// 配置分页助手
+		interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+		// 阻止恶意的全表更新删除
+		interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
 		return interceptor;
 	}
 

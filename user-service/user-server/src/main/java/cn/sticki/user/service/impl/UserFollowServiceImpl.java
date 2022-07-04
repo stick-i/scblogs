@@ -1,4 +1,4 @@
-package cn.sticki.user.service.Impl;
+package cn.sticki.user.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.user.exception.UserIllegalException;
@@ -17,6 +17,9 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
 public class UserFollowServiceImpl implements UserFollowService {

@@ -16,16 +16,23 @@ import cn.sticki.user.dto.UserDTO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static cn.sticki.comment.sdk.MqConstants.*;
+
+/**
+ * @author 阿杆
+ */
 @Slf4j
 @Service
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
 
 	@Resource
 	private CommentMapper commentMapper;
@@ -35,6 +42,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Resource
 	private BlogClient blogClient;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public void create(Comment comment) {
@@ -56,37 +66,30 @@ public class CommentServiceImpl implements CommentService {
 			RestResult<BlogDTO> result = blogClient.getBlogInfo(comment.getBlogId());
 			exists = result.getData() != null;
 		}
-		if (!exists) throw new CommentException("数据异常");
+		if (!exists) {
+			throw new CommentException("数据异常");
+		}
 		comment.setId(null);
 		comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		commentMapper.insert(comment);
-		// todo 博客评论数增加
-		// blogGeneralMapper.increaseCommentNum(comment.getId());
+		// 发送消息：博客评论数增加
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, comment.getBlogId());
 		log.info("博客评论增加，blogId={},commentId={}", comment.getBlogId(), comment.getId());
 	}
 
 	@Override
-	public void delete(int id) {
-		commentMapper.deleteById(id);
-		// todo 减少数量
-		// blogGeneralMapper.decreaseCommentNum(id);
-	}
-
-	@Override
-	public boolean checkPublisher(int userId, int commentId) {
-		LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(Comment::getUserId, userId).eq(Comment::getId, commentId);
-		return commentMapper.exists(wrapper);
-	}
-
-	@Override
 	public void checkAndDelete(int userId, int commentId) {
-		if (!checkPublisher(userId, commentId)) {
+		// 1. 查询评论信息是否存在
+		Comment comment = lambdaQuery().eq(Comment::getUserId, userId).eq(Comment::getId, commentId).one();
+		if (comment == null) {
+			// 2.1 不存在，抛出异常
 			log.warn("非法删除评论，id->{},commentId->{}", userId, commentId);
 			throw new CommentException("非法删除评论");
-		} else {
-			delete(commentId);
 		}
+		// 2.2 存在，删除评论
+		commentMapper.deleteById(commentId);
+		// 3. 发送消息，减少评论数量
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, comment.getBlogId());
 	}
 
 	@Override
@@ -94,10 +97,14 @@ public class CommentServiceImpl implements CommentService {
 		CommentListVO vo = new CommentListVO();
 		// 先查总数量
 		LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(Comment::getBlogId, blogId); // 只要博客id一致即可
+		// 只要博客id一致即可
+		wrapper.eq(Comment::getBlogId, blogId);
 		Long count = commentMapper.selectCount(wrapper);
 		vo.setAllCount(count);
-		if (count == 0) return vo; // 若总数为0，直接返回
+		if (count == 0) {
+			// 若总数为0，直接返回
+			return vo;
+		}
 
 		// 以时间排序(也可以按id倒序)，只查该博客下没有父评论id的，存入父评论组数中
 		wrapper.orderByDesc(Comment::getId).isNull(Comment::getParentId);
@@ -114,16 +121,15 @@ public class CommentServiceImpl implements CommentService {
 			CommentVO commentVO = new CommentVO();
 			commentVO.setInfo(BeanUtil.copyProperties(record, CommentBO.class));
 			dtoList.add(commentVO);
-			userIdList.add(record.getUserId());// 不用获取parentId，因为它们必为null
+			// 不用获取parentId，因为它们必为null
+			userIdList.add(record.getUserId());
 			parentIdList.add(record.getId());
 		}
 
 		// 查询子评论
 		// 以父评论id查询所有子评论，按时间排序(也可以按id倒序)
 		wrapper.clear();
-		wrapper.eq(Comment::getBlogId, blogId)
-				.in(Comment::getParentId, parentIdList)
-				.orderByDesc(Comment::getId);
+		wrapper.eq(Comment::getBlogId, blogId).in(Comment::getParentId, parentIdList).orderByDesc(Comment::getId);
 		// 查询所有子评论
 		log.debug("查询子评论sql,{}", wrapper.getSqlSelect());
 		List<Comment> subList = commentMapper.selectList(wrapper);
@@ -132,10 +138,11 @@ public class CommentServiceImpl implements CommentService {
 			subListBO.add(BeanUtil.copyProperties(comment, CommentBO.class));
 		}
 		// 将子评论列表转为map list，便于填充到父评论下，顺便获取用户id列表
-		Map<Integer, List<CommentBO>> listMap = new HashMap<>();
+		Map<Integer, List<CommentBO>> listMap = new HashMap<>(20);
 		for (CommentBO commentBO : subListBO) {
-			if (!listMap.containsKey(commentBO.getParentId()))
+			if (!listMap.containsKey(commentBO.getParentId())) {
 				listMap.put(commentBO.getParentId(), new ArrayList<>());
+			}
 			listMap.get(commentBO.getParentId()).add(commentBO);
 			userIdList.add(commentBO.getUserId());
 			userIdList.add(commentBO.getParentUserId());
@@ -146,10 +153,10 @@ public class CommentServiceImpl implements CommentService {
 			Integer parentId = commentVO.getInfo().getId();
 			if (listMap.containsKey(parentId)) {
 				commentVO.setSub(listMap.get(parentId));
-				commentVO.setSubCount(commentVO.getSub().size());
+				commentVO.setSubCount((long) commentVO.getSub().size());
 			} else {
 				commentVO.setSub(new ArrayList<>());
-				commentVO.setSubCount(0);
+				commentVO.setSubCount(0L);
 			}
 		}
 
@@ -161,7 +168,9 @@ public class CommentServiceImpl implements CommentService {
 				CommentBO info = commentVO.getInfo();
 				info.setNickname(userMap.get(info.getUserId()).getNickname());
 				info.setAvatarUrl(userMap.get(info.getUserId()).getAvatarUrl());
-				if (commentVO.getSub() == null) continue;
+				if (commentVO.getSub() == null) {
+					continue;
+				}
 				for (CommentBO sub : commentVO.getSub()) {
 					sub.setNickname(userMap.get(sub.getUserId()).getNickname());
 					sub.setAvatarUrl(userMap.get(sub.getUserId()).getAvatarUrl());

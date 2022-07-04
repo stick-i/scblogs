@@ -30,6 +30,8 @@
 	</parent>
 
 	<properties>
+		<docker.space>scblogs</docker.space>
+
 		<spring-boot.version>2.6.6</spring-boot.version>
 		<spring-cloud.version>2021.0.2</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
@@ -102,6 +104,18 @@
 			<dependency>
 				<groupId>cn.hutool</groupId>
 				<artifactId>hutool-all</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-core</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-json</artifactId>
 				<version>${hutool.version}</version>
 			</dependency>
 

@@ -16,6 +16,8 @@ import java.util.List;
 
 /**
  * 选择高校信息相关
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController

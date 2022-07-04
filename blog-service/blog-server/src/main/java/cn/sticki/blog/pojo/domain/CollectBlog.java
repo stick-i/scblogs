@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 
 /**
  * 博客收藏信息类
+ *
+ * @author 阿杆
  */
 @Data
 public class CollectBlog {

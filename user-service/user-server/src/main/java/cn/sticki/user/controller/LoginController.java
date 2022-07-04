@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 登录相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
@@ -38,8 +40,9 @@ public class LoginController {
 	@PostMapping("/login")
 	public RestResult<UserLoginBO> loginHandle(@NotNull String username, @NotNull String password) {
 		UserLoginBO user = loginService.login(username, password);
-		if (user == null)
+		if (user == null) {
 			return new RestResult<>(false, "用户名或密码错误");
+		}
 		response.setHeader(JwtConfig.headerName, JwtUtils.createToken("id", user.getId()));
 		response.setHeader("Access-Control-Expose-Headers", JwtConfig.headerName);
 		// 院校代码放到cookie去

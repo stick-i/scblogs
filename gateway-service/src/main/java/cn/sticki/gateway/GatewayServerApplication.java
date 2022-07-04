@@ -1,11 +1,14 @@
 package cn.sticki.gateway;
 
-import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
+import cn.sticki.common.redis.autoconfig.EnableRedisSerialize;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author 阿杆
+ */
+@EnableRedisSerialize
 @SpringBootApplication
-@EnableCreateCacheAnnotation  // jetcache启用缓存的主开关
 public class GatewayServerApplication {
 
 	public static void main(String[] args) {

@@ -16,6 +16,9 @@
 		<module>common-core</module>
 		<module>common-tool</module>
 		<module>common-web</module>
+		<module>common-regex</module>
+		<module>common-redis</module>
+		<module>common-amqp</module>
 	</modules>
 
 	<properties>

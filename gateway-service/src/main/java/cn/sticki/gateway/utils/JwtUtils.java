@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 
+/**
+ * @author 阿杆
+ */
 @Slf4j
 public class JwtUtils {
 
@@ -48,6 +51,7 @@ public class JwtUtils {
 	/**
 	 * 验证签名是否正确，以及是否过期
 	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean validate(String token) {
 		try {
 			// 验证签名是否正确
@@ -75,12 +79,16 @@ public class JwtUtils {
 	}
 
 	public static <T> T validateAndParse(String token, Class<T> clz) {
-		if (!validate(token)) return null;
+		if (!validate(token)) {
+			return null;
+		}
 		return parse(token, clz);
 	}
 
 	public static JWT validateAndParse(String token) {
-		if (!validate(token)) return null;
+		if (!validate(token)) {
+			return null;
+		}
 		return JWT.of(token);
 	}
 

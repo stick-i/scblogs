@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @author 阿杆
+ */
 public class FileUtils {
 
 	/**
@@ -19,7 +22,9 @@ public class FileUtils {
 			fileHead = getFileHeader(inputStream);
 		}
 
-		if (fileHead == null || fileHead.length() <= 0) return null;
+		if (fileHead == null || fileHead.length() <= 0) {
+			return null;
+		}
 
 		fileHead = fileHead.toUpperCase();
 		for (FileType type : FileType.values()) {
@@ -33,6 +38,7 @@ public class FileUtils {
 	/**
 	 * 读取文件头
 	 */
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private static String getFileHeader(InputStream inputStream) throws IOException {
 		byte[] b = new byte[28];
 		inputStream.read(b, 0, 28);
@@ -64,9 +70,13 @@ public class FileUtils {
 	 * @param fileName 文件名
 	 * @return 后缀名，如 .png .jpg 等
 	 */
+	@SuppressWarnings("AlibabaUndefineMagicConstant")
 	public static String getExtension(String fileName) {
-		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) return fileName.substring(fileName.lastIndexOf("."));
-		else return "";
+		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+			return fileName.substring(fileName.lastIndexOf("."));
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -77,9 +87,15 @@ public class FileUtils {
 	 * @param ableTypes 允许的文件类型
 	 */
 	public static void checkFile(MultipartFile file, Long maxSize, FileType... ableTypes) {
-		if (!isNotEmpty(file)) throw new FileException("文件为空");
-		if (maxSize != null) checkFileSize(file, maxSize);
-		if (ableTypes.length > 0) checkFileTypes(file, ableTypes);
+		if (!isNotEmpty(file)) {
+			throw new FileException("文件为空");
+		}
+		if (maxSize != null) {
+			checkFileSize(file, maxSize);
+		}
+		if (ableTypes.length > 0) {
+			checkFileTypes(file, ableTypes);
+		}
 	}
 
 	/**
@@ -100,11 +116,13 @@ public class FileUtils {
 	 * @param file      被检查的文件
 	 * @param ableTypes 支持的文件类型
 	 */
-	@SneakyThrows
+	@SneakyThrows(value = IOException.class)
 	public static void checkFileTypes(MultipartFile file, FileType... ableTypes) {
 		FileType fileType = getType(file);
 		for (FileType ableType : ableTypes) {
-			if (fileType == ableType) return;
+			if (fileType == ableType) {
+				return;
+			}
 		}
 		throw new FileException("不支持的文件类型");
 	}

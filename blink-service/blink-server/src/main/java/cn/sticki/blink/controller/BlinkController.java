@@ -15,13 +15,15 @@ import javax.annotation.Resource;
 
 /**
  * 动态（表白墙）相关接口
+ *
+ * @author 阿杆
  */
 @Slf4j
 @RestController
 @RequestMapping("/blink")
 public class BlinkController {
 
-	private static final int pageSize = 20;
+	private static final int PAGE_SIZE = 20;
 
 	@Resource
 	private BlinkViewService blinkViewService;
@@ -85,7 +87,7 @@ public class BlinkController {
 	 */
 	@GetMapping("/list")
 	public RestResult<BlinkViewListVO> getList(@RequestParam(defaultValue = "1") Integer page, Integer schoolCode) {
-		BlinkViewListVO viewList = blinkViewService.getListByTime(page, pageSize, schoolCode);
+		BlinkViewListVO viewList = blinkViewService.getListByTime(page, PAGE_SIZE, schoolCode);
 		return new RestResult<>(viewList);
 	}
 
@@ -96,7 +98,7 @@ public class BlinkController {
 	 */
 	@GetMapping("/list/self")
 	public RestResult<BlinkViewListVO> getSelfList(@RequestParam(defaultValue = "1") Integer page, @RequestHeader Integer id) {
-		BlinkViewListVO viewList = blinkViewService.getSelfList(id, page, pageSize);
+		BlinkViewListVO viewList = blinkViewService.getSelfList(id, page, PAGE_SIZE);
 		return new RestResult<>(viewList);
 	}
 

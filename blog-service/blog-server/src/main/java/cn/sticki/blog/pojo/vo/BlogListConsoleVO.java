@@ -4,6 +4,9 @@ import cn.sticki.blog.pojo.bo.BlogCountBO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author 阿杆
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class BlogListConsoleVO extends BlogListVO {

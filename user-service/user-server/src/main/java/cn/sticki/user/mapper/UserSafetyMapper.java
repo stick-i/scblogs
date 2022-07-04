@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+/**
+ * @author 阿杆
+ */
 @Mapper
 public interface UserSafetyMapper extends BaseMapper<UserSafety> {
 
@@ -13,14 +16,29 @@ public interface UserSafetyMapper extends BaseMapper<UserSafety> {
 	 * 通过邮箱查找用户账号密码信息
 	 *
 	 * @param mail 邮箱
+	 * @return 用户账号安全数据
 	 */
-	@Select("select * from user_safety where mail = #{mail}")
+	@Select("select * from user.user_safety where mail = #{mail}")
 	UserSafety selectByMail(String mail);
 
-	@Update("update user_safety set `password` = #{password} where user_id = #{id};")
+	/**
+	 * 更新密码
+	 *
+	 * @param id       用户id
+	 * @param password 密码
+	 * @return 影响的行数
+	 */
+	@Update("update user.user_safety set `password` = #{password} where user_id = #{id};")
 	int updatePasswordById(Integer id, String password);
 
-	@Update("update user_safety set `mail` = #{mail} where user_id = #{id} ")
+	/**
+	 * 更新邮箱
+	 *
+	 * @param id   用户id
+	 * @param mail 新邮箱
+	 * @return 影响的行数
+	 */
+	@Update("update user.user_safety set `mail` = #{mail} where user_id = #{id} ")
 	int updateMailById(Integer id, String mail);
 
 }
