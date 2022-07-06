@@ -58,7 +58,7 @@
 		<okhttp3.version>4.8.1</okhttp3.version>
 		<druid.version>1.2.9</druid.version>
 		<jetcache.version>2.6.4</jetcache.version>
-
+		<hystrix.version>2.2.10.RELEASE</hystrix.version>
 	</properties>
 
 	<!-- 依赖管理 -->
@@ -141,6 +141,12 @@
 				<groupId>org.jetbrains</groupId>
 				<artifactId>annotations</artifactId>
 				<version>23.0.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+				<version>${hystrix.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
