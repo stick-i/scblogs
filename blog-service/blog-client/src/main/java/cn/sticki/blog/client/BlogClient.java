@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @author 阿杆
  */
-@FeignClient(value = "blog-server")
+@FeignClient(value = "blog-server", fallback = BlogClientResolver.class)
 public interface BlogClient {
 
 	/**

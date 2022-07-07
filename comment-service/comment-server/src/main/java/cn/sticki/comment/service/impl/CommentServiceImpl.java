@@ -64,7 +64,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		} else {
 			// 根据id判断博客是否存在
 			RestResult<BlogDTO> result = blogClient.getBlogInfo(comment.getBlogId());
-			exists = result.getData() != null;
+			exists = result.getStatus() && result.getData() != null;
 		}
 		if (!exists) {
 			throw new CommentException("数据异常");
