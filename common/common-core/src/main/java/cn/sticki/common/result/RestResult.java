@@ -67,7 +67,7 @@ public class RestResult<T> implements Serializable {
 		this.status = false;
 	}
 
-	public static RestResult<Object> ok() {
+	public static <T> RestResult<T> ok() {
 		return new RestResult<>();
 	}
 
@@ -75,11 +75,11 @@ public class RestResult<T> implements Serializable {
 		return new RestResult<>(200, "success", data, true);
 	}
 
-	public static RestResult<Object> fail() {
+	public static <T> RestResult<T> fail() {
 		return new RestResult<>(400, "fail", null, false);
 	}
 
-	public static RestResult<Object> fail(String errorMessage) {
+	public static <T> RestResult<T> fail(String errorMessage) {
 		return new RestResult<>(400, errorMessage, null, false);
 	}
 
