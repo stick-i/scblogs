@@ -167,6 +167,25 @@
 							</exclude>
 						</excludes>
 					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<!-- 可以把依赖的包都打包到生成的Jar包中 -->
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>dockerfile-maven-plugin</artifactId>
+					<version>${dockerfile-maven-plugin.version}</version>
+					<configuration>
+						<repository>${docker.space}/${project.artifactId}</repository>
+						<buildArgs>
+							<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+						</buildArgs>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
