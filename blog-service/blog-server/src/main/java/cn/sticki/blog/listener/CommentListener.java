@@ -20,7 +20,7 @@ import static cn.sticki.comment.sdk.MqConstants.*;
  */
 @Slf4j
 @Component
-public class BlogListener {
+public class CommentListener {
 
 	private static final String COMMENT_INCREASE_QUEUE = "blog.comment.increase";
 
