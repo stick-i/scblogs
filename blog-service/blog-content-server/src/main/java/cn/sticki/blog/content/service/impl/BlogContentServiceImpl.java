@@ -7,12 +7,6 @@ import cn.sticki.blog.content.pojo.SearchQuery;
 import cn.sticki.blog.content.service.BlogContentService;
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -20,13 +14,9 @@ import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static cn.sticki.blog.content.uilts.IndexConstants.BLOG_INDEX;
-import static cn.sticki.blog.content.uilts.IndexConstants.BLOG_SEARCH_KEY;
 
 /**
  * @author 阿杆
@@ -36,9 +26,6 @@ import static cn.sticki.blog.content.uilts.IndexConstants.BLOG_SEARCH_KEY;
 @Slf4j
 @Service
 public class BlogContentServiceImpl implements BlogContentService {
-
-	@Resource
-	private RestHighLevelClient esClient;
 
 	@Resource
 	private BlogRepository blogRepository;
@@ -84,37 +71,6 @@ public class BlogContentServiceImpl implements BlogContentService {
 		blogListVO.setTotal(searchPage.getTotalElements());
 		blogListVO.setSize(searchQuery.getSize());
 		return RestResult.ok(blogListVO);
-	}
-
-	/**
-	 * 搜索博客
-	 *
-	 * @param searchQuery 搜索条件
-	 * @return 搜索到的结果
-	 * @deprecated 请使用 {{@link BlogContentServiceImpl#searchBlog(cn.sticki.blog.content.pojo.SearchQuery)}}
-	 */
-	public RestResult<BlogListVO> searchBlog2(SearchQuery searchQuery) {
-		log.debug("searchQuery:{}", searchQuery);
-		// 1. 准备Request
-		SearchRequest request = new SearchRequest(BLOG_INDEX);
-		// 2. 准备DSL
-		request.source()
-				// 2.1 搜索内容
-				.query(QueryBuilders.matchQuery(BLOG_SEARCH_KEY, searchQuery.getKey()))
-				// 2.2 设置分页
-				.from((searchQuery.getPage() - 1) * searchQuery.getSize())
-				.size(searchQuery.getSize())
-				// 2.3 设置高亮
-				.highlighter(new HighlightBuilder().field("name").field("descriptive"));
-		// 3. 发送请求
-		SearchResponse response = null;
-		try {
-			response = esClient.search(request, RequestOptions.DEFAULT);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// 4. 解析数据
-		return null;
 	}
 
 }
