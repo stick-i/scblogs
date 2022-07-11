@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author 阿杆
  */
-@FeignClient(value = "resource-server")
+@FeignClient(value = "resource-server", fallback = ResourceClientResolver.class)
 public interface ResourceClient {
 
 	/**

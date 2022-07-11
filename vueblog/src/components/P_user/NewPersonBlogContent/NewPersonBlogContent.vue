@@ -3,9 +3,9 @@
     <div class="body">
         <div class="contentleft">
             <ul>
-                <li v-for="(item,index) in navList" :key="index"
+                <li v-for="(item,index) in navList" :key="index" v-debounce="{fn:CC}"
                     :style="{'background-color': item.chose ?'rgb(240, 240, 240)':'',
-                    'color':item.chose?'rgb(61, 160, 0)':'black'}" @click="ChoseModel(index)">
+                    'color':item.chose?'rgb(61, 160, 0)':'black'}">
                     {{item.name}}
                 </li>
             </ul>
@@ -64,6 +64,9 @@ export default {
             // 切换模块时数据获取的激活条件
             getmessageindex:0,
             iconList:['#icon-dianzan_kuai','#icon-pinglun','#icon-zhuanfa','#icon-gengduo'],
+            CC:function(){
+                console.log("执行函数")
+            }
         }
     },
     created(){
@@ -71,12 +74,19 @@ export default {
     methods:{
         // 大中部导航的模块选择部分
         ChoseModel(index){
+            console.log("进行了函数的执行")
+
             this.navList.forEach(element => {
                 element.chose=false
             });
+            console.log("数据列表",this.navList[index])
             this.navList[index].chose=true
             this.getmessageindex=index
         },
+        CC(index){
+            console.log("数据列表")
+            console.log("防抖处理完成之后的执行函数")
+        }
     }
 }
 </script>

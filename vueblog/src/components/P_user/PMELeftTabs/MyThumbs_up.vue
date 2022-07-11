@@ -5,17 +5,20 @@
             <div v-if="noneLike" class="noneLike">
                 你都舍不得点赞吗？
             </div>
-            <div v-if="!noneLike" class="myLikeA" v-for="(item,index) in likeList" :key="item.id" >
-                <div class="myLikeTitle" @click="TurnToDetail(item.id)">{{item.title}}</div>
+            <div v-else class="myLikeA" v-for="(item,index) in likeList" :key="item.id" >
+                <div class="myLikeTitle">
+                    <div class="title" @click="TurnToDetail(item.id)">{{item.title}}</div>
+                    <div class="description">{{item.description}}</div>
+                </div>
                 <div class="myLikeStar">
-					{{item.thumbs}}
 					<svg
-						:class="{active2:item.thumbs}"
-						 @click="Like(item.id,item.authorId,index,item.thumbs,start)"
+						:class="{active:item.thumbs}"
+						 @click="Like(item.id,item.authorId,index)"
 						 aria-hidden="true">
 						<use xlink:href="#icon-dianzan_kuai"></use>
 						<!-- use是复制一个图标的意思 -->
 					</svg>
+                    {{item.thumbs}}{{likeList[index].thumbs}}
                 </div>
             </div>
         </div>
@@ -70,17 +73,14 @@ export default {
             // 开始收藏状态修正
             this.Like(index)
         },
-        Like(blogid,authorId,index,yesorno,we){
+        Like(blogid,authorId,index){
 			let formdata = new FormData()
-			console.log("传入的数据状态",yesorno,we)
 			formdata.append("blogId", blogid)
 			formdata.append("id",authorId)
-
 			this.$axios.post('/blog/action/like',formdata,this.config).then(res=>{
 					if(res.status){
 						this.likeList[index].thumbs=!this.likeList[index].thumbs
-						this.start=this.likeList[index].thumbs
-						console.log("变化之后的点赞激活状态",index,this.likeList[index].thumbs)
+                        console.log("点赞后的的状态thumbs",this.likeList[index].thumbs)
 						this.$message({
 							message: '操作成功',
 							type:'success',
@@ -142,14 +142,20 @@ export default {
     box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .myLikeA .myLikeTitle{
+    flex: 8;
     font-size: 1rem;
-    margin-left: 40px;
+    margin-left: 2rem;
     font-weight: 600;
     color: rgb(56, 52, 52);
     display: inline-block;
 	cursor: pointer;
+    .title{
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+    }
 }
 .myLikeA .myLikeStar{
+    flex: 2;
     width: 10%;
     height: 100%;
     margin-left: 40px;
@@ -159,11 +165,8 @@ export default {
 	width: 30px;
 	height: 30px;
 	fill: #ffffff;
-	//&.active{
-	//	fill: #25ff6e;
-	//}
-}
-.active2{
-	fill: #7d00ff;
+	&.active{
+		fill: #ff1e1e;
+	}
 }
 </style>

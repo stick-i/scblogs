@@ -59,8 +59,6 @@ export default {
 		}
 	},
 	async created() {
-		// await this.GetData()
-		console.log("获取到的博客列表数据", this.List)
 	},
 	mounted() {
 
@@ -72,7 +70,6 @@ export default {
 			this.$axios
 				.get("/blog/list/new", this.config)
 				.then((res) => {
-					console.log("下拉函数请求")
 					if (res.data.data.records.length > 0) {
 						this.config.params.page+=1;  // 下一页
 						this.List = this.List.concat(res.data.data.records);

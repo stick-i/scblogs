@@ -30,6 +30,8 @@
 	</parent>
 
 	<properties>
+		<docker.space>scblogs</docker.space>
+
 		<spring-boot.version>2.6.6</spring-boot.version>
 		<spring-cloud.version>2021.0.2</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
@@ -51,12 +53,14 @@
 		<velocity.tool.version>3.1</velocity.tool.version>
 		<configuration.version>1.10</configuration.version>
 		<jasypt.version>2.1.0</jasypt.version>
-		<docker.plugin.version>0.32.0</docker.plugin.version>
 		<minio.version>8.3.8</minio.version>
 		<okhttp3.version>4.8.1</okhttp3.version>
 		<druid.version>1.2.9</druid.version>
 		<jetcache.version>2.6.4</jetcache.version>
+		<hystrix.version>2.2.10.RELEASE</hystrix.version>
+		<elasticsearch.version>7.12.1</elasticsearch.version>
 
+		<dockerfile-maven-plugin.version>1.3.6</dockerfile-maven-plugin.version>
 	</properties>
 
 	<!-- 依赖管理 -->
@@ -140,6 +144,12 @@
 				<artifactId>annotations</artifactId>
 				<version>23.0.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+				<version>${hystrix.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -156,6 +166,25 @@
 								<artifactId>lombok</artifactId>
 							</exclude>
 						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<!-- 可以把依赖的包都打包到生成的Jar包中 -->
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>dockerfile-maven-plugin</artifactId>
+					<version>${dockerfile-maven-plugin.version}</version>
+					<configuration>
+						<repository>${docker.space}/${project.artifactId}</repository>
+						<buildArgs>
+							<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+						</buildArgs>
 					</configuration>
 				</plugin>
 			</plugins>

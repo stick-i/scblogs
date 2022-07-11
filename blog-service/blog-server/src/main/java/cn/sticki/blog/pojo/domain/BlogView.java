@@ -33,7 +33,7 @@ public class BlogView {
 	/**
 	 * 院校代码
 	 */
-	String schoolCode;
+	Integer schoolCode;
 
 	/**
 	 * 封面图

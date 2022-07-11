@@ -23,9 +23,21 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
+		<!-- feign熔断功能所需依赖 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>cn.sticki</groupId>
 			<artifactId>common-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.sticki</groupId>
+			<artifactId>blog-sdk</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>

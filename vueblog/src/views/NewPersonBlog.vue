@@ -104,30 +104,9 @@ export default {
     },
     methods:{
         async GetData() {
-            let params = {
-                username: "123",
-                password: "123456",
-            };
-            this.$axios
-                .post("/login/login", qs.stringify(params))
-                .then((res) => {
-                console.log("登录成功",res)
-                // 将token设置到本地浏览器中
-                window.localStorage.setItem("token", res.headers.token);
-                window.localStorage.setItem(
-                    "userMessage",
-                    JSON.stringify(res.data.data)
-                );
-                this.userMessage = res.data.data;
-                });
+            this.userMessage=JSON.parse(localStorage.getItem('userMessage'))
             // 获取用户个人信息
-             this.$axios
-                .get("/user", this.config)
-                .then((res) => {
-                localStorage.setItem("userMessage", JSON.stringify(res.data.data));
-                this.userMessage = res.data.data
-                console.log("返回的用户数据",this.userMessage)
-                })
+             console.log(JSON.parse(localStorage.getItem('userMessage')),"所有个人信息")
             },
             // 跳转至编辑个人信息页面
             TurnToEdit(){

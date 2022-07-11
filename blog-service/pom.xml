@@ -15,6 +15,7 @@
 		<module>blog-client</module>
 		<module>blog-server</module>
 		<module>blog-sdk</module>
+		<module>blog-content-server</module>
 	</modules>
 
 	<properties>
