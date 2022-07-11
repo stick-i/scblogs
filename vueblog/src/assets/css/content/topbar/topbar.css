@@ -232,17 +232,17 @@
 #csdn_tool_otherPlace .toolbar-logo {
     max-width: 80px;
     height: 100%;
-    margin-right: 8px;
+    margin: 0 8px;
     position: relative
 }
 /* 改 */
 #csdn-toolbar .toolbar-logo img,
 #csdn_tool_otherPlace .toolbar-logo img {
     display: block;
-    width: 30px;
+    /*width: 30px;*/
     min-width: 30px;
     height: 30px;
-    margin-top: calc((48px - 30px)/ 2)
+    line-height: 48px;
 }
 
 #csdn-toolbar .csdn-toolbar-mini,
@@ -355,7 +355,8 @@
 #csdn_tool_otherPlace .toolbar-menus {
     width: auto;
     height: 100%;
-    font-size: 0
+    font-size: 0;
+		margin: 0 20px;
 }
 
 #csdn-toolbar .toolbar-menus li,
