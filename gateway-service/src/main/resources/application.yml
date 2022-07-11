@@ -33,8 +33,15 @@ spring:
         # 博客服务
         - id: blog-server
           uri: lb://blog-server
+          order: 10
           predicates:
             - Path=/blog/**
+        # 博客内容服务
+        - id: blog-content-server
+          uri: lb://blog-content-server
+          order: 8 # 由于该路径被博客服务的路径包含了，故使用order来保证该路径能够被匹配到
+          predicates:
+            - Path=/blog/content/**
         # 动态服务（表白墙）
         - id: blink-server
           uri: lb://blink-server

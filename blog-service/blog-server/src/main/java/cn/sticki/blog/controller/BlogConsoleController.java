@@ -1,20 +1,16 @@
 package cn.sticki.blog.controller;
 
-import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
-import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogContent;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogListConsoleVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
-import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -118,19 +114,7 @@ public class BlogConsoleController {
 	 */
 	@DeleteMapping("/blog")
 	public RestResult<Boolean> recoveryBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
-		Blog blog = blogService.getById(id);
-		// 权限校验
-		if (blog == null || !blog.getAuthorId().equals(userId)) {
-			throw new BlogException("非法删除他人博客");
-		}
-		// 判断博客当前状态,是否已经是存在回收站里了
-		if (BlogStatusType.DELETED.getValue().equals(blog.getStatus())) {
-			return new RestResult<>(400, "操作失败，博客已经存入回收站");
-		}
-		// 更新数据库
-		LambdaUpdateWrapper<Blog> wrapper = new LambdaUpdateWrapper<>();
-		wrapper.eq(Blog::getId, id).eq(Blog::getAuthorId, userId).set(Blog::getStatus, BlogStatusType.DELETED.getValue());
-		return new RestResult<>(blogService.update(wrapper));
+		return new RestResult<>(blogService.deleteBlog(id, userId));
 	}
 
 	/**
@@ -140,19 +124,8 @@ public class BlogConsoleController {
 	 */
 	@DeleteMapping("/blog/delete")
 	public RestResult<Boolean> completelyDeleteBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
-		Blog blog = blogService.getById(id);
-		// 权限校验，博客不是属于该用户
-		if (blog == null || !blog.getAuthorId().equals(userId)) {
-			throw new BlogException("非法删除他人博客");
-		}
-		// 判断博客当前状态,是否已经是存在回收站里了
-		if (!BlogStatusType.DELETED.getValue().equals(blog.getStatus())) {
-			return new RestResult<>(400, "操作失败，只有在回收站里的博客可以删除");
-		}
-		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(Blog::getId, id);
-		// todo 这里删除博客应该连带另外两张表的数据一起删除
-		return new RestResult<>(blogService.remove(wrapper));
+		Boolean result = blogService.completelyDeleteBlog(id, userId);
+		return new RestResult<>(result);
 	}
 
 	/**
