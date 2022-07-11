@@ -11,7 +11,7 @@
               :to="{ name: 'BlogDetail', params: { blogId: item.id } }"
               target="_blank"
             >
-              <span>{{ item.title }}</span>
+              <span id="max" v-html="item.title" ></span>
             </router-link>
           </h3>
         </div>
@@ -112,7 +112,7 @@ export default {
     // },
     infiniteHandler($state) {
       this.$axios
-        .get("/blog/search",{params:{key:this.key,page:this.page}},{
+        .get("/blog/content/search",{params:{key:this.key,page:this.page}},{
           headers: { token: localStorage.getItem("token") },
         })
         .then((res) => {
