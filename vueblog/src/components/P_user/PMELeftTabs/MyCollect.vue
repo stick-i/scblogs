@@ -5,12 +5,15 @@
             <div v-if="noneCollect"  class="noneCollect">
                 你还没有收藏哦,快去找些优质文章吧！
             </div>
-            <div v-if="!noneCollect" class="myCollectA" v-for="(item,index) in collectList" :key="index" >
-                <div class="myCollectTitle" @click="TurnToDetail(item.id)">{{item.title}}</div>
+            <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index" >
+                <div class="myCollectTitle" @click="TurnToDetail(item.id)">
+                    <div class="title">{{item.title}}</div>
+                    <div class="description">{{item.description}}</div>
+                    <div class="releaseTime">{{item.releaseTime}}</div>
+                </div>
                 <div class="myCollectStar">
                     <img ref="star" @click="ChangeStar(index)"
-                    :src="item.starStation? collectStar1:collectStar2"
-                     alt="">
+                    :src="item.starStation? collectStar1:collectStar2">
                 </div>
             </div>
         </div>
@@ -64,9 +67,6 @@ export default {
         ChangeStar(index){
             this.collectList[index].starStation=!this.collectList[index].starStation
             // 开始收藏状态修正
-            this.Collect(index)
-        },
-        Collect(index){
             if(this.collectList[index].starStation==true){
                 // 开始收藏，将blogid转化成form-data格式
                 let formdata = new FormData()
@@ -85,21 +85,21 @@ export default {
                             message: '取消收藏成功',
                             type: 'success'
                         });
-            }
-        }
+            }  
+        },
     }
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .content{
     width: 100%;
     background: white;
     border-radius: 5px;
 }
 .myCollect{
-    width: 95%;
-    padding:0 2.5%;
+    width: 100%;
+    padding:20px;
 }
 .myCollect .noneCollect{
     width:100%;
@@ -113,38 +113,46 @@ export default {
 }
 .myCollectB{
     width: 100%;
-    height: 100px;
-    line-height: 100px;
+    line-height: 50px;
     font-size: 1.5rem;
     font-weight: 800;
     color: black;
 }
 .myCollectA{
     width: 100%;
-    min-height: 100px;
+    min-height: 80px;
     background: white;
     border: 1px solid rgb(213, 211, 211);
     border-radius: 10px;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin:10px 0;
+    transition: all 0.1s linear;
+    &:hover{
+        transform: scale(1.01);
+    }
 }
 .myCollectA:hover{
     box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .myCollectA .myCollectTitle{
-    width: 80%;
     font-size: 1rem;
-    margin-left: 40px;
+    height: 100%;
+    margin-left: 25px;
     font-weight: 600;
     color: rgb(56, 52, 52);
-    display: inline-block;
+    flex: 9;
+    .title{
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
 }
 .myCollectA .myCollectStar{
     width: 10%;
     height: 100%;
     margin-left: 40px;
     text-align: center;
+    flex: 1;
 }
 .myCollectA .myCollectStar img{
     width: 30px;

@@ -15,3 +15,5 @@ spring:
             refresh: true
           - data-id: default-springmvc.yaml
             refresh: true
+          - data-id: default-feign.yaml
+            refresh: true

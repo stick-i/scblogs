@@ -13,32 +13,6 @@
                 <a href="#">{{ item.name }}</a>
               </li>
             </ul>
-            <!-- <div class="contentleftB">
-              <div class="contentleftB-1">
-                <div class="contentleftB-1-a">
-                  对我们的服务满意吗？
-                </div>
-                <div class="contentleftB-1-b">
-                  <ul>
-                    <li>
-                      <i class="iconfont "></i><span>非常不满意</span>
-                    </li>
-                    <li>
-                      <i></i><span>不满意</span>
-                    </li>
-                    <li>
-                      <i></i><span>一般</span>
-                    </li>
-                    <li>
-                      <i></i><span>满意</span>
-                    </li>
-                    <li>
-                      <i></i><span>非常满意</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="contentright">
               <div v-if="leftNavigation[0].chose">
@@ -151,7 +125,7 @@ export default {
 }
 .centerContent {
   width: 100%;
-  padding-top: 2vh;
+  padding-top: 20px;
 }
 .contentbottom{
   margin-top: auto;
@@ -188,51 +162,9 @@ export default {
   font-size: 0.8rem;
   color: black;
 }
-
 .contentleftA li:hover {
   background: rgb(240, 240, 245);
 }
-
-.contentleftB {
-  width: 100%;
-
-  padding-top: 15px;
-  /* background: #000; */
-}
-
-.contentleftB .contentleftB-1 {
-  width: 100%;
-  background: white;
-  padding-top: 20px;
-  border-radius: 5px;
-}
-
-.contentleftB-1 .contentleftB-1-a {
-  width: 100%;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
-}
-
-.contentleftB-1 .contentleftB-1-b {
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.contentleftB-1 .contentleftB-1-b ul {
-  list-style: none;
-}
-
-.contentleftB-1 .contentleftB-1-b ul li {
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  font-size: 16px;
-  color: rgb(153, 154, 170);
-}
-
 .contentright {
   width: 83%;
   min-height: 800px;

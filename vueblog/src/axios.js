@@ -4,10 +4,11 @@ import ElementUI from 'element-ui';
 // axios.defaults.baseURL="https://local.sticki.cn/api/v1"
 // axios.defaults.baseURL="https://api.scblogs.cn/v1"
 // axios.defaults.baseURL = "https://api.scblogs.cn/v1"
-// axios.defaults.baseURL = "/api"
-axios.defaults.baseURL = "http://172.16.40.214"
 
 
+// axios.defaults.baseURL = "http://172.16.40.214"
+
+axios.defaults.baseURL = "http://api.scblogs.cn"
 // // 前置拦截
 // axios.interceptors.request.use(config => {
 //   return config

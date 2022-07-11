@@ -44,4 +44,22 @@ public interface BlogService extends IService<Blog> {
 	 */
 	BlogContent getBlogContent(Integer blogId, Integer userId);
 
+	/**
+	 * 删除博客（将博客存入回收站）
+	 *
+	 * @param blogId 博客id
+	 * @param userId 用户id
+	 * @return 操作是否成功
+	 */
+	Boolean deleteBlog(Integer blogId, Integer userId);
+
+	/**
+	 * 完全删除博客
+	 *
+	 * @param blogId 博客id
+	 * @param userId 用户id
+	 * @return 操作是否成功
+	 */
+	Boolean completelyDeleteBlog(Integer blogId, Integer userId);
+
 }
