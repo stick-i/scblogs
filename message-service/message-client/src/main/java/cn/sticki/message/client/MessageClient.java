@@ -7,9 +7,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
+ * 消息服务模块接口客户端
+ *
  * @author 阿杆
  */
-@FeignClient(value = "message-server")
+@FeignClient(value = "message-server", fallback = MessageClientResolver.class)
 public interface MessageClient {
 
 	/**
