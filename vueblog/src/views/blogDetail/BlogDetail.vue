@@ -247,7 +247,7 @@ import TopBar from "@/components/content/topbar/TopBar";
 import BlogComment from "@/views/blogDetail/childComps/BlogComment";
 import "github-markdown-css/github-markdown.css";
 import qs from "qs";
-import { offsetDomTop, scrolltoToc } from "@/utils";
+import {offsetDomTop, scrolltoToc} from "@/utils";
 
 export default {
   name: "BlogDetail",
@@ -313,8 +313,8 @@ export default {
 			const blogId = this.$route.params.blogId;
 			this.blogIdForm.blogId = this.$route.params.blogId;
 			const _this = this;
-			await this.$axios.get("/blog/content?id=" + blogId).then((res) => {
-				console.log("返回的所有数据",res);
+			await this.$axios.get("/blog/detail?id=" + blogId).then((res) => {
+				console.log("返回的所有数据", res);
 				const blog = res.data.data;
 
 				// 渲染md文档

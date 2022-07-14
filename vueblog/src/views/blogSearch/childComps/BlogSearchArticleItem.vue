@@ -20,7 +20,7 @@
           <div class="item-bd_cont">
             <div class="bdc-lt">
               <!-- 摘要 -->
-              <p class="row1">{{ item.description }}</p>
+              <p class="row1" v-html="item.description"></p>
               <!-- 浏览 -->
               <div class="row2">
                 <div class="row2-lt">
@@ -76,26 +76,27 @@
 </template>
 
 <script>
-  import InfiniteLoading from 'vue-infinite-loading'
+import InfiniteLoading from 'vue-infinite-loading'
+
 export default {
-  name: "",
-  props: ["searchkey", "blogsearchlist"], //接收searchkey值
-  data() {
-    return {
-      page:1,
-      key: this.searchkey,
-      blogSearchList: [],
-      // blogSearchList: this.blogsearchlist,
-    };
-  },
-  components:{
-    InfiniteLoading
-  },
-  watch: {
-    searchkey(a, b) {
-      //a是value的新值，b是旧值
-      this.key = a;
-    },
+	name: "",
+	props: ["searchkey", "blogsearchlist"], //接收searchkey值
+	data() {
+		return {
+			page: 1,
+			key: this.searchkey,
+			blogSearchList: [],
+			// blogSearchList: this.blogsearchlist,
+		};
+	},
+	components: {
+		InfiniteLoading
+	},
+	watch: {
+		searchkey(a, b) {
+			//a是value的新值，b是旧值
+			this.key = a;
+		},
     blogsearchlist(a, b) {
       this.blogSearchList = a;
     },
@@ -224,5 +225,9 @@ export default {
   background-size: cover;
 }
 
+>>> .item em {
+	color: #f73131;
+	font-style: normal;
+}
 /* item结束 */
 </style>
