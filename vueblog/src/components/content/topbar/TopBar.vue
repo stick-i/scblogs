@@ -8,10 +8,11 @@
 							data-report-click='{"spm":"3001.4476"}'
 							data-report-query="spm=3001.4476"
 							href="http://scblogs.cn/"
-						><img title="首页" src="../../../assets/img/long-logo.png"
-						/></a>
+						>
+							<img id="icon" title="首页" src="../../../assets/img/long-logo.png"/>
+						</a>
           </div>
-          <ul class="toolbar-menus csdn-toolbar-fl">
+          <ul id="head-nav" class="toolbar-menus csdn-toolbar-fl">
 <!--            <li class="" title="阅读深度、前沿文章">-->
 <!--              <a-->
 <!--                data-report-click='{"mod":"popu_336","dest":"https://blog.csdn.net/nav/cloud-native","spm":"3001.4477"}'-->
@@ -567,5 +568,14 @@ export default {
 }
 .el-dropdown-link {
   cursor: pointer;
+}
+#icon{
+	display: inline-block;
+	wdith:100px;
+	height: 30px;
+	margin-top: 5px;
+}
+#head-nav{
+
 }
 </style>

@@ -2,7 +2,6 @@ package cn.sticki.blog.controller;
 
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
-import cn.sticki.blog.pojo.vo.BlogInfoListVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
@@ -10,7 +9,6 @@ import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -73,23 +71,11 @@ public class BlogController {
 	}
 
 	/**
-	 * 搜索博客
-	 *
-	 * @param key 搜索内容
-	 * @return 博客列表
-	 */
-	@GetMapping("/search")
-	public RestResult<BlogInfoListVO> searchBlog(@NotNull String key, @RequestParam(defaultValue = "1") int page) {
-		log.debug("searchBlog,search->{},page->{}", key, page);
-		return new RestResult<>(blogViewService.searchBlog(key, page, pageSize));
-	}
-
-	/**
 	 * 获取博客内容
 	 *
 	 * @param id 博客id
 	 */
-	@GetMapping("/content")
+	@GetMapping("/detail")
 	public RestResult<BlogContentVO> getBlogContentVO(@RequestParam Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
 		BlogContentVO blogContent = blogViewService.getBlogContentHtml(id, userId);
 		return new RestResult<>(blogContent);
