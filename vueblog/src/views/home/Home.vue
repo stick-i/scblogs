@@ -46,16 +46,16 @@
           <Swiper class="swiper" />
           <div class="main-right-item" v-for="(item, index) in 6" :key="index">
 						<router-link
-							:to="{ name: 'BlogDetail', params: { blogId: blogList[item].id } }"
+							:to="{ name: 'BlogDetail', params: { blogId: blogList[index].id } }"
 							target="_blank"
 						>
             <div class="item-img">
-              <img :src="blogList[item-1].coverImage?blogList[item-1].coverImage:require('../../assets/img/home/003.jpg')" alt="" />
+              <img :src="blogList[index].coverImage?blogList[index].coverImage:require('../../assets/img/home/003.jpg')" alt="" />
             </div>
             <div class="item-title">
-              {{blogList[item-1].title}}
+              {{blogList[index].title}}
             </div>
-            <div class="item-name">{{ blogList[item-1].authorName }}</div>
+            <div class="item-name">{{ blogList[index].authorName }}</div>
 						</router-link>
           </div>
         </div>
