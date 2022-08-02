@@ -3,7 +3,7 @@
     <div class="body">
         <div class="contentleft">
             <ul>
-                <li v-for="(item,index) in navList" :key="index" v-debounce="{fn:CC}"
+                <li v-for="(item,index) in navList" :key="index" @click="ChoseModel(index)"
                     :style="{'background-color': item.chose ?'rgb(240, 240, 240)':'',
                     'color':item.chose?'rgb(61, 160, 0)':'black'}">
                     {{item.name}}
