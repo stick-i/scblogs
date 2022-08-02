@@ -5,10 +5,10 @@
       <el-carousel indicator-position="outside" height="380px">
         <el-carousel-item v-for="item in 6" :key="item">
 					<router-link
-						:to="{ name: 'BlogDetail', params: { blogId: blogList[item].id } }"
+						:to="{ name: 'BlogDetail', params: { blogId: blogList[index].id } }"
 						target="_blank"
 					>
-					<img class="swiperImg" :src="blogList[item-1].coverImage?blogList[item-1].coverImage:require('../../../assets/img/home/003.jpg')" alt="" />
+					<img class="swiperImg" :src="blogList[index].coverImage?blogList[index].coverImage:require('../../../assets/img/home/003.jpg')" alt="" />
 					</router-link>
 				</el-carousel-item>
       </el-carousel>
