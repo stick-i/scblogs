@@ -3,7 +3,7 @@
     <!-- 右边轮播图 -->
     <div class="main-right">
       <el-carousel indicator-position="outside" height="380px">
-        <el-carousel-item v-for="item in 6" :key="item">
+        <el-carousel-item v-for="(item,index) in 6" :key="item">
 					<router-link
 						:to="{ name: 'BlogDetail', params: { blogId: blogList[index].id } }"
 						target="_blank"
