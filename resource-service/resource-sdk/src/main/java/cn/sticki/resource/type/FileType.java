@@ -146,7 +146,7 @@ public enum FileType {
 	 */
 	MID("4D546864");
 
-	private String value;
+	private final String value;
 
 	FileType(String value) {
 		this.value = value;
@@ -156,7 +156,4 @@ public enum FileType {
 		return value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-	}
 }
