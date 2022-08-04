@@ -4,7 +4,7 @@
       <div class="title">博客发布成功</div>
       <img src="../../../assets/img/blogPublishSuccess/publish.png" alt="" class="img-publish">
       <div class="btn-box">
-				<router-link to="/home">
+				<router-link to="/">
 					<div class="btn">返回首页</div>
 				</router-link>
         <div class="btn">内容管理</div>

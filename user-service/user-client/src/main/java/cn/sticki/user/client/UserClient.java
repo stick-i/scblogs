@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * @author 阿杆
  */
-@FeignClient(value = "user-server", fallback = UserClient.class)
+@FeignClient(value = "user-server", fallback = UserClientResolver.class)
 public interface UserClient {
 
 	/**

@@ -44,7 +44,7 @@ Vue.directive('debounce', {
       timeout=setTimeout(() => {
         console.log("这是防抖实现",binding)
         binding.value.fn()
-      }, 5000);
+      }, 1000);
     })
   }
 })
