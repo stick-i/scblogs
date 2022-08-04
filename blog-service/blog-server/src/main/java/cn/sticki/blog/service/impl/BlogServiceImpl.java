@@ -215,9 +215,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 	public String uploadImage(MultipartFile coverImage) {
 		log.debug("uploadCoverImage,pic name->{}", coverImage.getOriginalFilename());
 		RestResult<String> result = resourceClient.uploadBlogImage(coverImage);
-		if (result.getStatus() && result.getData() != null) {
+		if (result.getStatus() && result.getData() != null && result.getData().length() > 0) {
 			log.debug("uploadCoverImage OK, url:{}", result.getData());
-			return result.getData();
+			String[] imageSplit = result.getData().split("/");
+			return imageSplit[imageSplit.length - 1];
 		}
 		return null;
 	}
