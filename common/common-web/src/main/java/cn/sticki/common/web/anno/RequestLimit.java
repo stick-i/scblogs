@@ -19,18 +19,18 @@ import java.lang.annotation.*;
 public @interface RequestLimit {
 
 	/**
-	 * 允许访问的次数，默认值10
+	 * 允许访问的次数，默认值30
 	 */
-	int count() default 10;
+	int count() default 120;
 
 	/**
 	 * 间隔的时间段，单位秒，默认值5
 	 */
-	int time() default 5;
+	int time() default 60;
 
 	/**
 	 * 访问达到限制后需要等待的世界，单位秒，默认值10
 	 */
-	int waits() default 10;
+	int waits() default 120;
 
 }

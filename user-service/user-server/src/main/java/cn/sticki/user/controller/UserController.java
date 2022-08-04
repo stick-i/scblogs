@@ -1,6 +1,7 @@
 package cn.sticki.user.controller;
 
 import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.anno.RequestLimit;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
@@ -35,6 +36,7 @@ public class UserController {
 	 * @param id 用户名id
 	 */
 	@GetMapping
+	@RequestLimit
 	public RestResult<User> getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
 		Integer getId = null;
 		if (id == null && userId != null) {
