@@ -84,7 +84,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		// 4. 更新博客封面图
 		if (FileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
 			// 4.1 将封面图上传到服务器
-			String image = this.uploadImage(blogDTO.getCoverImageFile());
+			String image = this.uploadImageSubLastString(blogDTO.getCoverImageFile());
 			// 4.2 设置属性，如果上传成功则返回图片url，否则为null，为null时不会更新数据库
 			blog.setCoverImage(image);
 		}
@@ -137,7 +137,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		blog.setCreateTime(timestamp);
 		// 2. 上传封面图
 		if (FileUtils.isNotEmpty(blogDTO.getCoverImageFile())) {
-			String image = this.uploadImage(blogDTO.getCoverImageFile());
+			String image = this.uploadImageSubLastString(blogDTO.getCoverImageFile());
 			blog.setCoverImage(image);
 		}
 		// 3. 添加发表时间，若未发表则不添加
@@ -217,10 +217,24 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		RestResult<String> result = resourceClient.uploadBlogImage(coverImage);
 		if (result.getStatus() && result.getData() != null && result.getData().length() > 0) {
 			log.debug("uploadCoverImage OK, url:{}", result.getData());
-			String[] imageSplit = result.getData().split("/");
-			return imageSplit[imageSplit.length - 1];
+			return result.getData();
 		}
 		return null;
+	}
+
+	/**
+	 * 上传图片并截取最后一段字符串
+	 *
+	 * @param coverImage 图片
+	 * @return 截取后的字符串
+	 */
+	public String uploadImageSubLastString(MultipartFile coverImage) {
+		String image = this.uploadImage(coverImage);
+		if (image == null) {
+			return null;
+		}
+		String[] imageSplit = image.split("/");
+		return imageSplit[imageSplit.length - 1];
 	}
 
 	/**
