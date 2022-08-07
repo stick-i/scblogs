@@ -60,11 +60,11 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 25, message: "长度在 3 到 5 个字符", trigger: "blur" },
+          { min: 1, max: 16, message: "长度在 1 到 16 个字符", trigger: "blur" },
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          // { min: 6, message: "最少6个字符", trigger: "blur" },
+          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" },
         ],
       },
     };
@@ -101,7 +101,7 @@ export default {
                 this.userMessage = JSON.stringify(res.data.data);
                 this.avatarUrl = res.data.data.avatarUrl;
                 this.bus.$emit("userMessage", this.userMessage);
-                this.$router.push({ path: "home" });
+                this.$router.push({ path: "/" });
               }
             });
         } else {
