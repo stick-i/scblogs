@@ -25,7 +25,6 @@
 ## 项目特点
 
 - 微服务架构开发，友好的代码结构及注释，便于阅读及二次开发
-- 各服务所使用的数据库完全分离，且不相互调用
 - 前后端分离，通过 **Json** 进行数据交互，前端无需关注后端技术
 - 采用 **Nacos** 作为服务注册中心，支持分布式集群架构，方便微服务配置管理
 - 采用 **Getaway** 搭建网关服务，进行负载转发的同时对用户身份进行识别，并支持配置接口未认证拦截功能
@@ -44,8 +43,49 @@
 
 ## 项目目录
 
+```
+├─blink-service：动态服务
+├─blog-service：博客服务
+├─comment-service：评论服务
+├─common：公用模块
+│  ├─common-amqp：公用AMQP模块
+│  ├─common-core：核心模块
+│  ├─common-redis：公用Redis模块
+│  ├─common-regex：公用正则模块
+│  ├─common-tool：公用工具模块（需要修改或调整）
+│  └─common-web：公用web模块
+├─config：全局配置文件目录
+├─document：项目文档目录
+├─gateway-service：网关服务
+├─message-service：消息服务
+├─resource-service：资源服务
+├─user-service：用户服务
+└─vueblog：前端Vue服务
+```
+
 ## 技术选型
 
 ### 后端技术
+
+|      技术      |       说明       |                     官网                     |
+| :------------: | :--------------: | :------------------------------------------: |
+|   SpringBoot   |     MVC框架      |    https://spring.io/projects/spring-boot    |
+|  SpringCloud   |    微服务框架    |   https://spring.io/projects/spring-cloud/   |
+|  MyBatis-Plus  |    数据库框架    |           https://mp.baomidou.com/           |
+|     MySQL      |      数据库      |            https://www.mysql.com/            |
+|     Redis      |    分布式缓存    |              https://redis.io/               |
+|    RabbitMQ    |     消息队列     |          https://www.rabbitmq.com/           |
+| Elasticsearch  |     搜索引擎     |   https://github.com/elastic/elasticsearch   |
+|     Kibana     | 分析和可视化平台 |       https://www.elastic.co/cn/kibana       |
+|     Docker     |    容器化部署    |           https://www.docker.com/            |
+|    Jenkins     |  自动化部署服务  |           https://www.jenkins.io/            |
+|     Druid      |   数据库连接池   |       https://github.com/alibaba/druid       |
+|     七牛云     |      七牛云      | https://developer.qiniu.com/sdk#official-sdk |
+|     SLF4J      |     日志框架     |            http://www.slf4j.org/             |
+|     Lombok     | 简化对象封装工具 |    https://github.com/rzwitserloot/lombok    |
+|     Nginx      |    web服务器     |              http://nginx.org/               |
+|     Hutool     |  Java工具包类库  |          https://hutool.cn/docs/#/           |
+|     Minio      | 本地对象存储服务 |               https://min.io/                |
+| Docker Compose |  Docker容器编排  |       https://docs.docker.com/compose/       |
 
 ### 前端技术
