@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : blog.sticki.live
+ Source Server         : scblogs
  Source Server Type    : MySQL
  Source Server Version : 50650
- Source Host           : sql.blog.sticki.live:3306
+ Source Host           : default.server.sticki.scblogs.cn:3306
  Source Schema         : user
 
  Target Server Type    : MySQL
  Target Server Version : 50650
  File Encoding         : 65001
 
- Date: 08/08/2022 12:30:56
+ Date: 09/08/2022 14:58:55
 */
 
 SET NAMES utf8mb4;
@@ -49,7 +49,7 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `username` (`username`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 46
+  AUTO_INCREMENT = 47
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = COMPACT;
@@ -70,8 +70,7 @@ CREATE TABLE `user_basic`
     `modified_time`    datetime(6)                                                      NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '信息修改时间',
     `name_modify_time` datetime(6)                                                      NULL DEFAULT NULL COMMENT '用户名修改时间',
     `start_work_time`  datetime(6)                                                      NULL DEFAULT NULL COMMENT '开始工作的时间',
-    PRIMARY KEY (`username`) USING BTREE,
-    CONSTRAINT `user_basic_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE RESTRICT
+    PRIMARY KEY (`username`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
@@ -115,9 +114,7 @@ CREATE TABLE `user_follow`
     `create_time` datetime                                                        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `user_id` (`fans_id`) USING BTREE,
-    INDEX `follow_id` (`follow_id`) USING BTREE,
-    CONSTRAINT `user_follow_ibfk_1` FOREIGN KEY (`fans_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `user_follow_ibfk_2` FOREIGN KEY (`follow_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    INDEX `follow_id` (`follow_id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 63
   CHARACTER SET = utf8
@@ -138,13 +135,26 @@ CREATE TABLE `user_safety`
     PRIMARY KEY (`user_id`) USING BTREE,
     UNIQUE INDEX `email` (`mail`) USING BTREE,
     UNIQUE INDEX `mobile` (`mobile`) USING BTREE,
-    INDEX `fk_user_safety_user_general_1` (`username`) USING BTREE,
-    CONSTRAINT `user_safety_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `user_safety_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+    INDEX `fk_user_safety_user_general_1` (`username`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- View structure for user_view
+-- ----------------------------
+DROP VIEW IF EXISTS `user_view`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `user_view` AS
+select `user`.`id`                                    AS `id`,
+       `user`.`username`                              AS `username`,
+       `user`.`nickname`                              AS `nickname`,
+       `user`.`school_code`                           AS `school_code`,
+       concat(`config`.`result`, `user`.`avatar_url`) AS `avatar_url`,
+       `user`.`register_time`                         AS `register_time`
+from (`user`
+         join `config`)
+where (`config`.`param` = 'avatar_url');
 
 -- ----------------------------
 -- View structure for fans_view
@@ -183,20 +193,5 @@ select `user_follow`.`id`          AS `id`,
        `user_view`.`register_time` AS `register_time`
 from (`user_follow`
          left join `user_view` on ((`user_view`.`id` = `user_follow`.`follow_id`)));
-
--- ----------------------------
--- View structure for user_view
--- ----------------------------
-DROP VIEW IF EXISTS `user_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `user_view` AS
-select `user`.`id`                                    AS `id`,
-       `user`.`username`                              AS `username`,
-       `user`.`nickname`                              AS `nickname`,
-       `user`.`school_code`                           AS `school_code`,
-       concat(`config`.`result`, `user`.`avatar_url`) AS `avatar_url`,
-       `user`.`register_time`                         AS `register_time`
-from (`user`
-         join `config`)
-where (`config`.`param` = 'avatar_url');
 
 SET FOREIGN_KEY_CHECKS = 1;

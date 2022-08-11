@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : blog.sticki.live
+ Source Server         : scblogs
  Source Server Type    : MySQL
  Source Server Version : 50650
- Source Host           : sql.blog.sticki.live:3306
+ Source Host           : default.server.sticki.scblogs.cn:3306
  Source Schema         : resource
 
  Target Server Type    : MySQL
  Target Server Version : 50650
  File Encoding         : 65001
 
- Date: 08/08/2022 12:30:45
+ Date: 09/08/2022 11:55:14
 */
 
 SET NAMES utf8mb4;
@@ -27,8 +27,7 @@ CREATE TABLE `city`
     `name`        varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NOT NULL COMMENT '名称',
     `province_id` int(10) UNSIGNED                                                NOT NULL COMMENT '所属省份id',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX `province_id` (`province_id`) USING BTREE,
-    CONSTRAINT `city_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `province` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+    INDEX `province_id` (`province_id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 333
   CHARACTER SET = utf8
@@ -49,7 +48,7 @@ CREATE TABLE `image`
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `img` (`url`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 39
+  AUTO_INCREMENT = 40
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = Compact;
@@ -86,8 +85,7 @@ CREATE TABLE `university`
     UNIQUE INDEX `code` (`code`) USING BTREE,
     UNIQUE INDEX `identifier` (`identifier`) USING BTREE,
     INDEX `name` (`name`) USING BTREE,
-    INDEX `city_id` (`city_id`) USING BTREE,
-    CONSTRAINT `university_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+    INDEX `city_id` (`city_id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2629
   CHARACTER SET = utf8mb4
