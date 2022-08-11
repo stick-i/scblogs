@@ -32,7 +32,7 @@ CREATE TABLE `comment`
     `create_time`    datetime                                                 NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 117
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = COMPACT;

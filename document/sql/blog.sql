@@ -1,10 +1,8 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : blog.sticki.live
  Source Server Type    : MySQL
  Source Server Version : 50650
- Source Host           : sql.blog.sticki.live:3306
  Source Schema         : blog
 
  Target Server Type    : MySQL
@@ -37,7 +35,7 @@ CREATE TABLE `blog`
     INDEX `author_id` (`author_id`) USING BTREE,
     INDEX `school_code` (`school_code`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 34
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = COMPACT;
@@ -52,8 +50,7 @@ CREATE TABLE `blog_content`
     `content`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '博客内容',
     `modified_time` datetime                                              NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`blog_id`) USING BTREE,
-    UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE,
-    CONSTRAINT `fk_blog_content_blog_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+    UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
@@ -88,8 +85,7 @@ CREATE TABLE `blog_general`
     `collection_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '收藏量',
     `score`          int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '评分',
     PRIMARY KEY (`blog_id`) USING BTREE,
-    UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE,
-    CONSTRAINT `fk_blog_general_blog_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+    UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
@@ -105,10 +101,7 @@ CREATE TABLE `blog_set_tag`
     `tag_id`  int(10) UNSIGNED NOT NULL,
     `blog_id` int(10) UNSIGNED NOT NULL,
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX `fk_blog_set_tag_blog_1` (`blog_id`) USING BTREE,
-    INDEX `fk_blog_set_tag_tag_1` (`tag_id`) USING BTREE,
-    CONSTRAINT `fk_blog_set_tag_blog_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-    CONSTRAINT `fk_blog_set_tag_tag_1` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+    INDEX `index_tag_blog` (`tag_id`, `blog_id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
@@ -127,10 +120,9 @@ CREATE TABLE `collect_blog`
     `create_time` datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `fk_blog_collection_user_1` (`user_id`) USING BTREE,
-    INDEX `fk_blog_collection_blog_1` (`blog_id`) USING BTREE,
-    CONSTRAINT `collect_blog_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`) ON DELETE NO ACTION ON UPDATE RESTRICT
+    INDEX `fk_blog_collection_blog_1` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 8
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = COMPACT;
@@ -159,7 +151,7 @@ CREATE TABLE `config`
     `result` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL DEFAULT NULL COMMENT '值',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = Compact;
@@ -176,10 +168,9 @@ CREATE TABLE `like_blog`
     `create_time` datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `fk_blog_likes_user_1` (`user_id`) USING BTREE,
-    INDEX `fk_blog_likes_blog_1` (`blog_id`) USING BTREE,
-    CONSTRAINT `like_blog_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`) ON DELETE NO ACTION ON UPDATE RESTRICT
+    INDEX `fk_blog_likes_blog_1` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 35
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
   ROW_FORMAT = COMPACT;
