@@ -1,0 +1,46 @@
+# This is a basic workflow to help you get started with Actions
+
+name: vueblog-ci
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "prod" ]
+  pull_request:
+    branches: [ "prod" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-vueblog:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: "14.X"
+      
+      - name: install and build
+        run: |
+          cd vueblog/
+          npm install
+          npm run build
+      
+      - name: secure copy
+        uses: appleboy/scp-action@v0.0.1
+        with: 
+          host: ${{secrets.SERVER_HOST}}
+          username: ${{secrets.SERVER_USER}}
+          password: ${{secrets.SERVER_PASSWORD}}
+          port: ${{secrets.SERVER_PORT}}
+          source: "vueblog/dist"
+          target: ${{secrets.SERVER_VUE_PATH}}
