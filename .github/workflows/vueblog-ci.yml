@@ -35,12 +35,12 @@ jobs:
           npm install
           npm run build
       
-      - name: secure copy
-        uses: appleboy/scp-action@v0.0.1
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
         with: 
-          host: ${{secrets.SERVER_HOST}}
-          username: ${{secrets.SERVER_USER}}
-          password: ${{secrets.SERVER_PASSWORD}}
-          port: ${{secrets.SERVER_PORT}}
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
           source: "vueblog/dist"
-          target: ${{secrets.SERVER_VUE_PATH}}
+          target: ${{ secrets.SERVER_VUE_PATH }}
