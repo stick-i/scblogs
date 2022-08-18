@@ -42,5 +42,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "vueblog/dist"
+          source: "dist"
           target: ${{ secrets.SERVER_VUE_PATH }}
