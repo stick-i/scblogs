@@ -42,5 +42,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           source: "vueblog/dist/**"
           target: ${{ secrets.SERVER_VUE_PATH }}
-          strip_components: 1
+          strip_components: 2
           rm: true
