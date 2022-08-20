@@ -217,7 +217,17 @@ export default {
       },
     };
   },
+	mounted(){
+		//登录绑定事件
+		window.addEventListener('keydown',this.keyDown);
+	},
   methods: {
+		keyDown(e){
+			//如果是回车则执行登录方法
+			if(e.keyCode == 13){
+				this.submitForm('ruleForm');
+			}
+		},
     // 获取省份
     getProvinces() {
       this.$axios.get("/resource/province").then((res) => {
@@ -378,6 +388,10 @@ export default {
       });
     },
   },
+	//登录销毁
+	destroyed(){
+		window.removeEventListener('keydown',this.keyDown,false);
+	}
 };
 </script>
 

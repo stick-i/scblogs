@@ -36,17 +36,22 @@ export const offsetDomTop = (element) =>{
 export const scrolltoToc = (position) => {
 	// scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离
 	let curr_top = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-	let time_id = setInterval(() => {
-		curr_top += 10;
+	// let time_id = setInterval(() => {
+	// 	curr_top +=90;
+	// 	// curr_top = curr_top;
+	//
+	// 	//网页被卷去的高： document.body.scrollTop;
+	// 	document.body.scollTop = curr_top;
+	//
+	// 	// document.documentElement.scrollTop(获取或设置滚动条位置)
+	// 	document.documentElement.scrollTop = curr_top;
+	//
+	// 	if (curr_top >=position) {
+	// 		clearInterval(time_id);
+	// 	}
+	// }, 10);
+	curr_top=position;
+	document.body.scollTop = curr_top;
+	document.documentElement.scrollTop = curr_top;
 
-		//网页被卷去的高： document.body.scrollTop;
-		document.body.scollTop = curr_top;
-
-		// document.documentElement.scrollTop(获取或设置滚动条位置)
-		document.documentElement.scrollTop = curr_top;
-
-		if (curr_top >=position) {
-			clearInterval(time_id);
-		}
-	}, 10);
 }

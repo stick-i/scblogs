@@ -363,7 +363,7 @@ export default {
 		// 目录滚动
 		scrollToPosition(id) {
 			let position = offsetDomTop(document.getElementById(id));
-			position.top = position.top - 80;
+			// position.top = position.top - 80;
 			scrolltoToc(position.top);
 		},
     // recordsChange(records) {

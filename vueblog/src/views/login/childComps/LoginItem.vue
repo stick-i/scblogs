@@ -69,7 +69,18 @@ export default {
       },
     };
   },
+	mounted(){
+		//登录绑定事件
+		window.addEventListener('keydown',this.keyDown);
+	},
   methods: {
+		keyDown(e){
+			//如果是回车则执行登录方法
+			if(e.keyCode == 13){
+				this.submitForm('ruleForm');
+			}
+		},
+
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -114,6 +125,10 @@ export default {
       this.$refs[formName].resetFields();
     },
   },
+	//登录销毁
+	destroyed(){
+		window.removeEventListener('keydown',this.keyDown,false);
+	}
 };
 </script>
 
