@@ -426,13 +426,13 @@ export default {
 	  },
 	  //修改用户学校
 	  ChangeSchool(){
-		  let formdata=new FormData()
-		  formdata.append('code',this.schoolCode)
-		  this.$axios.put('/user/school',formdata,this.config).then(res=>{
-			  // if()
-		  })
-		  this.visible=false
-	  },
+			let formdata = new FormData()
+			formdata.append('code', this.schoolCode)
+			this.$axios.put('/user/school/code', formdata, this.config).then(res => {
+				// if()
+			})
+			this.visible = false
+		},
 	  // 获取省份
 	  getProvinces() {
 		  this.$axios.get("/resource/province").then((res) => {
