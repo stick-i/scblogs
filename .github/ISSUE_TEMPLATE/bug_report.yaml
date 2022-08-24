@@ -4,7 +4,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢您提交错误报告！此issue适用于 [校园博客](http://scblogs.cn/) 。在提问前，请先搜索已有的issue，查看您遇到的问题是否存在。
+        感谢您提交错误报告！此issue适用于[校园博客](http://scblogs.cn/)。在提问前，请先搜索已有的issue，查看您遇到的问题是否存在。
         Thanks for filing a bug report! This issue tracker is for [scblogs](http://scblogs.cn/). Please search the issue tracker to see if there is an existing issue for the problem you are experiencing. 
   - type: textarea
     id: the-problem
