@@ -81,7 +81,7 @@ public class IpLimitFilter implements GlobalFilter, Ordered {
 	}
 
 	@SneakyThrows
-	private DataBuffer buildWrap(ServerHttpResponse response, String ip, RequestPath uri, String key){
+	private DataBuffer buildWrap(ServerHttpResponse response, String ip, RequestPath uri, String key) {
 		// 设置状态码和响应类型
 		response.setStatusCode(HttpStatus.LOCKED);
 		response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
