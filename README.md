@@ -21,6 +21,7 @@
   <img src="https://img.shields.io/badge/Vue-2.6.14-green" alt=""/>
   <img src="https://img.shields.io/badge/ElementUI-2.15.6-green" alt=""/>
 </a></p>
+
 ## 项目计划
 
 陆续有一些开源贡献者愿意加入到这个项目当中了😁，为了便于大家参与贡献，我将项目计划做了一些整理，主要分为以下几个部分：
