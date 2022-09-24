@@ -1,4 +1,4 @@
-package cn.sticki.common.web.adviceconfig;
+package cn.sticki.common.web.advice;
 
 import cn.sticki.common.exception.BaseBusinessException;
 import cn.sticki.common.exception.ServiceException;

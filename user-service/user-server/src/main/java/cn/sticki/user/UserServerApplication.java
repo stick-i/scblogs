@@ -2,7 +2,7 @@ package cn.sticki.user;
 
 import cn.sticki.common.redis.autoconfig.EnableRedisSerialize;
 import cn.sticki.common.tool.mybatisconfig.EnableMybatisPlusIPage;
-import cn.sticki.common.web.adviceconfig.EnableDefaultExceptionAdvice;
+import cn.sticki.common.web.advice.EnableDefaultExceptionAdvice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;

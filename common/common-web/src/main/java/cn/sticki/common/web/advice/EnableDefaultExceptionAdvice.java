@@ -1,4 +1,4 @@
-package cn.sticki.common.web.adviceconfig;
+package cn.sticki.common.web.advice;
 
 import org.springframework.context.annotation.Import;
 

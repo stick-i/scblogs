@@ -1,7 +1,7 @@
 package cn.sticki.blog;
 
 import cn.sticki.common.tool.mybatisconfig.EnableMybatisPlusIPage;
-import cn.sticki.common.web.adviceconfig.EnableDefaultExceptionAdvice;
+import cn.sticki.common.web.advice.EnableDefaultExceptionAdvice;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
