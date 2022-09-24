@@ -1,7 +1,7 @@
 package cn.sticki.blink;
 
 import cn.sticki.common.tool.mybatisconfig.EnableMybatisPlusIPage;
-import cn.sticki.common.web.adviceconfig.EnableExceptionDefaultAdvice;
+import cn.sticki.common.web.adviceconfig.EnableDefaultExceptionAdvice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 阿杆
  */
 @SpringBootApplication
-@EnableExceptionDefaultAdvice
+@EnableDefaultExceptionAdvice
 @EnableMybatisPlusIPage
 public class BlinkServerApplication {
 

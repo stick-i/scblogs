@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @RestControllerAdvice
-public class ExceptionDefaultAdvice {
+public class DefaultExceptionAdvice {
 
 	// 拦截所有的信息
 	@ExceptionHandler(Exception.class)
