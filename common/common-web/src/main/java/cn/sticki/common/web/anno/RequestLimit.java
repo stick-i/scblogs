@@ -29,8 +29,8 @@ public @interface RequestLimit {
 	int time() default 60;
 
 	/**
-	 * 访问达到限制后需要等待的世界，单位秒，默认值120
+	 * 访问达到限制后需要等待的世界，单位秒，默认值300
 	 */
-	int waits() default 120;
+	int waits() default 300;
 
 }
