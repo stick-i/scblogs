@@ -36,6 +36,14 @@
 
 另外详细的计划内容已经作为issue发在GitHub上了，访问链接：https://github.com/stick-i/scblogs/issues/64 即可查看，欢迎大家参与噢！
 
+## 项目地址
+
+项目托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
+
+- Gitee地址：https://gitee.com/sticki/scblogs
+- GitHub地址：https://github.com/stick-i/scblogs
+- QQ交流群：729931395
+
 ## 项目特点
 
 - 微服务架构开发，友好的代码结构及注释，便于阅读及二次开发
@@ -47,13 +55,6 @@
 - 采用 **AOP** + 自定义注解 + **Redis** 实现限制IP接口访问次数
 - 基于 **Redis** 实现的分布式全局唯一ID生成器，保障ID可用性、安全性。
 - 页面交互使用 **Vue2.x**，极大的提高了开发效率
-
-## 项目地址
-
-项目托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
-
-- Gitee地址：https://gitee.com/sticki/scblogs
-- GitHub地址：https://github.com/stick-i/scblogs
 
 ## 项目目录
 

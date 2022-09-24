@@ -1,4 +1,4 @@
-package cn.sticki.common.web.adviceconfig;
+package cn.sticki.common.web.advice;
 
 import cn.sticki.common.exception.BaseBusinessException;
 import cn.sticki.common.exception.ServiceException;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @RestControllerAdvice
-public class ExceptionDefaultAdvice {
+public class DefaultExceptionAdvice {
 
 	// 拦截所有的信息
 	@ExceptionHandler(Exception.class)

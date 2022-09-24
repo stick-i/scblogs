@@ -37,22 +37,22 @@ public class UserController {
 	 */
 	@GetMapping
 	@RequestLimit
-	public RestResult<User> getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
+	public User getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
 		Integer getId = null;
 		if (id == null && userId != null) {
 			getId = userId;
 		} else if (id != null) {
 			getId = id;
 		}
-		return new RestResult<>(userService.getById(getId));
+		return userService.getById(getId);
 	}
 
 	/**
 	 * 批量获取用户信息
 	 */
 	@PostMapping("/list")
-	public RestResult<Map<Integer, UserView>> getUserList(@RequestParam List<Integer> userIdList) {
-		return new RestResult<>(userService.getUserListMap(new HashSet<>(userIdList)));
+	public Map<Integer, UserView> getUserList(@RequestParam List<Integer> userIdList) {
+		return userService.getUserListMap(new HashSet<>(userIdList));
 	}
 
 	/**
@@ -63,9 +63,9 @@ public class UserController {
 	@PutMapping("/nickname")
 	public RestResult<Object> updateNickname(@NotNull String nickname, @RequestHeader Integer id) {
 		if (userService.updateNickname(id, nickname)) {
-			return new RestResult<>(true);
+			return RestResult.ok();
 		}
-		return new RestResult<>(false);
+		return RestResult.fail();
 	}
 
 	/**
@@ -80,9 +80,9 @@ public class UserController {
 		FileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		String avatar = userService.updateAvatar(id, avatarFile);
 		if (avatar != null) {
-			return new RestResult<>(avatar);
+			return RestResult.ok(avatar);
 		} else {
-			return new RestResult<>(false, "上传失败");
+			return RestResult.fail("上传失败");
 		}
 	}
 
@@ -96,9 +96,9 @@ public class UserController {
 	public RestResult<Object> updatePassword(@NotNull String oldPassword, @NotNull String newPassword, @RequestHeader Integer id) {
 		if (userService.checkPassword(id, oldPassword)) {
 			boolean result = userService.updatePasswordById(id, newPassword);
-			return new RestResult<>(result);
+			return RestResult.ok(result);
 		}
-		return new RestResult<>(false, "修改失败");
+		return RestResult.fail("修改失败");
 	}
 
 	/**
@@ -121,9 +121,9 @@ public class UserController {
 	public RestResult<Object> updateMail(@NotNull String mail, @NotNull String mailVerify, @RequestHeader Integer id) {
 		if (userService.checkMailVerify(id, mailVerify)) {
 			boolean result = userService.updateMail(id, mail);
-			return new RestResult<>(result);
+			return RestResult.ok(result);
 		}
-		return new RestResult<>(false, "修改失败");
+		return RestResult.fail("修改失败");
 	}
 
 	/**
