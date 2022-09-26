@@ -44,6 +44,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 		return response.writeWith(Mono.fromSupplier(() -> {
 			DataBufferFactory bufferFactory = response.bufferFactory();
 			try {
+				ex.printStackTrace();
 				log.warn("Error Gateway : {} {}", ex.getMessage(), exchange.getRequest().getPath());
 				return bufferFactory.wrap(objectMapper.writeValueAsBytes(new RestResult<>(404, "NOT FOUND")));
 			} catch (JsonProcessingException e) {
