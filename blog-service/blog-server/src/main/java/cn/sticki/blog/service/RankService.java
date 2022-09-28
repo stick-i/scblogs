@@ -1,7 +1,7 @@
 package cn.sticki.blog.service;
 
 
-import cn.sticki.blog.pojo.bo.RankHotBO;
+import cn.sticki.blog.pojo.vo.RankHotVO;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface RankService {
      *
      * @return
      */
-    List<RankHotBO> getRankHotToday();
+    List<RankHotVO> getRankHotToday();
 }

@@ -3,8 +3,10 @@ package cn.sticki.blog.controller;
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
+import cn.sticki.blog.pojo.vo.RankHotVO;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
+import cn.sticki.blog.service.RankService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 获取博客信息的相关接口
@@ -28,6 +31,9 @@ public class BlogController {
 
 	@Resource
 	private BlogViewService blogViewService;
+
+	@Resource
+	private RankService rankService;
 
 	private final int pageSize = 20;
 
@@ -91,6 +97,23 @@ public class BlogController {
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, id).eq(Blog::getStatus, BlogStatusType.PUBLISH.getValue());
 		return new RestResult<>(blogService.getOne(wrapper));
+	}
+
+	/**
+	 * 获取热度排行榜信息
+	 *
+	 */
+	@GetMapping("/rank/hot/today")
+	public RestResult<List<RankHotVO>> getRankHotVO(){
+		List<RankHotVO> rankHotToday = rankService.getRankHotToday();
+		// 如果没有得到数据
+		if(rankHotToday == null){
+			RestResult<List<RankHotVO>> result = new RestResult<>();
+			result.setMessage("今日暂无排行榜信息");
+			return result;
+		}
+		return new RestResult<>(rankHotToday);
+
 	}
 
 }
