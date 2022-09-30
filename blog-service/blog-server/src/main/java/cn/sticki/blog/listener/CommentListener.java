@@ -9,12 +9,15 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPTION_SEE_KEY;
 import static cn.sticki.comment.sdk.MqConstants.*;
 
 /**
@@ -32,7 +35,7 @@ public class CommentListener {
 
 	public static final String COMMENT_RANK_QUEUE = "blog.rank.addhot";
 
-	private static final String KEY_PREFIX = "rank:hot:";
+	public static final String REDIS_KEY_PREFIX = "rank:hot:";
 
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
@@ -41,23 +44,32 @@ public class CommentListener {
 	private StringRedisTemplate stringRedisTemplate;
 
 	/**
-	 * 通过点赞、浏览、转发等博客相关操作对博客热度进行增加
+	 * 用户浏览博客对博客热度进行增加
 	 *
-	 * @param hotMessage
+	 * @param hotMessage 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = COMMENT_RANK_EXCHANGE, type = ExchangeTypes.FANOUT),
-			value = @Queue(name = COMMENT_RANK_QUEUE)
+			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			value = @Queue(name = COMMENT_RANK_QUEUE),
+			key = BLOG_OPTION_SEE_KEY
 	))
-	public void addRankHotScore(String hotMessage){
-		System.out.println(hotMessage);
+	public void addRankHotScore(String hotMessage) {
+		log.debug("{} 热度加1", hotMessage);
 		// 传过来的数据是一下序列化数据，解序列化
 		RankSendBO rankSendBO = JSON.parseObject(hotMessage, RankSendBO.class);
 		// 获取daykey
 		long daykey = System.currentTimeMillis() / (1000 * 60 * 60 * 24);
 		//封装 redis key
-		String key = KEY_PREFIX+daykey;
-		stringRedisTemplate.opsForZSet().incrementScore(key,rankSendBO.getBlogId(),rankSendBO.getScore());
+		String key = REDIS_KEY_PREFIX + daykey;
+		//进行判断，是否已经创建 改redis
+		Set<String> rank = stringRedisTemplate.opsForZSet().reverseRange(key, 1, -1);
+		if (rank == null || rank.size() == 0) {
+			//如果没有创建，就执行创建并设置 TTL 为40天
+			stringRedisTemplate.opsForZSet().incrementScore(key, rankSendBO.getBlogId().toString(), 1d);
+			stringRedisTemplate.expire(key, 60 * 60 * 24 * 40, TimeUnit.SECONDS);
+		}
+		//已创建，将对应博客热度增加 1
+		stringRedisTemplate.opsForZSet().incrementScore(key, rankSendBO.getBlogId().toString(), 1d);
 
 	}
 

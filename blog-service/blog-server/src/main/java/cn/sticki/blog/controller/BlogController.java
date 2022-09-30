@@ -108,9 +108,7 @@ public class BlogController {
 		List<RankHotVO> rankHotToday = rankService.getRankHotToday();
 		// 如果没有得到数据
 		if(rankHotToday == null){
-			RestResult<List<RankHotVO>> result = new RestResult<>();
-			result.setMessage("今日暂无排行榜信息");
-			return result;
+			return RestResult.ok(null, "今日暂无排行榜信息");
 		}
 		return new RestResult<>(rankHotToday);
 

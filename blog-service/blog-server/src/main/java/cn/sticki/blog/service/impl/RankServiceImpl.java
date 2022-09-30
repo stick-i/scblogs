@@ -8,8 +8,6 @@ import cn.sticki.blog.service.RankService;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import feign.template.QueryTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,7 @@ import java.util.Set;
 @Service
 public class RankServiceImpl implements RankService {
 
-    public static final String KEY_PREFIX = "rank-hot:";
+    public static final String KEY_PREFIX = "rank:hot:";
 
     @Resource
     StringRedisTemplate stringRedisTemplate;
@@ -62,8 +60,6 @@ public class RankServiceImpl implements RankService {
             RankHotVO rankHotVO = BeanUtil.copyProperties(blog, RankHotVO.class);
             // 2.2 查询并设置用户信息
             RestResult<UserDTO> user = userClient.getByUserId(blog.getAuthorId());
-            System.out.println(user);
-            System.out.println(user.getData());
             rankHotVO.setAuthor(user.getData());
             // 2.3 设置热度信息
             rankHotVO.setHot(tuple.getScore());
@@ -74,11 +70,10 @@ public class RankServiceImpl implements RankService {
     }
 
 
-
     /**
      * 获取 day key
      */
-    public long getDayKey() {
+    private long getDayKey() {
         return System.currentTimeMillis() / (1000 * 60 * 60 * 24);
     }
 

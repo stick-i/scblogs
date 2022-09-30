@@ -72,7 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 			return user;
 		}
 		// 4. 不存在，查数据库
-		user = super.getById(id);
+		user = userMapper.selectById(id);
 		if (user != null) {
 			// 4.1 查询成功，存入redis
 			objectRedisTemplate.opsForValue().set(key, user, USER_SERVICE_INFO_TTL, TimeUnit.SECONDS);

@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static cn.sticki.comment.sdk.MqConstants.COMMENT_RANK_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
 
 /**
  * @author 阿杆
@@ -150,7 +150,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		blog.setAuthor(result.getData());
 
 		// 封装好请求体后，增加改博客的热度  查看博客增加 1 热度
-		rabbitTemplate.convertAndSend(COMMENT_RANK_EXCHANGE, JSON.toJSON(new RankSendBO( id.toString(),1)));
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, JSON.toJSON(new RankSendBO(id, userId)));
 		return blog;
 	}
 
