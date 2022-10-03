@@ -42,6 +42,31 @@ public class RankServiceImpl implements RankService {
         long dayKey = getDayKey();
         // 获取redis数据
         Set<ZSetOperations.TypedTuple<String>> typedTuples = stringRedisTemplate.opsForZSet().reverseRangeWithScores(KEY_PREFIX + dayKey, 0, -1);
+        return getRankHotVOList(typedTuples);
+    }
+
+    @Override
+    public List<RankHotVO> getRankHotWeek() {
+        // 获取 day key
+        long daykey = getDayKey();
+        // 获取前6天的key,存入集合
+        ArrayList<String> daykeys = new ArrayList<>();
+        for(long i=daykey-6;i<daykey;i++){
+            daykeys.add(KEY_PREFIX+i);
+        }
+        // 合并操作获取合并结果
+        stringRedisTemplate.opsForZSet().unionAndStore(KEY_PREFIX + daykey, daykeys,"weekrank");
+        Set<ZSetOperations.TypedTuple<String>> weekrank = stringRedisTemplate.opsForZSet().reverseRangeWithScores("weekrank", 0, -1);
+        return getRankHotVOList(weekrank);
+    }
+
+    /**
+     * 拿到博客id及热度后，设置 热度排行榜显示 的相关参数
+     *
+     * @param typedTuples
+     * @return
+     */
+    private List<RankHotVO> getRankHotVOList(Set<ZSetOperations.TypedTuple<String>> typedTuples){
         if(typedTuples==null || typedTuples.size() == 0){
             // 如果没有创建，说明今天暂无热榜相关的信息，返回空信息
             return null;
@@ -68,7 +93,6 @@ public class RankServiceImpl implements RankService {
 
         return result;
     }
-
 
     /**
      * 获取 day key

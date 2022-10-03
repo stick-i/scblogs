@@ -16,4 +16,11 @@ public interface RankService {
      * @return
      */
     List<RankHotVO> getRankHotToday();
+
+    /**
+     * 获取近七日博客热度排行榜
+     *
+     * @return
+     */
+    List<RankHotVO> getRankHotWeek();
 }
