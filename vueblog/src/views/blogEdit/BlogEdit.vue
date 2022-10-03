@@ -3,10 +3,12 @@
     <div class="m-content">
       <div class="top-container">
         <div class="article-bar">
-          <div class="btn-goback">
+          <!-- <div class="btn-goback"> -->
+          <router-link :to="{ name: 'ContentManagement' }" class="btn-goback">
             <i class="el-icon-caret-left"></i>
             <div class="text">文&nbsp;章&nbsp;管&nbsp;理</div>
-          </div>
+          </router-link>
+          <!-- </div> -->
           <div class="bar-input">
             <input
               type="text"
@@ -41,12 +43,11 @@
         <blog-edit-dialog
           :blogTitle="ruleForm.title"
           :blogContent="ruleForm.content"
-					:blogContentHtml="ruleForm.contentHtml"
+          :blogContentHtml="ruleForm.contentHtml"
           :dialogShow="dialogShow"
           @dialogShowChange="dialogShowChange"
         ></blog-edit-dialog>
       </div>
-
     </div>
   </div>
 </template>
@@ -62,17 +63,17 @@ export default {
   },
   data() {
     return {
-			// 目录开始
-			tocs:[],
-			// 目录结束
-      avatarUrl:'',
+      // 目录开始
+      tocs: [],
+      // 目录结束
+      avatarUrl: "",
       ruleForm: {
-        id:'',
-        title: '',
-        description:'',
-        content: '',
-				contentHtml:'',
-        status:2
+        id: "",
+        title: "",
+        description: "",
+        content: "",
+        contentHtml: "",
+        status: 2,
       },
       dialogShow: false,
     };
@@ -85,23 +86,23 @@ export default {
     // md文档开始
     // 将图片上传到服务器，返回地址替换到md中
     imgAdd(pos, $file) {
-      var _this = this
+      var _this = this;
       var formdata = new FormData();
-      formdata.append('file', $file);
-      this.$axios.post("/blog/console/image",formdata,{
-        headers: { token: localStorage.getItem("token") },
-      }).then((response) => {
-        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-        if (response.status === 200) {
-          var url = response.data.data;
-          _this.$refs.md.$img2Url(pos,url)
-        }
-        console.log(response)
-      })
+      formdata.append("file", $file);
+      this.$axios
+        .post("/blog/console/image", formdata, {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+          if (response.status === 200) {
+            var url = response.data.data;
+            _this.$refs.md.$img2Url(pos, url);
+          }
+          console.log(response);
+        });
     },
-    imgDel(pos) {
-
-    },
+    imgDel(pos) {},
     // md文档结束
     dialogShowChange(val) {
       this.dialogShow = val;
@@ -109,19 +110,19 @@ export default {
     // 保存文章
     saveForm() {
       this.$axios
-        .post("/blog/console/blog",
-          qs.stringify(this.ruleForm),
-          { headers: { 'token': localStorage.getItem("token") } }
-        ).then( res =>{
-        console.log(res)
-        if (res.data.code == 200 && res.data.status == true) {
-          this.$message({
-            showClose: true,
-            message: "保存成功~",
-            type: "success",
-          });
-        }
-      })
+        .post("/blog/console/blog", qs.stringify(this.ruleForm), {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.code == 200 && res.data.status == true) {
+            this.$message({
+              showClose: true,
+              message: "保存成功~",
+              type: "success",
+            });
+          }
+        });
     },
     // 发布文章
     submitForm() {
@@ -138,8 +139,8 @@ export default {
           type: "warning",
         });
       } else {
-				this.ruleForm.contentHtml = this.$refs.md.d_render
-				// console.log(this.ruleForm.contentHtml)
+        this.ruleForm.contentHtml = this.$refs.md.d_render;
+        // console.log(this.ruleForm.contentHtml)
         this.dialogShow = true;
       }
     },

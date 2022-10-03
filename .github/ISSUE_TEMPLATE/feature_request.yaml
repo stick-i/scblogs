@@ -1,0 +1,34 @@
+name: ⭐ 功能请求 —— Feature Request
+description: 提交功能请求 —— Submit a feature request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您提交功能请求！此issue适用于[校园博客](http://scblogs.cn/)。在提问前，请先搜索已有的issue，查看您遇到的问题是否存在。
+        Thanks for submitting a feature request! This issue tracker is for [scblogs](http://scblogs.cn/). Please search the issue tracker to see if there is an existing issue for the feature you are requesting.
+  - type: textarea
+    id: the-feature-request
+    attributes:
+      label: 功能请求 —— The feature request
+      description:
+        写一个清晰简洁的描述来表明功能或问题是什么。<br>
+        Write a clear and concise description of what the feature or problem is.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 建议的解决方案 —— Proposed solution
+      description: 
+        分享这将如何为校园博客及其用户带来好处。<br>
+        Share how this will benefit GitHub Desktop and its users.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 附加上下文 —— Additional context
+      description:
+        如果适用，请包括任何其他上下文，例如屏幕截图或模型。<br>
+        Please include any other context, like screenshots or mockups, if
+        applicable.

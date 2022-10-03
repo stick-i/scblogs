@@ -59,17 +59,28 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 1, max: 16, message: "长度在 1 到 16 个字符", trigger: "blur" },
-        ],
+					{required: true, message: "请输入用户名", trigger: "blur"},
+					{min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur"},
+				],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" },
-        ],
+					{required: true, message: "请输入密码", trigger: "blur"},
+					{min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur"},
+				],
       },
     };
   },
+	mounted(){
+		//登录绑定事件
+		window.addEventListener('keydown',this.keyDown);
+	},
   methods: {
+		keyDown(e){
+			//如果是回车则执行登录方法
+			if(e.keyCode == 13){
+				this.submitForm('ruleForm');
+			}
+		},
+
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -114,6 +125,10 @@ export default {
       this.$refs[formName].resetFields();
     },
   },
+	//登录销毁
+	destroyed(){
+		window.removeEventListener('keydown',this.keyDown,false);
+	}
 };
 </script>
 

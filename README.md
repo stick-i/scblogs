@@ -22,6 +22,28 @@
   <img src="https://img.shields.io/badge/ElementUI-2.15.6-green" alt=""/>
 </a></p>
 
+## 项目计划
+
+陆续有一些开源贡献者愿意加入到这个项目当中了😁，为了便于大家参与贡献，我将项目计划做了一些整理，主要分为以下几个部分：
+
+|         新功能或新模块         |  难度  |
+| :----------------------------: | :----: |
+| 对原来的模块进行完善及新增功能 | 看情况 |
+|         管理员系统模块         |  中等  |
+|            问答模块            |  简单  |
+|            商城模块            |  中等  |
+|             OJ模块             |  困难  |
+
+另外详细的计划内容已经作为issue发在GitHub上了，访问链接：https://github.com/stick-i/scblogs/issues/64 即可查看，欢迎大家参与噢！
+
+## 项目地址
+
+项目托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
+
+- Gitee地址：https://gitee.com/sticki/scblogs
+- GitHub地址：https://github.com/stick-i/scblogs
+- QQ交流群：729931395
+
 ## 项目特点
 
 - 微服务架构开发，友好的代码结构及注释，便于阅读及二次开发
@@ -32,14 +54,7 @@
 - 采用 **Minio** 搭建对象存储服务，同时引入七牛云对象存储
 - 采用 **AOP** + 自定义注解 + **Redis** 实现限制IP接口访问次数
 - 基于 **Redis** 实现的分布式全局唯一ID生成器，保障ID可用性、安全性。
-- 页面交互使用 **Vue2.x**，极大的提高了开发效率。
-
-## 项目地址
-
-项目托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
-
-- Gitee地址：https://gitee.com/sticki/scblogs
-- GitHub地址：https://github.com/stick-i/scblogs
+- 页面交互使用 **Vue2.x**，极大的提高了开发效率
 
 ## 项目目录
 

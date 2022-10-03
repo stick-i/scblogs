@@ -1,0 +1,63 @@
+name: 🐛 错误报告 —— Bug Report
+description: 提交错误报告 —— File a bug report
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您提交错误报告！此issue适用于[校园博客](http://scblogs.cn/)。在提问前，请先搜索已有的issue，查看您遇到的问题是否存在。
+        Thanks for filing a bug report! This issue tracker is for [scblogs](http://scblogs.cn/). Please search the issue tracker to see if there is an existing issue for the problem you are experiencing. 
+  - type: textarea
+    id: the-problem
+    attributes:
+      label: 问题 —— The problem
+      description:
+        描述您在使用校园博客时遇到的问题。提供清晰简洁的描述，说明您尝试执行的操作和发生的情况，以及您遇到的任何错误消息。<br>
+        Describe the issue you are experiencing with scblogs. Provide a
+        clear and concise description of what you were trying to do and what
+        happened, along with any error messages you encountered.
+    validations:
+      required: true
+  - type: input
+    id: operating-environment
+    attributes:
+      label: 操作环境 —— Operating environment
+      description:
+        输入您正在运行的特定操作环境（例如：Windows 10）。如果是网页问题，请输入浏览器名称（例如：Google Chrome）。<br>
+        'Enter the specific operating system version you are running (example:Windows 10).If it is a web problem, please enter the browser name (example Google Chrome).'
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 环境版本 —— Environment version
+      description:
+        输入您操作环境的版本，如果是网页问题，请输入浏览器版本。<br>
+        Enter the version of your operating environment. If it is a web page problem, please enter the browser version.
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 重现步骤 —— Steps to reproduce the behavior
+      description: 
+        提供重现您遇到的问题的步骤。<br>
+        Provide steps to reproduce the problem you are experiencing.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图 —— Screenshots
+      description: 
+        添加屏幕截图以帮助解释您的问题（如果适用）。<br>
+        Add screenshots to help explain your problem, if applicable.
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 附加上下文 —— Additional context
+      description:
+        在此处添加有关您遇到的问题的任何其他上下文。<br>
+        Add any other context about the problem you are experiencing here.

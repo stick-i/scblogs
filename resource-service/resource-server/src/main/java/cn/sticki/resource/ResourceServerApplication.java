@@ -1,6 +1,6 @@
 package cn.sticki.resource;
 
-import cn.sticki.common.web.adviceconfig.EnableExceptionDefaultAdvice;
+import cn.sticki.common.web.advice.EnableDefaultExceptionAdvice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 阿杆
  */
 @SpringBootApplication
-@EnableExceptionDefaultAdvice
+@EnableDefaultExceptionAdvice
 public class ResourceServerApplication {
 
 	public static void main(String[] args) {

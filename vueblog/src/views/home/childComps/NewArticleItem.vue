@@ -144,7 +144,7 @@ export default {
 					headers: { token: localStorage.getItem("token") },
 				})
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           // console.log(res.data.data.userAction)
           if (res.data.data.userAction == null) {
             this.isShow = false;
@@ -159,7 +159,7 @@ export default {
               ...this.userAction,
               ...res.data.data.userAction,
             };
-            console.log(this.blogList);
+            // console.log(this.blogList);
             $state.loaded();
           } else {
             $state.complete();
@@ -177,7 +177,7 @@ export default {
   margin-left: 3px;
   /* border-bottom: 1px solid #f0f0f2; */
   background-color: #ffffff;
-  padding: 15px 0px 0 15px;
+  padding: 15px 15px 0 15px;
   margin-bottom: 15px;
 
   /* display: inline-block; */
@@ -244,6 +244,7 @@ export default {
 .article-content-item {
   display: flex;
   padding-bottom: 15px;
+	height: 130px;
 }
 .article-content-right {
   display: flex;
@@ -262,6 +263,10 @@ export default {
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 4;
+	overflow: hidden;
 }
 
 /*评价*/

@@ -87,4 +87,11 @@ public class RestResult<T> implements Serializable {
 		return new RestResult<>(400, errorMessage, null, false);
 	}
 
+	public static <T> RestResult<T> limit() {
+		return new RestResult<>(408, "访问频繁，请稍后再试");
+	}
+
+	public static <T> RestResult<T> notFound() {
+		return new RestResult<>(404, "NOT FOUND");
+	}
 }
