@@ -123,7 +123,7 @@ public class BlogController {
 		List<RankHotVO> rankHotWeek = rankService.getRankHotWeek();
 		// 如果没有得到数据
 		if(rankHotWeek == null){
-			return RestResult.ok(null, "本周暂无排行榜信息");
+			return RestResult.ok(null, "上周暂无排行榜信息");
 		}
 		return new RestResult<>(rankHotWeek);
 

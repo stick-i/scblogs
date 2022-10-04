@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author durance
@@ -24,7 +25,9 @@ import java.util.Set;
 @Service
 public class RankServiceImpl implements RankService {
 
-    public static final String KEY_PREFIX = "rank:hot:";
+    public static final String DAY_KEY_PREFIX = "rank:hot:day:";
+
+    public static final String WEEK_KEY_PREFIX = "rank:hot:week:";
 
     @Resource
     StringRedisTemplate stringRedisTemplate;
@@ -41,22 +44,40 @@ public class RankServiceImpl implements RankService {
         // 1.1 获取 day key
         long dayKey = getDayKey();
         // 获取redis数据
-        Set<ZSetOperations.TypedTuple<String>> typedTuples = stringRedisTemplate.opsForZSet().reverseRangeWithScores(KEY_PREFIX + dayKey, 0, -1);
+        Set<ZSetOperations.TypedTuple<String>> typedTuples = stringRedisTemplate.opsForZSet().reverseRangeWithScores(DAY_KEY_PREFIX + dayKey, 0, -1);
         return getRankHotVOList(typedTuples);
     }
 
     @Override
     public List<RankHotVO> getRankHotWeek() {
+        long weekkey = getWeekKey();
+        // 拿到数据集合
+        Set<ZSetOperations.TypedTuple<String>> weekrank = stringRedisTemplate.opsForZSet().reverseRangeWithScores(WEEK_KEY_PREFIX + weekkey, 0, -1);
+        // 进行判断查看有没有数据
+        if (!(weekrank.size() == 0 || weekrank == null)) {
+            // 如果拿到数据直接进行查询并返回
+            return getRankHotVOList(weekrank);
+        }
+        // 如果没有拿到数据集，进行合并操作并存入缓存
         // 获取 day key
         long daykey = getDayKey();
-        // 获取前6天的key,存入集合
+        // 计算需要进行聚合的上周一的 day key
+        long mondayKey = daykey % 7;
+        if (mondayKey >= 4) {
+            mondayKey = daykey - (3 + mondayKey);
+        } else {
+            mondayKey = daykey - (10 + mondayKey);
+        }
+        // 聚合上周的day key,存入集合
         ArrayList<String> daykeys = new ArrayList<>();
-        for(long i=daykey-6;i<daykey;i++){
-            daykeys.add(KEY_PREFIX+i);
+        for (long i = mondayKey; i < mondayKey + 7; i++) {
+            daykeys.add(DAY_KEY_PREFIX + i);
         }
         // 合并操作获取合并结果
-        stringRedisTemplate.opsForZSet().unionAndStore(KEY_PREFIX + daykey, daykeys,"weekrank");
-        Set<ZSetOperations.TypedTuple<String>> weekrank = stringRedisTemplate.opsForZSet().reverseRangeWithScores("weekrank", 0, -1);
+        stringRedisTemplate.opsForZSet().unionAndStore("COUNT_WEEK", daykeys, WEEK_KEY_PREFIX + weekkey);
+        // 设置过期时间为 一星期
+        stringRedisTemplate.expire(WEEK_KEY_PREFIX + weekkey, 60 * 60 * 24 * 7, TimeUnit.SECONDS);
+        weekrank = stringRedisTemplate.opsForZSet().reverseRangeWithScores(WEEK_KEY_PREFIX + weekkey, 0, -1);
         return getRankHotVOList(weekrank);
     }
 
@@ -99,6 +120,23 @@ public class RankServiceImpl implements RankService {
      */
     private long getDayKey() {
         return System.currentTimeMillis() / (1000 * 60 * 60 * 24);
+    }
+
+    /**
+     * 获取上一周的 week key
+     */
+    private long getWeekKey() {
+        // 拿到 week key,和day key
+        long week = System.currentTimeMillis() / (1000 * 60 * 60 * 24 * 7);
+        long day = getDayKey();
+        // 由于原来的week key并不是从周一开始算起，所以进行移位计算，拿到上周的week key
+        long key = day % 7;
+        if (key >= 4) {
+            // 经计算，取模值大于等于 4 时 进入新的一周，将week key-1
+            return week - 1;
+        }
+        //否则，在新的一周的周四时，week值将再加1，所以要拿到上一周的week key需要-2
+        return week - 2;
     }
 
 

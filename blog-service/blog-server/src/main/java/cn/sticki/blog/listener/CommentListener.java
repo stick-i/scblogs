@@ -35,7 +35,7 @@ public class CommentListener {
 
 	public static final String COMMENT_RANK_QUEUE = "blog.rank.addhot";
 
-	public static final String REDIS_KEY_PREFIX = "rank:hot:";
+	public static final String REDIS_KEY_PREFIX = "rank:hot:day:";
 
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
