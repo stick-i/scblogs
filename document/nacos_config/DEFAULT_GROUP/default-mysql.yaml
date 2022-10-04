@@ -1,0 +1,3 @@
+logging:
+  level:
+    cn.sticki: info

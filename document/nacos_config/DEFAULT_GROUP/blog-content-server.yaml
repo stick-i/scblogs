@@ -1,0 +1,5 @@
+spring:
+  elasticsearch:
+    uris: "http://xxxx"
+    username: xxxx
+    password: xxxx

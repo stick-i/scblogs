@@ -1,0 +1,11 @@
+spring:
+  redis:
+    host: xxxx
+    port: xxxx
+    password: xxxx
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 20
+        min-idle: 10
+        max-wait: 100ms
