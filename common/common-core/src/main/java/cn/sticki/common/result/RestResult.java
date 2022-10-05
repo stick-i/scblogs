@@ -94,4 +94,5 @@ public class RestResult<T> implements Serializable {
 	public static <T> RestResult<T> notFound() {
 		return new RestResult<>(404, "NOT FOUND");
 	}
+
 }
