@@ -27,4 +27,19 @@ public class BlogMqConstants {
 	 */
 	public static final String BLOG_DELETE_KEY = "blog.delete";
 
+	/**
+	 * 用户浏览博客
+	 */
+	public static final String BLOG_OPTION_SEE_KEY = "blog.see";
+
+	/**
+	 * 用户点赞博客
+	 */
+	public static final String BLOG_OPTION_LIKE_KEY = "blog.like";
+
+	/**
+	 * 用户收藏博客
+	 */
+	public static final String BLOG_OPTION_COLLECT_KEY = "blog.collect";
+
 }

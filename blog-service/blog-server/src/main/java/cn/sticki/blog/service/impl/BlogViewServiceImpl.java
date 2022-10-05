@@ -8,6 +8,7 @@ import cn.sticki.blog.mapper.LikeBlogMapper;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
+import cn.sticki.blog.pojo.bo.RankSendBO;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogInfoListVO;
@@ -17,12 +18,14 @@ import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
 
 /**
  * @author 阿杆
@@ -53,6 +58,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private UserClient userClient;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
@@ -140,6 +148,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		// 博客作者信息
 		RestResult<UserDTO> result = userClient.getByUserId(blogView.getAuthorId());
 		blog.setAuthor(result.getData());
+
+		// 封装好请求体后，增加改博客的热度  查看博客增加 1 热度
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, JSON.toJSON(new RankSendBO(id, userId)));
 		return blog;
 	}
 

@@ -1,0 +1,74 @@
+package cn.sticki.blog.pojo.vo;
+
+
+import cn.sticki.user.dto.UserDTO;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
+import java.sql.Timestamp;
+
+/**
+ * @author durance
+ */
+@Data
+public class RankHotVO {
+
+    /**
+     * 博客id
+     */
+    @TableId
+    Integer id;
+
+    /**
+     * 用户信息
+     */
+    UserDTO author;
+
+
+    /**
+     * 标题
+     */
+    String title;
+
+    /**
+     * 描述
+     */
+    String description;
+
+    /**
+     * 院校代码
+     */
+    Integer schoolCode;
+
+    /**
+     * 封面图
+     */
+    String coverImage;
+
+    /**
+     * 创建时间
+     */
+    Timestamp createTime;
+
+    /**
+     * 发表时间
+     */
+    Timestamp releaseTime;
+
+    /**
+     * 修改时间
+     */
+    Timestamp modifiedTime;
+
+    /**
+     * 发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）
+     */
+    Integer status;
+
+    /**
+     * 排行榜热度
+     */
+    Double hot;
+
+
+}
