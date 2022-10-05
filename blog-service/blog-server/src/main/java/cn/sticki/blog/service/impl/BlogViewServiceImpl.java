@@ -8,17 +8,16 @@ import cn.sticki.blog.mapper.LikeBlogMapper;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
-import cn.sticki.blog.pojo.bo.RankSendBO;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogInfoListVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
+import cn.sticki.blog.sdk.BlogReadDTO;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,6 +35,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_READ_KEY;
 
 /**
  * @author 阿杆
@@ -112,7 +112,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Override
 	public Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds) {
-		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
+		HashMap<Integer, ActionStatusBO> map = new HashMap<>(blogIds.length);
 		// 空列表不查数据，会报错
 		if (blogIds.length == 0) {
 			return map;
@@ -149,8 +149,8 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		RestResult<UserDTO> result = userClient.getByUserId(blogView.getAuthorId());
 		blog.setAuthor(result.getData());
 
-		// 封装好请求体后，增加改博客的热度  查看博客增加 1 热度
-		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, JSON.toJSON(new RankSendBO(id, userId)));
+		// 封装好请求体后，发送到MQ
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, new BlogReadDTO(id, userId));
 		return blog;
 	}
 
