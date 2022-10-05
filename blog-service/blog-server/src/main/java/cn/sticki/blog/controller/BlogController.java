@@ -101,13 +101,12 @@ public class BlogController {
 
 	/**
 	 * 获取当日热度排行榜信息
-	 *
 	 */
 	@GetMapping("/rank/hot/today")
-	public RestResult<List<RankHotVO>> getRankHotVOToday(){
+	public RestResult<List<RankHotVO>> getRankHotVOToday() {
 		List<RankHotVO> rankHotToday = rankService.getRankHotToday();
 		// 如果没有得到数据
-		if(rankHotToday == null){
+		if (rankHotToday == null) {
 			return RestResult.ok(null, "今日暂无排行榜信息");
 		}
 		return new RestResult<>(rankHotToday);
@@ -116,13 +115,12 @@ public class BlogController {
 
 	/**
 	 * 获取七日内热度排行榜信息
-	 *
 	 */
 	@GetMapping("/rank/hot/week")
-	public RestResult<List<RankHotVO>> getRankHotVOWeek(){
+	public RestResult<List<RankHotVO>> getRankHotVOWeek() {
 		List<RankHotVO> rankHotWeek = rankService.getRankHotWeek();
 		// 如果没有得到数据
-		if(rankHotWeek == null){
+		if (rankHotWeek == null) {
 			return RestResult.ok(null, "上周暂无排行榜信息");
 		}
 		return new RestResult<>(rankHotWeek);
