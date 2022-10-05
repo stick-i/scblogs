@@ -30,16 +30,16 @@ public class BlogMqConstants {
 	/**
 	 * 用户浏览博客
 	 */
-	public static final String BLOG_OPTION_SEE_KEY = "blog.see";
+	public static final String BLOG_OPERATE_READ_KEY = "blog.read";
 
 	/**
 	 * 用户点赞博客
 	 */
-	public static final String BLOG_OPTION_LIKE_KEY = "blog.like";
+	public static final String BLOG_OPERATE_LIKE_KEY = "blog.like";
 
 	/**
 	 * 用户收藏博客
 	 */
-	public static final String BLOG_OPTION_COLLECT_KEY = "blog.collect";
+	public static final String BLOG_OPERATE_COLLECT_KEY = "blog.collect";
 
 }

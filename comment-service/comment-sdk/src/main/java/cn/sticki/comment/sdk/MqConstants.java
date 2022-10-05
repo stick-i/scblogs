@@ -7,10 +7,10 @@ package cn.sticki.comment.sdk;
  */
 public class MqConstants {
 
-    public static final String COMMENT_EXCHANGE = "comment";
+	public static final String COMMENT_EXCHANGE = "comment";
 
-    public static final String BLOG_COMMENT_DECREASE_KEY = "blog.decrease";
+	public static final String BLOG_COMMENT_DECREASE_KEY = "blog.decrease";
 
-    public static final String BLOG_COMMENT_INCREASE_KEY = "blog.increase";
+	public static final String BLOG_COMMENT_INCREASE_KEY = "blog.increase";
 
 }
