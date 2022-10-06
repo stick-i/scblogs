@@ -9,6 +9,7 @@ import cn.sticki.comment.pojo.Comment;
 import cn.sticki.comment.pojo.CommentBO;
 import cn.sticki.comment.pojo.CommentListVO;
 import cn.sticki.comment.pojo.CommentVO;
+import cn.sticki.comment.sdk.CommentDTO;
 import cn.sticki.comment.service.CommentService;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.client.UserClient;
@@ -73,7 +74,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		commentMapper.insert(comment);
 		// 发送消息：博客评论数增加
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, comment.getBlogId());
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, new CommentDTO(comment.getBlogId(), comment.getUserId(), comment.getContent()));
 		log.info("博客评论增加，blogId={},commentId={}", comment.getBlogId(), comment.getId());
 	}
 

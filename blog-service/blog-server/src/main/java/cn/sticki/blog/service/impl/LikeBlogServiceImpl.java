@@ -7,6 +7,7 @@ import cn.sticki.blog.mapper.LikeBlogMapper;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.domain.LikeBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
+import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.LikeBlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,12 +15,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_LIKE_KEY;
 
 /**
  * @author 阿杆
@@ -36,6 +41,9 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 
 	@Resource
 	private BlogViewMapper blogViewMapper;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public boolean likeBlog(Integer userId, Integer blogId) {
@@ -57,6 +65,8 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			likeBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			likeBlogMapper.insert(likeBlog);
 			blogGeneralMapper.increaseLikeNum(blogId);
+			// 向rabbitMQ发送消息，增加被点赞博客的热度
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId));
 			return true;
 		}
 	}

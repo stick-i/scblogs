@@ -23,4 +23,12 @@ public interface RankService {
 	 */
 	List<RankHotVO> getWeekHotRank();
 
+	/**
+	 * 对相应博客执行热度加 3
+	 *
+	 * @param blogId 增加热度的博客
+	 * @param score  增加的分数
+	 */
+	void addRankHotScore(Integer blogId, Double score);
+
 }

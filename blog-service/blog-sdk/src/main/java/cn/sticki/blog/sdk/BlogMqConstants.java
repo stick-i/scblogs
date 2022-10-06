@@ -42,4 +42,9 @@ public class BlogMqConstants {
 	 */
 	public static final String BLOG_OPERATE_COLLECT_KEY = "blog.collect";
 
+	/**
+	 * 用户转发博客
+	 */
+	public static final String BLOG_OPERATE_RELAY_KEY = "blog.relay";
+
 }

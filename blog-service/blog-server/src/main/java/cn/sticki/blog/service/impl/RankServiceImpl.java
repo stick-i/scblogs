@@ -80,6 +80,22 @@ public class RankServiceImpl implements RankService {
 		return getRankHotVOList(weekRank);
 	}
 
+	@Override
+	public void addRankHotScore(Integer blogId, Double score) {
+		// 获取dayKey
+		long dayKey = RankKeyUtils.getDayKey();
+		//封装 redis key
+		String key = RANK_HOT_DAY_KEY + dayKey;
+		//进行判断，是否已经创建 该redis
+		if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+			//如果没有创建，就执行创建并设置 TTL 为40天
+			redisTemplate.opsForZSet().incrementScore(key, blogId, score);
+			redisTemplate.expire(key, RANK_HOT_DAY_TTL, TimeUnit.SECONDS);
+		}
+		//已创建，将对应博客热度增加 3
+		redisTemplate.opsForZSet().incrementScore(key, blogId, score);
+	}
+
 	/**
 	 * 拿到博客id及热度后，设置 热度排行榜显示 的相关参数
 	 *

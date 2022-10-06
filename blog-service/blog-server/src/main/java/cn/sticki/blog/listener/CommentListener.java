@@ -1,6 +1,8 @@
 package cn.sticki.blog.listener;
 
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.service.RankService;
+import cn.sticki.comment.sdk.CommentDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -29,20 +31,26 @@ public class CommentListener {
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
 
+	@Resource
+	private RankService rankService;
+
 	/**
 	 * 博客评论数量增加
 	 *
-	 * @param blogId 博客id
+	 * @param comment 博客评论传输对象
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = COMMENT_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = COMMENT_INCREASE_QUEUE),
 			key = BLOG_COMMENT_INCREASE_KEY
 	))
-	public void commentNumberIncreaseListener(int blogId) {
+	public void commentNumberIncreaseListener(CommentDTO comment) {
 		// 增加博客的评论数量
-		log.debug("{} 评论数量+1", blogId);
-		blogGeneralMapper.increaseCommentNum(blogId);
+		log.debug("{} 评论数量+1", comment.getBlogId());
+		blogGeneralMapper.increaseCommentNum(comment.getBlogId());
+		// 博客热度加 3
+		rankService.addRankHotScore(comment.getBlogId(), 3d);
+
 	}
 
 	/**

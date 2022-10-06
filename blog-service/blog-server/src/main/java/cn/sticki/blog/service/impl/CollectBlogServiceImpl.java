@@ -7,6 +7,7 @@ import cn.sticki.blog.mapper.CollectBlogMapper;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.domain.CollectBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
+import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.CollectBlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,9 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_COLLECT_KEY;
 
 /**
  * @author 阿杆
@@ -38,6 +43,9 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 
 	@Resource
 	private BlogViewMapper blogViewMapper;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public boolean collectBlog(Integer userId, Integer blogId) {
@@ -57,6 +65,8 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			collectBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			collectBlogMapper.insert(collectBlog);
 			blogGeneralMapper.increaseCollectionNum(blogId);
+			// 向rabbitMQ 发送消息增加收藏博客的热度
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId));
 			return true;
 		}
 	}

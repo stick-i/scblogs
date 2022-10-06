@@ -1,21 +1,23 @@
-package cn.sticki.blog.sdk;
+package cn.sticki.comment.sdk;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 使用 rabbitMQ 传输具体用户浏览了某篇博客的事件实体类
+ * 使用 rabbitMQ 传输用户评论操作的事件实体类
  *
  * @author durance
+ * @version 1.0
+ * @date 2022/10/6 16:20
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogReadDTO {
+public class CommentDTO {
 
 	/**
-	 * 被浏览的博客id
+	 * 被评论的博客id
 	 */
 	Integer blogId;
 
@@ -23,5 +25,10 @@ public class BlogReadDTO {
 	 * 执行的用户id，可能为空
 	 */
 	Integer userId;
+
+	/**
+	 * 用户评论的内容
+	 */
+	String content;
 
 }
