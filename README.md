@@ -124,4 +124,4 @@ npm run serve
  
 ```
 打开浏览器输入
-http://localhost:8080/ (opens new window)
+http://localhost:8080/
