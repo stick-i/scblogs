@@ -107,9 +107,80 @@
 
 ### 前端技术
 
-#### 前端运行
+
+### 后端运行
+**1、下载nacos**
+访问nacos的github地址下载：https://github.com/alibaba/nacos/releases。
+(PS：mac电脑的同学特别是M1芯片的建议下载低版本(1.4.4)的高版本会有问题。或者直接用项目里面的(nacos-server-1.4.4.zip)，解压出来以后没有问题)
+
+**2、本地将Nacos运行起来**
+```shell
+
+# 进入到nacos的bin目录
+cd /nacos/bin
+
+# 运行nacos
+sh startup.sh -m standalone
+
+# 停止nacos
+sh shutdown.sh
+# 查看nacos的运行日志
+cat ../logs/start.out
+
+
+         ,--.
+       ,--.'|
+   ,--,:  : |                                           Nacos 1.4.4
+,`--.'`|  ' :                       ,---.               Running in stand alone mode, All function modules
+|   :  :  | |                      '   ,'\   .--.--.    Port: 8848
+:   |   \ | :  ,--.--.     ,---.  /   /   | /  /    '   Pid: 32084
+|   : '  '; | /       \   /     \.   ; ,. :|  :  /`./   Console: http://192.168.0.105:8848/nacos/index.html
+'   ' ;.    ;.--.  .-. | /    / ''   | |: :|  :  ;_
+|   | | \   | \__\/: . ..    ' / '   | .; : \  \    `.      https://nacos.io
+'   : |  ; .' ," .--.; |'   ; :__|   :    |  `----.   \
+|   | '`--'  /  /  ,.  |'   | '.'|\   \  /  /  /`--'  /
+'   : |     ;  :   .'   \   :    : `----'  '--'.     /
+;   |.'     |  ,     .-./\   \  /            `--'---'
+'---'        `--`---'     `----'
+
+2022-10-11 23:29:05,572 INFO Tomcat initialized with port(s): 8848 (http)
+
+2022-10-11 23:29:05,778 INFO Root WebApplicationContext: initialization completed in 1531 ms
+
+2022-10-11 23:29:07,591 INFO Adding welcome page: class path resource [static/index.html]
+
+2022-10-11 23:29:07,842 WARN You are asking Spring Security to ignore Ant [pattern='/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+
+2022-10-11 23:29:07,842 INFO Will secure Ant [pattern='/**'] with []
+
+2022-10-11 23:29:07,860 INFO Will not secure any request
+
+2022-10-11 23:29:07,873 INFO Exposing 1 endpoint(s) beneath base path '/actuator'
+
+2022-10-11 23:29:07,990 INFO Tomcat started on port(s): 8848 (http) with context path '/nacos'
+
+2022-10-11 23:29:08,003 INFO Nacos started successfully in stand alone mode. use embedded storage
+
+2022-10-11 23:29:27,506 INFO Initializing Servlet 'dispatcherServlet'
+
+2022-10-11 23:29:27,508 INFO Completed initialization in 1 ms
+
+# 访问nacos控制台
+ http://192.168.0.105:8848/nacos/index.html
+```
+**3、导入nacos配置**
+
+参考：document->nacos_config->REAMED.md文档
+
+**4、启动gateway-service服务**
+
+运行GatewayServerApplication，其他模块也跟网关模块一样运行即可。
+
+### 前端运行
+
 **1、安装node.js**
 参考菜鸟教程：https://www.runoob.com/nodejs/nodejs-install-setup.html
+
 **2、运行前端项目**
 ```shell
 
