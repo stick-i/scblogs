@@ -1,5 +1,6 @@
 package cn.sticki.blog.controller;
 
+import cn.sticki.blog.pojo.vo.RankAuthorVO;
 import cn.sticki.blog.pojo.vo.RankHotVO;
 import cn.sticki.blog.service.RankService;
 import cn.sticki.common.result.RestResult;
@@ -25,7 +26,7 @@ public class BlogRankController {
 	private RankService rankService;
 
 	/**
-	 * 获取当日热度排行榜信息
+	 * 获取当日博客热度排行榜信息
 	 */
 	@GetMapping("/hot/today")
 	public RestResult<List<RankHotVO>> getTodayHotRank() {
@@ -38,7 +39,7 @@ public class BlogRankController {
 	}
 
 	/**
-	 * 获取七日内热度排行榜信息
+	 * 获取上周博客热度排行榜信息
 	 */
 	@GetMapping("/hot/week")
 	public RestResult<List<RankHotVO>> getWeekHotRank() {
@@ -48,6 +49,32 @@ public class BlogRankController {
 			return RestResult.ok(null, "上周暂无排行榜信息");
 		}
 		return RestResult.ok(rankHotWeek);
+	}
+
+	/**
+	 * 获取上周作者排行榜
+	 */
+	@GetMapping("/author/week")
+	public RestResult<List<RankAuthorVO>> getWeekAuthorRank() {
+		List<RankAuthorVO> rankAuthorVO = rankService.getWeekAuthorRank();
+		// 如果没有数据
+		if (rankAuthorVO == null) {
+			return RestResult.ok(null, "上周暂无排行榜信息");
+		}
+		return RestResult.ok(rankAuthorVO);
+	}
+
+	/**
+	 * 获取总作者排行榜
+	 */
+	@GetMapping("/author/total")
+	public RestResult<List<RankAuthorVO>> getTotalAuthorRank() {
+		List<RankAuthorVO> rankAuthorVO = rankService.getTotalAuthorRank();
+		// 如果没有数据
+		if (rankAuthorVO == null) {
+			return RestResult.ok(null, "没有作者排行榜信息");
+		}
+		return RestResult.ok(rankAuthorVO);
 	}
 
 }

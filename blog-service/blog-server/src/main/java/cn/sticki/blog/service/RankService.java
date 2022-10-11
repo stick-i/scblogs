@@ -1,5 +1,6 @@
 package cn.sticki.blog.service;
 
+import cn.sticki.blog.pojo.vo.RankAuthorVO;
 import cn.sticki.blog.pojo.vo.RankHotVO;
 
 import java.util.List;
@@ -17,11 +18,25 @@ public interface RankService {
 	List<RankHotVO> getTodayHotRank();
 
 	/**
-	 * 获取近七日博客热度排行榜
+	 * 获取周博客热度排行榜
 	 *
-	 * @return 本周热度排行信息
+	 * @return 上周热度排行信息
 	 */
 	List<RankHotVO> getWeekHotRank();
+
+	/**
+	 * 获取周作者排行榜
+	 *
+	 * @return 上周作者排行信息
+	 */
+	List<RankAuthorVO> getWeekAuthorRank();
+
+	/**
+	 * 获取作者总榜
+	 *
+	 * @return 作者总排行榜
+	 */
+	List<RankAuthorVO> getTotalAuthorRank();
 
 	/**
 	 * 对相应博客执行热度加 3

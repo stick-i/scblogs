@@ -2,6 +2,7 @@ package cn.sticki.blog.service.impl;
 
 import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.vo.RankAuthorVO;
 import cn.sticki.blog.pojo.vo.RankHotVO;
 import cn.sticki.blog.service.RankService;
 import cn.sticki.blog.utils.RankKeyUtils;
@@ -77,6 +78,34 @@ public class RankServiceImpl implements RankService {
 	}
 
 	@Override
+	public List<RankAuthorVO> getWeekAuthorRank() {
+		//获取上周的周key
+		long weekkey = RankKeyUtils.getWeekKey();
+		System.out.println("weekkey = " + weekkey);
+		// 拿到数据
+		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(RANK_AUTHOR_WEEK_KEY + weekkey, 0, -1);
+		// 进行判断，如果为空返回null
+		System.out.println("typedTuples.size() = " + typedTuples.size());
+		if (typedTuples == null || typedTuples.size() == 0) {
+			return null;
+		}
+		// 否则返回封装结果
+		return getRankAuthorVOList(typedTuples);
+	}
+
+	@Override
+	public List<RankAuthorVO> getTotalAuthorRank() {
+		// 查询总榜数据库信息
+		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(RANK_AUTHOR_TOTAL_KEY, 0, -1);
+		// 进行判断，如果为空返回null
+		if (typedTuples == null || typedTuples.size() == 0) {
+			return null;
+		}
+		// 否则返回封装结果
+		return getRankAuthorVOList(typedTuples);
+	}
+
+	@Override
 	public void addRankHotScore(Integer blogId, Double score) {
 		// 获取dayKey
 		long dayKey = RankKeyUtils.getDayKey();
@@ -90,6 +119,36 @@ public class RankServiceImpl implements RankService {
 		}
 		//已创建，将对应博客热度增加 3
 		redisTemplate.opsForZSet().incrementScore(key, blogId, score);
+	}
+
+	/**
+	 * 拿到博客id及热度后，设置作者排行榜相关参数
+	 *
+	 * @param typedTuples 作者id集合
+	 * @return 作者排行榜信息
+	 */
+	private List<RankAuthorVO> getRankAuthorVOList(Set<ZSetOperations.TypedTuple<Integer>> typedTuples) {
+		Iterator<ZSetOperations.TypedTuple<Integer>> iterator = typedTuples.iterator();
+		List<Integer> userIdList = new ArrayList<>();
+		List<RankAuthorVO> authorVOList = new ArrayList<>();
+		while (iterator.hasNext()) {
+			ZSetOperations.TypedTuple<Integer> tuple = iterator.next();
+			// 将id存入
+			userIdList.add(tuple.getValue());
+			// 设置RankAuthorVO
+			RankAuthorVO rankAuthorVO = new RankAuthorVO();
+			rankAuthorVO.setHot(tuple.getScore());
+			authorVOList.add(rankAuthorVO);
+		}
+		// todo 相应信息应该包含获赞数和粉丝数，待整合
+		// 查询所有 作者信息
+		Map<Integer, UserDTO> userMap = userClient.getUserList(userIdList).getData();
+		// 封装 authorList
+		for (int i = 0; i < authorVOList.size(); i++) {
+			// 依次设置作者信息
+			authorVOList.get(i).setAuthor(userMap.get(userIdList.get(i)));
+		}
+		return authorVOList;
 	}
 
 	/**
