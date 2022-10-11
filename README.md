@@ -106,3 +106,22 @@
 | Docker Compose |  Docker容器编排  |         https://docs.docker.com/compose/          |
 
 ### 前端技术
+
+#### 前端运行
+**1、安装node.js**
+参考菜鸟教程：https://www.runoob.com/nodejs/nodejs-install-setup.html
+**2、运行前端项目**
+```shell
+
+# 进入到前端项目目录
+cd vueblog
+
+# 强烈建议不要用直接使用 cnpm 安装，会有各种诡异的 bug，可以通过重新指定 registry 来解决 npm 安装速度慢的问题。
+npm install --registry=https://registry.npmmirror.com
+
+# 本地开发 启动项目
+npm run serve
+ 
+```
+打开浏览器输入
+http://localhost:8080/
