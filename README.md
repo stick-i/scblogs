@@ -12,8 +12,8 @@
 <p align="center">
 <a target="_blank" href="https://github.com/stick-i/scblogs">
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt=""/>
-  <img src="https://gitee.com/sticki/scblogs/badge/star.svg?theme=dark" alt=""/>
-  <img src="https://gitee.com/sticki/scblogs/badge/fork.svg?theme=dark" alt=""/>
+  <img src="https://img.shields.io/github/stars/stick-i/scblogs" alt=""/>
+  <img src="https://img.shields.io/github/forks/stick-i/scblogs" alt=""/>
 <br>
   <img src="https://img.shields.io/badge/SpringBoot-2.6.6-green" alt=""/>
   <img src="https://img.shields.io/badge/SpringCloud-2021.0.2-green" alt=""/>
