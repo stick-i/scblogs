@@ -35,35 +35,33 @@ public class UserFollowServiceImpl implements UserFollowService {
 	@Resource
 	private FansViewMapper fansViewMapper;
 
-    @Override
-    public boolean follow(int userId, int followId) {
-        if (userId == followId) {
-            log.warn("User follow oneself,userId->{}", userId);
-            throw new UserIllegalException("Error for follow oneself");
-        }
-        // 关注用户，查询是否存在关注记录，若不存在，则添加记录，若存在，则取消记录
-        LambdaQueryWrapper<UserFollow> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserFollow::getFansId, userId).eq(UserFollow::getFollowId, followId);
-        UserFollow follow = userFollowMapper.selectOne(wrapper);
-        // 用户关注使用状态区分，用户快速点击的时候会存在insert多条数据的情况。
-        if (Objects.nonNull(follow)) {
-            // 用户的关注使用状态区分
-            userFollowMapper.update(null,
-                new LambdaUpdateWrapper<>(UserFollow.class).set(UserFollow::getStatus, follow.getStatus() == 0 ? 1 : 0)
-                    .eq(UserFollow::getId, follow.getId())
-            );
-            return false;
-        } else {
-            UserFollow userFollow = new UserFollow();
-            userFollow.setFansId(userId);
-            userFollow.setFollowId(followId);
-            userFollow.setStatus(1);
-            userFollow.setCreateTime(new Timestamp(System.currentTimeMillis()));
-            // 不存在，添加记录，返回true
-            userFollowMapper.insert(userFollow);
-            return true;
-        }
-    }
+	@Override
+	public boolean follow(int userId, int followId) {
+		if (userId == followId) {
+			log.warn("User follow oneself,userId->{}", userId);
+			throw new UserIllegalException("Error for follow oneself");
+		}
+		// 关注用户，查询是否存在关注记录，若不存在，则添加记录，若存在，则取消记录
+		LambdaQueryWrapper<UserFollow> wrapper = new LambdaQueryWrapper<>();
+		UserFollow follow = userFollowMapper.selectOne(wrapper);
+		// 用户关注使用状态区分，用户快速点击的时候会存在insert多条数据的情况。
+		if (Objects.nonNull(follow)) {
+			// 用户的关注使用状态区分
+			userFollowMapper.update(null, new LambdaUpdateWrapper<>(UserFollow.class).set(UserFollow::getStatus,
+				follow.getStatus() == 0 ? 1 : 0).eq(UserFollow::getId, follow.getId()));
+			userFollowMapper.delete(wrapper);
+			return false;
+		} else {
+			UserFollow userFollow = new UserFollow();
+			userFollow.setFansId(userId);
+			userFollow.setFollowId(followId);
+			userFollow.setStatus(1);
+			userFollow.setCreateTime(new Timestamp(System.currentTimeMillis()));
+			// 不存在，添加记录，返回true
+			userFollowMapper.insert(userFollow);
+			return true;
+		}
+	}
 
 	@Override
 	public FollowViewListVO getFollowList(int userId, int page, int pageSize) {
