@@ -273,6 +273,9 @@
             </div>
           </div>
         </div>
+        <!-- 排行榜部分 -->
+        <RankingList1 class="rankinglist"></RankingList1>
+        <RankingList2 class="rankinglist"></RankingList2>
       </div>
     </div>
   </div>
@@ -283,16 +286,20 @@ import Swiper from "@/components/common/swiper/Swiper";
 import RecommendArticleItem from "@/views/home/childComps/RecommendArticleItem";
 import NewArticleItem from "@/views/home/childComps/NewArticleItem";
 import FollowArticleItem from "@/views/home/childComps/FollowArticleItem";
+import RankingList1 from "../rankinglist/RankingList1.vue";
+import RankingList2 from "../rankinglist/RankingList2.vue";
 
 export default {
   name: "Home",
   components: {
     Swiper,
     TopBar,
-		RecommendArticleItem,
-		NewArticleItem,
-		FollowArticleItem,
-  },
+    RecommendArticleItem,
+    NewArticleItem,
+    FollowArticleItem,
+    RankingList1,
+    RankingList2
+},
   data() {
     return {
 			page: 1,
@@ -327,7 +334,7 @@ export default {
 /* main新增开始 */
 .main-container {
   position: relative;
-  width: 1380px;
+  width: 1260px;
   margin: 0 auto;
   padding: 25px ;
 }
@@ -585,7 +592,7 @@ export default {
 /* 头条结束 */
 
 .top-content .main {
-  width: 1380px;
+  width: 1260px;
   margin: 0 auto;
   padding-top: 26px;
   display: flex;
@@ -595,7 +602,7 @@ export default {
 /*右边卡片*/
 .content {
   margin: 0 auto 0 auto;
-  width: 1380px;
+  width: 1260px;
   box-sizing: border-box;
   position: relative;
   display: flex;
@@ -637,7 +644,21 @@ export default {
 .template-cont {
   padding: 24px 24px 8px;
 }
+.content .rankinglist {
+  box-sizing: border-box;
+  width: 336px;
+  border: 1px solid #f0f0f2;
+  border-radius: 5px;
+  margin-bottom: 35px;
 
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
 /*右边卡片2*/
 .hot {
   display: flex;
@@ -732,6 +753,6 @@ export default {
 }
 
 .content .article-left {
-  width: 996px;
+  width: 800px;
 }
 </style>

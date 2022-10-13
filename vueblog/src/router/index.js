@@ -14,6 +14,8 @@ const ContentManagement = () => import('@/views/ContentManagement')
 const NewPersonBlog = () => import('@/views/NewPersonBlog')
 const HeartSay = () => import('@/views/HeartSay')
 const Dynamic = () => import('@/views/DynamicEdit')
+const RankingListPlus1 = () => import('@/views/rankinglist/RankingListPlus1.vue')
+const RankingListPlus2 = () => import('@/views/rankinglist/RankingListPlus2.vue')
 // const CampusScenery = () => import('@/views/campusScenery/CampusScenery')
 
 
@@ -96,6 +98,16 @@ const routes = [
     name: 'DynamicEdit',
     component: Dynamic
   },
+  {
+    path: '/RankingListPlus1',
+    name: 'RankingListPlus1',
+    component: RankingListPlus1
+  },
+  {
+    path: '/RankingListPlus2',
+    name: 'RankingListPlus2',
+    component: RankingListPlus2
+  }
 ]
 
 const router = new VueRouter({
