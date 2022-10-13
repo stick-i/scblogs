@@ -43,6 +43,7 @@ public class UserFollowServiceImpl implements UserFollowService {
 		}
 		// 关注用户，查询是否存在关注记录，若不存在，则添加记录，若存在，则取消记录
 		LambdaQueryWrapper<UserFollow> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(UserFollow::getFansId, userId).eq(UserFollow::getFollowId, followId);
 		UserFollow follow = userFollowMapper.selectOne(wrapper);
 		// 用户关注使用状态区分，用户快速点击的时候会存在insert多条数据的情况。
 		if (Objects.nonNull(follow)) {
