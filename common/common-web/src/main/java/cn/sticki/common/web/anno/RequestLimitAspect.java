@@ -15,7 +15,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -81,11 +80,6 @@ public class RequestLimitAspect {
 		if (count != null || !Boolean.TRUE.equals(isReset)) {
 			// 计数器 +1，不重置TTL
 			redisTemplate.opsForValue().increment(key);
-			// 防止GC时key过期后然插入数据，导致数据TTL为-1
-			Long expire = redisTemplate.getExpire(key, TimeUnit.SECONDS);
-			if (Objects.isNull(expire) || expire.equals(-1L) || expire > limit.time()) {
-				redisTemplate.expire(key, limit.time(), TimeUnit.SECONDS);
-			}
 		}
 		log.debug("方法放行");
 		return pjp.proceed();
