@@ -36,9 +36,7 @@
     },
     methods: {},
     created() {
-      this.$store.commit("changeOne2", "max");
-      this.$store.commit("changeSeven2", "max");
-      this.$store.commit("changeMonth2", "max");
+      this.$store.commit("changeRanking", "max");
     },
     components: { TopBar, One2, Seven2, Month2 },
   };

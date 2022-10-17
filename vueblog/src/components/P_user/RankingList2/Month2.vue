@@ -1,106 +1,83 @@
 <template>
     <div>
-      <el-table
-      :data="$store.state.month2 === 'min' ? tableData.slice(0, 5) : showTable"
-      style="width: 100%"
-      height="500"
-    >
-      <el-table-column prop="date" label="日期" width="180"> </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="address" label="地址"> </el-table-column>
-    </el-table>
-    <div v-if="$store.state.month2 == 'max'">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        layout="total, prev, pager, next"
-        :page-size="pagesize"
-        :total="this.tableData.length"
-      ></el-pagination>
-    </div>
+     <Table :data="table"></Table>
     </div>
   </template>
   
   <script>
+import Table from '@/components/common/table/Table.vue';
   export default {
     data() {
-    return {
-      pagesize: 9, //设置每页显示条目个数为9
-      currentPage: 1, //设置当前页默认为1
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
-    };
-  },
-  computed: {
-    //showTable计算属性通过slice方法计算表格当前应显示的数据
-    showTable() {
-      return this.tableData.slice(
-        (this.currentPage - 1) * this.pagesize,
-        this.currentPage * this.pagesize
-      );
+        return {
+            table: {
+                column: [
+                    {
+                        prop: "date",
+                        label: "日期",
+                        width: 180,
+                    },
+                    {
+                        prop: "name",
+                        label: "姓名",
+                        width: 180,
+                    },
+                    {
+                        prop: "address",
+                        label: "地址",
+                    },
+                ],
+                pageNum: 1,
+                pageSize: 5,
+                total: 6,
+                data: [
+                    {
+                        ID: 1,
+                        date: "2016-05-02",
+                        name: "王小虎",
+                        address: "上海市普陀区金沙江路 1518 弄",
+                        tag: "家",
+                    },
+                    {
+                        ID: 2,
+                        date: "2016-05-04",
+                        name: "王小虎",
+                        address: "上海市普陀区金沙江路 1517 弄",
+                        tag: "家",
+                    },
+                    {
+                        ID: 3,
+                        date: "2016-05-01",
+                        name: "王小虎",
+                        address: "上海市普陀区金沙江路 1519 弄",
+                        tag: "家",
+                    },
+                    {
+                        ID: 4,
+                        date: "2016-05-03",
+                        name: "王小虎",
+                        address: "上海市普陀区金沙江路 1516 弄",
+                        tag: "学校",
+                    },
+                    {
+                        ID: 5,
+                        date: "2016-05-03",
+                        name: "王小虎",
+                        address: "上海市普陀区金沙江路 1516 弄",
+                        tag: "学校",
+                    },
+                    {
+                        ID: 6,
+                        date: "2016-05-03",
+                        name: "王小虎",
+                        address: "上海市普陀区金沙江路 1516 弄",
+                        tag: "学校",
+                    },
+                ],
+            },
+        };
     },
-  },
-  methods: {
-    //设置当前页为点击页
-    handleCurrentChange(currentPage) {
-      this.currentPage = currentPage;
-    },
-  },
-  }
+    components: { Table }
+}
   </script>
   
   <style scoped>

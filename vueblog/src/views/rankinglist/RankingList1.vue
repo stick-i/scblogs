@@ -46,9 +46,7 @@ export default {
     },
   },
   created(){
-    this.$store.commit("changeOne1","min");
-    this.$store.commit("changeSeven1","min");
-    this.$store.commit("changeMonth1","min");
+    this.$store.commit("changeRanking","min");
   },
   components: { One1, Seven1, Month1 },
 };
