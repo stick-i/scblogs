@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :data="$store.state.one1 === 'min' ? table.data.slice(0, 5) : showTable"
+      :data="$store.state.ranking === 'min' ? table.data.slice(0, 5) : showTable"
       style="width: 100%"
       height="500"
     >
@@ -18,7 +18,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="table.pageNum"
-        :page-sizes="[9, 20, 50, 100]"
+        :page-sizes="[10, 20, 50, 100]"
         :page-size="table.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="table.total"
@@ -35,8 +35,10 @@ export default {
     return {
       table: {
         column: [],
+        // 当前页
         pageNum: 1,
-        pageSize: 5,
+        // 每页的条数
+        pageSize: 10,
         total: 0,
         data: [],
       },
