@@ -1,46 +1,6 @@
 <template>
   <div class="container">
     <top-bar class="top-bar"></top-bar>
-    <div class="top-content">
-      <!-- navbar -->
-      <!--      <div class="top-navbar">-->
-      <!--        <div class="small-box"></div>-->
-      <!--        <div class="nav-content">-->
-      <!--          <ul>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--          </ul>-->
-      <!--        </div>-->
-      <!--      </div>-->
-<!--      <div class="top-navbar">-->
-<!--        <ul class="li-content">-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端前端前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--        </ul>-->
-<!--      </div>-->
-
       <div class="main-container">
         <div class="grid-content">
           <Swiper class="swiper" />
@@ -67,78 +27,6 @@
         </div>
       </div>
 
-      <!--  -->
-      <!--      <div class="main">-->
-      <!--        &lt;!&ndash; 左边头条 &ndash;&gt;-->
-      <!--        <div class="main-left">-->
-      <!--          &lt;!&ndash; 图片展示 &ndash;&gt;-->
-      <!--          <div class="main-left-left">-->
-      <!--            <div class="main-left-top">-->
-      <!--              <img src="../../assets/img/home/toutiao.png" alt="头条" />-->
-      <!--              <span>头条</span>-->
-      <!--            </div>-->
-      <!--            <div class="main-left-center">-->
-      <!--              <img src="../../assets/img/home/003.jpg" alt="" />-->
-      <!--            </div>-->
-      <!--            <div class="main-left-bottom">-->
-      <!--              <span class="left-title">好好学习天天向上</span>-->
-      <!--              <span class="left-span">早睡早起身体好</span>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          &lt;!&ndash; 头条item展示 &ndash;&gt;-->
-      <!--          <div class="main-left-right1">-->
-      <!--            <div class="headswiper">-->
-      <!--              <div class="headswiper-top">头条左右箭头</div>-->
-      <!--              <div class="headswiper-content">-->
-      <!--                <div class="headswiper-item item-first">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--                <div class="headswiper-item" v-for="item in 4">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        &lt;!&ndash; 中间热点 &ndash;&gt;-->
-      <!--        <div class="main-center">-->
-      <!--          &lt;!&ndash; 热点item展示 &ndash;&gt;-->
-      <!--          <div class="main-left-right2">-->
-      <!--            <div class="main-left-top">-->
-      <!--              <img src="../../assets/img/home/redian.png" alt="头条" />-->
-      <!--              <span>热点</span>-->
-      <!--            </div>-->
-
-      <!--            <div class="headswiper hotswiper">-->
-      <!--              &lt;!&ndash;              <div class="headswiper-top">热点左右箭头</div>&ndash;&gt;-->
-      <!--              <div class="headswiper-content">-->
-      <!--                <div class="headswiper-item item-first">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--                <div class="headswiper-item" v-for="item in 4">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        &lt;!&ndash; 右边轮播图 &ndash;&gt;-->
-      <!--        <Swiper />-->
-      <!--      </div>-->
-    </div>
-
     <div class="content">
       <!-- 左边-->
       <div class="article-left">
@@ -154,69 +42,16 @@
             <el-tab-pane label="最新" name="third">
 							<NewArticleItem/>
 						</el-tab-pane>
-<!--            <el-tab-pane label="热榜" name="fourth">热榜</el-tab-pane>-->
           </el-tabs>
         </div>
       </div>
-
       <!-- 右边-->
       <div class="article-right">
-        <!--        卡片1-->
-<!--        <div class="template">-->
-<!--          <div class="template-title">-->
-<!--            <span>热门推荐</span>-->
-<!--          </div>-->
-<!--          <div class="template-cont">-->
-<!--            <div class="hot" v-for="item in 5">-->
-<!--              <a target="_blank" href="#" class="hot-img">-->
-<!--                <img src="../../assets/img/home/003.jpg" alt="" />-->
-<!--              </a>-->
-<!--              <div class="hot-cont">-->
-<!--                <a target="_blank" href="#">-->
-<!--                  <div>【JS】求斐波那契数列中的奇数之和</div>-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-        <!--        卡片2-->
-<!--        <div class="template">-->
-<!--          <div class="template-title">-->
-<!--            <span>热更作者</span>-->
-<!--          </div>-->
-<!--          <div class="template-cont">-->
-<!--            <div class="recommendation" v-for="item in 5">-->
-<!--              <a target="_blank" href="#" class="recommendation-img">-->
-<!--                <img src="../../assets/img/home/default_avatar.jpg" alt="" />-->
-<!--              </a>-->
-<!--              <div class="recommendation-cont">-->
-<!--                <div><a target="_blank" href="#">大哥</a></div>-->
-<!--                <div class="intro">这月已更博55篇</div>-->
-<!--              </div>-->
-<!--              <div class="recommendation-btn">关注</div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash;        卡片3&ndash;&gt;-->
-<!--        <div class="template">-->
-<!--          <div class="template-title">-->
-<!--            <span>作者推荐</span>-->
-<!--          </div>-->
-<!--          <div class="template-cont">-->
-<!--            <div class="recommendation" v-for="item in 5">-->
-<!--              <a target="_blank" href="#" class="recommendation-img">-->
-<!--                <img src="../../assets/img/home/default_avatar.jpg" alt="" />-->
-<!--              </a>-->
-<!--              <div class="recommendation-cont">-->
-<!--                <div><a target="_blank" href="#">大哥</a></div>-->
-<!--                <div class="intro">此人很懒，什么都没有写</div>-->
-<!--              </div>-->
-<!--              <div class="recommendation-btn">关注</div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-        <!--        关于我们-->
-        <div class="template">
+        <!-- 排行榜部分 -->
+        <RankingList1 class="rankinglist"></RankingList1>
+        <RankingList2 class="rankinglist"></RankingList2>
+         <!--        关于我们-->
+         <div class="template">
           <div class="template-title">
             <span>关于我们</span>
           </div>
@@ -273,9 +108,6 @@
             </div>
           </div>
         </div>
-        <!-- 排行榜部分 -->
-        <RankingList1 class="rankinglist"></RankingList1>
-        <RankingList2 class="rankinglist"></RankingList2>
       </div>
     </div>
   </div>
@@ -591,15 +423,13 @@ export default {
 
 /* 头条结束 */
 
-.top-content .main {
+.main-container .main {
   width: 1260px;
   margin: 0 auto;
   padding-top: 26px;
   display: flex;
   /*background-color: #fff;*/
 }
-
-/*右边卡片*/
 .content {
   margin: 0 auto 0 auto;
   width: 1260px;
@@ -650,7 +480,6 @@ export default {
   border: 1px solid #f0f0f2;
   border-radius: 5px;
   margin-bottom: 35px;
-
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0);
