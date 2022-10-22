@@ -1,9 +1,8 @@
 <template>
-  <div>
+  <div class="container">
     <el-table
       :data="$store.state.ranking === 'min' ? table.data.slice(0, 5) : showTable"
       style="width: 100%"
-      height="500"
     >
       <el-table-column
         :prop="item.prop"
@@ -85,5 +84,18 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+/*最外层透明*/
+/deep/ .el-table, /deep/ .el-table__expanded-cell{
+  background-color: transparent;
+}
+/* 表格内背景颜色 */
+/deep/ .el-table th,
+/deep/ .el-table tr,
+/deep/ .el-table td {
+  background-color: transparent;
+}
+.container{
+  background: url('@/assets/img/rank.jpg');
+}
 </style>
