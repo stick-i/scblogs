@@ -12,6 +12,7 @@ import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogInfoListVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
+import cn.sticki.blog.sdk.BlogReadDTO;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
@@ -23,6 +24,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_READ_KEY;
 
 /**
  * @author 阿杆
@@ -53,6 +58,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private UserClient userClient;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
@@ -104,7 +112,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Override
 	public Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds) {
-		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
+		HashMap<Integer, ActionStatusBO> map = new HashMap<>(blogIds.length);
 		// 空列表不查数据，会报错
 		if (blogIds.length == 0) {
 			return map;
@@ -140,6 +148,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		// 博客作者信息
 		RestResult<UserDTO> result = userClient.getByUserId(blogView.getAuthorId());
 		blog.setAuthor(result.getData());
+
+		// 封装好请求体后，发送到MQ
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, new BlogReadDTO(id, userId));
 		return blog;
 	}
 
