@@ -2,13 +2,15 @@ package cn.sticki.user.service;
 
 import cn.sticki.user.pojo.FansViewListVO;
 import cn.sticki.user.pojo.FollowViewListVO;
+import cn.sticki.user.pojo.UserFollow;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
 /**
  * @author 阿杆
  */
-public interface UserFollowService {
+public interface UserFollowService extends IService<UserFollow> {
 
 	/**
 	 * 关注用户，已关注的状态下则取消关注

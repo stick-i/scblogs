@@ -19,7 +19,7 @@ public interface FollowViewMapper extends BaseMapper<FollowView> {
 	 * @param userId 用户id
 	 * @return 被用户关注的id列表
 	 */
-	@Select("select follow_id from user.follow_view where user_id = #{userId};")
+	@Select("select follow_id from user.follow_view where user_id = #{userId} and status = 1;")
 	List<Integer> selectFollowIdByUserId(int userId);
 
 }

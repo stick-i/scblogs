@@ -1,8 +1,7 @@
 package cn.sticki.common.web.anno;
 
-import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.exception.FrequentVisitsException;
 import cn.sticki.common.web.utils.RequestUtils;
-import cn.sticki.common.web.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -61,22 +60,24 @@ public class RequestLimitAspect {
 		int nowCount = count == null ? 0 : count;
 		if (nowCount >= limit.count()) {
 			// 5. 超出限制，拒绝访问
-			assert attribute.getResponse() != null;
 			log.info("访问频繁被拒绝访问，ip:{}，method:{}", ip, signature.getName());
-			ResponseUtils.objectToJson(attribute.getResponse(), RestResult.fail("访问频繁"));
 			if (nowCount == limit.count()) {
 				// 5.2 重置Redis时间为设定的等待值
 				log.debug("重置redis值为{}，等待{}", nowCount + 1, limit.waits());
 				redisTemplate.opsForValue().set(key, nowCount + 1, limit.waits(), TimeUnit.SECONDS);
 			}
-			return null;
+			// aop执行顺序在advice之前，故执行完当前aop方法后还会继续执行ResponseAdvice
+			// 但我并不希望程序继续执行ResponseAdvice，所以抛出异常，返回值交给ExceptionAdvice处理
+			throw new FrequentVisitsException();
 		}
 
+		Boolean isReset = false;
 		if (count == null) {
-			// 重置计数器
+			// 6. 重置计数器
 			log.debug("重置计数器");
-			redisTemplate.opsForValue().set(key, 1, limit.time(), TimeUnit.SECONDS);
-		} else {
+			isReset = redisTemplate.opsForValue().setIfAbsent(key, 1, limit.time(), TimeUnit.SECONDS);
+		}
+		if (count != null || !Boolean.TRUE.equals(isReset)) {
 			// 计数器 +1，不重置TTL
 			redisTemplate.opsForValue().increment(key);
 		}
