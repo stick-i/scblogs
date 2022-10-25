@@ -1,8 +1,8 @@
 spring:
   redis:
-    host: xxxx
-    port: xxxx
-    password: xxxx
+    host: 10.211.55.19
+    port: 6379
+#    password: xxxx
     lettuce:
       pool:
         max-active: 50

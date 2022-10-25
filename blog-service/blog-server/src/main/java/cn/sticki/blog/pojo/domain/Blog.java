@@ -62,4 +62,9 @@ public class Blog {
 	 */
 	Integer status;
 
+	/**
+	 * 博客创作类型：1. 原创; 2. 转载
+	 */
+	Integer createType;
+
 }

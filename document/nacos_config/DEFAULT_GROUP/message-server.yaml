@@ -1,6 +1,6 @@
 spring:
   mail:
-    host: xxxx
-    username: xxxx
-    password: xxxx
-    port: xxxx
+    host: smtp.qq.com
+    username: 815759162@qq.com
+    password: cjzxkffrzyecbfai
+    port: 465

@@ -1,7 +1,7 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/blink?serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://10.211.55.19:3306/blink?serverTimezone=Asia/Shanghai
       username: root
-      password: root
+      password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver
