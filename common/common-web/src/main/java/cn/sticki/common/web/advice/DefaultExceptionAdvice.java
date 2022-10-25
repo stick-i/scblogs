@@ -42,6 +42,13 @@ public class DefaultExceptionAdvice {
 		return new RestResult<>(501, "服务器连接故障，请联系管理员", null, false);
 	}
 
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public RestResult<Object> doBaseBusinessException(IllegalArgumentException e) {
+		log.warn(e.getMessage());
+		return new RestResult<>(400, e.getMessage(), null, false);
+	}
+
 	@ExceptionHandler(BaseBusinessException.class)
 	public RestResult<Object> doBaseBusinessException(BaseBusinessException e) {
 		log.warn(e.getMessage());
