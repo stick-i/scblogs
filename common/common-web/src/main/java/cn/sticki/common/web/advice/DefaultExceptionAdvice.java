@@ -42,13 +42,6 @@ public class DefaultExceptionAdvice {
 		return new RestResult<>(501, "服务器连接故障，请联系管理员", null, false);
 	}
 
-
-	@ExceptionHandler(IllegalArgumentException.class)
-	public RestResult<Object> doBaseBusinessException(IllegalArgumentException e) {
-		log.warn(e.getMessage());
-		return new RestResult<>(400, e.getMessage(), null, false);
-	}
-
 	@ExceptionHandler(BaseBusinessException.class)
 	public RestResult<Object> doBaseBusinessException(BaseBusinessException e) {
 		log.warn(e.getMessage());
@@ -76,7 +69,11 @@ public class DefaultExceptionAdvice {
 	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, TypeMismatchException.class})
 	public RestResult<Object> doIllegalArgumentException(Exception e) {
 		log.warn("参数异常,{}", e.getMessage());
-		return new RestResult<>(402, "参数异常", null, false);
+		String message = "参数异常";
+		if (e instanceof IllegalArgumentException) {
+			message = "参数异常:" + e.getMessage();
+		}
+		return new RestResult<>(402, message, null, false);
 	}
 
 	@ExceptionHandler(BindException.class)
