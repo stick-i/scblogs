@@ -1,5 +1,7 @@
 package cn.sticki.blog;
 
+import cn.sticki.common.amqp.autoconfig.EnableAmqpMessageConverterConfig;
+import cn.sticki.common.redis.autoconfig.EnableRedisSerialize;
 import cn.sticki.common.tool.mybatisconfig.EnableMybatisPlusIPage;
 import cn.sticki.common.web.advice.EnableDefaultExceptionAdvice;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
@@ -16,6 +18,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = {"cn.sticki.resource.client", "cn.sticki.user.client"}) // 开启feign
 @EnableMybatisPlusIPage // 开启mybatis分页
 @EnableDefaultExceptionAdvice // 开启web默认异常捕获
+@EnableRedisSerialize
+@EnableAmqpMessageConverterConfig
 public class BlogServerApplication {
 
 	public static void main(String[] args) {
