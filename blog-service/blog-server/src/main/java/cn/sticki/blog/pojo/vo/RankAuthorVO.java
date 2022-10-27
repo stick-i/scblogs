@@ -25,4 +25,9 @@ public class RankAuthorVO {
 	 */
 	Integer fansNum;
 
+	/**
+	 * 获赞数
+	 */
+	Integer likeNum;
+
 }

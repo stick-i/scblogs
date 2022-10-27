@@ -46,4 +46,12 @@ public interface RankService {
 	 */
 	void addRankHotScore(Integer blogId, Double score);
 
+	/**
+	 * 提升作者排行榜 原力值
+	 *
+	 * @param blogId 博客id
+	 * @param score  增加的分数
+	 */
+	void addRankAuthorScore(Integer blogId, Double score);
+
 }

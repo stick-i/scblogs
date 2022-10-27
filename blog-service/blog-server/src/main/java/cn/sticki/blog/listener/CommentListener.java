@@ -50,6 +50,8 @@ public class CommentListener {
 		blogGeneralMapper.increaseCommentNum(comment.getBlogId());
 		// 博客热度加 3
 		rankService.addRankHotScore(comment.getBlogId(), 3d);
+		// 作者热度加 3
+		rankService.addRankAuthorScore(comment.getBlogId(), 3d);
 
 	}
 

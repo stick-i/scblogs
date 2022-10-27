@@ -4,10 +4,12 @@ import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.vo.RankAuthorVO;
 import cn.sticki.blog.pojo.vo.RankHotVO;
+import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.RankService;
 import cn.sticki.blog.utils.RankKeyUtils;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,9 @@ public class RankServiceImpl implements RankService {
 
 	@Resource
 	BlogMapper blogMapper;
+
+	@Resource
+	BlogService blogService;
 
 	@Override
 	public List<RankHotVO> getTodayHotRank() {
@@ -85,7 +90,6 @@ public class RankServiceImpl implements RankService {
 		// 拿到数据
 		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(RANK_AUTHOR_WEEK_KEY + weekkey, 0, -1);
 		// 进行判断，如果为空返回null
-		System.out.println("typedTuples.size() = " + typedTuples.size());
 		if (typedTuples == null || typedTuples.size() == 0) {
 			return null;
 		}
@@ -119,6 +123,24 @@ public class RankServiceImpl implements RankService {
 		}
 		//已创建，将对应博客热度增加 3
 		redisTemplate.opsForZSet().incrementScore(key, blogId, score);
+	}
+
+	@Override
+	public void addRankAuthorScore(Integer blogId, Double score) {
+		// 获取作者的id值
+		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(Blog::getId, blogId);
+		Integer authorId = blogService.getOne(wrapper).getAuthorId();
+		String weekKey = RANK_AUTHOR_WEEK_KEY + RankKeyUtils.getWeekKey();
+		// 周榜热度增加，进行判断，是否存在该键
+		if (Boolean.FALSE.equals(redisTemplate.hasKey(weekKey))) {
+			//如果没有创建，就执行创建并设置 TTL 为40天
+			redisTemplate.opsForZSet().incrementScore(weekKey, blogId, score);
+			redisTemplate.expire(weekKey, RANK_HOT_WEEK_TTL, TimeUnit.SECONDS);
+		}
+		redisTemplate.opsForZSet().incrementScore(weekKey, blogId, score);
+		// 作者排行榜总热度 加1
+		redisTemplate.opsForZSet().incrementScore(RANK_AUTHOR_WEEK_KEY, authorId, score);
 	}
 
 	/**

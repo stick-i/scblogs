@@ -44,8 +44,10 @@ public class BlogListener {
 	))
 	public void seeAddRankHotScore(BlogOperateDTO blogReadDTO) {
 		log.debug("{} 被浏览热度加1", blogReadDTO.getBlogId());
-		// 执行热度加1
+		// 博客热度加 1
 		rankService.addRankHotScore(blogReadDTO.getBlogId(), 1d);
+		// 作者热度加 1
+		rankService.addRankAuthorScore(blogReadDTO.getBlogId(), 1d);
 	}
 
 	/**
@@ -60,8 +62,10 @@ public class BlogListener {
 	))
 	public void collectAddRankHotScore(BlogOperateDTO blogReadDTO) {
 		log.debug("{} 被收藏热度加3", blogReadDTO.getBlogId());
-		// 执行热度加3
+		// 博客热度加 3
 		rankService.addRankHotScore(blogReadDTO.getBlogId(), 3d);
+		// 作者热度加 3
+		rankService.addRankAuthorScore(blogReadDTO.getBlogId(), 3d);
 	}
 
 	/**
@@ -76,8 +80,10 @@ public class BlogListener {
 	))
 	public void likeAddRankHotScore(BlogOperateDTO blogReadDTO) {
 		log.debug("{} 被点赞热度加3", blogReadDTO.getBlogId());
-		// 执行热度加3
+		// 执行热度加 3
 		rankService.addRankHotScore(blogReadDTO.getBlogId(), 3d);
+		// 作者热度加 3
+		rankService.addRankAuthorScore(blogReadDTO.getBlogId(), 3d);
 	}
 
 }
