@@ -69,7 +69,11 @@ public class DefaultExceptionAdvice {
 	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, TypeMismatchException.class})
 	public RestResult<Object> doIllegalArgumentException(Exception e) {
 		log.warn("参数异常,{}", e.getMessage());
-		return new RestResult<>(402, "参数异常", null, false);
+		String message = "参数异常";
+		if (e instanceof IllegalArgumentException) {
+			message = "参数异常:" + e.getMessage();
+		}
+		return new RestResult<>(402, message, null, false);
 	}
 
 	@ExceptionHandler(BindException.class)

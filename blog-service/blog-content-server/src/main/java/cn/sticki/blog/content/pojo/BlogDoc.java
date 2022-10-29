@@ -81,6 +81,12 @@ public class BlogDoc {
 	Integer status;
 
 	/**
+	 * 博客创作类型：1. 原创; 2. 转载
+	 */
+	@Field(type = FieldType.Integer)
+	Integer createType;
+
+	/**
 	 * 由其他属性copy而来，主要用于搜索功能，并非该实体类中的成员
 	 */
 	@JsonIgnore

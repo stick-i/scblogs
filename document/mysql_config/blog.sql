@@ -21,19 +21,20 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `blog`;
 CREATE TABLE `blog`
 (
-    `id`            int(11) UNSIGNED                                              NOT NULL AUTO_INCREMENT COMMENT '博客id',
-    `author_id`     int(11) UNSIGNED                                              NOT NULL COMMENT '作者id',
+    `id`            int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '博客id',
+    `author_id`     int(11) UNSIGNED NOT NULL COMMENT '作者id',
     `title`         varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标题',
     `description`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '描述',
-    `school_code`   int(11) UNSIGNED                                              NULL     DEFAULT NULL COMMENT '院校代码',
-    `cover_image`   char(32) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NULL     DEFAULT NULL COMMENT '封面图',
+    `school_code`   int(11) UNSIGNED NULL DEFAULT NULL COMMENT '院校代码',
+    `cover_image`   char(32) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL DEFAULT NULL COMMENT '封面图',
     `create_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `release_time`  datetime                                                      NULL     DEFAULT NULL COMMENT '发表时间',
-    `modified_time` datetime                                                      NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    `status`        int(11) UNSIGNED                                              NOT NULL COMMENT '发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）',
+    `release_time`  datetime NULL DEFAULT NULL COMMENT '发表时间',
+    `modified_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `status`        int(11) UNSIGNED NOT NULL COMMENT '发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）',
+    `create_type`   int(11) UNSIGNED NOT NULL COMMENT '博客创作类型：1. 原创; 2. 转载',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX `author_id` (`author_id`) USING BTREE,
-    INDEX `school_code` (`school_code`) USING BTREE
+    INDEX           `author_id` (`author_id`) USING BTREE,
+    INDEX           `school_code` (`school_code`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
