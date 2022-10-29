@@ -31,4 +31,9 @@ public class CommentDTO {
 	 */
 	String content;
 
+	/**
+	 * 博客作者id
+	 */
+	Integer authorId;
+
 }

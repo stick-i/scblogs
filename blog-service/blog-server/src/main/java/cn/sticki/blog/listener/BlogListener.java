@@ -35,55 +35,55 @@ public class BlogListener {
 	/**
 	 * 用户浏览博客对博客热度进行增加
 	 *
-	 * @param blogReadDTO 用户操作消息
+	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = SEE_RANK_QUEUE),
 			key = BLOG_OPERATE_READ_KEY
 	))
-	public void seeAddRankHotScore(BlogOperateDTO blogReadDTO) {
-		log.debug("{} 被浏览热度加1", blogReadDTO.getBlogId());
+	public void seeAddRankHotScore(BlogOperateDTO blogOperateDTO) {
+		log.debug("{} 被浏览热度加1", blogOperateDTO.getBlogId());
 		// 博客热度加 1
-		rankService.addRankHotScore(blogReadDTO.getBlogId(), 1d);
+		rankService.addRankHotScore(blogOperateDTO.getBlogId(), 1d);
 		// 作者热度加 1
-		rankService.addRankAuthorScore(blogReadDTO.getBlogId(), 1d);
+		rankService.addRankAuthorScore(blogOperateDTO.getBlogId(), 1d);
 	}
 
 	/**
 	 * 用户收藏博客对博客热度进行增加
 	 *
-	 * @param blogReadDTO 用户操作消息
+	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = COLLECT_RANK_QUEUE),
 			key = BLOG_OPERATE_COLLECT_KEY
 	))
-	public void collectAddRankHotScore(BlogOperateDTO blogReadDTO) {
-		log.debug("{} 被收藏热度加3", blogReadDTO.getBlogId());
+	public void collectAddRankHotScore(BlogOperateDTO blogOperateDTO) {
+		log.debug("{} 被收藏热度加3", blogOperateDTO.getBlogId());
 		// 博客热度加 3
-		rankService.addRankHotScore(blogReadDTO.getBlogId(), 3d);
+		rankService.addRankHotScore(blogOperateDTO.getBlogId(), 3d);
 		// 作者热度加 3
-		rankService.addRankAuthorScore(blogReadDTO.getBlogId(), 3d);
+		rankService.addRankAuthorScore(blogOperateDTO.getBlogId(), 3d);
 	}
 
 	/**
 	 * 用户点赞博客对博客热度进行增加
 	 *
-	 * @param blogReadDTO 用户操作消息
+	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = LIKE_RANK_QUEUE),
 			key = BLOG_OPERATE_LIKE_KEY
 	))
-	public void likeAddRankHotScore(BlogOperateDTO blogReadDTO) {
-		log.debug("{} 被点赞热度加3", blogReadDTO.getBlogId());
+	public void likeAddRankHotScore(BlogOperateDTO blogOperateDTO) {
+		log.debug("{} 被点赞热度加3", blogOperateDTO.getBlogId());
 		// 执行热度加 3
-		rankService.addRankHotScore(blogReadDTO.getBlogId(), 3d);
+		rankService.addRankHotScore(blogOperateDTO.getBlogId(), 3d);
 		// 作者热度加 3
-		rankService.addRankAuthorScore(blogReadDTO.getBlogId(), 3d);
+		rankService.addRankAuthorScore(blogOperateDTO.getBlogId(), 3d);
 	}
 
 }

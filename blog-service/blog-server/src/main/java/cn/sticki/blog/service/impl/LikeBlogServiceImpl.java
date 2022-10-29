@@ -1,9 +1,12 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.mapper.BlogViewMapper;
 import cn.sticki.blog.mapper.LikeBlogMapper;
+import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.domain.LikeBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
@@ -45,8 +48,17 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 	@Resource
 	private RabbitTemplate rabbitTemplate;
 
+	@Resource
+	private BlogMapper blogMapper;
+
 	@Override
 	public boolean likeBlog(Integer userId, Integer blogId) {
+		// 进行判断博客是否存在
+		Blog blog = blogMapper.selectById(blogId);
+		if (blog == null) {
+			log.warn("当前博客不存在,blogId={}", blogId);
+			throw new BlogException("当前博客不存在");
+		}
 		// 查询是否已经点赞，若已点赞则取消点赞
 		LambdaQueryWrapper<LikeBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(LikeBlog::getUserId, userId);
@@ -66,7 +78,7 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			likeBlogMapper.insert(likeBlog);
 			blogGeneralMapper.increaseLikeNum(blogId);
 			// 向rabbitMQ发送消息，增加被点赞博客的热度
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId));
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}
 	}

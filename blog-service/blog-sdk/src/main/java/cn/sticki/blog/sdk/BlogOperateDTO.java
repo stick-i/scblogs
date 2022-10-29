@@ -26,4 +26,9 @@ public class BlogOperateDTO {
 	 */
 	Integer userId;
 
+	/**
+	 * 博客作者id
+	 */
+	Integer authorId;
+
 }

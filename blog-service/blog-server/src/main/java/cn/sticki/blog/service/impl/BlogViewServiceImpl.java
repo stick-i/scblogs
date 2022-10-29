@@ -1,13 +1,12 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.BlogContentHtmlMapper;
-import cn.sticki.blog.mapper.BlogViewMapper;
-import cn.sticki.blog.mapper.CollectBlogMapper;
-import cn.sticki.blog.mapper.LikeBlogMapper;
+import cn.sticki.blog.exception.BlogException;
+import cn.sticki.blog.mapper.*;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
+import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogInfoListVO;
@@ -61,6 +60,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private RabbitTemplate rabbitTemplate;
+
+	@Resource
+	private BlogMapper blogMapper;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
@@ -130,6 +132,12 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Override
 	public BlogContentVO getBlogContentHtml(Integer id, Integer userId) {
+		// 进行判断博客是否存在
+		Blog blogInfo = blogMapper.selectById(id);
+		if (blogInfo == null) {
+			log.warn("当前博客不存在,blogId={}", id);
+			throw new BlogException("当前博客不存在");
+		}
 		BlogContentVO blog = new BlogContentVO();
 		// 博客内容
 		blog.setContent(blogContentHtmlMapper.selectById(id));
@@ -150,7 +158,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		blog.setAuthor(result.getData());
 
 		// 封装好请求体后，发送到MQ
-		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, new BlogOperateDTO(id, userId));
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, new BlogOperateDTO(id, userId, blogInfo.getAuthorId()));
 		return blog;
 	}
 

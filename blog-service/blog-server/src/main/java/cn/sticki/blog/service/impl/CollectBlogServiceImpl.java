@@ -1,9 +1,12 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.mapper.BlogViewMapper;
 import cn.sticki.blog.mapper.CollectBlogMapper;
+import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.domain.CollectBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
@@ -45,10 +48,19 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 	private BlogViewMapper blogViewMapper;
 
 	@Resource
+	private BlogMapper blogMapper;
+
+	@Resource
 	private RabbitTemplate rabbitTemplate;
 
 	@Override
 	public boolean collectBlog(Integer userId, Integer blogId) {
+		// 进行判断博客是否存在
+		Blog blog = blogMapper.selectById(blogId);
+		if (blog == null) {
+			log.warn("当前博客不存在,blogId={}", blogId);
+			throw new BlogException("当前博客不存在");
+		}
 		LambdaQueryWrapper<CollectBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(CollectBlog::getUserId, userId);
 		wrapper.eq(CollectBlog::getBlogId, blogId);
@@ -66,7 +78,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			collectBlogMapper.insert(collectBlog);
 			blogGeneralMapper.increaseCollectionNum(blogId);
 			// 向rabbitMQ 发送消息增加收藏博客的热度
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId));
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}
 	}
