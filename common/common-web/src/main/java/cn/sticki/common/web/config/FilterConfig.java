@@ -18,18 +18,18 @@ import java.util.List;
 @Configuration
 public class FilterConfig {
 
-	@Bean
-	public FilterRegistrationBean<XssFilter> xssFilter() {
-
-		FilterRegistrationBean<XssFilter> registrationBean = new FilterRegistrationBean<>();
-		// 配置不走xss过滤器的路径，GET\DELETE请求默认不走
-		List<String> excludes = new ArrayList<>();
-		XssFilter myFilter = new XssFilter(excludes);
-
-		registrationBean.setFilter(myFilter);
-		registrationBean.setUrlPatterns(Collections.singletonList("/*"));
-		registrationBean.setOrder(1);
-		return registrationBean;
-	}
+	// @Bean
+	// public FilterRegistrationBean<XssFilter> xssFilter() {
+	//
+	// 	FilterRegistrationBean<XssFilter> registrationBean = new FilterRegistrationBean<>();
+	// 	// 配置不走xss过滤器的路径，GET\DELETE请求默认不走
+	// 	List<String> excludes = new ArrayList<>();
+	// 	XssFilter myFilter = new XssFilter(excludes);
+	//
+	// 	registrationBean.setFilter(myFilter);
+	// 	registrationBean.setUrlPatterns(Collections.singletonList("/*"));
+	// 	registrationBean.setOrder(1);
+	// 	return registrationBean;
+	// }
 
 }
