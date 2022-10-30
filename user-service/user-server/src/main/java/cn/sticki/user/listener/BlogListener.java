@@ -1,7 +1,6 @@
 package cn.sticki.user.listener;
 
 import cn.sticki.blog.sdk.BlogOperateDTO;
-import cn.sticki.comment.sdk.CommentDTO;
 import cn.sticki.user.mapper.UserGeneralMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 import static cn.sticki.blog.sdk.BlogMqConstants.*;
-import static cn.sticki.comment.sdk.MqConstants.BLOG_COMMENT_INCREASE_KEY;
 
 /**
  * @author durance
@@ -23,7 +21,7 @@ import static cn.sticki.comment.sdk.MqConstants.BLOG_COMMENT_INCREASE_KEY;
  */
 @Slf4j
 @Component
-public class UserListener {
+public class BlogListener {
 
 	public static final String USER_SEE_QUEUE = "user.operate.see";
 
@@ -31,7 +29,7 @@ public class UserListener {
 
 	public static final String USER_LIKE_QUEUE = "user.operate.like";
 
-	public static final String USER_COMMENT_QUEUE = "user.operate.comment";
+	public static final String USER_PUBLISH_QUEUE = "user.operate.publish";
 
 	@Resource
 	private UserGeneralMapper userGeneralMapper;
@@ -86,18 +84,18 @@ public class UserListener {
 	}
 
 	/**
-	 * 用户评论博客
+	 * 用户发布博客
 	 *
-	 * @param commentDTO 评论操作操作消息
+	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
-			value = @Queue(name = USER_COMMENT_QUEUE),
-			key = BLOG_COMMENT_INCREASE_KEY
+			value = @Queue(name = USER_PUBLISH_QUEUE),
+			key = BLOG_INSERT_KEY
 	))
-	public void likeAddUserGeneral(CommentDTO commentDTO) {
-		log.debug("用户 {} 点赞加1", commentDTO.getBlogId());
-		userGeneralMapper.updateCommentNumByUserId(commentDTO.getBlogId(), 1);
+	public void publishAddUserGeneral(BlogOperateDTO blogOperateDTO) {
+		log.debug("用户 {} 发布博客数加1", blogOperateDTO.getAuthorId());
+		userGeneralMapper.updateBlogNumByUserId(blogOperateDTO.getAuthorId(), 1);
 
 	}
 

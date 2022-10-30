@@ -86,7 +86,6 @@ public class RankServiceImpl implements RankService {
 	public List<RankAuthorVO> getWeekAuthorRank() {
 		//获取上周的周key
 		long weekkey = RankKeyUtils.getWeekKey();
-		System.out.println("weekkey = " + weekkey);
 		// 拿到数据
 		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(RANK_AUTHOR_WEEK_KEY + weekkey, 0, -1);
 		// 进行判断，如果为空返回null

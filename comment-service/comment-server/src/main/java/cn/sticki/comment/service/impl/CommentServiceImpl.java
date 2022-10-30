@@ -51,6 +51,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 	public void create(Comment comment) {
 		// 检查博客是否存在，检查父评论id是否在该博客下
 		boolean exists = false;
+		// 博客评论的博客信息
+		RestResult<BlogDTO> result = null;
 		if (comment.getParentId() != null) {
 			// 判断博客id和父评论id是否正确
 			LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
@@ -64,7 +66,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 			}
 		} else {
 			// 根据id判断博客是否存在
-			RestResult<BlogDTO> result = blogClient.getBlogInfo(comment.getBlogId());
+			result = blogClient.getBlogInfo(comment.getBlogId());
 			exists = result.getStatus() && result.getData() != null;
 		}
 		if (!exists) {
@@ -74,7 +76,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		commentMapper.insert(comment);
 		// 发送消息：博客评论数增加
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, new CommentDTO(comment.getBlogId(), comment.getUserId(), comment.getContent(), null));
+		if (result != null) {
+			rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, new CommentDTO(comment.getBlogId(), comment.getUserId(), comment.getContent(), result.getData().getAuthorId()));
+		}
 		log.info("博客评论增加，blogId={},commentId={}", comment.getBlogId(), comment.getId());
 	}
 

@@ -5,6 +5,7 @@ import cn.sticki.user.exception.UserIllegalException;
 import cn.sticki.user.mapper.FansViewMapper;
 import cn.sticki.user.mapper.FollowViewMapper;
 import cn.sticki.user.mapper.UserFollowMapper;
+import cn.sticki.user.mapper.UserGeneralMapper;
 import cn.sticki.user.pojo.*;
 import cn.sticki.user.service.UserFollowService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -33,6 +34,9 @@ public class UserFollowServiceImpl implements UserFollowService {
 	@Resource
 	private FansViewMapper fansViewMapper;
 
+	@Resource
+	private UserGeneralMapper userGeneralMapper;
+
 	@Override
 	public boolean follow(int userId, int followId) {
 		if (userId == followId) {
@@ -45,6 +49,8 @@ public class UserFollowServiceImpl implements UserFollowService {
 		if (userFollowMapper.exists(wrapper)) {
 			// 若存在，则删除记录，返回false
 			userFollowMapper.delete(wrapper);
+			// 修改用户数据统计表数据
+			userGeneralMapper.updateFansNumByUserId(followId, -1);
 			return false;
 		} else {
 			UserFollow userFollow = new UserFollow();
@@ -53,6 +59,8 @@ public class UserFollowServiceImpl implements UserFollowService {
 			userFollow.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			// 不存在，添加记录，返回true
 			userFollowMapper.insert(userFollow);
+			// 修改用户数据统计表数据
+			userGeneralMapper.updateFansNumByUserId(followId, 1);
 			return true;
 		}
 	}
