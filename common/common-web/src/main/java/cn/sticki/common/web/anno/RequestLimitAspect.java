@@ -32,6 +32,8 @@ public class RequestLimitAspect {
 
 	private static final String IPLIMIT_KEY = "ipLimit:";
 
+	private static final int OVERTIME_VALUE = -90000;
+
 	/**
 	 * 拦截有 {@link RequestLimit}注解的方法
 	 */
@@ -58,14 +60,15 @@ public class RequestLimitAspect {
 		// 4. 获取Redis中的数据
 		Integer count = redisTemplate.opsForValue().get(key);
 		int nowCount = count == null ? 0 : count;
+		// 5. 超出限制，重置ttl和value
 		if (nowCount >= limit.count()) {
-			// 5. 超出限制，拒绝访问
+			// 5.2 重置Redis时间为设定的等待值
 			log.info("访问频繁被拒绝访问，ip:{}，method:{}", ip, signature.getName());
-			if (nowCount == limit.count()) {
-				// 5.2 重置Redis时间为设定的等待值
-				log.debug("重置redis值为{}，等待{}", nowCount + 1, limit.waits());
-				redisTemplate.opsForValue().set(key, nowCount + 1, limit.waits(), TimeUnit.SECONDS);
-			}
+			redisTemplate.opsForValue().set(key, OVERTIME_VALUE, limit.waits(), TimeUnit.SECONDS);
+			nowCount = OVERTIME_VALUE;
+		}
+
+		if (nowCount < 0) {
 			// aop执行顺序在advice之前，故执行完当前aop方法后还会继续执行ResponseAdvice
 			// 但我并不希望程序继续执行ResponseAdvice，所以抛出异常，返回值交给ExceptionAdvice处理
 			throw new FrequentVisitsException();
@@ -77,6 +80,7 @@ public class RequestLimitAspect {
 			log.debug("重置计数器");
 			isReset = redisTemplate.opsForValue().setIfAbsent(key, 1, limit.time(), TimeUnit.SECONDS);
 		}
+		// 判断是否重置成功，防止并发重置的情况
 		if (count != null || !Boolean.TRUE.equals(isReset)) {
 			// 计数器 +1，不重置TTL
 			redisTemplate.opsForValue().increment(key);
