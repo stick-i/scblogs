@@ -58,17 +58,17 @@ public class CommentListener {
 	/**
 	 * 博客评论数量减少
 	 *
-	 * @param blogId 博客id
+	 * @param comment 博客评论传输对象
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = COMMENT_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = COMMENT_DECREASE_QUEUE),
 			key = BLOG_COMMENT_DECREASE_KEY
 	))
-	public void commentNumberDecreaseListener(int blogId) {
+	public void commentNumberDecreaseListener(CommentDTO comment) {
 		// 减少博客的评论数量
-		log.debug("{} 评论数量-1", blogId);
-		blogGeneralMapper.decreaseCommentNum(blogId);
+		log.debug("{} 评论数量-1", comment.getBlogId());
+		blogGeneralMapper.decreaseCommentNum(comment.getBlogId());
 	}
 
 }

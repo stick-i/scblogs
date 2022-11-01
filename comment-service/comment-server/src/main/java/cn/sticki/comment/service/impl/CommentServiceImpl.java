@@ -93,8 +93,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		}
 		// 2.2 存在，删除评论
 		commentMapper.deleteById(commentId);
-		// 3. 发送消息，减少评论数量
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, comment.getBlogId());
+		// 3. 查询博客作者id，发送消息，减少评论数量
+		RestResult<BlogDTO> result = blogClient.getBlogInfo(comment.getBlogId());
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, result.getData().getAuthorId());
 	}
 
 	@Override
