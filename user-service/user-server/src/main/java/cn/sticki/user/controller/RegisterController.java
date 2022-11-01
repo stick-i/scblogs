@@ -27,7 +27,7 @@ public class RegisterController {
 
 	/**
 	 * 发送邮箱验证码请求
-	 * 90s内重复请求无效
+	 * 60s内重复请求无效
 	 *
 	 * @param mail 邮箱
 	 */
