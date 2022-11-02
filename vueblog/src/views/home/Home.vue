@@ -229,7 +229,7 @@
 										|
 										<a target="_blank" href="https://gitee.com/sticki/scblogs" style="color:#555666;">&nbsp;Gitee地址</a>
 									</div>
-									<a target="_blank" href="#" style="
+									<a target="_blank" href="https://beian.miit.gov.cn/" style="
 												display:flex;
 												justify-content: center;
                         height: 20px;

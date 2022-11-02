@@ -31,7 +31,7 @@ public class UserFollow {
 	String note;
 
 	/**
-	 * 状态码
+	 * 状态码 0->未关注;1->已关注
 	 */
 	Integer status;
 

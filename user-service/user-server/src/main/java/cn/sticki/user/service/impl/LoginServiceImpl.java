@@ -1,5 +1,7 @@
 package cn.sticki.user.service.impl;
 
+import java.util.Objects;
+
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.user.mapper.UserSafetyMapper;
@@ -40,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
 		LambdaQueryWrapper<UserSafety> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(UserSafety::getUsername, username);
 		UserSafety user = userSafetyMapper.selectOne(wrapper);
-		if (encoder.matches(password, user.getPassword())) {
+		if (Objects.nonNull(user) && encoder.matches(password, user.getPassword())) {
 			// 查询用户信息
 			UserView userView = userViewMapper.selectById(user.getUserId());
 			// 查询院校名称
