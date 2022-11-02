@@ -144,7 +144,7 @@ public class BlogListener {
 	 */
 	@RabbitListener(bindings = @QueueBinding(
 			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
-			value = @Queue(name = USER_PUBLISH_QUEUE),
+			value = @Queue(name = USER_PUBLISH_QUEUE_CANCEL),
 			key = BLOG_INSERT_KEY
 	))
 	public void publishReduceUserGeneral(BlogOperateDTO blogOperateDTO) {

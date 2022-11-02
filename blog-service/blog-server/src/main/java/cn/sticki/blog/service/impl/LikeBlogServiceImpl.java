@@ -26,8 +26,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
-import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_LIKE_KEY;
+import static cn.sticki.blog.sdk.BlogMqConstants.*;
 
 /**
  * @author 阿杆
@@ -68,6 +67,8 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			// 点赞已经存在
 			likeBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseLikeNum(blogId);
+			// 向rabbitMQ发送 取消点赞消息
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return false;
 		} else {
 			// 点赞不存在
@@ -77,7 +78,7 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			likeBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			likeBlogMapper.insert(likeBlog);
 			blogGeneralMapper.increaseLikeNum(blogId);
-			// 向rabbitMQ发送消息，增加被点赞博客的热度
+			// 向rabbitMQ发送 点赞消息
 			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}

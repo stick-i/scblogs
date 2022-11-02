@@ -27,8 +27,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
-import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_COLLECT_KEY;
+import static cn.sticki.blog.sdk.BlogMqConstants.*;
 
 /**
  * @author 阿杆
@@ -69,6 +68,8 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			// 内容已经存在
 			collectBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseCollectionNum(blogId);
+			// 向rabbitMQ发送 取消收藏博客消息
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return false;
 		} else {
 			CollectBlog collectBlog = new CollectBlog();
@@ -77,7 +78,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			collectBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			collectBlogMapper.insert(collectBlog);
 			blogGeneralMapper.increaseCollectionNum(blogId);
-			// 向rabbitMQ 发送消息增加收藏博客的热度
+			// 向rabbitMQ发送 收藏博客消息
 			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}

@@ -5,34 +5,34 @@
 
 <mapper namespace="cn.sticki.user.mapper.UserGeneralMapper">
 
-	<select id="updateViewNumByUserId" resultType="integer">
+	<update id="updateViewNumByUserId" parameterType="integer">
 		update user_general
 		set view_num = view_num+1 where user_id = #{userId}
-	</select>
+	</update>
 
-	<select id="updateLikeNumByUserId" resultType="integer">
+	<update id="updateLikeNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
 		update user_general
 		set like_num = like_num + #{num} where user_id = #{userId}
-	</select>
+	</update>
 
-	<select id="updateFansNumByUserId" resultType="integer">
+	<update id="updateFansNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
 		update user_general
 		set fans_num = fans_num + #{num} where user_id = #{userId}
-	</select>
+	</update>
 
-	<select id="updateCommentNumByUserId" resultType="integer">
+	<update id="updateCommentNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
 		update user_general
 		set comment_num = comment_num + #{num} where user_id = #{userId}
-	</select>
+	</update>
 
-	<select id="updateCollectNumByUserId" resultType="integer">
+	<update id="updateCollectNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
 		update user_general
 		set collect_num = collect_num + #{num} where user_id = #{userId}
-	</select>
+	</update>
 
-	<select id="updateBlogNumByUserId" resultType="integer">
+	<update id="updateBlogNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
 		update user_general
 		set blog_num = blog_num + #{num} where user_id = #{userId}
-	</select>
+	</update>
 
 </mapper>
