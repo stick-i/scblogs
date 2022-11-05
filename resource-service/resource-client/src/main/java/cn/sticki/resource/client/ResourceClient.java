@@ -1,6 +1,7 @@
 package cn.sticki.resource.client;
 
 import cn.sticki.common.result.RestResult;
+import cn.sticki.resource.client.fuse.ResourceClientFuse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author 阿杆
  */
-@FeignClient(value = "resource-server", fallback = ResourceClientResolver.class)
+@FeignClient(value = "resource-server", fallback = ResourceClientFuse.class)
 public interface ResourceClient {
 
 	/**

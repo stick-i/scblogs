@@ -1,16 +1,19 @@
-package cn.sticki.resource.client;
+package cn.sticki.resource.client.fuse;
 
 import cn.sticki.common.result.RestResult;
+import cn.sticki.resource.client.ResourceClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * Resource-server连接失败时使用的熔断器
+ *
  * @author 阿杆
  */
 @Slf4j
 @Component
-public class ResourceClientResolver implements ResourceClient {
+public class ResourceClientFuse implements ResourceClient {
 
 	/**
 	 * 上传图片接口
