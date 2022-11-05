@@ -73,7 +73,6 @@
 ├─blog-service：博客服务
 ├─blink-service：动态服务
 ├─comment-service：评论服务
-├─message-service：消息服务
 ├─resource-service：资源服务
 └─vueblog：前端Vue服务
 ```
