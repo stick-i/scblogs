@@ -80,13 +80,22 @@ export default {
     await this.GetData()
     window.parentMounted = true	// _isMounted是当前实例mouned()是否执行 此时为true
     // 使得账号设置模块消失,模块选择可以变动
+		this.bus.$on('refreshUserInfo', () => {
+			this.GetData()
+		});
   },
   beforeCreate() {
     window.parentMounted = this._isMounted  // _isMounted是当前实例mouned()是否执行 此时为false
   },
+	beforeDestroy() {
+		this.bus.$off('refreshUserInfo')
+	},
   methods: {
     async GetData() {
       await this.$axios.get('/user', this.config).then((res) => {
+				// 避免浏览器缓存 每次获取个人信息时 给头像url添加时间戳, 同时通知头部导航栏
+				res.data.data.avatarUrl += `?timestamp=${new Date().getTime()}`
+				this.bus.$emit('userMessage', JSON.stringify(res.data.data))
         localStorage.setItem('userMessage', JSON.stringify(res.data.data))
       }).then(res => {
         this.userMessage = JSON.parse(localStorage.getItem('userMessage'))
