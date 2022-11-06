@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.sticki.common.web.anno.RequestLimitAspect,\
-  cn.sticki.common.web.config.FilterConfig
+  cn.sticki.common.web.anno.RequestLimitAspect

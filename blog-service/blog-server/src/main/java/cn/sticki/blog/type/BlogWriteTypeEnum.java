@@ -1,7 +1,7 @@
 package cn.sticki.blog.type;
 
 import lombok.Getter;
-import org.springframework.util.Assert;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  * @author likangli
  * description 博客创作类型
  */
-public enum BlogCreateTypeEnum {
+public enum BlogWriteTypeEnum {
 
 	/**
 	 * 博客创作类型枚举
@@ -34,7 +34,7 @@ public enum BlogCreateTypeEnum {
 	@Getter
 	private final String desc;
 
-	BlogCreateTypeEnum(Integer code, String desc) {
+	BlogWriteTypeEnum(Integer code, String desc) {
 		this.code = code;
 		this.desc = desc;
 	}
@@ -45,10 +45,8 @@ public enum BlogCreateTypeEnum {
 	 * @param code 创作编码
 	 * @return 创作枚举类Optional对象
 	 */
-	public static Optional<BlogCreateTypeEnum> getEnum(Integer code) {
-
-		Assert.notNull(code, "创建类型编码不能为空");
-		return Stream.of(BlogCreateTypeEnum.values())
+	public static Optional<BlogWriteTypeEnum> getEnum(@NotNull Integer code) {
+		return Stream.of(BlogWriteTypeEnum.values())
 				.filter(e -> Objects.equals(e.getCode(), code))
 				.findFirst();
 	}

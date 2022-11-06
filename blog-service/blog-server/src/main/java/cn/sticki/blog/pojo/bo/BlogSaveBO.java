@@ -1,18 +1,10 @@
 package cn.sticki.blog.pojo.bo;
 
-import cn.sticki.blog.type.BlogCreateTypeEnum;
-import cn.sticki.blog.type.BlogStatusType;
-import cn.sticki.common.result.RestResult;
-import cn.sticki.resource.type.FileType;
-import cn.sticki.resource.utils.FileUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Objects;
 
 /**
  * @author 阿杆
@@ -41,6 +33,7 @@ public class BlogSaveBO {
 	/**
 	 * 描述
 	 */
+	@NotNull("博客描述不能为空")
 	String description;
 
 	/**
@@ -52,6 +45,7 @@ public class BlogSaveBO {
 	/**
 	 * 内容(html格式)
 	 */
+	@NotNull("博客内容不能为空")
 	String contentHtml;
 
 	/**
@@ -68,37 +62,6 @@ public class BlogSaveBO {
 	/**
 	 * 博客创作类型：1. 原创; 2. 转载
 	 */
-	Integer createType;
-
-	/**
-	 * 前端入参校验
-	 *
-	 * @param saveFlag 是保存还是更新  true 保存， false 更新
-	 */
-	public void paramCheck(boolean saveFlag) {
-
-		if (saveFlag) {
-			Assert.isNull(this.id, "保存博客不应该有ID入参");
-		}
-
-		// 状态校验
-		Assert.isTrue(Objects.equals(this.status, BlogStatusType.PUBLISH.getValue())
-						|| Objects.equals(this.status, BlogStatusType.DRAFT.getValue())
-						|| Objects.equals(this.status, BlogStatusType.PERSONAL.getValue())
-				, "博客状态仅可以是草稿或发布状态或仅自己可见");
-
-		// 创作类型校验
-		Assert.isTrue(BlogCreateTypeEnum.getEnum(this.createType).isPresent(), "创作类型值非法");
-
-		// 描述校验
-		if (Objects.equals(this.status, BlogStatusType.PUBLISH.getValue())) {
-			Assert.notNull(description, "发布状态，文章摘要不能为空");
-		}
-
-		// 检查封面图
-		if (FileUtils.isNotEmpty(this.coverImageFile)) {
-			FileUtils.checkFile(this.coverImageFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		}
-	}
+	Integer writeType;
 
 }

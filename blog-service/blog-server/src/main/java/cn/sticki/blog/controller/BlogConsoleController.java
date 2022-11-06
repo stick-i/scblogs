@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,16 +85,15 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public RestResult<Object> saveBlog(BlogSaveBO blog, MultipartFile coverImage, @RequestHeader Integer id) {
-
-		// 进入入参校验
-		blog.paramCheck(true);
-
-		// 设置其他参数，保存博客
+	public RestResult<Object> saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage, @RequestHeader Integer id) {
+		// 设置其他参数
 		blog.setCoverImageFile(coverImage);
 		blog.setAuthorId(id);
+		// 检查封面图
+		if (FileUtils.isNotEmpty(blog.getCoverImageFile())) {
+			FileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
+		}
 		blogService.saveBlog(blog);
-
 		return new RestResult<>();
 	}
 

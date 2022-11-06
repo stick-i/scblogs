@@ -65,6 +65,6 @@ public class Blog {
 	/**
 	 * 博客创作类型：1. 原创; 2. 转载
 	 */
-	Integer createType;
+	Integer writeType;
 
 }

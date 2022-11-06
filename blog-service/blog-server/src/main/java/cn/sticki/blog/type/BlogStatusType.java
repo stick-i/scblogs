@@ -37,7 +37,7 @@ public enum BlogStatusType {
 	 */
 	AUDIT(5);
 
-	private Integer value;
+	private final Integer value;
 
 	BlogStatusType(Integer value) {
 		this.value = value;
@@ -45,10 +45,6 @@ public enum BlogStatusType {
 
 	public Integer getValue() {
 		return value;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
 	}
 
 }
