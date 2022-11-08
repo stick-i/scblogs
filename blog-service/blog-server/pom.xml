@@ -37,6 +37,12 @@
 
 		<dependency>
 			<groupId>cn.sticki</groupId>
+			<artifactId>blog-client</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.sticki</groupId>
 			<artifactId>user-client</artifactId>
 			<version>1.0.0</version>
 		</dependency>

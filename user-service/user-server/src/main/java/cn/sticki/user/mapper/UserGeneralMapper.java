@@ -12,7 +12,15 @@ import org.apache.ibatis.annotations.Param;
 public interface UserGeneralMapper extends BaseMapper<UserGeneral> {
 
 	/**
-	 * 增加访问量
+	 * 批量添加用户统计信息
+	 *
+	 * @param userIds 用户id数组
+	 * @return 影响行数
+	 */
+	Integer insertAllUser(@Param("userIds") Integer[] userIds);
+
+	/**
+	 * 增加访问数
 	 *
 	 * @param userId 用户id
 	 * @return 影响行数
@@ -20,7 +28,7 @@ public interface UserGeneralMapper extends BaseMapper<UserGeneral> {
 	Integer updateViewNumByUserId(@Param("userId") Integer userId);
 
 	/**
-	 * 修改访问量
+	 * 修改点赞数
 	 *
 	 * @param userId 用户id
 	 * @param num    修改的量
@@ -29,7 +37,7 @@ public interface UserGeneralMapper extends BaseMapper<UserGeneral> {
 	Integer updateLikeNumByUserId(@Param("userId") Integer userId, @Param("num") Integer num);
 
 	/**
-	 * 修改访问量
+	 * 修改粉丝数
 	 *
 	 * @param userId 用户id
 	 * @param num    修改的量
@@ -38,7 +46,7 @@ public interface UserGeneralMapper extends BaseMapper<UserGeneral> {
 	Integer updateFansNumByUserId(@Param("userId") Integer userId, @Param("num") Integer num);
 
 	/**
-	 * 修改访问量
+	 * 修改评论数
 	 *
 	 * @param userId 用户id
 	 * @param num    修改的量
@@ -47,7 +55,7 @@ public interface UserGeneralMapper extends BaseMapper<UserGeneral> {
 	Integer updateCommentNumByUserId(@Param("userId") Integer userId, @Param("num") Integer num);
 
 	/**
-	 * 修改访问量
+	 * 修改收藏数
 	 *
 	 * @param userId 用户id
 	 * @param num    修改的量
@@ -56,7 +64,7 @@ public interface UserGeneralMapper extends BaseMapper<UserGeneral> {
 	Integer updateCollectNumByUserId(@Param("userId") Integer userId, @Param("num") Integer num);
 
 	/**
-	 * 修改访问量
+	 * 修改博客数
 	 *
 	 * @param userId 用户id
 	 * @param num    修改的量

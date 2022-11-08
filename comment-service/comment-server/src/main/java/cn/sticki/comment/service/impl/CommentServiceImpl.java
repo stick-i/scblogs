@@ -76,9 +76,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		commentMapper.insert(comment);
 		// 发送消息：博客评论数增加
-		if (result != null) {
-			rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, new CommentDTO(comment.getBlogId(), comment.getUserId(), comment.getContent(), result.getData().getAuthorId()));
-		}
+		CommentDTO commentDTO = new CommentDTO();
+		commentDTO.setBlogId(comment.getBlogId());
+		commentDTO.setContent(comment.getContent());
+		commentDTO.setUserId(comment.getUserId());
+		// noinspection ConstantConditions
+		commentDTO.setAuthorId(result.getData().getAuthorId());
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, commentDTO);
+
 		log.info("博客评论增加，blogId={},commentId={}", comment.getBlogId(), comment.getId());
 	}
 

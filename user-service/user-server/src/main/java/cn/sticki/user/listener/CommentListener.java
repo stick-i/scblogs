@@ -49,7 +49,7 @@ public class CommentListener {
 	}
 
 	/**
-	 * 用户删除博客
+	 * 用户删除评论
 	 *
 	 * @param commentDTO 评论操作操作消息
 	 */

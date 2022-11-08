@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SuppressWarnings("AlibabaCommentsMustBeJavadocFormat")
 @SpringBootApplication
 @EnableAsync // 开启异步控制
-@EnableFeignClients(basePackages = {"cn.sticki.resource.client", "cn.sticki.message.client"}) // 开启feign
+@EnableFeignClients(basePackages = {"cn.sticki.resource.client", "cn.sticki.message.client", "cn.sticki.blog.client"}) // 开启feign
 @EnableMybatisPlusIPage // 开启mybatis分页助手
 @EnableDefaultExceptionAdvice // 默认异常处理
 @EnableDefaultResponseAdvice // 开启默认的响应体包装处理器

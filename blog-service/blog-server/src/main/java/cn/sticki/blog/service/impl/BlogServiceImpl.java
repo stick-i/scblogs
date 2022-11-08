@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.sticki.blog.sdk.BlogMqConstants.*;
@@ -302,6 +303,22 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			}
 		}
 		return isSuccess;
+	}
+
+	@Override
+	public List<BlogUserGeneral> getUserBlogGeneral(Integer[] userIds) {
+		List<BlogUserGeneral> result = new ArrayList<>();
+		for (Integer i : userIds) {
+			BlogUserGeneral blogUserGeneral = new BlogUserGeneral();
+			// 查询博客数据
+			BlogGeneral blogGeneral = blogGeneralMapper.selectBlogGeneralByUserId(i);
+			if (blogGeneral != null) {
+				BeanUtils.copyProperties(blogGeneral, blogUserGeneral);
+				blogUserGeneral.setUserId(i);
+				result.add(blogUserGeneral);
+			}
+		}
+		return result;
 	}
 
 	@Override
