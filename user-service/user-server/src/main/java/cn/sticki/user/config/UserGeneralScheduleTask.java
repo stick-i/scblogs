@@ -37,7 +37,7 @@ public class UserGeneralScheduleTask {
 	/**
 	 * 新增和计算核对 用户统计表 各项数据
 	 */
-	@Scheduled(cron = "0/10 * * * * ?")
+	@Scheduled(cron = "0 0 2 * * ?")
 	private void checkUserGeneralData() {
 		log.info("执行定时任务检查user_general表数据");
 		// 获取全部用户信息，进行统计
