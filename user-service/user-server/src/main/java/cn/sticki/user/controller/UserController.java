@@ -5,6 +5,7 @@ import cn.sticki.common.web.anno.RequestLimit;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserGeneral;
 import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,17 @@ public class UserController {
 	@PostMapping("/list")
 	public Map<Integer, UserView> getUserList(@RequestParam List<Integer> userIdList) {
 		return userService.getUserListMap(new HashSet<>(userIdList));
+	}
+
+	/**
+	 * 批量查询用户各项数据统计
+	 *
+	 * @param userIdList 用户id列表
+	 * @return 批量用户统计数据
+	 */
+	@GetMapping("/general")
+	public RestResult<Map<Integer, UserGeneral>> getUserGeneralList(@RequestParam List<Integer> userIdList) {
+		return new RestResult<>(userService.getUserGeneralListMap(userIdList));
 	}
 
 	/**

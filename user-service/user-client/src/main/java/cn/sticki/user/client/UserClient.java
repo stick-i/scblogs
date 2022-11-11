@@ -2,6 +2,7 @@ package cn.sticki.user.client;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.dto.UserDTO;
+import cn.sticki.user.dto.UserGeneralDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,5 +53,14 @@ public interface UserClient {
 	 */
 	@GetMapping("/user/followId")
 	RestResult<List<Integer>> getFollowIdList(@RequestParam Integer userId);
+
+	/**
+	 * 批量查询用户各项数据统计数据
+	 *
+	 * @param userIdList 用户id列表
+	 * @return 批量用户统计数据
+	 */
+	@GetMapping("/user/general")
+	RestResult<Map<Integer, UserGeneralDTO>> getUserGeneralList(@RequestParam List<Integer> userIdList);
 
 }

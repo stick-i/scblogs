@@ -9,7 +9,9 @@ import cn.sticki.blog.service.RankService;
 import cn.sticki.blog.utils.RankKeyUtils;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
+import cn.sticki.user.dto.UserGeneralDTO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
@@ -161,13 +163,17 @@ public class RankServiceImpl implements RankService {
 			rankAuthorVO.setHot(tuple.getScore());
 			authorVOList.add(rankAuthorVO);
 		}
-		// todo 相应信息应该包含获赞数和粉丝数，待整合
 		// 查询所有 作者信息
 		Map<Integer, UserDTO> userMap = userClient.getUserList(userIdList).getData();
+		// 查询作者获赞数等信息
+		Map<Integer, UserGeneralDTO> userGeneralMap = userClient.getUserGeneralList(userIdList).getData();
 		// 封装 authorList
-		for (int i = 0; i < authorVOList.size(); i++) {
+		int len = authorVOList.size();
+		for (int i = 0; i < len; i++) {
 			// 依次设置作者信息
 			authorVOList.get(i).setAuthor(userMap.get(userIdList.get(i)));
+			// 根据相同的用户id，设置获赞数和粉丝数
+			BeanUtils.copyProperties(userGeneralMap.get(userIdList.get(i)), authorVOList.get(i));
 		}
 		return authorVOList;
 	}
