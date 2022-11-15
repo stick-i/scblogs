@@ -39,19 +39,27 @@ public interface RankService {
 	List<RankAuthorVO> getTotalAuthorRank();
 
 	/**
-	 * 对相应博客执行热度加 3
+	 * 获取作者排行榜数据
 	 *
-	 * @param blogId 增加热度的博客
-	 * @param score  增加的分数
+	 * @param key 查询的redis key
+	 * @return 排行榜数据
 	 */
-	void addRankHotScore(Integer blogId, Double score);
+	List<RankAuthorVO> getAuthorRank(String key);
 
 	/**
-	 * 提升作者排行榜 原力值
+	 * 修改博客热度分值
+	 *
+	 * @param blogId 修改热度的博客
+	 * @param score  修改的分数
+	 */
+	void updateRankHotScore(Integer blogId, Double score);
+
+	/**
+	 * 修改作者排行榜 原力值
 	 *
 	 * @param blogId 博客id
-	 * @param score  增加的分数
+	 * @param score  修改的分数
 	 */
-	void addRankAuthorScore(Integer blogId, Double score);
+	void updateRankAuthorScore(Integer blogId, Double score);
 
 }

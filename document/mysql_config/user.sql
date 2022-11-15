@@ -125,7 +125,7 @@ CREATE TABLE `user_follow`
 DROP TABLE IF EXISTS `user_general`;
 CREATE TABLE `user_general`  (
   `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(0) UNSIGNED NOT NULL COMMENT '用户id',
+  `user_id` int(0) UNIQUE NOT NULL COMMENT '用户id',
   `like_num` int(0) NULL DEFAULT 0 COMMENT '用户获赞',
   `fans_num` int(0) NULL DEFAULT 0 COMMENT '用户粉丝数',
   `comment_num` int(0) NULL DEFAULT 0 COMMENT '用户评论数',

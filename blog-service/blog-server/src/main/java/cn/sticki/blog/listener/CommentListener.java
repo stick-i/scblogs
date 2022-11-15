@@ -49,9 +49,9 @@ public class CommentListener {
 		log.debug("{} 评论数量+1", comment.getBlogId());
 		blogGeneralMapper.increaseCommentNum(comment.getBlogId());
 		// 博客热度加 3
-		rankService.addRankHotScore(comment.getBlogId(), 3d);
+		rankService.updateRankHotScore(comment.getBlogId(), 3d);
 		// 作者热度加 3
-		rankService.addRankAuthorScore(comment.getBlogId(), 3d);
+		rankService.updateRankAuthorScore(comment.getBlogId(), 3d);
 
 	}
 
@@ -69,6 +69,9 @@ public class CommentListener {
 		// 减少博客的评论数量
 		log.debug("{} 评论数量-1", comment.getBlogId());
 		blogGeneralMapper.decreaseCommentNum(comment.getBlogId());
+		// 博客和作者热度 减少
+		rankService.updateRankHotScore(comment.getBlogId(), -3d);
+		rankService.updateRankAuthorScore(comment.getBlogId(), -3d);
 	}
 
 }

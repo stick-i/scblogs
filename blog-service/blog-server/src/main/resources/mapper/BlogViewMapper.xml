@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.sticki.blog.mapper.BlogViewMapper">
+
+	<select id="selectBlogViewsByUserIds" resultType="cn.sticki.blog.pojo.domain.BlogView">
+		SELECT
+		author_id,
+		sum( view_num ) AS viewNum,
+		sum( like_num ) AS likeNum,
+		sum( comment_num ) AS comment_num,
+		sum( collection_num ) AS collection_num
+		FROM
+		blog_view
+		<where>
+			author_id IN
+			<foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+				#{userId}
+			</foreach>
+		</where>
+		GROUP BY
+		author_id
+	</select>
+
+</mapper>

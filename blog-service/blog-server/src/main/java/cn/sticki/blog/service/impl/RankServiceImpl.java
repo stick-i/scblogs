@@ -88,20 +88,18 @@ public class RankServiceImpl implements RankService {
 	public List<RankAuthorVO> getWeekAuthorRank() {
 		//获取上周的周key
 		long weekkey = RankKeyUtils.getWeekKey();
-		// 拿到数据
-		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(RANK_AUTHOR_WEEK_KEY + weekkey, 0, -1);
-		// 进行判断，如果为空返回null
-		if (typedTuples == null || typedTuples.size() == 0) {
-			return null;
-		}
-		// 否则返回封装结果
-		return getRankAuthorVOList(typedTuples);
+		return getAuthorRank(RANK_AUTHOR_WEEK_KEY + weekkey);
 	}
 
 	@Override
 	public List<RankAuthorVO> getTotalAuthorRank() {
+		return getAuthorRank(RANK_AUTHOR_TOTAL_KEY);
+	}
+
+	@Override
+	public List<RankAuthorVO> getAuthorRank(String key) {
 		// 查询总榜数据库信息
-		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(RANK_AUTHOR_TOTAL_KEY, 0, -1);
+		Set<ZSetOperations.TypedTuple<Integer>> typedTuples = redisTemplate.opsForZSet().reverseRangeWithScores(key, 0, -1);
 		// 进行判断，如果为空返回null
 		if (typedTuples == null || typedTuples.size() == 0) {
 			return null;
@@ -111,7 +109,7 @@ public class RankServiceImpl implements RankService {
 	}
 
 	@Override
-	public void addRankHotScore(Integer blogId, Double score) {
+	public void updateRankHotScore(Integer blogId, Double score) {
 		// 获取dayKey
 		long dayKey = RankKeyUtils.getDayKey();
 		//封装 redis key
@@ -122,12 +120,12 @@ public class RankServiceImpl implements RankService {
 			redisTemplate.opsForZSet().incrementScore(key, blogId, score);
 			redisTemplate.expire(key, RANK_HOT_DAY_TTL, TimeUnit.SECONDS);
 		}
-		//已创建，将对应博客热度增加 3
+		//已创建，修改对应的博客热度
 		redisTemplate.opsForZSet().incrementScore(key, blogId, score);
 	}
 
 	@Override
-	public void addRankAuthorScore(Integer blogId, Double score) {
+	public void updateRankAuthorScore(Integer blogId, Double score) {
 		// 获取作者的id值
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, blogId);
@@ -139,9 +137,11 @@ public class RankServiceImpl implements RankService {
 			redisTemplate.opsForZSet().incrementScore(weekKey, blogId, score);
 			redisTemplate.expire(weekKey, RANK_HOT_WEEK_TTL, TimeUnit.SECONDS);
 		}
+		// 进行判断 加减热度操作
 		redisTemplate.opsForZSet().incrementScore(weekKey, blogId, score);
-		// 作者排行榜总热度 加1
+		// 作者排行榜总热度 加 score
 		redisTemplate.opsForZSet().incrementScore(RANK_AUTHOR_WEEK_KEY, authorId, score);
+
 	}
 
 	/**

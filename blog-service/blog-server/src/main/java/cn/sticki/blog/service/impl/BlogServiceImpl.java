@@ -2,10 +2,7 @@ package cn.sticki.blog.service.impl;
 
 import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.exception.BlogMapperException;
-import cn.sticki.blog.mapper.BlogContentHtmlMapper;
-import cn.sticki.blog.mapper.BlogContentMapper;
-import cn.sticki.blog.mapper.BlogGeneralMapper;
-import cn.sticki.blog.mapper.BlogMapper;
+import cn.sticki.blog.mapper.*;
 import cn.sticki.blog.pojo.bo.BlogCountBO;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
 import cn.sticki.blog.pojo.domain.*;
@@ -51,6 +48,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
 	@Resource
 	private BlogGeneralMapper blogGeneralMapper;
+
+	@Resource
+	private BlogViewMapper blogViewMapper;
 
 	@Resource
 	private ResourceClient resourceClient;
@@ -308,13 +308,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 	@Override
 	public List<BlogUserGeneral> getUserBlogGeneral(Integer[] userIds) {
 		List<BlogUserGeneral> result = new ArrayList<>();
-		for (Integer i : userIds) {
+		// 查询博客数据
+		List<BlogView> blogViews = blogViewMapper.selectBlogViewsByUserIds(userIds);
+		for (BlogView blogView : blogViews) {
 			BlogUserGeneral blogUserGeneral = new BlogUserGeneral();
-			// 查询博客数据
-			BlogGeneral blogGeneral = blogGeneralMapper.selectBlogGeneralByUserId(i);
-			if (blogGeneral != null) {
-				BeanUtils.copyProperties(blogGeneral, blogUserGeneral);
-				blogUserGeneral.setUserId(i);
+			if (blogView != null) {
+				BeanUtils.copyProperties(blogView, blogUserGeneral);
+				blogUserGeneral.setUserId(blogView.getAuthorId());
 				result.add(blogUserGeneral);
 			}
 		}

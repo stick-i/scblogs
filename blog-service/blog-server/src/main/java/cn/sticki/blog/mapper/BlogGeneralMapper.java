@@ -3,7 +3,6 @@ package cn.sticki.blog.mapper;
 import cn.sticki.blog.pojo.domain.BlogGeneral;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 /**
@@ -59,14 +58,5 @@ public interface BlogGeneralMapper extends BaseMapper<BlogGeneral> {
 	 */
 	@Update("update blog_general set comment_num = comment_num - 1 where blog_id = #{blogId};")
 	void decreaseCommentNum(Integer blogId);
-
-	/**
-	 * 查询用户发送的博客各项数据的统计
-	 *
-	 * @param userId 用户id
-	 * @return 统计数据
-	 */
-	@Select("select sum(view_num) as viewNum,sum(like_num) as likeNum,sum(comment_num) as comment_num,sum(collection_num) as collection_num from blog_general where blog_id in (select id from blog where author_id = #{userId});")
-	BlogGeneral selectBlogGeneralByUserId(Integer userId);
 
 }
