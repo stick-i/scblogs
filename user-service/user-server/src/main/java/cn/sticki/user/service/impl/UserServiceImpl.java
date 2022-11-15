@@ -7,13 +7,16 @@ import cn.sticki.message.pojo.MailDTO;
 import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.user.config.UserConfig;
 import cn.sticki.user.exception.SqlHandleException;
+import cn.sticki.user.mapper.UserGeneralMapper;
 import cn.sticki.user.mapper.UserMapper;
 import cn.sticki.user.mapper.UserSafetyMapper;
 import cn.sticki.user.mapper.UserViewMapper;
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserGeneral;
 import cn.sticki.user.pojo.UserSafety;
 import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +47,9 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 	private UserMapper userMapper;
 
 	@Resource
+	private UserGeneralMapper userGeneralMapper;
+
+	@Resource
 	private UserSafetyMapper userSafetyMapper;
 
 	@Resource
@@ -72,7 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 			return user;
 		}
 		// 4. 不存在，查数据库
-		user = userMapper.selectById(id);
+		user = super.getById(id);
 		if (user != null) {
 			// 4.1 查询成功，存入redis
 			objectRedisTemplate.opsForValue().set(key, user, USER_SERVICE_INFO_TTL, TimeUnit.SECONDS);
@@ -97,6 +103,21 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 			userMap.put(user.getId(), user);
 		}
 		return userMap;
+	}
+
+	@Override
+	public Map<Integer, UserGeneral> getUserGeneralListMap(List<Integer> userIdList) {
+		if (userIdList == null || userIdList.size() == 0) {
+			return null;
+		}
+		LambdaQueryWrapper<UserGeneral> wrapper = new LambdaQueryWrapper<>();
+		wrapper.in(UserGeneral::getUserId, userIdList);
+		List<UserGeneral> userGenerals = userGeneralMapper.selectList(wrapper);
+		HashMap<Integer, UserGeneral> userGeneralMap = new HashMap<>(userIdList.size());
+		for (UserGeneral userGeneral : userGenerals) {
+			userGeneralMap.put(userGeneral.getUserId(), userGeneral);
+		}
+		return userGeneralMap;
 	}
 
 	@Override

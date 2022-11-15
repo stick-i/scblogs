@@ -1,10 +1,7 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.BlogContentHtmlMapper;
-import cn.sticki.blog.mapper.BlogViewMapper;
-import cn.sticki.blog.mapper.CollectBlogMapper;
-import cn.sticki.blog.mapper.LikeBlogMapper;
+import cn.sticki.blog.mapper.*;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
@@ -12,7 +9,7 @@ import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogInfoListVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
-import cn.sticki.blog.sdk.BlogReadDTO;
+import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
@@ -61,6 +58,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private RabbitTemplate rabbitTemplate;
+
+	@Resource
+	private BlogMapper blogMapper;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
@@ -150,7 +150,11 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		blog.setAuthor(result.getData());
 
 		// 封装好请求体后，发送到MQ
-		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, new BlogReadDTO(id, userId));
+		BlogOperateDTO blogOperateDTO = new BlogOperateDTO();
+		blogOperateDTO.setBlogId(id);
+		blogOperateDTO.setAuthorId(blogView.getAuthorId());
+		blogOperateDTO.setUserId(userId);
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
 		return blog;
 	}
 

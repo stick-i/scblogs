@@ -1,12 +1,16 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.mapper.BlogViewMapper;
 import cn.sticki.blog.mapper.LikeBlogMapper;
+import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.domain.LikeBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
+import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.LikeBlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,12 +18,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.*;
 
 /**
  * @author 阿杆
@@ -37,8 +44,20 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 	@Resource
 	private BlogViewMapper blogViewMapper;
 
+	@Resource
+	private RabbitTemplate rabbitTemplate;
+
+	@Resource
+	private BlogMapper blogMapper;
+
 	@Override
 	public boolean likeBlog(Integer userId, Integer blogId) {
+		// 进行判断博客是否存在
+		Blog blog = blogMapper.selectById(blogId);
+		if (blog == null) {
+			log.warn("当前博客不存在,blogId={}", blogId);
+			throw new BlogException("当前博客不存在");
+		}
 		// 查询是否已经点赞，若已点赞则取消点赞
 		LambdaQueryWrapper<LikeBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(LikeBlog::getUserId, userId);
@@ -48,6 +67,8 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			// 点赞已经存在
 			likeBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseLikeNum(blogId);
+			// 向rabbitMQ发送 取消点赞消息
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return false;
 		} else {
 			// 点赞不存在
@@ -57,6 +78,8 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			likeBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			likeBlogMapper.insert(likeBlog);
 			blogGeneralMapper.increaseLikeNum(blogId);
+			// 向rabbitMQ发送 点赞消息
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}
 	}

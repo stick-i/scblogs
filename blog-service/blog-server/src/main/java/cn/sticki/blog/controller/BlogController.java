@@ -1,6 +1,7 @@
 package cn.sticki.blog.controller;
 
 import cn.sticki.blog.pojo.domain.Blog;
+import cn.sticki.blog.pojo.domain.BlogUserGeneral;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
 import cn.sticki.blog.service.BlogService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 获取博客信息的相关接口
@@ -91,6 +93,18 @@ public class BlogController {
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, id).eq(Blog::getStatus, BlogStatusType.PUBLISH.getValue());
 		return new RestResult<>(blogService.getOne(wrapper));
+	}
+
+	/**
+	 * 获取用户所发表的博客各项数据
+	 *
+	 * @param userIds 用户id
+	 * @return 用户发表博客数据统计
+	 */
+	@GetMapping("/general")
+	public RestResult<List<BlogUserGeneral>> getBlogUserGeneral(@RequestParam Integer[] userIds) {
+		List<BlogUserGeneral> userBlogGeneral = blogService.getUserBlogGeneral(userIds);
+		return new RestResult<>(userBlogGeneral);
 	}
 
 }
