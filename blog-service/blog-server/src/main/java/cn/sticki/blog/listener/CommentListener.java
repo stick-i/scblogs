@@ -16,6 +16,10 @@ import javax.annotation.Resource;
 import static cn.sticki.comment.sdk.MqConstants.*;
 
 /**
+ * 监听Comment模块的消息
+ * <p>
+ * todo 取消的动作也是需要减分的，参考BlogListener
+ *
  * @author 阿杆
  * @version 1.0
  * @date 2022/6/26 11:52
@@ -49,9 +53,9 @@ public class CommentListener {
 		log.debug("{} 评论数量+1", comment.getBlogId());
 		blogGeneralMapper.increaseCommentNum(comment.getBlogId());
 		// 博客热度加 3
-		rankService.updateRankHotScore(comment.getBlogId(), 3d);
+		rankService.increaseRankHotScore(comment.getBlogId(), 3d);
 		// 作者热度加 3
-		rankService.updateRankAuthorScore(comment.getBlogId(), 3d);
+		rankService.increaseRankAuthorScore(comment.getBlogId(), 3d);
 
 	}
 
@@ -70,8 +74,8 @@ public class CommentListener {
 		log.debug("{} 评论数量-1", comment.getBlogId());
 		blogGeneralMapper.decreaseCommentNum(comment.getBlogId());
 		// 博客和作者热度 减少
-		rankService.updateRankHotScore(comment.getBlogId(), -3d);
-		rankService.updateRankAuthorScore(comment.getBlogId(), -3d);
+		rankService.increaseRankHotScore(comment.getBlogId(), -3d);
+		rankService.increaseRankAuthorScore(comment.getBlogId(), -3d);
 	}
 
 }

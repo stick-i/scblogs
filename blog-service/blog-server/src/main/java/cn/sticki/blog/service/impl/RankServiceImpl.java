@@ -109,7 +109,7 @@ public class RankServiceImpl implements RankService {
 	}
 
 	@Override
-	public void updateRankHotScore(Integer blogId, Double score) {
+	public void increaseRankHotScore(Integer blogId, Double score) {
 		// 获取dayKey
 		long dayKey = RankKeyUtils.getDayKey();
 		//封装 redis key
@@ -125,7 +125,7 @@ public class RankServiceImpl implements RankService {
 	}
 
 	@Override
-	public void updateRankAuthorScore(Integer blogId, Double score) {
+	public void increaseRankAuthorScore(Integer blogId, Double score) {
 		// 获取作者的id值
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, blogId);

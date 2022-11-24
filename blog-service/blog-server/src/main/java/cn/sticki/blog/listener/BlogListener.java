@@ -15,6 +15,10 @@ import javax.annotation.Resource;
 import static cn.sticki.blog.sdk.BlogMqConstants.*;
 
 /**
+ * 监听Blog模块的消息
+ * <p>
+ * todo 取消的动作也是需要减分的，不过这里应该可以优化，直接用通配符匹配这一个系列的key，根据不同的行为进行分数操作
+ *
  * @author durance
  * @version 1.0
  * @date 2022/10/5 14:20
@@ -45,9 +49,9 @@ public class BlogListener {
 	public void seeAddRankHotScore(BlogOperateDTO blogOperateDTO) {
 		log.debug("{} 被浏览热度加1", blogOperateDTO.getBlogId());
 		// 博客热度加 1
-		rankService.updateRankHotScore(blogOperateDTO.getBlogId(), 1d);
+		rankService.increaseRankHotScore(blogOperateDTO.getBlogId(), 1d);
 		// 作者热度加 1
-		rankService.updateRankAuthorScore(blogOperateDTO.getBlogId(), 1d);
+		rankService.increaseRankAuthorScore(blogOperateDTO.getBlogId(), 1d);
 	}
 
 	/**
@@ -63,9 +67,9 @@ public class BlogListener {
 	public void collectAddRankHotScore(BlogOperateDTO blogOperateDTO) {
 		log.debug("{} 被收藏热度加3", blogOperateDTO.getBlogId());
 		// 博客热度加 3
-		rankService.updateRankHotScore(blogOperateDTO.getBlogId(), 3d);
+		rankService.increaseRankHotScore(blogOperateDTO.getBlogId(), 3d);
 		// 作者热度加 3
-		rankService.updateRankAuthorScore(blogOperateDTO.getBlogId(), 3d);
+		rankService.increaseRankAuthorScore(blogOperateDTO.getBlogId(), 3d);
 	}
 
 	/**
@@ -81,9 +85,9 @@ public class BlogListener {
 	public void likeAddRankHotScore(BlogOperateDTO blogOperateDTO) {
 		log.debug("{} 被点赞热度加3", blogOperateDTO.getBlogId());
 		// 执行热度加 3
-		rankService.updateRankHotScore(blogOperateDTO.getBlogId(), 3d);
+		rankService.increaseRankHotScore(blogOperateDTO.getBlogId(), 3d);
 		// 作者热度加 3
-		rankService.updateRankAuthorScore(blogOperateDTO.getBlogId(), 3d);
+		rankService.increaseRankAuthorScore(blogOperateDTO.getBlogId(), 3d);
 	}
 
 }

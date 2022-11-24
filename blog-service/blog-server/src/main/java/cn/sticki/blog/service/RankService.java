@@ -52,14 +52,16 @@ public interface RankService {
 	 * @param blogId 修改热度的博客
 	 * @param score  修改的分数
 	 */
-	void updateRankHotScore(Integer blogId, Double score);
+	void increaseRankHotScore(Integer blogId, Double score);
 
 	/**
 	 * 修改作者排行榜 原力值
+	 * <p>
+	 * todo 这里应该修改参数，blogId改为authorId更贴合该方法
 	 *
 	 * @param blogId 博客id
 	 * @param score  修改的分数
 	 */
-	void updateRankAuthorScore(Integer blogId, Double score);
+	void increaseRankAuthorScore(Integer blogId, Double score);
 
 }
