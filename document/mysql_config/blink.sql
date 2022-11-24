@@ -34,7 +34,7 @@ CREATE TABLE `blink`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blink_general
@@ -51,7 +51,7 @@ CREATE TABLE `blink_general`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for blink_view

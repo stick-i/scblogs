@@ -38,7 +38,7 @@ CREATE TABLE `blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_content
@@ -54,7 +54,7 @@ CREATE TABLE `blog_content`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_content_html
@@ -70,7 +70,7 @@ CREATE TABLE `blog_content_html`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_general
@@ -89,7 +89,7 @@ CREATE TABLE `blog_general`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_set_tag
@@ -106,7 +106,7 @@ CREATE TABLE `blog_set_tag`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for collect_blog
@@ -125,7 +125,7 @@ CREATE TABLE `collect_blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for column
@@ -138,7 +138,7 @@ CREATE TABLE `column`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for config
@@ -154,7 +154,7 @@ CREATE TABLE `config`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for like_blog
@@ -173,7 +173,7 @@ CREATE TABLE `like_blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tag
@@ -192,7 +192,7 @@ CREATE TABLE `tag`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for blog_view

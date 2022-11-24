@@ -30,7 +30,7 @@ CREATE TABLE `config`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -50,7 +50,7 @@ CREATE TABLE `user`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_basic
@@ -72,7 +72,7 @@ CREATE TABLE `user_basic`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_education
@@ -96,7 +96,7 @@ CREATE TABLE `user_education`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_follow
@@ -117,7 +117,7 @@ CREATE TABLE `user_follow`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_general
@@ -159,7 +159,7 @@ CREATE TABLE `user_safety`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for user_view
