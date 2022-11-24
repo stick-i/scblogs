@@ -125,16 +125,17 @@ CREATE TABLE `user_follow`
 DROP TABLE IF EXISTS `user_general`;
 CREATE TABLE `user_general`  (
   `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(0) UNIQUE NOT NULL COMMENT '用户id',
-  `like_num` int(0) NULL DEFAULT 0 COMMENT '用户获赞',
-  `fans_num` int(0) NULL DEFAULT 0 COMMENT '用户粉丝数',
-  `comment_num` int(0) NULL DEFAULT 0 COMMENT '用户评论数',
-  `collect_num` int(0) NULL DEFAULT 0 COMMENT '收藏博客数量',
-  `view_num` int(0) NULL DEFAULT 0 COMMENT '访问数',
-  `blog_num` int(0) NULL DEFAULT 0 COMMENT '用户博客数量',
-  `week_rank` int(0) NULL DEFAULT NULL COMMENT '周排行',
-  `total_rank` int(0) NULL DEFAULT NULL COMMENT '总排行',
-  PRIMARY KEY (`id`) USING BTREE
+  `user_id` int(0) UNSIGNED NOT NULL COMMENT '用户id',
+  `like_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户获赞',
+  `fans_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户粉丝数',
+  `comment_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户评论数',
+  `collect_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '收藏博客数量',
+  `view_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '访问数',
+  `blog_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户博客数量',
+  `week_rank` int(0) UNSIGNED NULL DEFAULT NULL COMMENT '周排行',
+  `total_rank` int(0) UNSIGNED NULL DEFAULT NULL COMMENT '总排行',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_unique_user_general_user_id` (`user_id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
