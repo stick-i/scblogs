@@ -1,5 +1,6 @@
 package cn.sticki.blog.mapper;
 
+import cn.sticki.blog.pojo.domain.BlogUserGeneral;
 import cn.sticki.blog.pojo.domain.BlogView;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +19,6 @@ public interface BlogViewMapper extends BaseMapper<BlogView> {
 	 * @param userIds 用户id集合
 	 * @return 统计数据
 	 */
-	List<BlogView> selectBlogViewsByUserIds(Integer[] userIds);
+	List<BlogUserGeneral> selectBlogViewsByUserIds(Integer[] userIds);
 
 }

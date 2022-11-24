@@ -5,11 +5,11 @@
 
 <mapper namespace="cn.sticki.blog.mapper.BlogViewMapper">
 
-	<select id="selectBlogViewsByUserIds" resultType="cn.sticki.blog.pojo.domain.BlogView">
+	<select id="selectBlogViewsByUserIds" resultType="cn.sticki.blog.pojo.domain.BlogUserGeneral">
 		SELECT
-		author_id,
-		sum( view_num ) AS viewNum,
-		sum( like_num ) AS likeNum,
+		author_id AS user_id,
+		sum( view_num ) AS view_num,
+		sum( like_num ) AS like_num,
 		sum( comment_num ) AS comment_num,
 		sum( collection_num ) AS collection_num
 		FROM
@@ -21,7 +21,7 @@
 			</foreach>
 		</where>
 		GROUP BY
-		author_id
+		user_id
 	</select>
 
 </mapper>
