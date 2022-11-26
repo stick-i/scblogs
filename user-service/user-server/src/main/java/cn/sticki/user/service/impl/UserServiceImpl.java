@@ -2,9 +2,9 @@ package cn.sticki.user.service.impl;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.tool.utils.RandomUtils;
-import cn.sticki.message.client.MessageClient;
-import cn.sticki.message.pojo.MailDTO;
+import cn.sticki.resource.client.MessageClient;
 import cn.sticki.resource.client.ResourceClient;
+import cn.sticki.resource.client.pojo.MailDTO;
 import cn.sticki.user.config.UserConfig;
 import cn.sticki.user.exception.SqlHandleException;
 import cn.sticki.user.mapper.UserGeneralMapper;

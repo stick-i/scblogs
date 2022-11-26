@@ -103,24 +103,22 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			throw new BlogMapperException("博客更新失败，id->" + blog.getId());
 		}
 		// 6. 更新内容 html和md
-		if (blogDTO.getContent() != null) {
-			// 6.1 md内容
-			BlogContent blogContent = new BlogContent();
-			blogContent.setBlogId(blog.getId());
-			blogContent.setContent(blogDTO.getContent());
-			// 6.2 html内容
-			BlogContentHtml blogHtml = new BlogContentHtml();
-			blogHtml.setBlogId(blog.getId());
-			blogHtml.setContent(blogDTO.getContentHtml());
-			// 6.3 更新到数据库
-			boolean success = blogContentMapper.updateById(blogContent) == 1
-					&& blogContentHtmlMapper.updateById(blogHtml) == 1;
-			if (!success) {
-				throw new BlogMapperException("博客内容更新失败，id->" + blog.getId());
-			}
+		// 6.1 md内容
+		BlogContent blogContent = new BlogContent();
+		blogContent.setBlogId(blog.getId());
+		blogContent.setContent(blogDTO.getContent());
+		// 6.2 html内容
+		BlogContentHtml blogHtml = new BlogContentHtml();
+		blogHtml.setBlogId(blog.getId());
+		blogHtml.setContent(blogDTO.getContentHtml());
+		// 6.3 更新到数据库
+		boolean success = blogContentMapper.updateById(blogContent) == 1
+				&& blogContentHtmlMapper.updateById(blogHtml) == 1;
+		if (!success) {
+			throw new BlogMapperException("博客内容更新失败，id->" + blog.getId());
 		}
 		// 7. 发送MQ消息
-		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_UPDATE_KEY, blog);
+		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_UPDATE_KEY, blog);
 	}
 
 	/**
@@ -170,7 +168,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 			throw new BlogMapperException("blog_general insert error!");
 		}
 		// 9. 发送MQ消息
-		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_INSERT_KEY, blog);
+		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_INSERT_KEY, blog);
 	}
 
 	private int ratingBlog(@NotNull String blog) {
@@ -263,7 +261,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 				.set(Blog::getStatus, blog.getStatus()).update();
 		if (isSuccess) {
 			// 发送消息到MQ
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_UPDATE_KEY, blog);
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_UPDATE_KEY, blog);
 		}
 		return isSuccess;
 	}
@@ -291,7 +289,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		boolean isSuccess = removeById(blogId);
 		if (isSuccess) {
 			// 发送删除的消息到MQ
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_DELETE_KEY, blogId);
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_DELETE_KEY, blogId);
 			try {
 				// 删除其他相应的信息表
 				blogGeneralMapper.deleteById(blogId);

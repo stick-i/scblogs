@@ -10,7 +10,7 @@ public class BlogMqConstants {
 	/**
 	 * 博客服务交互机
 	 */
-	public static final String BLOG_EXCHANGE = "blog";
+	public static final String BLOG_TOPIC_EXCHANGE = "blog.topic";
 
 	/**
 	 * 博客插入

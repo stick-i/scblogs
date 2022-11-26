@@ -44,7 +44,7 @@ public class CommentListener {
 	 * @param comment 博客评论传输对象
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = COMMENT_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = COMMENT_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = COMMENT_INCREASE_QUEUE),
 			key = BLOG_COMMENT_INCREASE_KEY
 	))
@@ -65,7 +65,7 @@ public class CommentListener {
 	 * @param comment 博客评论传输对象
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = COMMENT_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = COMMENT_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = COMMENT_DECREASE_QUEUE),
 			key = BLOG_COMMENT_DECREASE_KEY
 	))

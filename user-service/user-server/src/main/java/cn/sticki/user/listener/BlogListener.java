@@ -46,7 +46,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_SEE_QUEUE),
 			key = BLOG_OPERATE_READ_KEY
 	))
@@ -63,7 +63,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_COLLECT_QUEUE),
 			key = BLOG_OPERATE_COLLECT_KEY
 	))
@@ -79,7 +79,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_COLLECT_QUEUE_CANCEL),
 			key = BLOG_OPERATE_COLLECT_CANCEL_KEY
 	))
@@ -95,7 +95,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_LIKE_QUEUE),
 			key = BLOG_OPERATE_LIKE_KEY
 	))
@@ -111,7 +111,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_LIKE_QUEUE_CANCEL),
 			key = BLOG_OPERATE_LIKE_CANCEL_KEY
 	))
@@ -127,7 +127,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_PUBLISH_QUEUE),
 			key = BLOG_INSERT_KEY
 	))
@@ -143,7 +143,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = USER_PUBLISH_QUEUE_CANCEL),
 			key = BLOG_INSERT_KEY
 	))

@@ -1,4 +1,4 @@
-package cn.sticki.message.pojo;
+package cn.sticki.resource.client.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -10,12 +10,7 @@ import java.util.Date;
  * @author 阿杆
  */
 @Data
-public class Mail {
-
-	/**
-	 * 邮件id
-	 */
-	private Integer id;
+public class MailDTO {
 
 	/**
 	 * 邮件发送人

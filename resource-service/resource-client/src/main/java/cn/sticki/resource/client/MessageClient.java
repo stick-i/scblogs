@@ -1,7 +1,8 @@
-package cn.sticki.message.client;
+package cn.sticki.resource.client;
 
 import cn.sticki.common.result.RestResult;
-import cn.sticki.message.pojo.MailDTO;
+import cn.sticki.resource.client.fuse.MessageClientFuse;
+import cn.sticki.resource.client.pojo.MailDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  *
  * @author 阿杆
  */
-@FeignClient(value = "message-server", fallback = MessageClientResolver.class)
+@FeignClient(value = "resource-server", fallback = MessageClientFuse.class, contextId = "MessageClient")
 public interface MessageClient {
 
 	/**

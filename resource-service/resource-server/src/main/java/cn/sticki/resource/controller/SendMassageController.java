@@ -1,8 +1,8 @@
-package cn.sticki.message.controller;
+package cn.sticki.resource.controller;
 
 import cn.sticki.common.result.RestResult;
-import cn.sticki.message.pojo.Mail;
-import cn.sticki.message.service.MailService;
+import cn.sticki.resource.pojo.Mail;
+import cn.sticki.resource.service.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

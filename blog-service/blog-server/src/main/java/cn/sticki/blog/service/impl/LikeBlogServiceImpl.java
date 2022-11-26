@@ -68,7 +68,7 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			likeBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseLikeNum(blogId);
 			// 向rabbitMQ发送 取消点赞消息
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_LIKE_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return false;
 		} else {
 			// 点赞不存在
@@ -79,7 +79,7 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 			likeBlogMapper.insert(likeBlog);
 			blogGeneralMapper.increaseLikeNum(blogId);
 			// 向rabbitMQ发送 点赞消息
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_LIKE_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}
 	}

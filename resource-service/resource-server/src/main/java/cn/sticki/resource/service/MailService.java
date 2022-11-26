@@ -1,6 +1,6 @@
-package cn.sticki.message.service;
+package cn.sticki.resource.service;
 
-import cn.sticki.message.pojo.Mail;
+import cn.sticki.resource.pojo.Mail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

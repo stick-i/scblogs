@@ -1,7 +1,8 @@
-package cn.sticki.message.client;
+package cn.sticki.resource.client.fuse;
 
 import cn.sticki.common.result.RestResult;
-import cn.sticki.message.pojo.MailDTO;
+import cn.sticki.resource.client.MessageClient;
+import cn.sticki.resource.client.pojo.MailDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class MessageClientResolver implements MessageClient {
+public class MessageClientFuse implements MessageClient {
 
 	/**
 	 * 发送邮件
