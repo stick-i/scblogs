@@ -4,8 +4,11 @@ import cn.sticki.blog.pojo.bo.BlogCountBO;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogContent;
+import cn.sticki.blog.pojo.domain.BlogUserGeneral;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author 阿杆
@@ -61,5 +64,13 @@ public interface BlogService extends IService<Blog> {
 	 * @return 操作是否成功
 	 */
 	Boolean completelyDeleteBlog(Integer blogId, Integer userId);
+
+	/**
+	 * 查询用户发表的各博客行为统计
+	 *
+	 * @param userIds 用户id
+	 * @return 博客行为数据
+	 */
+	List<BlogUserGeneral> getUserBlogGeneral(Integer[] userIds);
 
 }

@@ -30,7 +30,7 @@ CREATE TABLE `city`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for image
@@ -49,7 +49,7 @@ CREATE TABLE `image`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for province
@@ -64,7 +64,7 @@ CREATE TABLE `province`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for university
@@ -88,7 +88,7 @@ CREATE TABLE `university`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for university_view

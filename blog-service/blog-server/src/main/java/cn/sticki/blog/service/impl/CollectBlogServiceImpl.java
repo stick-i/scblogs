@@ -1,12 +1,16 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
+import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.mapper.BlogViewMapper;
 import cn.sticki.blog.mapper.CollectBlogMapper;
+import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.domain.CollectBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
+import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.CollectBlogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,6 +18,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +26,8 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.*;
 
 /**
  * @author 阿杆
@@ -39,8 +46,20 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 	@Resource
 	private BlogViewMapper blogViewMapper;
 
+	@Resource
+	private BlogMapper blogMapper;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
+
 	@Override
 	public boolean collectBlog(Integer userId, Integer blogId) {
+		// 进行判断博客是否存在
+		Blog blog = blogMapper.selectById(blogId);
+		if (blog == null) {
+			log.warn("当前博客不存在,blogId={}", blogId);
+			throw new BlogException("当前博客不存在");
+		}
 		LambdaQueryWrapper<CollectBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(CollectBlog::getUserId, userId);
 		wrapper.eq(CollectBlog::getBlogId, blogId);
@@ -49,6 +68,8 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			// 内容已经存在
 			collectBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseCollectionNum(blogId);
+			// 向rabbitMQ发送 取消收藏博客消息
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return false;
 		} else {
 			CollectBlog collectBlog = new CollectBlog();
@@ -57,6 +78,8 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			collectBlog.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			collectBlogMapper.insert(collectBlog);
 			blogGeneralMapper.increaseCollectionNum(blogId);
+			// 向rabbitMQ发送 收藏博客消息
+			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}
 	}

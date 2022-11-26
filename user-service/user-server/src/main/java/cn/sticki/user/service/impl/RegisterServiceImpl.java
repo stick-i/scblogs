@@ -7,9 +7,11 @@ import cn.sticki.message.client.MessageClient;
 import cn.sticki.message.pojo.MailDTO;
 import cn.sticki.user.config.UserConfig;
 import cn.sticki.user.exception.UserException;
+import cn.sticki.user.mapper.UserGeneralMapper;
 import cn.sticki.user.mapper.UserMapper;
 import cn.sticki.user.mapper.UserSafetyMapper;
 import cn.sticki.user.pojo.User;
+import cn.sticki.user.pojo.UserGeneral;
 import cn.sticki.user.pojo.UserRegisterBO;
 import cn.sticki.user.pojo.UserSafety;
 import cn.sticki.user.service.RegisterService;
@@ -55,6 +57,9 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 
 	@Resource
 	private PasswordEncoder passwordEncoder;
+
+	@Resource
+	private UserGeneralMapper userGeneralMapper;
 
 	@Override
 	public RestResult<Object> sendMailVerify(String mailAddress) {
@@ -127,6 +132,12 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		}
 		// 6.从redis中删除验证码
 		stringRedisTemplate.delete(REGISTER_MAIL_CODE_KEY + userRegisterBO.getMail());
+		// 7. 增加用户数据统计表数据
+		UserGeneral userGeneral = new UserGeneral();
+		userGeneral.setUserId(user.getId());
+		if (userGeneralMapper.insert(userGeneral) != 1) {
+			throw new UserException("插入失败");
+		}
 		return RestResult.ok();
 	}
 

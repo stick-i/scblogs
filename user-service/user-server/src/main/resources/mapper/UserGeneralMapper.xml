@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.sticki.user.mapper.UserGeneralMapper">
+
+	<insert id="insertAllUser" parameterType="integer">
+		insert user_general(`user_id`) values
+		<foreach collection="userIds" separator="," item="item">
+			(${item})
+		</foreach>
+	</insert>
+
+	<update id="updateViewNumByUserId" parameterType="integer">
+		update user_general
+		set view_num = view_num+1 where user_id = #{userId}
+	</update>
+
+	<update id="updateLikeNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
+		update user_general
+		set like_num = like_num + #{num} where user_id = #{userId}
+	</update>
+
+	<update id="updateFansNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
+		update user_general
+		set fans_num = fans_num + #{num} where user_id = #{userId}
+	</update>
+
+	<update id="updateCommentNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
+		update user_general
+		set comment_num = comment_num + #{num} where user_id = #{userId}
+	</update>
+
+	<update id="updateCollectNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
+		update user_general
+		set collect_num = collect_num + #{num} where user_id = #{userId}
+	</update>
+
+	<update id="updateBlogNumByUserId" parameterType="cn.sticki.user.pojo.UserGeneral">
+		update user_general
+		set blog_num = blog_num + #{num} where user_id = #{userId}
+	</update>
+
+</mapper>
