@@ -82,7 +82,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 			return RestResult.fail("该邮箱已被注册");
 		}
 		// 4.满足条件，生成验证码
-		String code = RandomUtils.generator(6);
+		String code = RandomUtils.randomNumber(6).toString();
 		// 4.1.存入redis
 		stringRedisTemplate.opsForValue().set(key, code, REGISTER_MAIL_CODE_TTL, TimeUnit.SECONDS);
 		// 5.发送邮件

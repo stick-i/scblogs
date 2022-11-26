@@ -1,5 +1,6 @@
 package cn.sticki.resource.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
@@ -36,6 +37,7 @@ public class University {
 	/**
 	 * 办学层次（1本科，2专科）
 	 */
+	@TableField("`rank`")
 	Integer rank;
 
 	/**
