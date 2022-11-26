@@ -2,6 +2,7 @@ package cn.sticki.user.client;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.dto.UserDTO;
+import cn.sticki.user.dto.UserGeneralDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -62,6 +63,18 @@ public class UserClientResolver implements UserClient {
 	@Override
 	public RestResult<List<Integer>> getFollowIdList(Integer userId) {
 		log.error("User 服务异常：getFollowIdList 请求失败");
+		return RestResult.fail("request fail");
+	}
+
+	/**
+	 * 批量查询用户各项数据统计数据
+	 *
+	 * @param userIdList 用户id列表
+	 * @return 批量用户统计数据
+	 */
+	@Override
+	public RestResult<Map<Integer, UserGeneralDTO>> getUserGeneralList(List<Integer> userIdList) {
+		log.error("User 服务异常：getUserGeneralList 请求失败");
 		return RestResult.fail("request fail");
 	}
 

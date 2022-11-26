@@ -9,6 +9,7 @@ import cn.sticki.comment.pojo.Comment;
 import cn.sticki.comment.pojo.CommentBO;
 import cn.sticki.comment.pojo.CommentListVO;
 import cn.sticki.comment.pojo.CommentVO;
+import cn.sticki.comment.sdk.CommentDTO;
 import cn.sticki.comment.service.CommentService;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.client.UserClient;
@@ -50,6 +51,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 	public void create(Comment comment) {
 		// 检查博客是否存在，检查父评论id是否在该博客下
 		boolean exists = false;
+		// 博客评论的博客信息
+		RestResult<BlogDTO> result = null;
 		if (comment.getParentId() != null) {
 			// 判断博客id和父评论id是否正确
 			LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
@@ -63,7 +66,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 			}
 		} else {
 			// 根据id判断博客是否存在
-			RestResult<BlogDTO> result = blogClient.getBlogInfo(comment.getBlogId());
+			result = blogClient.getBlogInfo(comment.getBlogId());
 			exists = result.getStatus() && result.getData() != null;
 		}
 		if (!exists) {
@@ -73,7 +76,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		commentMapper.insert(comment);
 		// 发送消息：博客评论数增加
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, comment.getBlogId());
+		CommentDTO commentDTO = new CommentDTO();
+		commentDTO.setBlogId(comment.getBlogId());
+		commentDTO.setContent(comment.getContent());
+		commentDTO.setUserId(comment.getUserId());
+		// noinspection ConstantConditions
+		commentDTO.setAuthorId(result.getData().getAuthorId());
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, commentDTO);
+
 		log.info("博客评论增加，blogId={},commentId={}", comment.getBlogId(), comment.getId());
 	}
 
@@ -88,8 +98,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		}
 		// 2.2 存在，删除评论
 		commentMapper.deleteById(commentId);
-		// 3. 发送消息，减少评论数量
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, comment.getBlogId());
+		// 3. 查询博客作者id，发送消息，减少评论数量
+		RestResult<BlogDTO> result = blogClient.getBlogInfo(comment.getBlogId());
+		// 封装评论对象发送消息
+		CommentDTO commentDTO = new CommentDTO();
+		commentDTO.setAuthorId(result.getData().getAuthorId());
+		commentDTO.setUserId(userId);
+		commentDTO.setBlogId(comment.getBlogId());
+		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, commentDTO);
 	}
 
 	@Override

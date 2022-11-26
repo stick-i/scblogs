@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,21 +85,10 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public RestResult<Object> saveBlog(BlogSaveBO blog, MultipartFile coverImage, @RequestHeader Integer id) {
+	public RestResult<Object> saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage, @RequestHeader Integer id) {
+		// 设置其他参数
 		blog.setCoverImageFile(coverImage);
 		blog.setAuthorId(id);
-		// 如果为新增博客，则需要全部参数
-		if (blog.getId() == null && (blog.getContent() == null || blog.getTitle() == null || blog.getDescription() == null || blog.getStatus() == null)) {
-			return new RestResult<>(400, "参数异常");
-		}
-		// 如果是修改博客，则需要有至少一个参数
-		if (blog.getId() != null && blog.getContent() == null && blog.getTitle() == null && blog.getDescription() == null && blog.getStatus() == null) {
-			return new RestResult<>(400, "参数异常");
-		}
-		// html 和 md要不都为null，要不都不为null
-		if ((blog.getContent() == null) != (blog.getContentHtml() == null)) {
-			return new RestResult<>(400, "参数异常");
-		}
 		// 检查封面图
 		if (FileUtils.isNotEmpty(blog.getCoverImageFile())) {
 			FileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);

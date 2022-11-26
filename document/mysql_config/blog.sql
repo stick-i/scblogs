@@ -31,6 +31,7 @@ CREATE TABLE `blog`
     `release_time`  datetime                                                      NULL     DEFAULT NULL COMMENT '发表时间',
     `modified_time` datetime                                                      NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `status`        int(11) UNSIGNED                                              NOT NULL COMMENT '发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）',
+    `write_type`    int(11) UNSIGNED                                              NOT NULL COMMENT '博客创作类型：1. 原创; 2. 转载',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `author_id` (`author_id`) USING BTREE,
     INDEX `school_code` (`school_code`) USING BTREE
@@ -38,7 +39,7 @@ CREATE TABLE `blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_content
@@ -54,7 +55,7 @@ CREATE TABLE `blog_content`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_content_html
@@ -70,7 +71,7 @@ CREATE TABLE `blog_content_html`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_general
@@ -89,7 +90,7 @@ CREATE TABLE `blog_general`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_set_tag
@@ -106,7 +107,7 @@ CREATE TABLE `blog_set_tag`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for collect_blog
@@ -125,7 +126,7 @@ CREATE TABLE `collect_blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for column
@@ -138,7 +139,7 @@ CREATE TABLE `column`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for config
@@ -154,7 +155,7 @@ CREATE TABLE `config`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Compact;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for like_blog
@@ -173,7 +174,7 @@ CREATE TABLE `like_blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tag
@@ -192,7 +193,7 @@ CREATE TABLE `tag`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = COMPACT;
+  ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for blog_view
@@ -209,6 +210,7 @@ select `blog`.`id`                                     AS `id`,
        `blog`.`release_time`                           AS `release_time`,
        `blog`.`modified_time`                          AS `modified_time`,
        `blog`.`status`                                 AS `status`,
+       `blog`.`write_type`                             AS `write_type`,
        `blog_general`.`view_num`                       AS `view_num`,
        `blog_general`.`like_num`                       AS `like_num`,
        `blog_general`.`comment_num`                    AS `comment_num`,

@@ -1,10 +1,7 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.BlogContentHtmlMapper;
-import cn.sticki.blog.mapper.BlogViewMapper;
-import cn.sticki.blog.mapper.CollectBlogMapper;
-import cn.sticki.blog.mapper.LikeBlogMapper;
+import cn.sticki.blog.mapper.*;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
@@ -12,6 +9,7 @@ import cn.sticki.blog.pojo.domain.BlogView;
 import cn.sticki.blog.pojo.vo.BlogContentVO;
 import cn.sticki.blog.pojo.vo.BlogInfoListVO;
 import cn.sticki.blog.pojo.vo.BlogStatusListVO;
+import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
@@ -23,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_READ_KEY;
 
 /**
  * @author 阿杆
@@ -53,6 +55,12 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private UserClient userClient;
+
+	@Resource
+	private RabbitTemplate rabbitTemplate;
+
+	@Resource
+	private BlogMapper blogMapper;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
@@ -104,7 +112,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Override
 	public Map<Integer, ActionStatusBO> getBlogActionStatus(Integer userId, Integer... blogIds) {
-		HashMap<Integer, ActionStatusBO> map = new HashMap<>();
+		HashMap<Integer, ActionStatusBO> map = new HashMap<>(blogIds.length);
 		// 空列表不查数据，会报错
 		if (blogIds.length == 0) {
 			return map;
@@ -140,6 +148,13 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		// 博客作者信息
 		RestResult<UserDTO> result = userClient.getByUserId(blogView.getAuthorId());
 		blog.setAuthor(result.getData());
+
+		// 封装好请求体后，发送到MQ
+		BlogOperateDTO blogOperateDTO = new BlogOperateDTO();
+		blogOperateDTO.setBlogId(id);
+		blogOperateDTO.setAuthorId(blogView.getAuthorId());
+		blogOperateDTO.setUserId(userId);
+		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
 		return blog;
 	}
 

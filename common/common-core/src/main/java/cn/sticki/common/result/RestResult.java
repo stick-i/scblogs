@@ -75,6 +75,10 @@ public class RestResult<T> implements Serializable {
 		return new RestResult<>(200, "success", data, true);
 	}
 
+	public static <T> RestResult<T> ok(T data, String message) {
+		return new RestResult<>(200, message, data, false);
+	}
+
 	public static <T> RestResult<T> fail() {
 		return new RestResult<>(400, "fail", null, false);
 	}
@@ -90,4 +94,5 @@ public class RestResult<T> implements Serializable {
 	public static <T> RestResult<T> notFound() {
 		return new RestResult<>(404, "NOT FOUND");
 	}
+
 }
