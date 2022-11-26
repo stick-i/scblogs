@@ -82,7 +82,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		commentDTO.setUserId(comment.getUserId());
 		// noinspection ConstantConditions
 		commentDTO.setAuthorId(result.getData().getAuthorId());
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, commentDTO);
+		rabbitTemplate.convertAndSend(COMMENT_TOPIC_EXCHANGE, BLOG_COMMENT_INCREASE_KEY, commentDTO);
 
 		log.info("博客评论增加，blogId={},commentId={}", comment.getBlogId(), comment.getId());
 	}
@@ -105,7 +105,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		commentDTO.setAuthorId(result.getData().getAuthorId());
 		commentDTO.setUserId(userId);
 		commentDTO.setBlogId(comment.getBlogId());
-		rabbitTemplate.convertAndSend(COMMENT_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, commentDTO);
+		rabbitTemplate.convertAndSend(COMMENT_TOPIC_EXCHANGE, BLOG_COMMENT_DECREASE_KEY, commentDTO);
 	}
 
 	@Override

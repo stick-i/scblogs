@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  *
  * @author 阿杆
  */
-@FeignClient(value = "resource-server", fallback = MessageClientFuse.class)
+@FeignClient(value = "resource-server", fallback = MessageClientFuse.class, contextId = "MessageClient")
 public interface MessageClient {
 
 	/**
