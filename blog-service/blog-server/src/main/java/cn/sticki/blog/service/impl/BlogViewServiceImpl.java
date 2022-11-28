@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_EXCHANGE;
 import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_READ_KEY;
+import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_TOPIC_EXCHANGE;
 
 /**
  * @author 阿杆
@@ -154,7 +154,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		blogOperateDTO.setBlogId(id);
 		blogOperateDTO.setAuthorId(blogView.getAuthorId());
 		blogOperateDTO.setUserId(userId);
-		rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
+		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
 		return blog;
 	}
 
