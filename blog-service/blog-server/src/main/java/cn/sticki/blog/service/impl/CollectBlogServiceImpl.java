@@ -1,7 +1,6 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.exception.BlogException;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
 import cn.sticki.blog.mapper.BlogMapper;
 import cn.sticki.blog.mapper.BlogViewMapper;
@@ -12,6 +11,7 @@ import cn.sticki.blog.pojo.domain.CollectBlog;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.CollectBlogService;
+import cn.sticki.common.exception.BusinessException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -57,8 +57,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 		// 进行判断博客是否存在
 		Blog blog = blogMapper.selectById(blogId);
 		if (blog == null) {
-			log.warn("当前博客不存在,blogId={}", blogId);
-			throw new BlogException("当前博客不存在");
+			throw new BusinessException("当前博客不存在");
 		}
 		LambdaQueryWrapper<CollectBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(CollectBlog::getUserId, userId);

@@ -12,7 +12,8 @@ package cn.sticki.common.exception;
 public class BusinessException extends BaseException {
 
 	public BusinessException() {
-		super();
+		// 业务异常兜底提示信息
+		super("操作异常");
 	}
 
 	public BusinessException(String message) {

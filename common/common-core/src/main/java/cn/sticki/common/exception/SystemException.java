@@ -12,7 +12,7 @@ package cn.sticki.common.exception;
 public class SystemException extends BaseException {
 
 	public SystemException() {
-		super();
+		super("系统异常");
 	}
 
 	public SystemException(String message) {

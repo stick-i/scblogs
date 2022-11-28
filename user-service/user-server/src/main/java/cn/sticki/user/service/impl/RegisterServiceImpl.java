@@ -1,12 +1,12 @@
 package cn.sticki.user.service.impl;
 
+import cn.sticki.common.exception.MapperException;
 import cn.sticki.common.regex.RegexUtils;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.tool.utils.RandomUtils;
 import cn.sticki.resource.client.MessageClient;
 import cn.sticki.resource.client.pojo.MailDTO;
 import cn.sticki.user.config.UserConfig;
-import cn.sticki.user.exception.UserException;
 import cn.sticki.user.mapper.UserGeneralMapper;
 import cn.sticki.user.mapper.UserMapper;
 import cn.sticki.user.mapper.UserSafetyMapper;
@@ -119,7 +119,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		user.setAvatarUrl(UserConfig.DefaultAvatar);
 		user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 		if (userMapper.insert(user) != 1) {
-			throw new UserException("注册失败，信息异常");
+			throw new MapperException("注册失败，信息异常", user);
 		}
 		log.info("新用户注册：id->{}", user.getId());
 		UserSafety userSafety = new UserSafety();
@@ -128,7 +128,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		// 5. 密码加密后再存入数据库
 		userSafety.setPassword(passwordEncoder.encode(userRegisterBO.getPassword()));
 		if (userSafetyMapper.insert(userSafety) != 1) {
-			throw new UserException("注册失败，信息异常");
+			throw new MapperException("注册失败，信息异常", userSafety);
 		}
 		// 6.从redis中删除验证码
 		stringRedisTemplate.delete(REGISTER_MAIL_CODE_KEY + userRegisterBO.getMail());
@@ -136,7 +136,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		UserGeneral userGeneral = new UserGeneral();
 		userGeneral.setUserId(user.getId());
 		if (userGeneralMapper.insert(userGeneral) != 1) {
-			throw new UserException("插入失败");
+			throw new MapperException("注册失败，信息异常", userGeneral);
 		}
 		return RestResult.ok();
 	}

@@ -1,9 +1,9 @@
 package cn.sticki.comment.controller;
 
-import cn.sticki.comment.exception.CommentException;
 import cn.sticki.comment.pojo.Comment;
 import cn.sticki.comment.pojo.CommentListVO;
 import cn.sticki.comment.service.CommentService;
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class CommentController {
 	@PostMapping
 	public RestResult<Object> createComment(@RequestBody Comment comment, @RequestHeader(value = "id") Integer id) {
 		if (comment.getBlogId() == null || comment.getContent() == null) {
-			throw new CommentException();
+			throw new BusinessException();
 		}
 		comment.setUserId(id);
 		commentService.create(comment);

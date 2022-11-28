@@ -1,13 +1,13 @@
 package cn.sticki.blog.service.impl;
 
-import cn.sticki.blog.exception.BlogException;
-import cn.sticki.blog.exception.BlogMapperException;
 import cn.sticki.blog.mapper.*;
 import cn.sticki.blog.pojo.bo.BlogCountBO;
 import cn.sticki.blog.pojo.bo.BlogSaveBO;
 import cn.sticki.blog.pojo.domain.*;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.type.BlogStatusType;
+import cn.sticki.common.exception.BusinessException;
+import cn.sticki.common.exception.MapperException;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.resource.utils.FileUtils;
@@ -75,7 +75,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		if (originalBlog == null) {
 			// 3.1 身份核实失败，拒绝操作
 			log.warn("blogId is error,refuse update,id->{}", blogDTO.getId());
-			throw new BlogException("非法修改他人博客");
+			throw new BusinessException("非法修改他人博客");
 		}
 		// 3. 核实通过，整理数据
 		Blog blog = new Blog();
@@ -100,7 +100,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		blog.setModifiedTime(nowTimestamp);
 		// 5.4 更新数据库
 		if (blogMapper.updateById(blog) != 1) {
-			throw new BlogMapperException("博客更新失败，id->" + blog.getId());
+			throw new MapperException("博客更新失败", "id->" + blog.getId());
 		}
 		// 6. 更新内容 html和md
 		// 6.1 md内容
@@ -115,7 +115,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		boolean success = blogContentMapper.updateById(blogContent) == 1
 				&& blogContentHtmlMapper.updateById(blogHtml) == 1;
 		if (!success) {
-			throw new BlogMapperException("博客内容更新失败，id->" + blog.getId());
+			throw new MapperException("博客内容更新失败", "id->" + blog.getId());
 		}
 		// 7. 发送MQ消息
 		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_UPDATE_KEY, blog);
@@ -144,7 +144,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		}
 		// 4. 插入数据库
 		if (blogMapper.insert(blog) != 1) {
-			throw new BlogMapperException();
+			throw new MapperException("新增博客失败", blog);
 		}
 		log.debug("insert blog success,id->{}", blog.getId());
 		// 5. 新建博客内容
@@ -157,7 +157,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		blogHtml.setContent(blogDTO.getContentHtml());
 		// 6. 插入博客内容数据
 		if (blogContentMapper.insert(blogContent) != 1 || blogContentHtmlMapper.insert(blogHtml) != 1) {
-			throw new BlogMapperException("content insert error!");
+			throw new MapperException("新增博客失败", "content insert error!");
 		}
 		// 7. 插入博客浏览量、收藏量、评分等数据
 		BlogGeneral blogGeneral = new BlogGeneral();
@@ -165,7 +165,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		// 8. 设置初始评分
 		blogGeneral.setScore(ratingBlog(blogDTO.getContent()));
 		if (blogGeneralMapper.insert(blogGeneral) != 1) {
-			throw new BlogMapperException("blog_general insert error!");
+			throw new MapperException("新增博客失败", "blog_general insert error!");
 		}
 		// 9. 发送MQ消息
 		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_INSERT_KEY, blog);
@@ -247,7 +247,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		Blog blog = getById(blogId);
 		// 权限校验
 		if (blog == null || !blog.getAuthorId().equals(userId)) {
-			throw new BlogException("非法删除他人博客");
+			throw new BusinessException("非法删除他人博客");
 		}
 		// 判断博客当前状态,是否已经是存在回收站里了
 		if (BlogStatusType.DELETED.getValue().equals(blog.getStatus())) {
@@ -278,7 +278,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 		Blog blog = getById(blogId);
 		// 权限校验，博客不是属于该用户
 		if (blog == null || !blog.getAuthorId().equals(userId)) {
-			throw new BlogException("非法删除他人博客");
+			throw new BusinessException("非法删除他人博客");
 		}
 		// 判断博客当前状态,是否已经是存在回收站里了
 		if (!BlogStatusType.DELETED.getValue().equals(blog.getStatus())) {
