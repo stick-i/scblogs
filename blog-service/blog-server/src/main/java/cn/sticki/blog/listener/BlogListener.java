@@ -42,7 +42,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = SEE_RANK_QUEUE),
 			key = BLOG_OPERATE_READ_KEY
 	))
@@ -60,7 +60,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = COLLECT_RANK_QUEUE),
 			key = BLOG_OPERATE_COLLECT_KEY
 	))
@@ -78,7 +78,7 @@ public class BlogListener {
 	 * @param blogOperateDTO 用户操作消息
 	 */
 	@RabbitListener(bindings = @QueueBinding(
-			exchange = @Exchange(name = BLOG_EXCHANGE, type = ExchangeTypes.TOPIC),
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
 			value = @Queue(name = LIKE_RANK_QUEUE),
 			key = BLOG_OPERATE_LIKE_KEY
 	))

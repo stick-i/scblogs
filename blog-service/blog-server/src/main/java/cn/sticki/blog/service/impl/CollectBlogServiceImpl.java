@@ -69,7 +69,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			collectBlogMapper.deleteById(selectOne);
 			blogGeneralMapper.decreaseCollectionNum(blogId);
 			// 向rabbitMQ发送 取消收藏博客消息
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_COLLECT_CANCEL_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return false;
 		} else {
 			CollectBlog collectBlog = new CollectBlog();
@@ -79,7 +79,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 			collectBlogMapper.insert(collectBlog);
 			blogGeneralMapper.increaseCollectionNum(blogId);
 			// 向rabbitMQ发送 收藏博客消息
-			rabbitTemplate.convertAndSend(BLOG_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_COLLECT_KEY, new BlogOperateDTO(blogId, userId, blog.getAuthorId()));
 			return true;
 		}
 	}
