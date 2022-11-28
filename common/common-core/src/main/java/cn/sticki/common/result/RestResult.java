@@ -83,8 +83,12 @@ public class RestResult<T> implements Serializable {
 		return new RestResult<>(400, "fail", null, false);
 	}
 
-	public static <T> RestResult<T> fail(String errorMessage) {
-		return new RestResult<>(400, errorMessage, null, false);
+	public static <T> RestResult<T> fail(String message) {
+		return new RestResult<>(400, message, null, false);
+	}
+
+	public static <T> RestResult<T> fail(String message, Integer code) {
+		return new RestResult<>(code, message, null, false);
 	}
 
 	public static <T> RestResult<T> limit() {
