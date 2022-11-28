@@ -81,8 +81,8 @@
 
 ### 后端技术
 
-|      技术      |       说明       |                       官网                        |
-| :------------: | :--------------: | :-----------------------------------------------: |
+|      技术      |       说明       |                        官网                         |
+| :------------: | :--------------: |:-------------------------------------------------:|
 |   SpringBoot   |     MVC框架      |      https://spring.io/projects/spring-boot       |
 |  SpringCloud   |    微服务框架    |     https://spring.io/projects/spring-cloud/      |
 |    Gateway     |   网关服务框架   |  https://spring.io/projects/spring-cloud-gateway  |
@@ -92,7 +92,7 @@
 |     MySQL      |      数据库      |              https://www.mysql.com/               |
 |     Redis      |    分布式缓存    |                 https://redis.io/                 |
 |    RabbitMQ    |     消息队列     |             https://www.rabbitmq.com/             |
-| Elasticsearch  |     搜索引擎     |      https://github.com/elastic/elasticsear       |
+| Elasticsearch  |     搜索引擎     |     https://github.com/elastic/elasticsearch      |
 |     Docker     |    容器化部署    |              https://www.docker.com/              |
 |    Jenkins     |  自动化部署服务  |              https://www.jenkins.io/              |
 |     Druid      |   数据库连接池   |         https://github.com/alibaba/druid          |
