@@ -22,7 +22,7 @@
   <img src="https://img.shields.io/badge/ElementUI-2.15.6-green" alt=""/>
 </a></p>
 
-## 项目计划
+## 参与贡献
 
 陆续有一些开源贡献者愿意加入到这个项目当中了😁，为了便于大家参与贡献，我将项目计划做了一些整理，主要分为以下几个部分：
 
@@ -36,10 +36,15 @@
 
 另外详细的计划内容已经作为issue发在GitHub上了，访问链接：https://github.com/stick-i/scblogs/issues/64 即可查看，欢迎大家参与噢！
 
+在参与项目贡献前，请先阅读 [CONTRIBUTING](./CONTRIBUTING.md) 这个文件，这很重要。
+
+如果你经常性的无法访问GitHub，这篇文章或许可以帮到你：[GitHub连接不上解决方案](https://juejin.cn/post/7158258577113612302)。
+
 ## 项目地址
 
-项目托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
+项目部署在腾讯云服务器上，代码托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
 
+- 项目主页：http://scblogs.cn/
 - Gitee地址：https://gitee.com/sticki/scblogs
 - GitHub地址：https://github.com/stick-i/scblogs
 - QQ交流群：729931395

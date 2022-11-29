@@ -3,10 +3,10 @@ package cn.sticki.common.web.utils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -17,12 +17,13 @@ import java.util.Date;
  * 互不干扰，执行性能比较高，推荐在高并发的生产环境使用。
  * @Date 2022-01-08 下午 03:20
  */
-public class TimeUtil {
+public class TimeUtils {
 
 	/**
 	 * 时间格式(yyyy-MM-dd)
 	 */
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
+
 	private static final ThreadLocal<DateFormat> DATE_LOCAL = ThreadLocal.withInitial(() -> new SimpleDateFormat(DATE_PATTERN));
 
 	public static DateFormat getDateFormat() {
