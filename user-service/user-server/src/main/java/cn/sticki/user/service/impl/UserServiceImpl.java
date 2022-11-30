@@ -1,12 +1,12 @@
 package cn.sticki.user.service.impl;
 
+import cn.sticki.common.exception.MapperException;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.tool.utils.RandomUtils;
 import cn.sticki.resource.client.MessageClient;
 import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.resource.client.pojo.MailDTO;
 import cn.sticki.user.config.UserConfig;
-import cn.sticki.user.exception.SqlHandleException;
 import cn.sticki.user.mapper.UserGeneralMapper;
 import cn.sticki.user.mapper.UserMapper;
 import cn.sticki.user.mapper.UserSafetyMapper;
@@ -125,7 +125,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		if (userSafetyMapper.deleteById(id) == 1 && userMapper.deleteById(id) == 1) {
 			return true;
 		}
-		throw new SqlHandleException("remove by id error,id->" + id);
+		throw new MapperException("删除失败", "remove by id error,id->" + id);
 	}
 
 	@Override

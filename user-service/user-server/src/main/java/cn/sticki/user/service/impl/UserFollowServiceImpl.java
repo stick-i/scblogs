@@ -1,6 +1,6 @@
 package cn.sticki.user.service.impl;
 
-import cn.sticki.user.exception.UserIllegalException;
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.user.mapper.FansViewMapper;
 import cn.sticki.user.mapper.FollowViewMapper;
 import cn.sticki.user.mapper.UserFollowMapper;
@@ -35,8 +35,7 @@ public class UserFollowServiceImpl extends ServiceImpl<UserFollowMapper, UserFol
 	@Override
 	public boolean follow(int userId, int followId) {
 		if (userId == followId) {
-			log.warn("User follow oneself,userId->{}", userId);
-			throw new UserIllegalException("Error for follow oneself");
+			throw new BusinessException("不能关注自己");
 		}
 		// 关注用户，查询是否存在关注记录，若不存在，则添加记录，若存在，则取消记录
 		UserFollow follow = lambdaQuery().eq(UserFollow::getFansId, userId).eq(UserFollow::getFollowId, followId).one();

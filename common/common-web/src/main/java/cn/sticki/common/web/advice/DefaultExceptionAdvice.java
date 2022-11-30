@@ -1,7 +1,8 @@
 package cn.sticki.common.web.advice;
 
-import cn.sticki.common.exception.BaseBusinessException;
-import cn.sticki.common.exception.ServiceException;
+import cn.sticki.common.exception.BusinessException;
+import cn.sticki.common.exception.MapperException;
+import cn.sticki.common.exception.SystemException;
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -29,79 +30,101 @@ import java.util.List;
 @RestControllerAdvice
 public class DefaultExceptionAdvice {
 
-	// 拦截所有的信息
+	static final String SYSTEM_ERROR_INFO = "服务器故障，请稍后再试";
+
+	private RestResult<Object> fail(Integer code, String message) {
+		return RestResult.fail(message, code);
+	}
+
+	/**
+	 * 异常信息兜底
+	 */
 	@ExceptionHandler(Exception.class)
-	public RestResult<Object> doException(Exception e) {
+	public Object doException(Exception e) {
+		log.error("系统故障：{}", e.getMessage());
 		e.printStackTrace();
-		return new RestResult<>(500, "服务器故障，请稍后再试", null, false);
+		return fail(500, SYSTEM_ERROR_INFO);
+	}
+
+	/**
+	 * 由开发者记录的系统异常
+	 */
+	@ExceptionHandler(SystemException.class)
+	public Object doSystemException(SystemException e) {
+		log.warn("系统异常：{}", e.getMessage());
+		return fail(e.getCode(), SYSTEM_ERROR_INFO);
+	}
+
+	/**
+	 * 数据库相关异常，打印日志时会打印出数据信息，但不会返回给用户
+	 */
+	@ExceptionHandler(MapperException.class)
+	public Object doMapperException(MapperException e) {
+		log.warn("数据库异常,{}: {}", e.getMessage(), e.getData());
+		return fail(e.getCode(), e.getMessage());
+	}
+
+	/**
+	 * 普通业务异常，无需打印日志
+	 */
+	@ExceptionHandler(BusinessException.class)
+	public Object doBusinessException(BusinessException e) {
+		return fail(e.getCode(), e.getMessage());
 	}
 
 	@ExceptionHandler(ConnectException.class)
-	public RestResult<Object> doConnectException(ConnectException e) {
+	public Object doConnectException(ConnectException e) {
 		log.warn("服务连接失败,{}", e.getMessage());
-		return new RestResult<>(501, "服务器连接故障，请联系管理员", null, false);
-	}
-
-	@ExceptionHandler(BaseBusinessException.class)
-	public RestResult<Object> doBaseBusinessException(BaseBusinessException e) {
-		log.warn(e.getMessage());
-		return new RestResult<>(400, "操作异常，请稍后再试", null, false);
-	}
-
-	@ExceptionHandler(ServiceException.class)
-	public RestResult<Object> doServiceException(ServiceException e) {
-		log.warn(e.getMessage());
-		return new RestResult<>(401, e.getMessage(), null, false);
+		return fail(501, "服务器故障，请联系管理员");
 	}
 
 	@ExceptionHandler(ServletException.class)
-	public RestResult<Object> doServletException(Exception e) {
-		log.warn("请求异常,{}", e.getMessage());
-		return new RestResult<>(402, "请求异常", null, false);
+	public Object doServletException(Exception e) {
+		log.info("请求异常,{}", e.getMessage());
+		return fail(402, "请求异常");
 	}
 
 	@ExceptionHandler({HttpRequestMethodNotSupportedException.class, HttpMediaTypeException.class})
-	public RestResult<Object> doHttpRequestMethodNotSupportedException(Exception e) {
-		log.warn("请求方式异常,{}", e.getMessage());
-		return new RestResult<>(402, "请求方式异常", null, false);
+	public Object doHttpRequestMethodNotSupportedException(Exception e) {
+		log.info("请求方式异常,{}", e.getMessage());
+		return fail(402, "请求方式异常");
 	}
 
 	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, TypeMismatchException.class})
-	public RestResult<Object> doIllegalArgumentException(Exception e) {
-		log.warn("参数异常,{}", e.getMessage());
-		return new RestResult<>(402, "参数异常", null, false);
+	public Object doIllegalArgumentException(Exception e) {
+		log.info("参数异常,{}", e.getMessage());
+		return fail(402, "参数异常");
 	}
 
 	@ExceptionHandler(BindException.class)
-	public RestResult<Object> doBindException(BindException e) {
+	public Object doBindException(BindException e) {
 		List<FieldError> allErrors = e.getFieldErrors();
-		StringBuilder info = new StringBuilder();
+		StringBuilder info = new StringBuilder("数据异常:");
 		for (FieldError errorMessage : allErrors) {
 			info.append(errorMessage.getDefaultMessage()).append("; ");
 		}
-		log.info("数据异常,{}", info);
-		return new RestResult<>(402, "数据异常:" + info, null, false);
+		return fail(402, info.toString());
 	}
 
 	@ExceptionHandler(HttpMessageConversionException.class)
-	public RestResult<Object> doHttpMessageConversionException(HttpMessageConversionException e) {
-		log.warn("数据异常,{}", e.getMessage());
-		return new RestResult<>(403, "数据异常", null, false);
+	public Object doHttpMessageConversionException(HttpMessageConversionException e) {
+		log.info("数据异常,{}", e.getMessage());
+		return fail(403, "数据异常");
 	}
 
 	/**
 	 * 访问不存在的页面
 	 */
 	@ExceptionHandler(NoHandlerFoundException.class)
-	public RestResult<Object> doNoHandlerFoundException(Exception e) {
-		log.warn("页面不存在,{}", e.getMessage());
-		return new RestResult<>(404, "操作异常", null, false);
+	public Object doNoHandlerFoundException(Exception e) {
+		log.info("页面不存在,{}", e.getMessage());
+		return fail(404, "操作异常");
 	}
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	public RestResult<Object> doMaxUploadSizeExceededException(Exception e) {
-		log.warn("文件过大,{}", e.getMessage());
-		return new RestResult<>(403, "文件过大", null, false);
+	public Object doMaxUploadSizeExceededException(Exception e) {
+		log.info("文件过大,{}", e.getMessage());
+		return fail(403, "文件过大");
 	}
 
 }

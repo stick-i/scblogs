@@ -1,6 +1,5 @@
 package cn.sticki.blink.service.impl;
 
-import cn.sticki.blink.exception.BlinkException;
 import cn.sticki.blink.mapper.BlinkGeneralMapper;
 import cn.sticki.blink.mapper.BlinkMapper;
 import cn.sticki.blink.pojo.Blink;
@@ -8,6 +7,7 @@ import cn.sticki.blink.pojo.BlinkGeneral;
 import cn.sticki.blink.pojo.SaveBlinkBO;
 import cn.sticki.blink.pojo.UpdateBlinkBO;
 import cn.sticki.blink.service.BlinkService;
+import cn.sticki.common.exception.MapperException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -49,8 +49,7 @@ public class BlinkServiceImpl extends ServiceImpl<BlinkMapper, Blink> implements
 		LambdaQueryWrapper<Blink> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blink::getId, id).eq(Blink::getUserId, userId);
 		if (blinkMapper.delete(wrapper) != 1) {
-			log.warn("动态删除失败，id={},userId={}", id, userId);
-			throw new BlinkException("删除失败");
+			throw new MapperException("动态删除失败", "id -> " + id);
 		}
 		blinkGeneralMapper.deleteById(id);
 	}
@@ -61,8 +60,7 @@ public class BlinkServiceImpl extends ServiceImpl<BlinkMapper, Blink> implements
 		wrapper.eq(Blink::getId, blinkBO.getId()).eq(Blink::getUserId, blinkBO.getUserId());
 		wrapper.set(Blink::getContent, blinkBO.getContent());
 		if (blinkMapper.update(null, wrapper) != 1) {
-			log.warn("动态更新失败，id={},userId={}", blinkBO.getId(), blinkBO.getUserId());
-			throw new BlinkException("更新失败");
+			throw new MapperException("动态更新失败", blinkBO);
 		}
 	}
 

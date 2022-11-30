@@ -22,6 +22,7 @@
 			<groupId>cn.sticki</groupId>
 			<artifactId>common-redis</artifactId>
 			<version>1.0.0</version>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>

@@ -3,7 +3,6 @@ package cn.sticki.comment.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.sticki.blog.client.BlogClient;
 import cn.sticki.blog.dto.BlogDTO;
-import cn.sticki.comment.exception.CommentException;
 import cn.sticki.comment.mapper.CommentMapper;
 import cn.sticki.comment.pojo.Comment;
 import cn.sticki.comment.pojo.CommentBO;
@@ -11,6 +10,7 @@ import cn.sticki.comment.pojo.CommentListVO;
 import cn.sticki.comment.pojo.CommentVO;
 import cn.sticki.comment.sdk.CommentDTO;
 import cn.sticki.comment.service.CommentService;
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
@@ -69,8 +69,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 			result = blogClient.getBlogInfo(comment.getBlogId());
 			exists = result.getStatus() && result.getData() != null;
 		}
+		// todo 优化逻辑
 		if (!exists) {
-			throw new CommentException("数据异常");
+			throw new BusinessException("数据异常");
 		}
 		comment.setId(null);
 		comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -93,8 +94,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		Comment comment = lambdaQuery().eq(Comment::getUserId, userId).eq(Comment::getId, commentId).one();
 		if (comment == null) {
 			// 2.1 不存在，抛出异常
-			log.warn("非法删除评论，id->{},commentId->{}", userId, commentId);
-			throw new CommentException("非法删除评论");
+			throw new BusinessException("非法删除评论");
 		}
 		// 2.2 存在，删除评论
 		commentMapper.deleteById(commentId);
