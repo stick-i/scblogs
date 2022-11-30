@@ -11,7 +11,8 @@
 </p>
 <p align="center">
 <a target="_blank" href="https://github.com/stick-i/scblogs">
-  <img src="https://img.shields.io/hexpm/l/plug.svg" alt=""/>
+  
+  <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
   <img src="https://img.shields.io/github/stars/stick-i/scblogs" alt=""/>
   <img src="https://img.shields.io/github/forks/stick-i/scblogs" alt=""/>
 <br>
