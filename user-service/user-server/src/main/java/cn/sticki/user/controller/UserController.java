@@ -2,6 +2,7 @@ package cn.sticki.user.controller;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.anno.RequestLimit;
+import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
@@ -38,8 +39,9 @@ public class UserController {
 	 */
 	@GetMapping
 	@RequestLimit
-	public User getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
+	public User getByUserId(Integer id) {
 		Integer getId = null;
+		Integer userId = AuthHelper.getCurrentUserId();
 		if (id == null && userId != null) {
 			getId = userId;
 		} else if (id != null) {
