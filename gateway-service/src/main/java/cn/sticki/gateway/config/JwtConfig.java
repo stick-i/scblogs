@@ -26,12 +26,6 @@ public class JwtConfig {
 	public static Integer expiration;
 
 	/**
-	 * 需要认证的接口
-	 * 直接从网关过滤
-	 */
-	public static String matchers;
-
-	/**
 	 * http头token名
 	 */
 	public static String headerName;
@@ -46,10 +40,6 @@ public class JwtConfig {
 
 	public void setExpiration(Integer expiration) {
 		JwtConfig.expiration = expiration;
-	}
-
-	public void setMatchers(String matchers) {
-		JwtConfig.matchers = matchers;
 	}
 
 	public void setHeaderName(String headerName) {

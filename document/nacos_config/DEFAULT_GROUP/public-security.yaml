@@ -1,6 +1,8 @@
 security:
   config:
-    identity: id
+    identity-header: user-id
+    # 配置需要认证的接口，中间不能加空格
+    must-auth-url: /blog-console/**
   # JWT配置
   jwt:
     # 密匙KEY
@@ -11,6 +13,3 @@ security:
     issuer: "scblogs.cn"
     # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
     expiration: 604800
-    # 配置需要认证的接口，中间不能加空格
-    matchers: /blog-console/**
-    # matchers: /login/**,/blog/**,/resource/**,/user,/register/**,/comment/list

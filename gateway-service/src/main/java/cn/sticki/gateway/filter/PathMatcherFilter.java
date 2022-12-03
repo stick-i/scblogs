@@ -1,6 +1,5 @@
 package cn.sticki.gateway.filter;
 
-import cn.sticki.gateway.config.JwtConfig;
 import cn.sticki.gateway.config.SecurityConfig;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -25,10 +24,10 @@ public class PathMatcherFilter implements GlobalFilter, Ordered {
 		String path = request.getPath().toString();
 		AntPathMatcher antPathMatcher = new AntPathMatcher();
 		// 如果是需要登录的接口，在此进行判断并拦截
-		for (String pattern : JwtConfig.matchers.split(",")) {
+		for (String pattern : SecurityConfig.mustAuthUrl.split(",")) {
 			if (antPathMatcher.match(pattern, path)) {
 				// 匹配成功，判断是否登录
-				if (request.getHeaders().getFirst(SecurityConfig.identity) == null) {
+				if (request.getHeaders().getFirst(SecurityConfig.identityHeader) == null) {
 					// 没有登录，直接拦截
 					exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 					return exchange.getResponse().setComplete();
