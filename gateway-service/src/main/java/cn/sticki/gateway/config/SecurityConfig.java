@@ -10,10 +10,23 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "security.config")
 public class SecurityConfig {
 
-	public static String identity;
+	/**
+	 * 验证身份后用户id存放的 header 字段
+	 */
+	public static String identityHeader;
 
-	public void setIdentity(String identity) {
-		SecurityConfig.identity = identity;
+	/**
+	 * 需要认证的接口
+	 * 直接从网关过滤
+	 */
+	public static String mustAuthUrl;
+
+	public void setIdentityHeader(String identityHeader) {
+		SecurityConfig.identityHeader = identityHeader;
+	}
+
+	public void setMustAuthUrl(String mustAuthUrl) {
+		SecurityConfig.mustAuthUrl = mustAuthUrl;
 	}
 
 }

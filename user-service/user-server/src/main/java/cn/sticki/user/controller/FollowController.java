@@ -1,6 +1,7 @@
 package cn.sticki.user.controller;
 
 import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.user.pojo.FansViewListVO;
 import cn.sticki.user.pojo.FollowViewListVO;
 import cn.sticki.user.service.UserFollowService;
@@ -36,7 +37,8 @@ public class FollowController {
 	 * @return 关注列表数据
 	 */
 	@GetMapping("/follow")
-	public RestResult<FollowViewListVO> getFollowList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+	public RestResult<FollowViewListVO> getFollowList(@RequestParam(defaultValue = "1") int page) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		FollowViewListVO listVO = userFollowService.getFollowList(id, page, pageSize);
 		return new RestResult<>(listVO);
 	}
@@ -48,7 +50,8 @@ public class FollowController {
 	 * @return 粉丝列表数据
 	 */
 	@GetMapping("/fans")
-	public RestResult<FansViewListVO> getFansList(@RequestParam(defaultValue = "1") int page, @RequestHeader Integer id) {
+	public RestResult<FansViewListVO> getFansList(@RequestParam(defaultValue = "1") int page) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		FansViewListVO listVO = userFollowService.getFansList(id, page, pageSize);
 		return new RestResult<>(listVO);
 	}
@@ -60,7 +63,8 @@ public class FollowController {
 	 * @return 关注状态，若成功则为true，取关则为false
 	 */
 	@PostMapping("/follow")
-	public RestResult<Object> doFollow(@NotNull Integer followId, @RequestHeader Integer id) {
+	public RestResult<Object> doFollow(@NotNull Integer followId) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		try {
 			boolean result = userFollowService.follow(id, followId);
 			return new RestResult<>(200, "success", result, true);

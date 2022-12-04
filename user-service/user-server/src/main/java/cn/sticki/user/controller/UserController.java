@@ -2,6 +2,7 @@ package cn.sticki.user.controller;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.anno.RequestLimit;
+import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import cn.sticki.user.pojo.User;
@@ -38,8 +39,9 @@ public class UserController {
 	 */
 	@GetMapping
 	@RequestLimit
-	public User getByUserId(Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
+	public User getByUserId(Integer id) {
 		Integer getId = null;
+		Integer userId = AuthHelper.getCurrentUserId();
 		if (id == null && userId != null) {
 			getId = userId;
 		} else if (id != null) {
@@ -73,8 +75,9 @@ public class UserController {
 	 * @param nickname 昵称
 	 */
 	@PutMapping("/nickname")
-	public RestResult<Object> updateNickname(@NotNull String nickname, @RequestHeader Integer id) {
-		if (userService.updateNickname(id, nickname)) {
+	public RestResult<Object> updateNickname(@NotNull String nickname) {
+		Integer userId = AuthHelper.getCurrentUserIdOrExit();
+		if (userService.updateNickname(userId, nickname)) {
 			return RestResult.ok();
 		}
 		return RestResult.fail();
@@ -86,7 +89,8 @@ public class UserController {
 	 * @param avatarFile 文件流
 	 */
 	@PutMapping("/avatar")
-	public RestResult<String> updateAvatar(@NotNull MultipartFile avatarFile, @RequestHeader Integer id) {
+	public RestResult<String> updateAvatar(@NotNull MultipartFile avatarFile) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		log.debug("updateAvatar,fileSize->{}", avatarFile.getSize());
 		// 检查文件，小于1Mib ,仅支持JPEG和PNG
 		FileUtils.checkFile(avatarFile, 1024 * 1024L, FileType.JPEG, FileType.PNG);
@@ -105,7 +109,8 @@ public class UserController {
 	 * @param newPassword 新密码
 	 */
 	@PutMapping("/password")
-	public RestResult<Object> updatePassword(@NotNull String oldPassword, @NotNull String newPassword, @RequestHeader Integer id) {
+	public RestResult<Object> updatePassword(@NotNull String oldPassword, @NotNull String newPassword) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		if (userService.checkPassword(id, oldPassword)) {
 			boolean result = userService.updatePasswordById(id, newPassword);
 			return RestResult.ok(result);
@@ -119,7 +124,8 @@ public class UserController {
 	 * @param code 院校代码
 	 */
 	@PutMapping("/school/code")
-	public RestResult<Object> updateSchoolCode(@NotNull Integer code, @RequestHeader Integer id) {
+	public RestResult<Object> updateSchoolCode(@NotNull Integer code) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		return new RestResult<>(userService.updateSchoolCode(id, code));
 	}
 
@@ -130,7 +136,8 @@ public class UserController {
 	 * @param mailVerify 邮箱验证码
 	 */
 	@PutMapping("/mail")
-	public RestResult<Object> updateMail(@NotNull String mail, @NotNull String mailVerify, @RequestHeader Integer id) {
+	public RestResult<Object> updateMail(@NotNull String mail, @NotNull String mailVerify) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		if (userService.checkMailVerify(id, mailVerify)) {
 			boolean result = userService.updateMail(id, mail);
 			return RestResult.ok(result);
@@ -142,7 +149,8 @@ public class UserController {
 	 * 发送邮箱验证码
 	 */
 	@PostMapping("/mail/send-mail-verify")
-	public RestResult<Object> sendMailVerifyForUpdateMail(@RequestHeader Integer id) {
+	public RestResult<Object> sendMailVerifyForUpdateMail() {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		return userService.sendMailVerify(id);
 	}
 
@@ -150,7 +158,8 @@ public class UserController {
 	 * 删除用户
 	 */
 	@DeleteMapping("/user")
-	public RestResult<Object> delete(@NotNull String password, @RequestHeader Integer id) {
+	public RestResult<Object> delete(@NotNull String password) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		if (!userService.checkPassword(id, password)) {
 			return new RestResult<>(false, "密码错误");
 		} else {

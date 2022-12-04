@@ -26,7 +26,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 		ServerHttpRequest request = exchange.getRequest();
 		// id 存在的情况下，认为用户恶意操作，直接拦截。
 		// 判断token
-		if (request.getHeaders().getFirst(SecurityConfig.identity) != null) {
+		if (request.getHeaders().getFirst(SecurityConfig.identityHeader) != null) {
 			// 拦截请求
 			exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 			return exchange.getResponse().setComplete();
@@ -42,7 +42,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 			}
 			if (object instanceof Integer) {
 				Integer id = (Integer) object;
-				ServerHttpRequest build = exchange.getRequest().mutate().header("id", id.toString()).build();
+				ServerHttpRequest build = exchange.getRequest().mutate().header(SecurityConfig.identityHeader, id.toString()).build();
 				exchange = exchange.mutate().request(build).build();
 			}
 		}
