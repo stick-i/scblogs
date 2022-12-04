@@ -8,6 +8,7 @@ import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.auth.AuthHelper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +40,9 @@ public class BlogController {
 	 * @return 博客列表
 	 */
 	@GetMapping("/list/recommend")
-	public RestResult<BlogStatusListVO> getRecommendBlog(
-			@RequestParam(defaultValue = "1") int page,
-			@RequestHeader(required = false) Integer id) {
+	public RestResult<BlogStatusListVO> getRecommendBlog(@RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,page->{}", page);
+		Integer id = AuthHelper.getCurrentUserId();
 		BlogStatusListVO recommendBlogList = blogViewService.getRecommendBlogList(id, page, pageSize);
 		return new RestResult<>(recommendBlogList);
 	}
@@ -53,9 +53,9 @@ public class BlogController {
 	@GetMapping("/list/new")
 	public RestResult<BlogStatusListVO> getNewBlog(
 			@RequestParam(defaultValue = "1") int page,
-			@RequestHeader(required = false) Integer id,
 			@CookieValue(required = false) Integer schoolCode) {
 		log.debug("searchBlog,page->{}", page);
+		Integer id = AuthHelper.getCurrentUserId();
 		BlogStatusListVO recommendBlogList = blogViewService.getNewBlogList(id, schoolCode, page, pageSize);
 		return new RestResult<>(recommendBlogList);
 	}
@@ -64,10 +64,9 @@ public class BlogController {
 	 * 获取关注用户发表的博客列表，这个必须得登录才行
 	 */
 	@GetMapping("/list/follow")
-	public RestResult<BlogStatusListVO> getFollowBlog(
-			@RequestParam(defaultValue = "1") int page,
-			@RequestHeader Integer id) {
+	public RestResult<BlogStatusListVO> getFollowBlog(@RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,page->{}", page);
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		BlogStatusListVO recommendBlogList = blogViewService.getFollowBlogList(id, page, pageSize);
 		return new RestResult<>(recommendBlogList);
 	}
@@ -78,7 +77,8 @@ public class BlogController {
 	 * @param id 博客id
 	 */
 	@GetMapping("/detail")
-	public RestResult<BlogContentVO> getBlogContentVO(@RequestParam Integer id, @RequestHeader(value = "id", required = false) Integer userId) {
+	public RestResult<BlogContentVO> getBlogContentVO(@RequestParam Integer id) {
+		Integer userId = AuthHelper.getCurrentUserId();
 		BlogContentVO blogContent = blogViewService.getBlogContentHtml(id, userId);
 		return new RestResult<>(blogContent);
 	}

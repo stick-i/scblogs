@@ -7,6 +7,7 @@ import cn.sticki.blink.pojo.UpdateBlinkBO;
 import cn.sticki.blink.service.BlinkService;
 import cn.sticki.blink.service.BlinkViewService;
 import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,8 @@ public class BlinkController {
 	 * @param schoolCode 院校代码，从cookie中获取
 	 */
 	@PostMapping
-	public RestResult<Object> createBlink(@NotNull String content, @RequestHeader Integer id, @CookieValue(required = false) Integer schoolCode) {
+	public RestResult<Object> createBlink(@NotNull String content, @CookieValue(required = false) Integer schoolCode) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		SaveBlinkBO saveBlinkBO = new SaveBlinkBO();
 		saveBlinkBO.setContent(content);
 		saveBlinkBO.setUserId(id);
@@ -62,7 +64,8 @@ public class BlinkController {
 	 * 修改动态内容
 	 */
 	@PutMapping
-	public RestResult<Object> updateBlink(UpdateBlinkBO blinkBO, @RequestHeader Integer id) {
+	public RestResult<Object> updateBlink(UpdateBlinkBO blinkBO) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		blinkBO.setUserId(id);
 		blinkService.update(blinkBO);
 		return new RestResult<>();
@@ -74,7 +77,8 @@ public class BlinkController {
 	 * @param blinkId 动态id
 	 */
 	@DeleteMapping
-	public RestResult<Object> deleteBlink(int blinkId, @RequestHeader Integer id) {
+	public RestResult<Object> deleteBlink(int blinkId) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		blinkService.remove(blinkId, id);
 		return new RestResult<>();
 	}
@@ -97,7 +101,8 @@ public class BlinkController {
 	 * @param page 第几页
 	 */
 	@GetMapping("/list/self")
-	public RestResult<BlinkViewListVO> getSelfList(@RequestParam(defaultValue = "1") Integer page, @RequestHeader Integer id) {
+	public RestResult<BlinkViewListVO> getSelfList(@RequestParam(defaultValue = "1") Integer page) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		BlinkViewListVO viewList = blinkViewService.getSelfList(id, page, PAGE_SIZE);
 		return new RestResult<>(viewList);
 	}

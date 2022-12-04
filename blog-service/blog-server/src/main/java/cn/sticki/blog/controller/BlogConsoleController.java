@@ -8,6 +8,7 @@ import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -57,12 +58,12 @@ public class BlogConsoleController {
 	public RestResult<BlogListConsoleVO> getBlogList(
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "20") int pageSize,
-			@RequestParam(defaultValue = "0") int status,
-			@RequestHeader Integer id) {
+			@RequestParam(defaultValue = "0") int status) {
 		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) {
 			return new RestResult<>(400, "参数异常");
 		}
 		// 获取博客列表
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(BlogView::getAuthorId, id);
 		// 若status为0，则查找显示全部博客，否则查找某部分博客
@@ -70,10 +71,10 @@ public class BlogConsoleController {
 			wrapper.eq(BlogView::getStatus, status);
 		}
 		// 使用mybatis进行分页
-		IPage<BlogView> blogIPage = new Page<>(page, pageSize);
-		blogViewService.page(blogIPage, wrapper);
+		IPage<BlogView> blogPage = new Page<>(page, pageSize);
+		blogViewService.page(blogPage, wrapper);
 		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
-		BeanUtils.copyProperties(blogIPage, BlogListConsoleVO.class);
+		BeanUtils.copyProperties(blogPage, BlogListConsoleVO.class);
 		// 获取博客统计数据
 		blogListConsoleVO.setCount(blogService.getBlogCount(id));
 		return new RestResult<>(blogListConsoleVO);
@@ -85,7 +86,8 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public RestResult<Object> saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage, @RequestHeader Integer id) {
+	public RestResult<Object> saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		// 设置其他参数
 		blog.setCoverImageFile(coverImage);
 		blog.setAuthorId(id);
@@ -103,7 +105,8 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog")
-	public RestResult<Boolean> recoveryBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
+	public RestResult<Boolean> recoveryBlog(@NotNull Integer id) {
+		Integer userId = AuthHelper.getCurrentUserIdOrExit();
 		return new RestResult<>(blogService.deleteBlog(id, userId));
 	}
 
@@ -113,7 +116,8 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog/delete")
-	public RestResult<Boolean> completelyDeleteBlog(@NotNull Integer id, @RequestHeader(value = "id") Integer userId) {
+	public RestResult<Boolean> completelyDeleteBlog(@NotNull Integer id) {
+		Integer userId = AuthHelper.getCurrentUserIdOrExit();
 		Boolean result = blogService.completelyDeleteBlog(id, userId);
 		return new RestResult<>(result);
 	}
@@ -125,7 +129,8 @@ public class BlogConsoleController {
 	 * @return 图片链接
 	 */
 	@PostMapping("/image")
-	public RestResult<String> uploadBlogImg(@NotNull MultipartFile file, @RequestHeader Integer id) {
+	public RestResult<String> uploadBlogImg(@NotNull MultipartFile file) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		log.debug("uploadBlogImg, fileName->{}, userId->{}", file.getOriginalFilename(), id);
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		String url = blogService.uploadImage(file);
@@ -138,7 +143,8 @@ public class BlogConsoleController {
 	 * @param blogId 博客id
 	 */
 	@GetMapping("/content")
-	public RestResult<BlogContent> getBlogContent(@RequestParam Integer blogId, @RequestHeader Integer id) {
+	public RestResult<BlogContent> getBlogContent(@RequestParam Integer blogId) {
+		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		return new RestResult<>(blogService.getBlogContent(blogId, id));
 	}
 
