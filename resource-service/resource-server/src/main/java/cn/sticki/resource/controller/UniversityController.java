@@ -1,6 +1,5 @@
 package cn.sticki.resource.controller;
 
-import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.pojo.City;
 import cn.sticki.resource.pojo.Province;
 import cn.sticki.resource.pojo.University;
@@ -31,8 +30,8 @@ public class UniversityController {
 	 * 获取省份信息
 	 */
 	@GetMapping("/province")
-	public RestResult<List<Province>> getProvinceList() {
-		return new RestResult<>(universityService.getProvinceList());
+	public List<Province> getProvinceList() {
+		return universityService.getProvinceList();
 	}
 
 	/**
@@ -41,8 +40,8 @@ public class UniversityController {
 	 * @param provinceId 省份id
 	 */
 	@GetMapping("/city")
-	public RestResult<List<City>> getCityList(@RequestParam int provinceId) {
-		return new RestResult<>(universityService.getCityList(provinceId));
+	public List<City> getCityList(@RequestParam int provinceId) {
+		return universityService.getCityList(provinceId);
 	}
 
 	/**
@@ -51,8 +50,8 @@ public class UniversityController {
 	 * @param cityId 城市id
 	 */
 	@GetMapping("/university")
-	public RestResult<List<University>> getUniversityList(@RequestParam int cityId) {
-		return new RestResult<>(universityService.getUniversityList(cityId));
+	public List<University> getUniversityList(@RequestParam int cityId) {
+		return universityService.getUniversityList(cityId);
 	}
 
 	/**
@@ -61,8 +60,8 @@ public class UniversityController {
 	 * @param schoolCode 院校代码
 	 */
 	@GetMapping("/university/name")
-	public RestResult<String> getUniversityName(@RequestParam Integer schoolCode) {
-		return new RestResult<>(universityService.getUniversityName(schoolCode));
+	public String getUniversityName(@RequestParam Integer schoolCode) {
+		return universityService.getUniversityName(schoolCode);
 	}
 
 }

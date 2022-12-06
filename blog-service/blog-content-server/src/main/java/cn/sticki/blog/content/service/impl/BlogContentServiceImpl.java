@@ -5,7 +5,6 @@ import cn.sticki.blog.content.pojo.BlogDoc;
 import cn.sticki.blog.content.pojo.BlogListVO;
 import cn.sticki.blog.content.pojo.SearchQuery;
 import cn.sticki.blog.content.service.BlogContentService;
-import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +36,7 @@ public class BlogContentServiceImpl implements BlogContentService {
 	 * @return 搜索到的结果
 	 */
 	@Override
-	public RestResult<BlogListVO> searchBlog(SearchQuery searchQuery) {
+	public BlogListVO searchBlog(SearchQuery searchQuery) {
 		log.debug("searchQuery:{}", searchQuery);
 		// 1. 获取数据
 		SearchPage<BlogDoc> searchPage = blogRepository.findByDescriptiveContent(
@@ -70,7 +69,7 @@ public class BlogContentServiceImpl implements BlogContentService {
 		blogListVO.setCurrent(searchPage.getNumber() + 1);
 		blogListVO.setTotal(searchPage.getTotalElements());
 		blogListVO.setSize(searchQuery.getSize());
-		return RestResult.ok(blogListVO);
+		return blogListVO;
 	}
 
 }

@@ -4,7 +4,6 @@ import cn.sticki.comment.pojo.Comment;
 import cn.sticki.comment.pojo.CommentListVO;
 import cn.sticki.comment.service.CommentService;
 import cn.sticki.common.exception.BusinessException;
-import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +29,13 @@ public class CommentController {
 	 * @param comment 必须传入被评论的博客id和评论内容
 	 */
 	@PostMapping
-	public RestResult<Object> createComment(@RequestBody Comment comment) {
+	public void createComment(@RequestBody Comment comment) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		if (comment.getBlogId() == null || comment.getContent() == null) {
 			throw new BusinessException();
 		}
 		comment.setUserId(id);
 		commentService.create(comment);
-		return new RestResult<>();
 	}
 
 	/**
@@ -46,10 +44,9 @@ public class CommentController {
 	 * @param id 评论id
 	 */
 	@DeleteMapping
-	public RestResult<Object> deleteComment(@RequestParam Integer id) {
+	public void deleteComment(@RequestParam Integer id) {
 		Integer userId = AuthHelper.getCurrentUserIdOrExit();
 		commentService.checkAndDelete(userId, id);
-		return new RestResult<>();
 	}
 
 	/**
@@ -58,9 +55,8 @@ public class CommentController {
 	 * @param blogId 评论的博客id
 	 */
 	@GetMapping("/list")
-	public RestResult<CommentListVO> getCommentList(@RequestParam Integer blogId, @RequestParam Integer page, @RequestParam(defaultValue = "3") Integer pageSize) {
-		CommentListVO commentListVO = commentService.getList(blogId, page, pageSize);
-		return new RestResult<>(commentListVO);
+	public CommentListVO getCommentList(@RequestParam Integer blogId, @RequestParam Integer page, @RequestParam(defaultValue = "3") Integer pageSize) {
+		return commentService.getList(blogId, page, pageSize);
 	}
 
 }

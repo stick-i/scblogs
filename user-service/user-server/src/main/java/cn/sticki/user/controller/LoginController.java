@@ -1,6 +1,6 @@
 package cn.sticki.user.controller;
 
-import cn.sticki.common.result.RestResult;
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.user.config.JwtConfig;
 import cn.sticki.user.pojo.UserLoginBO;
 import cn.sticki.user.service.LoginService;
@@ -38,10 +38,10 @@ public class LoginController {
 	 * @param password 密码
 	 */
 	@PostMapping("/login")
-	public RestResult<UserLoginBO> loginHandle(@NotNull String username, @NotNull String password) {
+	public UserLoginBO loginHandle(@NotNull String username, @NotNull String password) {
 		UserLoginBO user = loginService.login(username, password);
 		if (user == null) {
-			return new RestResult<>(false, "用户名或密码错误");
+			throw new BusinessException("用户名或密码错误");
 		}
 		response.setHeader(JwtConfig.headerName, JwtUtils.createToken("id", user.getId()));
 		response.setHeader("Access-Control-Expose-Headers", JwtConfig.headerName);
@@ -49,7 +49,7 @@ public class LoginController {
 		Cookie cookie = new Cookie("schoolCode", user.getSchoolCode().toString());
 		cookie.setMaxAge(3600 * 7);
 		response.addCookie(cookie);
-		return new RestResult<>(user);
+		return user;
 	}
 
 }

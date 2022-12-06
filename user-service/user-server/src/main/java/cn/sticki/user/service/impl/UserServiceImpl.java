@@ -1,5 +1,6 @@
 package cn.sticki.user.service.impl;
 
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.exception.MapperException;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.tool.utils.RandomUtils;
@@ -180,7 +181,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 	}
 
 	@Override
-	public RestResult<Object> sendMailVerify(Integer id) {
+	public boolean sendMailVerify(Integer id) {
 		// 0. 构造redis key
 		String key = USER_SERVICE_MAIL_CODE_KEY + id;
 		// 1. 查询当前用户的最近发送记录，通过ttl判断
@@ -189,7 +190,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		int sendCodeInterval = 60;
 		if (expire != null && USER_SERVICE_MAIL_CODE_TTL - expire < sendCodeInterval) {
 			// 1.1 若时间不为空且未超过固定的时间间隔，则不允许发送
-			return RestResult.fail("发送频繁");
+			throw new BusinessException("发送频繁");
 		}
 		// 2 若为空或已经超过固定的时间间隔，则允许发送
 		// 2.1 查询用户的邮箱
@@ -205,10 +206,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		redisTemplate.opsForValue().set(key, code, USER_SERVICE_MAIL_CODE_TTL, TimeUnit.SECONDS);
 		// 4. 发送邮件
 		RestResult<Object> result = messageClient.sendMail(mailDTO);
-		if (!result.getStatus()) {
-			return RestResult.fail("发送失败");
-		}
-		return RestResult.ok();
+		return result.getStatus();
 	}
 
 	@Override

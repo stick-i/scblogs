@@ -25,9 +25,9 @@ public class SendMassageController {
 	public RestResult<Object> sendMail(Mail mail) {
 		try {
 			mailService.sendMail(mail);
-			return new RestResult<>(true, "发送成功");
+			return RestResult.ok(null, "发送成功");
 		} catch (Exception e) {
-			return new RestResult<>(false, "发送失败");
+			return RestResult.fail("发送失败");
 		}
 	}
 

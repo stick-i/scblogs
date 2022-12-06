@@ -1,6 +1,5 @@
 package cn.sticki.user.service;
 
-import cn.sticki.common.result.RestResult;
 import cn.sticki.user.pojo.User;
 import cn.sticki.user.pojo.UserGeneral;
 import cn.sticki.user.pojo.UserView;
@@ -116,7 +115,7 @@ public interface UserService extends IService<UserView> {
 	 * @param id 用户id
 	 * @return 是否发送成功
 	 */
-	RestResult<Object> sendMailVerify(Integer id);
+	boolean sendMailVerify(Integer id);
 
 	/**
 	 * 检查验证码

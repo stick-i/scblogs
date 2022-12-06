@@ -65,8 +65,8 @@ public class UserController {
 	 * @return 批量用户统计数据
 	 */
 	@GetMapping("/general")
-	public RestResult<Map<Integer, UserGeneral>> getUserGeneralList(@RequestParam List<Integer> userIdList) {
-		return new RestResult<>(userService.getUserGeneralListMap(userIdList));
+	public Map<Integer, UserGeneral> getUserGeneralList(@RequestParam List<Integer> userIdList) {
+		return userService.getUserGeneralListMap(userIdList);
 	}
 
 	/**
@@ -124,9 +124,9 @@ public class UserController {
 	 * @param code 院校代码
 	 */
 	@PutMapping("/school/code")
-	public RestResult<Object> updateSchoolCode(@NotNull Integer code) {
+	public Boolean updateSchoolCode(@NotNull Integer code) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		return new RestResult<>(userService.updateSchoolCode(id, code));
+		return userService.updateSchoolCode(id, code);
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class UserController {
 	 * 发送邮箱验证码
 	 */
 	@PostMapping("/mail/send-mail-verify")
-	public RestResult<Object> sendMailVerifyForUpdateMail() {
+	public Boolean sendMailVerifyForUpdateMail() {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		return userService.sendMailVerify(id);
 	}

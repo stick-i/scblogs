@@ -7,7 +7,6 @@ import cn.sticki.blog.pojo.vo.BlogStatusListVO;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
-import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.auth.AuthHelper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -40,35 +39,30 @@ public class BlogController {
 	 * @return 博客列表
 	 */
 	@GetMapping("/list/recommend")
-	public RestResult<BlogStatusListVO> getRecommendBlog(@RequestParam(defaultValue = "1") int page) {
+	public BlogStatusListVO getRecommendBlog(@RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,page->{}", page);
 		Integer id = AuthHelper.getCurrentUserId();
-		BlogStatusListVO recommendBlogList = blogViewService.getRecommendBlogList(id, page, pageSize);
-		return new RestResult<>(recommendBlogList);
+		return blogViewService.getRecommendBlogList(id, page, pageSize);
 	}
 
 	/**
 	 * 获取最新博客列表
 	 */
 	@GetMapping("/list/new")
-	public RestResult<BlogStatusListVO> getNewBlog(
-			@RequestParam(defaultValue = "1") int page,
-			@CookieValue(required = false) Integer schoolCode) {
+	public BlogStatusListVO getNewBlog(@RequestParam(defaultValue = "1") int page, @CookieValue(required = false) Integer schoolCode) {
 		log.debug("searchBlog,page->{}", page);
 		Integer id = AuthHelper.getCurrentUserId();
-		BlogStatusListVO recommendBlogList = blogViewService.getNewBlogList(id, schoolCode, page, pageSize);
-		return new RestResult<>(recommendBlogList);
+		return blogViewService.getNewBlogList(id, schoolCode, page, pageSize);
 	}
 
 	/**
 	 * 获取关注用户发表的博客列表，这个必须得登录才行
 	 */
 	@GetMapping("/list/follow")
-	public RestResult<BlogStatusListVO> getFollowBlog(@RequestParam(defaultValue = "1") int page) {
+	public BlogStatusListVO getFollowBlog(@RequestParam(defaultValue = "1") int page) {
 		log.debug("searchBlog,page->{}", page);
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		BlogStatusListVO recommendBlogList = blogViewService.getFollowBlogList(id, page, pageSize);
-		return new RestResult<>(recommendBlogList);
+		return blogViewService.getFollowBlogList(id, page, pageSize);
 	}
 
 	/**
@@ -77,10 +71,9 @@ public class BlogController {
 	 * @param id 博客id
 	 */
 	@GetMapping("/detail")
-	public RestResult<BlogContentVO> getBlogContentVO(@RequestParam Integer id) {
+	public BlogContentVO getBlogContentVO(@RequestParam Integer id) {
 		Integer userId = AuthHelper.getCurrentUserId();
-		BlogContentVO blogContent = blogViewService.getBlogContentHtml(id, userId);
-		return new RestResult<>(blogContent);
+		return blogViewService.getBlogContentHtml(id, userId);
 	}
 
 	/**
@@ -89,10 +82,10 @@ public class BlogController {
 	 * @param id 博客id
 	 */
 	@GetMapping("/blog")
-	public RestResult<Blog> getBlog(@RequestParam Integer id) {
+	public Blog getBlog(@RequestParam Integer id) {
 		LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(Blog::getId, id).eq(Blog::getStatus, BlogStatusType.PUBLISH.getValue());
-		return new RestResult<>(blogService.getOne(wrapper));
+		return blogService.getOne(wrapper);
 	}
 
 	/**
@@ -102,9 +95,8 @@ public class BlogController {
 	 * @return 用户发表博客数据统计
 	 */
 	@GetMapping("/general")
-	public RestResult<List<BlogUserGeneral>> getBlogUserGeneral(@RequestParam Integer[] userIds) {
-		List<BlogUserGeneral> userBlogGeneral = blogService.getUserBlogGeneral(userIds);
-		return new RestResult<>(userBlogGeneral);
+	public List<BlogUserGeneral> getBlogUserGeneral(@RequestParam Integer[] userIds) {
+		return blogService.getUserBlogGeneral(userIds);
 	}
 
 }

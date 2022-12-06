@@ -2,7 +2,6 @@ package cn.sticki.blog.content.service;
 
 import cn.sticki.blog.content.pojo.BlogListVO;
 import cn.sticki.blog.content.pojo.SearchQuery;
-import cn.sticki.common.result.RestResult;
 
 /**
  * @author 阿杆
@@ -17,6 +16,6 @@ public interface BlogContentService {
 	 * @param searchQuery 搜索条件
 	 * @return 搜索到的结果
 	 */
-	RestResult<BlogListVO> searchBlog(SearchQuery searchQuery);
+	BlogListVO searchBlog(SearchQuery searchQuery);
 
 }

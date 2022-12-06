@@ -3,7 +3,6 @@ package cn.sticki.blog.controller;
 import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.service.CollectBlogService;
 import cn.sticki.blog.service.LikeBlogService;
-import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -37,13 +36,13 @@ public class BlogActionController {
 	 * @param blogId 博客id
 	 */
 	@PostMapping("/like")
-	public RestResult<Object> likeBlog(@NotNull Integer blogId) {
+	public Map<String, Object> likeBlog(@NotNull Integer blogId) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		boolean status = likeBlogService.likeBlog(id, blogId);
 		Map<String, Object> map = new HashMap<>(1);
 		map.put("num", likeBlogService.getLikeNum(blogId));
 		map.put("status", status);
-		return new RestResult<>(map);
+		return map;
 	}
 
 	/**
@@ -52,13 +51,13 @@ public class BlogActionController {
 	 * @param blogId 博客id
 	 */
 	@PostMapping("/collect")
-	public RestResult<Object> collectBlog(@NotNull Integer blogId) {
+	public Map<String, Object> collectBlog(@NotNull Integer blogId) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		boolean status = collectBlogService.collectBlog(id, blogId);
 		Map<String, Object> map = new HashMap<>(1);
 		map.put("num", collectBlogService.getCollectNum(blogId));
 		map.put("status", status);
-		return new RestResult<>(map);
+		return map;
 	}
 
 	/**
@@ -67,10 +66,9 @@ public class BlogActionController {
 	 * @param page 第几页（默认每页20条）
 	 */
 	@GetMapping("/like")
-	public RestResult<BlogListVO> getLikeList(@RequestParam(defaultValue = "1") int page) {
+	public BlogListVO getLikeList(@RequestParam(defaultValue = "1") int page) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		BlogListVO blogList = likeBlogService.getLikeBlogList(id, page, pageSize);
-		return new RestResult<>(blogList);
+		return likeBlogService.getLikeBlogList(id, page, pageSize);
 	}
 
 	/**
@@ -79,10 +77,9 @@ public class BlogActionController {
 	 * @param page 第几页（默认每页20条）
 	 */
 	@GetMapping("/collect")
-	public RestResult<BlogListVO> getCollectList(@RequestParam(defaultValue = "1") int page) {
+	public BlogListVO getCollectList(@RequestParam(defaultValue = "1") int page) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		BlogListVO blogList = collectBlogService.getCollectBlogList(id, page, pageSize);
-		return new RestResult<>(blogList);
+		return collectBlogService.getCollectBlogList(id, page, pageSize);
 	}
 
 }
