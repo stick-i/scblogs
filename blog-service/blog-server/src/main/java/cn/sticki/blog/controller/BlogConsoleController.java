@@ -86,7 +86,7 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public RestResult<Object> saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage) {
+	public void saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		// 设置其他参数
 		blog.setCoverImageFile(coverImage);
@@ -96,7 +96,6 @@ public class BlogConsoleController {
 			FileUtils.checkFile(blog.getCoverImageFile(), 1024 * 1024L, FileType.JPEG, FileType.PNG);
 		}
 		blogService.saveBlog(blog);
-		return new RestResult<>();
 	}
 
 	/**
@@ -105,9 +104,9 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog")
-	public RestResult<Boolean> recoveryBlog(@NotNull Integer id) {
+	public Boolean recoveryBlog(@NotNull Integer id) {
 		Integer userId = AuthHelper.getCurrentUserIdOrExit();
-		return new RestResult<>(blogService.deleteBlog(id, userId));
+		return blogService.deleteBlog(id, userId);
 	}
 
 	/**
@@ -116,10 +115,9 @@ public class BlogConsoleController {
 	 * @param id 博客id
 	 */
 	@DeleteMapping("/blog/delete")
-	public RestResult<Boolean> completelyDeleteBlog(@NotNull Integer id) {
+	public Boolean completelyDeleteBlog(@NotNull Integer id) {
 		Integer userId = AuthHelper.getCurrentUserIdOrExit();
-		Boolean result = blogService.completelyDeleteBlog(id, userId);
-		return new RestResult<>(result);
+		return blogService.completelyDeleteBlog(id, userId);
 	}
 
 	/**
@@ -129,12 +127,11 @@ public class BlogConsoleController {
 	 * @return 图片链接
 	 */
 	@PostMapping("/image")
-	public RestResult<String> uploadBlogImg(@NotNull MultipartFile file) {
+	public String uploadBlogImg(@NotNull MultipartFile file) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		log.debug("uploadBlogImg, fileName->{}, userId->{}", file.getOriginalFilename(), id);
 		FileUtils.checkFile(file, 1024 * 1024L, FileType.JPEG, FileType.PNG);
-		String url = blogService.uploadImage(file);
-		return new RestResult<>(url);
+		return blogService.uploadImage(file);
 	}
 
 	/**
@@ -143,9 +140,9 @@ public class BlogConsoleController {
 	 * @param blogId 博客id
 	 */
 	@GetMapping("/content")
-	public RestResult<BlogContent> getBlogContent(@RequestParam Integer blogId) {
+	public BlogContent getBlogContent(@RequestParam Integer blogId) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		return new RestResult<>(blogService.getBlogContent(blogId, id));
+		return blogService.getBlogContent(blogId, id);
 	}
 
 }

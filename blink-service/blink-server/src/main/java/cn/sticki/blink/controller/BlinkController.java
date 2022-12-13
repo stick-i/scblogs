@@ -6,7 +6,6 @@ import cn.sticki.blink.pojo.SaveBlinkBO;
 import cn.sticki.blink.pojo.UpdateBlinkBO;
 import cn.sticki.blink.service.BlinkService;
 import cn.sticki.blink.service.BlinkViewService;
-import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -38,9 +37,8 @@ public class BlinkController {
 	 * @param id 动态id
 	 */
 	@GetMapping
-	public RestResult<BlinkView> getBlink(Integer id) {
-		BlinkView blinkView = blinkViewService.getById(id);
-		return new RestResult<>(blinkView);
+	public BlinkView getBlink(Integer id) {
+		return blinkViewService.getById(id);
 	}
 
 	/**
@@ -50,25 +48,23 @@ public class BlinkController {
 	 * @param schoolCode 院校代码，从cookie中获取
 	 */
 	@PostMapping
-	public RestResult<Object> createBlink(@NotNull String content, @CookieValue(required = false) Integer schoolCode) {
+	public void createBlink(@NotNull String content, @CookieValue(required = false) Integer schoolCode) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		SaveBlinkBO saveBlinkBO = new SaveBlinkBO();
 		saveBlinkBO.setContent(content);
 		saveBlinkBO.setUserId(id);
 		saveBlinkBO.setSchoolCode(schoolCode);
 		blinkService.create(saveBlinkBO);
-		return new RestResult<>();
 	}
 
 	/**
 	 * 修改动态内容
 	 */
 	@PutMapping
-	public RestResult<Object> updateBlink(UpdateBlinkBO blinkBO) {
+	public void updateBlink(UpdateBlinkBO blinkBO) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		blinkBO.setUserId(id);
 		blinkService.update(blinkBO);
-		return new RestResult<>();
 	}
 
 	/**
@@ -77,10 +73,9 @@ public class BlinkController {
 	 * @param blinkId 动态id
 	 */
 	@DeleteMapping
-	public RestResult<Object> deleteBlink(int blinkId) {
+	public void deleteBlink(@NotNull Integer blinkId) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		blinkService.remove(blinkId, id);
-		return new RestResult<>();
 	}
 
 	/**
@@ -90,9 +85,8 @@ public class BlinkController {
 	 * @param schoolCode 院校代码，哪个学校的
 	 */
 	@GetMapping("/list")
-	public RestResult<BlinkViewListVO> getList(@RequestParam(defaultValue = "1") Integer page, Integer schoolCode) {
-		BlinkViewListVO viewList = blinkViewService.getListByTime(page, PAGE_SIZE, schoolCode);
-		return new RestResult<>(viewList);
+	public BlinkViewListVO getList(@RequestParam(defaultValue = "1") Integer page, Integer schoolCode) {
+		return blinkViewService.getListByTime(page, PAGE_SIZE, schoolCode);
 	}
 
 	/**
@@ -101,10 +95,9 @@ public class BlinkController {
 	 * @param page 第几页
 	 */
 	@GetMapping("/list/self")
-	public RestResult<BlinkViewListVO> getSelfList(@RequestParam(defaultValue = "1") Integer page) {
+	public BlinkViewListVO getSelfList(@RequestParam(defaultValue = "1") Integer page) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		BlinkViewListVO viewList = blinkViewService.getSelfList(id, page, PAGE_SIZE);
-		return new RestResult<>(viewList);
+		return blinkViewService.getSelfList(id, page, PAGE_SIZE);
 	}
 
 }

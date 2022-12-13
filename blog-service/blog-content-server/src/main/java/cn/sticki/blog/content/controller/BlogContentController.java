@@ -3,7 +3,6 @@ package cn.sticki.blog.content.controller;
 import cn.sticki.blog.content.pojo.BlogListVO;
 import cn.sticki.blog.content.pojo.SearchQuery;
 import cn.sticki.blog.content.service.BlogContentService;
-import cn.sticki.common.result.RestResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +28,7 @@ public class BlogContentController {
 	 * @return 博客列表
 	 */
 	@GetMapping("/search")
-	public RestResult<BlogListVO> searchBlog(@Validated SearchQuery searchQuery) {
+	public BlogListVO searchBlog(@Validated SearchQuery searchQuery) {
 		return blogContentService.searchBlog(searchQuery);
 	}
 
