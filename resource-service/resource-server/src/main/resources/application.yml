@@ -1,5 +1,5 @@
 server:
-  port: ${random.int(40001,49999)}
+  port: 40000
 
 mybatis-plus:
   type-aliases-package: cn.sticki.resource.pojo  # 实体对象的扫描包
