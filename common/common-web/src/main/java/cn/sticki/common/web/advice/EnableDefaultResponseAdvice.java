@@ -10,7 +10,6 @@ import java.lang.annotation.*;
  * @author 阿杆
  * @version 1.0
  * @date 2022/9/24 15:25
- * @deprecated 已开启自动注入，无需再使用该注解
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

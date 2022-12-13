@@ -1,4 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.sticki.common.web.anno.RequestLimitAspect,\
-  cn.sticki.common.web.advice.DefaultExceptionAdvice,\
-  cn.sticki.common.web.advice.DefaultResponseAdvice
+  cn.sticki.common.web.anno.RequestLimitAspect

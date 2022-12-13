@@ -1,6 +1,8 @@
 package cn.sticki.blog.content;
 
 import cn.sticki.common.redis.autoconfig.EnableRedisSerialize;
+import cn.sticki.common.web.advice.EnableDefaultExceptionAdvice;
+import cn.sticki.common.web.advice.EnableDefaultResponseAdvice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -13,6 +15,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableRedisSerialize
 @EnableFeignClients(basePackages = "cn.sticki.user.client")
 @SpringBootApplication
+@EnableDefaultExceptionAdvice
+@EnableDefaultResponseAdvice
 public class BlogContentServerApplication {
 
 	public static void main(String[] args) {
