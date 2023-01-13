@@ -62,4 +62,9 @@ public class UserBasic {
 	 */
 	Timestamp startWorkTime;
 
+	/**
+	 * 是否已经删除，0未删除，1已删除
+	 */
+	Integer isDeleted;
+
 }

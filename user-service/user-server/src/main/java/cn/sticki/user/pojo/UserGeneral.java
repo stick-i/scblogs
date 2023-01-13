@@ -53,11 +53,16 @@ public class UserGeneral {
 	/**
 	 * 作者周排行
 	 */
-	Double weekRank;
+	Integer weekRank;
 
 	/**
 	 * 作者总排行
 	 */
-	Double totalRank;
+	Integer totalRank;
+
+	/**
+	 * 是否已经删除，0未删除，1已删除
+	 */
+	Integer isDeleted;
 
 }
