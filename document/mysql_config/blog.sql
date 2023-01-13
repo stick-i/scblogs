@@ -27,11 +27,12 @@ CREATE TABLE `blog`
     `description`   varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '描述',
     `school_code`   int(11) UNSIGNED                                              NULL     DEFAULT NULL COMMENT '院校代码',
     `cover_image`   char(32) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NULL     DEFAULT NULL COMMENT '封面图',
-    `create_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `release_time`  datetime                                                      NULL     DEFAULT NULL COMMENT '发表时间',
-    `modified_time` datetime                                                      NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    `status`        int(11) UNSIGNED                                              NOT NULL COMMENT '发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）',
-    `write_type`    int(11) UNSIGNED                                              NOT NULL COMMENT '博客创作类型：1. 原创; 2. 转载',
+    `write_type`    tinyint(3) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '博客创作类型：1. 原创; 2. 转载',
+    `status`        tinyint(3) UNSIGNED                                           NOT NULL COMMENT '发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）',
+    `create_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modified_time` datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `is_deleted`    tinyint(3) UNSIGNED                                           NOT NULL DEFAULT 0 COMMENT '是否已经删除，0未删除，1已删除',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `author_id` (`author_id`) USING BTREE,
     INDEX `school_code` (`school_code`) USING BTREE
@@ -39,7 +40,7 @@ CREATE TABLE `blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for blog_content
@@ -49,13 +50,14 @@ CREATE TABLE `blog_content`
 (
     `blog_id`       int(11) UNSIGNED                                      NOT NULL COMMENT '博客id',
     `content`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '博客内容',
-    `modified_time` datetime                                              NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `modified_time` datetime                                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `is_deleted`    tinyint(3) UNSIGNED                                   NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`blog_id`) USING BTREE,
     UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for blog_content_html
@@ -65,13 +67,14 @@ CREATE TABLE `blog_content_html`
 (
     `blog_id`       int(11) UNSIGNED                                      NOT NULL COMMENT '博客id',
     `content`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '博客内容（html）',
-    `modified_time` datetime                                              NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `modified_time` datetime                                              NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `is_deleted`    tinyint(3) UNSIGNED                                   NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`blog_id`) USING BTREE,
     UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for blog_general
@@ -79,18 +82,19 @@ CREATE TABLE `blog_content_html`
 DROP TABLE IF EXISTS `blog_general`;
 CREATE TABLE `blog_general`
 (
-    `blog_id`        int(10) UNSIGNED NOT NULL COMMENT '博客id',
-    `view_num`       int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '浏览量',
-    `like_num`       int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '点赞量',
-    `comment_num`    int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '评论量',
-    `collection_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '收藏量',
-    `score`          int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '评分',
+    `blog_id`        int(10) UNSIGNED    NOT NULL COMMENT '博客id',
+    `view_num`       int(10) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '浏览量',
+    `like_num`       int(10) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '点赞量',
+    `comment_num`    int(10) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '评论量',
+    `collection_num` int(10) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '收藏量',
+    `score`          int(10) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '评分',
+    `is_deleted`     tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`blog_id`) USING BTREE,
     UNIQUE INDEX `blog_id` (`blog_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for blog_set_tag
@@ -98,16 +102,17 @@ CREATE TABLE `blog_general`
 DROP TABLE IF EXISTS `blog_set_tag`;
 CREATE TABLE `blog_set_tag`
 (
-    `id`      int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `tag_id`  int(10) UNSIGNED NOT NULL,
-    `blog_id` int(10) UNSIGNED NOT NULL,
+    `id`         int(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `tag_id`     int(10) UNSIGNED    NOT NULL,
+    `blog_id`    int(10) UNSIGNED    NOT NULL,
+    `is_deleted` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `index_tag_blog` (`tag_id`, `blog_id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for collect_blog
@@ -115,10 +120,11 @@ CREATE TABLE `blog_set_tag`
 DROP TABLE IF EXISTS `collect_blog`;
 CREATE TABLE `collect_blog`
 (
-    `id`          int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `blog_id`     int(10) UNSIGNED NOT NULL,
-    `user_id`     int(10) UNSIGNED NOT NULL,
-    `create_time` datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `id`          int(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `blog_id`     int(10) UNSIGNED    NOT NULL,
+    `user_id`     int(10) UNSIGNED    NOT NULL,
+    `create_time` datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `is_deleted`  tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `fk_blog_collection_user_1` (`user_id`) USING BTREE,
     INDEX `fk_blog_collection_blog_1` (`blog_id`) USING BTREE
@@ -126,7 +132,7 @@ CREATE TABLE `collect_blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for column
@@ -139,7 +145,7 @@ CREATE TABLE `column`
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for config
@@ -155,7 +161,7 @@ CREATE TABLE `config`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for like_blog
@@ -163,10 +169,11 @@ CREATE TABLE `config`
 DROP TABLE IF EXISTS `like_blog`;
 CREATE TABLE `like_blog`
 (
-    `id`          int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '点赞id',
-    `blog_id`     int(10) UNSIGNED NOT NULL COMMENT '博客id',
-    `user_id`     int(10) UNSIGNED NOT NULL COMMENT '用户id',
-    `create_time` datetime         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `id`          int(10) UNSIGNED    NOT NULL AUTO_INCREMENT COMMENT '点赞id',
+    `blog_id`     int(10) UNSIGNED    NOT NULL COMMENT '博客id',
+    `user_id`     int(10) UNSIGNED    NOT NULL COMMENT '用户id',
+    `create_time` datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `is_deleted`  tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `fk_blog_likes_user_1` (`user_id`) USING BTREE,
     INDEX `fk_blog_likes_blog_1` (`blog_id`) USING BTREE
@@ -174,7 +181,7 @@ CREATE TABLE `like_blog`
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for tag
@@ -188,19 +195,20 @@ CREATE TABLE `tag`
     `description`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL     DEFAULT NULL,
     `create_time`   datetime                                                         NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified_time` datetime                                                         NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `is_deleted`    tinyint(3) UNSIGNED                                              NOT NULL DEFAULT 0 COMMENT '0为未删除，1为已删除',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8
   COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+  ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- View structure for blog_view
 -- ----------------------------
 DROP VIEW IF EXISTS `blog_view`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `blog_view` AS
-select `blog`.`id`                                     AS `id`,
+SELECT `blog`.`id`                                     AS `id`,
        `blog`.`author_id`                              AS `author_id`,
        `blog`.`title`                                  AS `title`,
        `blog`.`description`                            AS `description`,
@@ -216,8 +224,8 @@ select `blog`.`id`                                     AS `id`,
        `blog_general`.`comment_num`                    AS `comment_num`,
        `blog_general`.`collection_num`                 AS `collection_num`,
        `blog_general`.`score`                          AS `score`
-from ((`blog` left join `blog_general` on ((`blog`.`id` = `blog_general`.`blog_id`)))
-         join `config`)
-where (`config`.`param` = 'cover_url');
+FROM (( `blog` LEFT JOIN `blog_general` ON (((`blog`.`id` = `blog_general`.`blog_id`) AND (`blog`.`is_deleted` = 0))))
+         JOIN `config` )
+WHERE (`config`.`param` = 'cover_url');
 
 SET FOREIGN_KEY_CHECKS = 1;
