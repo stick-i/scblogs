@@ -12,206 +12,216 @@
  Date: 08/08/2022 12:30:56
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+set names utf8mb4;
+set FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for config
 -- ----------------------------
-DROP TABLE IF EXISTS `config`;
-CREATE TABLE `config`
+drop table if exists `config`;
+create table `config`
 (
-    `id`     int(10) UNSIGNED                                                 NOT NULL AUTO_INCREMENT,
-    `param`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NOT NULL COMMENT '参数',
-    `result` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NOT NULL COMMENT '值',
-    PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `param` (`param`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+    `id`     int(10) unsigned                                                     not null auto_increment,
+    `param`  varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '参数',
+    `result` varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '值',
+    primary key (`id`) using btree,
+    unique index `param` (`param`) using btree
+) engine = InnoDB
+  auto_increment = 0
+  character set = `utf8`
+  collate = `utf8_general_mysql500_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`
+drop table if exists `user`;
+create table `user`
 (
-    `id`            int(11) UNSIGNED                                                NOT NULL AUTO_INCREMENT,
-    `username`      varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NOT NULL COMMENT '用户名',
-    `school_code`   int(11) UNSIGNED                                                NULL     DEFAULT NULL COMMENT '院校代码',
-    `nickname`      varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL     DEFAULT NULL COMMENT '昵称',
-    `avatar_url`    varchar(50) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL     DEFAULT NULL COMMENT '头像链接',
-    `register_time` datetime                                                        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
-    PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `username` (`username`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+    `id`            int(11) unsigned                                                    not null auto_increment,
+    `username`      varchar(20) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '用户名',
+    `school_code`   int(11) unsigned                                                    null     default null comment '院校代码',
+    `nickname`      varchar(20) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '昵称',
+    `avatar_url`    varchar(50) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '头像链接',
+    `register_time` datetime                                                            not null default current_timestamp comment '注册时间',
+    `is_deleted`    tinyint(3) unsigned                                                 not null default 0 comment '0为未删除，1为已删除',
+    primary key (`id`) using btree,
+    unique index `username` (`username`) using btree
+) engine = InnoDB
+  auto_increment = 0
+  character set = `utf8`
+  collate = `utf8_general_mysql500_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- Table structure for user_basic
 -- ----------------------------
-DROP TABLE IF EXISTS `user_basic`;
-CREATE TABLE `user_basic`
+drop table if exists `user_basic`;
+create table `user_basic`
 (
-    `username`         varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NOT NULL COMMENT '用户名',
-    `realname`         varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NULL DEFAULT NULL COMMENT '真实姓名',
-    `birthday`         datetime(6)                                                      NULL DEFAULT NULL COMMENT '生日',
-    `intro`            varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL DEFAULT NULL COMMENT '个人简介',
-    `gender`           bit(1)                                                           NULL DEFAULT NULL COMMENT '性别',
-    `city_id`          int(11) UNSIGNED                                                 NULL DEFAULT NULL COMMENT '城市id',
-    `province_id`      int(11) UNSIGNED                                                 NULL DEFAULT NULL COMMENT '省份id',
-    `modified_time`    datetime(6)                                                      NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '信息修改时间',
-    `name_modify_time` datetime(6)                                                      NULL DEFAULT NULL COMMENT '用户名修改时间',
-    `start_work_time`  datetime(6)                                                      NULL DEFAULT NULL COMMENT '开始工作的时间',
-    PRIMARY KEY (`username`) USING BTREE
-) ENGINE = InnoDB
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+    `username`         varchar(20) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '用户名',
+    `realname`         varchar(20) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '真实姓名',
+    `birthday`         datetime                                                             null     default null comment '生日',
+    `intro`            varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '个人简介',
+    `gender`           tinyint(1) unsigned                                                  null     default null comment '性别',
+    `city_id`          int(11) unsigned                                                     null     default null comment '城市id',
+    `province_id`      int(11) unsigned                                                     null     default null comment '省份id',
+    `name_modify_time` datetime                                                             null     default null comment '用户名修改时间',
+    `start_work_time`  datetime                                                             null     default null comment '开始工作的时间',
+    `modified_time`    datetime                                                             not null default current_timestamp on update current_timestamp comment '信息修改时间',
+    `is_deleted`       tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    primary key (`username`) using btree
+) engine = InnoDB
+  character set = `utf8`
+  collate = `utf8_general_mysql500_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- Table structure for user_education
 -- ----------------------------
-DROP TABLE IF EXISTS `user_education`;
-CREATE TABLE `user_education`
+drop table if exists `user_education`;
+create table `user_education`
 (
-    `user_id`             int(11) UNSIGNED                                                 NOT NULL COMMENT '用户名',
-    `create_time`         datetime(6)                                                      NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
-    `school`              varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NULL DEFAULT NULL COMMENT '学校名称',
-    `school_id`           int(11) UNSIGNED                                                 NULL DEFAULT NULL COMMENT '学校id',
-    `profession`          varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL DEFAULT NULL COMMENT '专业',
-    `degree`              smallint(5) UNSIGNED                                             NULL DEFAULT NULL COMMENT '学位程度',
-    `start_time`          datetime(6)                                                      NULL DEFAULT NULL COMMENT '入学时间',
-    `end_time`            datetime(6)                                                      NULL DEFAULT NULL COMMENT '毕业时间',
-    `audit_img_url`       varchar(50) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NULL DEFAULT NULL COMMENT '图片链接',
-    `safety_audit_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL DEFAULT NULL COMMENT '安全审核状态',
-    `status`              varchar(255) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL DEFAULT NULL COMMENT '状态码',
-    `modified_time`       datetime                                                         NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+    `user_id`             int(11) unsigned                                                     not null comment '用户名',
+    `create_time`         datetime                                                             null     default current_timestamp comment '创建时间',
+    `school`              varchar(20) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '学校名称',
+    `school_id`           int(11) unsigned                                                     null     default null comment '学校id',
+    `profession`          varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '专业',
+    `degree`              tinyint(5) unsigned                                                  null     default null comment '学位程度',
+    `start_time`          datetime                                                             null     default null comment '入学时间',
+    `end_time`            datetime                                                             null     default null comment '毕业时间',
+    `audit_img_url`       varchar(50) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '图片链接',
+    `safety_audit_status` varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '安全审核状态',
+    `status`              varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '状态码',
+    `modified_time`       datetime                                                             not null default current_timestamp on update current_timestamp comment '更新时间',
+    `is_deleted`          tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    primary key (`user_id`) using btree
+) engine = InnoDB
+  character set = `utf8`
+  collate = `utf8_general_mysql500_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- Table structure for user_follow
 -- ----------------------------
-DROP TABLE IF EXISTS `user_follow`;
-CREATE TABLE `user_follow`
+drop table if exists `user_follow`;
+create table `user_follow`
 (
-    `id`          int(11) UNSIGNED                                                NOT NULL AUTO_INCREMENT,
-    `fans_id`     int(10) UNSIGNED                                                NOT NULL COMMENT '粉丝id',
-    `follow_id`   int(10) UNSIGNED                                                NOT NULL COMMENT '关注id',
-    `note`        varchar(50) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NULL     DEFAULT NULL COMMENT '备注',
-    `status`      int(10) UNSIGNED ZEROFILL                                       NULL     DEFAULT NULL COMMENT '状态码',
-    `create_time` datetime                                                        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX `user_id` (`fans_id`) USING BTREE,
-    INDEX `follow_id` (`follow_id`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+    `id`          int(11) unsigned                                                    not null auto_increment,
+    `fans_id`     int(10) unsigned                                                    not null comment '粉丝id',
+    `follow_id`   int(10) unsigned                                                    not null comment '关注id',
+    `note`        varchar(50) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '备注',
+    `status`      int(10) unsigned                                                    not null default 1 comment '状态码',
+    `create_time` datetime                                                            not null default current_timestamp comment '创建时间',
+    `is_deleted`  tinyint(3) unsigned                                                 not null default 0 comment '0为未删除，1为已删除',
+    primary key (`id`) using btree,
+    index `user_id` (`fans_id`) using btree,
+    index `follow_id` (`follow_id`) using btree
+) engine = InnoDB
+  auto_increment = 0
+  character set = `utf8`
+  collate = `utf8_general_mysql500_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- Table structure for user_general
 -- ----------------------------
-DROP TABLE IF EXISTS `user_general`;
-CREATE TABLE `user_general`  (
-  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(0) UNSIGNED NOT NULL COMMENT '用户id',
-  `like_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户获赞',
-  `fans_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户粉丝数',
-  `comment_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户评论数',
-  `collect_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '收藏博客数量',
-  `view_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '访问数',
-  `blog_num` int(0) UNSIGNED NULL DEFAULT 0 COMMENT '用户博客数量',
-  `week_rank` int(0) UNSIGNED NULL DEFAULT NULL COMMENT '周排行',
-  `total_rank` int(0) UNSIGNED NULL DEFAULT NULL COMMENT '总排行',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `idx_unique_user_general_user_id` (`user_id`) USING BTREE
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+drop table if exists `user_general`;
+create table `user_general`
+(
+    `id`          int(10) unsigned    not null auto_increment,
+    `user_id`     int(11) unsigned    not null comment '用户id',
+    `like_num`    int(11) unsigned    not null default 0 comment '用户获赞',
+    `fans_num`    int(11) unsigned    not null default 0 comment '用户粉丝数',
+    `comment_num` int(11) unsigned    not null default 0 comment '用户评论数',
+    `collect_num` int(11) unsigned    not null default 0 comment '收藏博客数量',
+    `view_num`    int(11) unsigned    not null default 0 comment '访问数',
+    `blog_num`    int(11) unsigned    not null default 0 comment '用户博客数量',
+    `week_rank`   int(11) unsigned    null     default null comment '周排行',
+    `total_rank`  int(11) unsigned    null     default null comment '总排汗',
+    `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    primary key (`id`) using btree,
+    unique index `index_user_general_user_id` (`user_id`) using btree
+) engine = InnoDB
+  auto_increment = 0
+  character set = `utf8`
+  collate = `utf8_general_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- Table structure for user_safety
 -- ----------------------------
-DROP TABLE IF EXISTS `user_safety`;
-CREATE TABLE `user_safety`
+drop table if exists `user_safety`;
+create table `user_safety`
 (
-    `user_id`  int(10) UNSIGNED                                                 NOT NULL COMMENT '用户id',
-    `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NOT NULL COMMENT '用户名',
-    `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci NOT NULL COMMENT '密码',
-    `mail`     varchar(30) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NOT NULL COMMENT '邮箱',
-    `mobile`   varchar(11) CHARACTER SET utf8 COLLATE utf8_general_mysql500_ci  NULL DEFAULT NULL COMMENT '手机号',
-    PRIMARY KEY (`user_id`) USING BTREE,
-    UNIQUE INDEX `email` (`mail`) USING BTREE,
-    UNIQUE INDEX `mobile` (`mobile`) USING BTREE,
-    INDEX `fk_user_safety_user_general_1` (`username`) USING BTREE
-) ENGINE = InnoDB
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_mysql500_ci
-  ROW_FORMAT = Dynamic;
+    `user_id`    int(10) unsigned                                                     not null comment '用户id',
+    `username`   varchar(20) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '用户名',
+    `password`   varchar(100) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '密码',
+    `mail`       varchar(30) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '邮箱',
+    `mobile`     varchar(11) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '手机号',
+    `is_deleted` tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    primary key (`user_id`) using btree,
+    unique index `email` (`mail`) using btree,
+    unique index `mobile` (`mobile`) using btree,
+    index `index_user_safety_user_general_1` (`username`) using btree
+) engine = InnoDB
+  character set = `utf8`
+  collate = `utf8_general_mysql500_ci`
+  row_format = dynamic;
 
 -- ----------------------------
 -- View structure for user_view
 -- ----------------------------
-DROP VIEW IF EXISTS `user_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `user_view` AS
-select `user`.`id`                                    AS `id`,
-       `user`.`username`                              AS `username`,
-       `user`.`nickname`                              AS `nickname`,
-       `user`.`school_code`                           AS `school_code`,
-       concat(`config`.`result`, `user`.`avatar_url`) AS `avatar_url`,
-       `user`.`register_time`                         AS `register_time`
+drop view if exists `user_view`;
+create algorithm = undefined sql security definer view `user_view` as
+select `user`.`id`                                    as `id`,
+       `user`.`username`                              as `username`,
+       `user`.`nickname`                              as `nickname`,
+       `user`.`school_code`                           as `school_code`,
+       concat(`config`.`result`, `user`.`avatar_url`) as `avatar_url`,
+       `user`.`register_time`                         as `register_time`
 from (`user`
-         join `config`)
-where (`config`.`param` = 'avatar_url');
+         left join `config` on ((`config`.`param` = 'avatar_url')))
+where (`user`.`is_deleted` = 0);
 
 -- ----------------------------
 -- View structure for fans_view
 -- ----------------------------
-DROP VIEW IF EXISTS `fans_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `fans_view` AS
-select `user_follow`.`id`          AS `id`,
-       `user_follow`.`follow_id`   AS `user_id`,
-       `user_follow`.`fans_id`     AS `fans_id`,
-       `user_follow`.`note`        AS `note`,
-       `user_follow`.`status`      AS `status`,
-       `user_follow`.`create_time` AS `create_time`,
-       `user_view`.`username`      AS `username`,
-       `user_view`.`nickname`      AS `nickname`,
-       `user_view`.`school_code`   AS `school_code`,
-       `user_view`.`avatar_url`    AS `avatar_url`,
-       `user_view`.`register_time` AS `register_time`
+drop view if exists `fans_view`;
+create algorithm = undefined sql security definer view `fans_view` as
+select `user_follow`.`id`          as `id`,
+       `user_follow`.`follow_id`   as `user_id`,
+       `user_follow`.`fans_id`     as `fans_id`,
+       `user_follow`.`note`        as `note`,
+       `user_follow`.`status`      as `status`,
+       `user_follow`.`create_time` as `create_time`,
+       `user_view`.`username`      as `username`,
+       `user_view`.`nickname`      as `nickname`,
+       `user_view`.`school_code`   as `school_code`,
+       `user_view`.`avatar_url`    as `avatar_url`,
+       `user_view`.`register_time` as `register_time`
 from (`user_follow`
-         left join `user_view` on ((`user_follow`.`fans_id` = `user_view`.`id`)));
+         left join `user_view` on ((`user_follow`.`fans_id` = `user_view`.`id`)))
+where (`user_follow`.`is_deleted` = 0);
 
 -- ----------------------------
 -- View structure for follow_view
 -- ----------------------------
-DROP VIEW IF EXISTS `follow_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `follow_view` AS
-select `user_follow`.`id`          AS `id`,
-       `user_follow`.`fans_id`     AS `user_id`,
-       `user_follow`.`follow_id`   AS `follow_id`,
-       `user_follow`.`note`        AS `note`,
-       `user_follow`.`status`      AS `status`,
-       `user_follow`.`create_time` AS `create_time`,
-       `user_view`.`username`      AS `username`,
-       `user_view`.`nickname`      AS `nickname`,
-       `user_view`.`school_code`   AS `school_code`,
-       `user_view`.`avatar_url`    AS `avatar_url`,
-       `user_view`.`register_time` AS `register_time`
+drop view if exists `follow_view`;
+create algorithm = undefined sql security definer view `follow_view` as
+select `user_follow`.`id`          as `id`,
+       `user_follow`.`fans_id`     as `user_id`,
+       `user_follow`.`follow_id`   as `follow_id`,
+       `user_follow`.`note`        as `note`,
+       `user_follow`.`status`      as `status`,
+       `user_follow`.`create_time` as `create_time`,
+       `user_view`.`username`      as `username`,
+       `user_view`.`nickname`      as `nickname`,
+       `user_view`.`school_code`   as `school_code`,
+       `user_view`.`avatar_url`    as `avatar_url`,
+       `user_view`.`register_time` as `register_time`
 from (`user_follow`
-         left join `user_view` on ((`user_view`.`id` = `user_follow`.`follow_id`)));
+         left join `user_view` on ((`user_view`.`id` = `user_follow`.`follow_id`)))
+where (`user_follow`.`is_deleted` = 0);
 
-SET FOREIGN_KEY_CHECKS = 1;
+set FOREIGN_KEY_CHECKS = 1;

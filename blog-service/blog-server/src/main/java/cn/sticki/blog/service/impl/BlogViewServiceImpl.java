@@ -1,7 +1,10 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.*;
+import cn.sticki.blog.mapper.BlogContentHtmlMapper;
+import cn.sticki.blog.mapper.BlogViewMapper;
+import cn.sticki.blog.mapper.CollectBlogMapper;
+import cn.sticki.blog.mapper.LikeBlogMapper;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
@@ -58,9 +61,6 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private RabbitTemplate rabbitTemplate;
-
-	@Resource
-	private BlogMapper blogMapper;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
