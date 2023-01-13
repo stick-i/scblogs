@@ -39,7 +39,8 @@ public class BlinkServiceImpl extends ServiceImpl<BlinkMapper, Blink> implements
 		BeanUtils.copyProperties(blinkBO, blink);
 		blink.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		blinkMapper.insert(blink);
-		BlinkGeneral general = new BlinkGeneral(blink.getId());
+		BlinkGeneral general = new BlinkGeneral();
+		general.setBlinkId(blink.getId());
 		general.setScore(getRating(blink));
 		blinkGeneralMapper.insert(general);
 	}
