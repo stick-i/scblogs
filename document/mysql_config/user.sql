@@ -179,7 +179,8 @@ select `user`.`id`                                    as `id`,
        `user`.`nickname`                              as `nickname`,
        `user`.`school_code`                           as `school_code`,
        concat(`config`.`result`, `user`.`avatar_url`) as `avatar_url`,
-       `user`.`register_time`                         as `register_time`
+       `user`.`register_time`                         as `register_time`,
+       `user`.`is_deleted`                            as `is_deleted`
 from (`user`
          left join `config` on ((`config`.`param` = 'avatar_url')))
 where (`user`.`is_deleted` = 0);
