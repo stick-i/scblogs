@@ -126,8 +126,8 @@ create table `collect_blog`
     `create_time` datetime            not null default current_timestamp,
     `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
-    index `fk_blog_collection_user_1` (`user_id`) using btree,
-    index `fk_blog_collection_blog_1` (`blog_id`) using btree
+    index `_blog_collection_user_1` (`user_id`) using btree,
+    index `index_blog_collection_blog_1` (`blog_id`) using btree
 ) engine = InnoDB
   auto_increment = 0
   character set = `utf8`
@@ -175,8 +175,8 @@ create table `like_blog`
     `create_time` datetime            not null default current_timestamp on update current_timestamp comment '创建时间',
     `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
-    index `fk_blog_likes_user_1` (`user_id`) using btree,
-    index `fk_blog_likes_blog_1` (`blog_id`) using btree
+    index `index_blog_likes_user_1` (`user_id`) using btree,
+    index `index_blog_likes_blog_1` (`blog_id`) using btree
 ) engine = InnoDB
   auto_increment = 1
   character set = `utf8`

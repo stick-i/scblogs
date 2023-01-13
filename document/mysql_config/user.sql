@@ -141,7 +141,7 @@ create table `user_general`
     `total_rank`  int(11) unsigned    null     default null comment '总排汗',
     `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
-    unique index `fk_user_general_user_id` (`user_id`) using btree
+    unique index `index_user_general_user_id` (`user_id`) using btree
 ) engine = InnoDB
   auto_increment = 0
   character set = `utf8`
@@ -163,7 +163,7 @@ create table `user_safety`
     primary key (`user_id`) using btree,
     unique index `email` (`mail`) using btree,
     unique index `mobile` (`mobile`) using btree,
-    index `fk_user_safety_user_general_1` (`username`) using btree
+    index `index_user_safety_user_general_1` (`username`) using btree
 ) engine = InnoDB
   character set = `utf8`
   collate = `utf8_general_mysql500_ci`

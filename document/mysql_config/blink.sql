@@ -31,7 +31,7 @@ create table `blink`
     `modified_time` datetime                                                  not null default current_timestamp on update current_timestamp comment '修改时间',
     `is_deleted`    tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
-    index `fk_blink_user_id` (`user_id`) using btree
+    index `index_blink_user_id` (`user_id`) using btree
 ) engine = InnoDB
   auto_increment = 0
   character set = `utf8mb4`
