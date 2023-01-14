@@ -44,9 +44,9 @@ create table `user`
     `nickname`      varchar(20) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '昵称',
     `avatar_url`    varchar(50) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '头像链接',
     `register_time` datetime                                                            not null default current_timestamp comment '注册时间',
-    `is_deleted`    tinyint(3) unsigned                                                 not null default 0 comment '0为未删除，1为已删除',
+    `is_deleted`    int(10) unsigned                                                    not null default '0' comment '0为未删除，已删除时该值等于id，以避免唯一索引的异常',
     primary key (`id`) using btree,
-    unique index `username` (`username`) using btree
+    unique index `username` (`username`, `is_deleted`) using btree
 ) engine = InnoDB
   auto_increment = 0
   character set = `utf8`
@@ -159,10 +159,10 @@ create table `user_safety`
     `password`   varchar(100) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '密码',
     `mail`       varchar(30) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '邮箱',
     `mobile`     varchar(11) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '手机号',
-    `is_deleted` tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    `is_deleted` int(10) unsigned                                                     not null default '0' comment '0为未删除，已删除时该值等于id，以避免唯一索引的异常',
     primary key (`user_id`) using btree,
-    unique index `email` (`mail`) using btree,
-    unique index `mobile` (`mobile`) using btree,
+    unique index `mail` (`mail`, `is_deleted`) using btree,
+    unique index `mobile` (`mobile`, `is_deleted`) using btree,
     index `index_user_safety_user_general_1` (`username`) using btree
 ) engine = InnoDB
   character set = `utf8`

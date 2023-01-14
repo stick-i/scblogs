@@ -123,6 +123,9 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 
 	@Override
 	public boolean removeById(Integer id) {
+		// 由于user表当中username字段为唯一索引，且该项目使用了逻辑删除
+		// 所以我重写了userMapper的deleteById方法，将is_deleted字段值修改为id
+		// user_safety也是一样
 		if (userSafetyMapper.deleteById(id) == 1 && userMapper.deleteById(id) == 1) {
 			return true;
 		}
