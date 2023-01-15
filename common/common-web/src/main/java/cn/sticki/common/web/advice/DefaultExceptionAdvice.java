@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.ServletException;
+import javax.validation.ValidationException;
 import java.net.ConnectException;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class DefaultExceptionAdvice {
 		return fail(402, "请求方式异常");
 	}
 
-	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, TypeMismatchException.class})
+	@ExceptionHandler({MissingRequestValueException.class, IllegalArgumentException.class, TypeMismatchException.class, ValidationException.class})
 	public Object doIllegalArgumentException(Exception e) {
 		log.info("参数异常,{}", e.getMessage());
 		return fail(402, "参数异常");

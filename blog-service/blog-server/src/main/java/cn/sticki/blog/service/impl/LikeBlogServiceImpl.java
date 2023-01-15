@@ -17,11 +17,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class LikeBlogServiceImpl extends ServiceImpl<LikeBlogMapper, LikeBlog> i
 	}
 
 	@Override
-	public BlogListVO getLikeBlogList(@NotNull Integer userId, int page, int pageSize) {
+	public BlogListVO getLikeBlogList(@Valid @NotNull Integer userId, int page, int pageSize) {
 		// 先查收藏表，获取收藏的博客id
 		LambdaQueryWrapper<LikeBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(LikeBlog::getUserId, userId);
