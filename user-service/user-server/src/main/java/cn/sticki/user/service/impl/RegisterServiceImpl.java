@@ -18,7 +18,6 @@ import cn.sticki.user.service.RegisterService;
 import cn.sticki.user.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
@@ -148,7 +149,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 	 * @param code        待核对的验证码
 	 * @return 验证结果，成功或失败
 	 */
-	private boolean checkMailVerify(@NotNull String mailAddress, @NotNull String code) {
+	private boolean checkMailVerify(@Valid @NotNull String mailAddress, @NotNull String code) {
 		// 此处读取缓存中的数据
 		String key = REGISTER_MAIL_CODE_KEY + mailAddress;
 		String verify = stringRedisTemplate.opsForValue().get(key);

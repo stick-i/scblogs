@@ -14,13 +14,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.minio.errors.MinioException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -57,7 +58,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
 	}
 
 	@SneakyThrows(value = IOException.class)
-	private boolean getImage(String file, String bucketName, @NotNull HttpServletResponse response) {
+	private boolean getImage(String file, String bucketName, @Valid @NotNull HttpServletResponse response) {
 		log.debug("getImg, fileName->{}, bucketName->{}", file, bucketName);
 		try {
 			minioService.download(file, bucketName, response);

@@ -15,13 +15,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * 博客控制台相关接口
@@ -31,6 +31,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/blog/console")
+@Validated
 public class BlogConsoleController {
 
 	@Resource
@@ -86,7 +87,7 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public void saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage) {
+	public void saveBlog(BlogSaveBO blog, MultipartFile coverImage) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		// 设置其他参数
 		blog.setCoverImageFile(coverImage);

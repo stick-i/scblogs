@@ -14,7 +14,6 @@ import cn.sticki.resource.utils.FileUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cglib.beans.BeanMap;
@@ -23,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import static cn.sticki.blog.sdk.BlogMqConstants.*;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
+@Valid
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
 
 	@Resource

@@ -5,10 +5,11 @@ import cn.sticki.user.pojo.FansViewListVO;
 import cn.sticki.user.pojo.FollowViewListVO;
 import cn.sticki.user.service.UserFollowService;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@Validated
 public class FollowController {
 
 	/**

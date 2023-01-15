@@ -23,11 +23,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	}
 
 	@Override
-	public BlogStatusListVO getFollowBlogList(@NotNull Integer userId, int page, int pageSize) {
+	public BlogStatusListVO getFollowBlogList(@Valid @NotNull Integer userId, int page, int pageSize) {
 		// 设置查询条件：作者为关注的对象，状态为公开，并以id倒序（表示发布时间最新）
 		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
 		RestResult<List<Integer>> result = userClient.getFollowIdList(userId);

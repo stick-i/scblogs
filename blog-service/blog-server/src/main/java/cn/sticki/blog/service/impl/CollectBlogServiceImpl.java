@@ -17,12 +17,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class CollectBlogServiceImpl extends ServiceImpl<CollectBlogMapper, Colle
 	}
 
 	@Override
-	public BlogListVO getCollectBlogList(@NotNull Integer userId, int page, int pageSize) {
+	public BlogListVO getCollectBlogList(@Valid @NotNull Integer userId, int page, int pageSize) {
 		// 先查收藏表，获取收藏的博客id
 		LambdaQueryWrapper<CollectBlog> wrapper = new LambdaQueryWrapper<>();
 		wrapper.eq(CollectBlog::getUserId, userId);

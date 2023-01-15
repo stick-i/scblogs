@@ -2,6 +2,7 @@ package cn.sticki.gateway.filter;
 
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.utils.RequestUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,7 @@ public class IpLimitFilter implements GlobalFilter, Ordered {
 		return chain.filter(exchange);
 	}
 
-	@SneakyThrows
+	@SneakyThrows(value = JsonProcessingException.class)
 	private DataBuffer buildWrap(ServerHttpResponse response, String ip, RequestPath uri, String key) {
 		// 设置状态码和响应类型
 		response.setStatusCode(HttpStatus.LOCKED);

@@ -5,13 +5,14 @@ import cn.sticki.resource.type.FileType;
 import cn.sticki.resource.utils.FileUtils;
 import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -22,6 +23,7 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequestMapping("/private/resource")
+@Validated
 public class UploadController {
 
 	@Resource
