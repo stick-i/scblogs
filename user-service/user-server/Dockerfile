@@ -11,7 +11,8 @@ ENV JAVA_OPTS="\
 -Xms256m \
 -Xmx512m \
 -XX:MetaspaceSize=256m \
--XX:MaxMetaspaceSize=512m"
+-XX:MaxMetaspaceSize=512m \
+-Duser.timezone=GMT+08 "
 #空参数，方便创建容器时传参
 ENV PARAMS=""
 # 入口点， 执行JAVA运行命令
