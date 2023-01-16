@@ -29,7 +29,7 @@ create table `blink`
     `content`       text character set `utf8mb4` collate `utf8mb4_unicode_ci` not null comment '动态内容',
     `create_time`   datetime                                                  not null default current_timestamp comment '发表时间',
     `modified_time` datetime                                                  not null default current_timestamp on update current_timestamp comment '修改时间',
-    `is_deleted`    tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
+    `deleted`       tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
     index `index_blink_user_id` (`user_id`) using btree
 ) engine = InnoDB
@@ -49,7 +49,7 @@ create table `blink_general`
     `likes_num`   int(11) unsigned    not null default 0 comment '点赞量',
     `comment_num` int(11) unsigned    not null default 0 comment '评论量',
     `score`       double unsigned     not null default 0 comment '评分',
-    `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    `deleted`     tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`blink_id`) using btree
 ) engine = InnoDB
   character set = `utf8mb4`
@@ -72,7 +72,7 @@ select `blink`.`id`                  as `id`,
        `blink_general`.`comment_num` as `comment_num`,
        `blink_general`.`score`       as `score`
 from (`blink`
-         left join `blink_general` on ((`blink`.`id` = `blink_general`.`blink_id`)))
-where (`blink`.`is_deleted` = 0);
+    left join `blink_general` on ((`blink`.`id` = `blink_general`.`blink_id`)))
+where (`blink`.`deleted` = 0);
 
 set FOREIGN_KEY_CHECKS = 1;

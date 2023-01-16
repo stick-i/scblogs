@@ -32,7 +32,7 @@ create table `blog`
     `status`        tinyint(3) unsigned                                               not null comment '发表状态（1表示已发表、2表示未发表、3为仅自己可见、4为回收站、5为审核中）',
     `create_time`   datetime                                                          not null default current_timestamp comment '创建时间',
     `modified_time` datetime                                                          not null default current_timestamp on update current_timestamp comment '修改时间',
-    `is_deleted`    tinyint(3) unsigned                                               not null default 0 comment '是否已经删除，0未删除，1已删除',
+    `deleted`       tinyint(3) unsigned                                               not null default 0 comment '是否已经删除，0未删除，1已删除',
     primary key (`id`) using btree,
     index `author_id` (`author_id`) using btree,
     index `school_code` (`school_code`) using btree
@@ -51,7 +51,7 @@ create table `blog_content`
     `blog_id`       int(11) unsigned                                          not null comment '博客id',
     `content`       text character set `utf8mb4` collate `utf8mb4_general_ci` not null comment '博客内容',
     `modified_time` datetime                                                  not null default current_timestamp on update current_timestamp comment '修改时间',
-    `is_deleted`    tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
+    `deleted`       tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
     primary key (`blog_id`) using btree,
     unique index `blog_id` (`blog_id`) using btree
 ) engine = InnoDB
@@ -68,7 +68,7 @@ create table `blog_content_html`
     `blog_id`       int(11) unsigned                                          not null comment '博客id',
     `content`       text character set `utf8mb4` collate `utf8mb4_general_ci` not null comment '博客内容（html）',
     `modified_time` datetime                                                  not null default current_timestamp on update current_timestamp,
-    `is_deleted`    tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
+    `deleted`       tinyint(3) unsigned                                       not null default 0 comment '0为未删除，1为已删除',
     primary key (`blog_id`) using btree,
     unique index `blog_id` (`blog_id`) using btree
 ) engine = InnoDB
@@ -88,7 +88,7 @@ create table `blog_general`
     `comment_num`    int(10) unsigned    not null default 0 comment '评论量',
     `collection_num` int(10) unsigned    not null default 0 comment '收藏量',
     `score`          int(10) unsigned    not null default 0 comment '评分',
-    `is_deleted`     tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    `deleted`        tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`blog_id`) using btree,
     unique index `blog_id` (`blog_id`) using btree
 ) engine = InnoDB
@@ -102,10 +102,10 @@ create table `blog_general`
 drop table if exists `blog_set_tag`;
 create table `blog_set_tag`
 (
-    `id`         int(10) unsigned    not null auto_increment,
-    `tag_id`     int(10) unsigned    not null,
-    `blog_id`    int(10) unsigned    not null,
-    `is_deleted` tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    `id`      int(10) unsigned    not null auto_increment,
+    `tag_id`  int(10) unsigned    not null,
+    `blog_id` int(10) unsigned    not null,
+    `deleted` tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
     index `index_tag_blog` (`tag_id`, `blog_id`) using btree
 ) engine = InnoDB
@@ -124,7 +124,7 @@ create table `collect_blog`
     `blog_id`     int(10) unsigned    not null,
     `user_id`     int(10) unsigned    not null,
     `create_time` datetime            not null default current_timestamp,
-    `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    `deleted`     tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
     index `_blog_collection_user_1` (`user_id`) using btree,
     index `index_blog_collection_blog_1` (`blog_id`) using btree
@@ -173,7 +173,7 @@ create table `like_blog`
     `blog_id`     int(10) unsigned    not null comment '博客id',
     `user_id`     int(10) unsigned    not null comment '用户id',
     `create_time` datetime            not null default current_timestamp on update current_timestamp comment '创建时间',
-    `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    `deleted`     tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
     index `index_blog_likes_user_1` (`user_id`) using btree,
     index `index_blog_likes_blog_1` (`blog_id`) using btree
@@ -195,7 +195,7 @@ create table `tag`
     `description`   varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null,
     `create_time`   datetime                                                             not null default current_timestamp,
     `modified_time` datetime                                                             null     default null on update current_timestamp,
-    `is_deleted`    tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    `deleted`       tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree
 ) engine = InnoDB
   auto_increment = 1
@@ -225,7 +225,7 @@ select `blog`.`id`                                     as `id`,
        `blog_general`.`collection_num`                 as `collection_num`,
        `blog_general`.`score`                          as `score`
 from ((`blog` left join `blog_general` on ((`blog`.`id` = `blog_general`.`blog_id`)))
-         left join `config` on ((`config`.`param` = 'cover_url')))
-where (`blog`.`is_deleted` = 0);
+    left join `config` on ((`config`.`param` = 'cover_url')))
+where (`blog`.`deleted` = 0);
 
 set FOREIGN_KEY_CHECKS = 1;

@@ -11,7 +11,7 @@
 		<foreach collection="blogIdList" item="blogId" open="(" separator="," close=")">
 			#{blogId}
 		</foreach>
-		and is_deleted = 0
+		and deleted = 0
 		;
 	</select>
 

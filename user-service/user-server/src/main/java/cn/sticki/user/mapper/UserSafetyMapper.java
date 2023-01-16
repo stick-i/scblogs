@@ -20,7 +20,7 @@ public interface UserSafetyMapper extends BaseMapper<UserSafety> {
 	 * @param mail 邮箱
 	 * @return 用户账号安全数据
 	 */
-	@Select("select * from user.user_safety where mail = #{mail}")
+	@Select("select * from `user`.`user_safety` where `mail` = #{mail}")
 	UserSafety selectByMail(String mail);
 
 	/**
@@ -30,7 +30,7 @@ public interface UserSafetyMapper extends BaseMapper<UserSafety> {
 	 * @param password 密码
 	 * @return 影响的行数
 	 */
-	@Update("update user.user_safety set `password` = #{password} where user_id = #{id};")
+	@Update("update `user`.`user_safety` set `password` = #{password} where `user_id` = #{id};")
 	int updatePasswordById(Integer id, String password);
 
 	/**
@@ -50,7 +50,7 @@ public interface UserSafetyMapper extends BaseMapper<UserSafety> {
 	 * @return 影响的行数
 	 */
 	@Override
-	@Update("update `user_safety` set `is_deleted` = #{id} where `user_id` = #{id} and `is_deleted` = 0")
+	@Update("update `user_safety` set `deleted` = #{id} where `user_id` = #{id} and `deleted` = 0")
 	int deleteById(Serializable id);
 
 }

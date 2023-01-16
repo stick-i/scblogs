@@ -44,9 +44,9 @@ create table `user`
     `nickname`      varchar(20) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '昵称',
     `avatar_url`    varchar(50) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '头像链接',
     `register_time` datetime                                                            not null default current_timestamp comment '注册时间',
-    `is_deleted`    int(10) unsigned                                                    not null default '0' comment '0为未删除，已删除时该值等于id，以避免唯一索引的异常',
+    `deleted`       int(10) unsigned                                                    not null default '0' comment '0为未删除，已删除时该值等于id，以避免唯一索引的异常',
     primary key (`id`) using btree,
-    unique index `username` (`username`, `is_deleted`) using btree
+    unique index `username` (`username`, `deleted`) using btree
 ) engine = InnoDB
   auto_increment = 0
   character set = `utf8`
@@ -69,7 +69,7 @@ create table `user_basic`
     `name_modify_time` datetime                                                             null     default null comment '用户名修改时间',
     `start_work_time`  datetime                                                             null     default null comment '开始工作的时间',
     `modified_time`    datetime                                                             not null default current_timestamp on update current_timestamp comment '信息修改时间',
-    `is_deleted`       tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    `deleted`          tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
     primary key (`username`) using btree
 ) engine = InnoDB
   character set = `utf8`
@@ -94,7 +94,7 @@ create table `user_education`
     `safety_audit_status` varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '安全审核状态',
     `status`              varchar(255) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '状态码',
     `modified_time`       datetime                                                             not null default current_timestamp on update current_timestamp comment '更新时间',
-    `is_deleted`          tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
+    `deleted`             tinyint(3) unsigned                                                  not null default 0 comment '0为未删除，1为已删除',
     primary key (`user_id`) using btree
 ) engine = InnoDB
   character set = `utf8`
@@ -113,7 +113,7 @@ create table `user_follow`
     `note`        varchar(50) character set `utf8` collate `utf8_general_mysql500_ci` null     default null comment '备注',
     `status`      int(10) unsigned                                                    not null default 1 comment '状态码',
     `create_time` datetime                                                            not null default current_timestamp comment '创建时间',
-    `is_deleted`  tinyint(3) unsigned                                                 not null default 0 comment '0为未删除，1为已删除',
+    `deleted`     tinyint(3) unsigned                                                 not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
     index `user_id` (`fans_id`) using btree,
     index `follow_id` (`follow_id`) using btree
@@ -139,7 +139,7 @@ create table `user_general`
     `blog_num`    int(11) unsigned    not null default 0 comment '用户博客数量',
     `week_rank`   int(11) unsigned    null     default null comment '周排行',
     `total_rank`  int(11) unsigned    null     default null comment '总排汗',
-    `is_deleted`  tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
+    `deleted`     tinyint(3) unsigned not null default 0 comment '0为未删除，1为已删除',
     primary key (`id`) using btree,
     unique index `index_user_general_user_id` (`user_id`) using btree
 ) engine = InnoDB
@@ -154,15 +154,15 @@ create table `user_general`
 drop table if exists `user_safety`;
 create table `user_safety`
 (
-    `user_id`    int(10) unsigned                                                     not null comment '用户id',
-    `username`   varchar(20) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '用户名',
-    `password`   varchar(100) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '密码',
-    `mail`       varchar(30) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '邮箱',
-    `mobile`     varchar(11) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '手机号',
-    `is_deleted` int(10) unsigned                                                     not null default '0' comment '0为未删除，已删除时该值等于id，以避免唯一索引的异常',
+    `user_id`  int(10) unsigned                                                     not null comment '用户id',
+    `username` varchar(20) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '用户名',
+    `password` varchar(100) character set `utf8` collate `utf8_general_mysql500_ci` not null comment '密码',
+    `mail`     varchar(30) character set `utf8` collate `utf8_general_mysql500_ci`  not null comment '邮箱',
+    `mobile`   varchar(11) character set `utf8` collate `utf8_general_mysql500_ci`  null     default null comment '手机号',
+    `deleted`  int(10) unsigned                                                     not null default '0' comment '0为未删除，已删除时该值等于id，以避免唯一索引的异常',
     primary key (`user_id`) using btree,
-    unique index `mail` (`mail`, `is_deleted`) using btree,
-    unique index `mobile` (`mobile`, `is_deleted`) using btree,
+    unique index `mail` (`mail`, `deleted`) using btree,
+    unique index `mobile` (`mobile`, `deleted`) using btree,
     index `index_user_safety_user_general_1` (`username`) using btree
 ) engine = InnoDB
   character set = `utf8`
@@ -180,10 +180,10 @@ select `user`.`id`                                    as `id`,
        `user`.`school_code`                           as `school_code`,
        concat(`config`.`result`, `user`.`avatar_url`) as `avatar_url`,
        `user`.`register_time`                         as `register_time`,
-       `user`.`is_deleted`                            as `is_deleted`
+       `user`.`deleted`                               as `deleted`
 from (`user`
-         left join `config` on ((`config`.`param` = 'avatar_url')))
-where (`user`.`is_deleted` = 0);
+    left join `config` on ((`config`.`param` = 'avatar_url')))
+where (`user`.`deleted` = 0);
 
 -- ----------------------------
 -- View structure for fans_view
@@ -202,8 +202,8 @@ select `user_follow`.`id`          as `id`,
        `user_view`.`avatar_url`    as `avatar_url`,
        `user_view`.`register_time` as `register_time`
 from (`user_follow`
-         left join `user_view` on ((`user_follow`.`fans_id` = `user_view`.`id`)))
-where (`user_follow`.`is_deleted` = 0);
+    left join `user_view` on ((`user_follow`.`fans_id` = `user_view`.`id`)))
+where (`user_follow`.`deleted` = 0);
 
 -- ----------------------------
 -- View structure for follow_view
@@ -222,7 +222,7 @@ select `user_follow`.`id`          as `id`,
        `user_view`.`avatar_url`    as `avatar_url`,
        `user_view`.`register_time` as `register_time`
 from (`user_follow`
-         left join `user_view` on ((`user_view`.`id` = `user_follow`.`follow_id`)))
-where (`user_follow`.`is_deleted` = 0);
+    left join `user_view` on ((`user_view`.`id` = `user_follow`.`follow_id`)))
+where (`user_follow`.`deleted` = 0);
 
 set FOREIGN_KEY_CHECKS = 1;

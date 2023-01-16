@@ -28,7 +28,7 @@ create table `comment`
     `parent_id`      int(10) unsigned                                             null     default null comment '父评论id',
     `parent_user_id` int(10) unsigned                                             null     default null comment '父评论用户id',
     `create_time`    datetime                                                     not null default current_timestamp comment '创建时间',
-    `is_deleted`     tinyint(3) unsigned                                          null     default 0 comment '是否已经删除，0未删除，1已删除',
+    `deleted`        tinyint(3) unsigned                                          null     default 0 comment '是否已经删除，0未删除，1已删除',
     primary key (`id`) using btree,
     index `index_comment_user_id` (`user_id`) using btree,
     index `index_comment_blog_id` (`blog_id`) using btree
