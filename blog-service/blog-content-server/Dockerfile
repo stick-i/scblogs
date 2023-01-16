@@ -5,13 +5,14 @@ VOLUME /tmp
 # 拷贝运行JAR包
 ARG JAR_FILE
 ADD ${JAR_FILE} app.jar
-# 设置JVM运行参数， 这里限定下内存大小，减少开销
+# 设置JVM运行参数，限定内存大小，并设置时区为东八区
 ENV JAVA_OPTS="\
 -server \
 -Xms256m \
 -Xmx512m \
 -XX:MetaspaceSize=256m \
--XX:MaxMetaspaceSize=512m"
+-XX:MaxMetaspaceSize=512m \
+-Duser.timezone=GMT+08 "
 #空参数，方便创建容器时传参
 ENV PARAMS=""
 # 入口点， 执行JAVA运行命令
