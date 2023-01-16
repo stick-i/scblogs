@@ -5,7 +5,7 @@ VOLUME /tmp
 # 拷贝运行JAR包
 ARG JAR_FILE
 ADD ${JAR_FILE} app.jar
-# 设置JVM运行参数， 这里限定下内存大小，减少开销
+# 设置JVM运行参数，限定内存大小，并设置时区为东八区
 ENV JAVA_OPTS="\
 -server \
 -Xms256m \
