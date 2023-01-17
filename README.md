@@ -50,6 +50,7 @@
 - QQ交流群：729931395
 - 腾讯云服务器购买链接：[云服务器等爆品抢先购，低至4.2元/月](https://cloud.tencent.com/act/cps/redirect?redirect=2446&cps_key=01c7d20caadfac8f61a2901a9324068c&from=console)
 - 阿里云服务器购买链接：[云服务器精选特惠](https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=dv0atr82)
+
 ## 项目特点
 
 - 微服务架构开发，友好的代码结构及注释，便于阅读及二次开发
