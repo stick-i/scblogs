@@ -53,7 +53,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 		response.setStatusCode(httpStatus);
 
 		// 由于系统异常，不会正常走过滤器，故手动保存访问记录
-		visitRecordService.saveRecord(exchange);
+		visitRecordService.add(exchange);
 
 		return MonoUtils.buildMonoWrap(response, result);
 	}

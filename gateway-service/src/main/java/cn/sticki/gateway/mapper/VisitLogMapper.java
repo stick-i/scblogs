@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2023/1/18 19:47
  */
 @Mapper
-public interface VisitRecordMapper extends BaseMapper<VisitRecord> {
+public interface VisitLogMapper extends BaseMapper<VisitRecord> {
 
 }
