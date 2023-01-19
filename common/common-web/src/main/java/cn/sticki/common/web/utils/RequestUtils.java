@@ -47,6 +47,12 @@ public class RequestUtils {
 		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
 			ip = request.getRemoteAddr();
 		}
+
+		//当通过localhost访问服务时，ip会获取为0:0:0:0:0:0:0:1
+		if ("0:0:0:0:0:0:0:1".equals(ip)) {
+			ip = "127.0.0.1";
+		}
+
 		return ip;
 	}
 
@@ -86,6 +92,12 @@ public class RequestUtils {
 		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
 			ip = Objects.requireNonNull(request.getRemoteAddress()).getAddress().getHostAddress();
 		}
+
+		//当通过localhost访问服务时，ip会获取为0:0:0:0:0:0:0:1
+		if ("0:0:0:0:0:0:0:1".equals(ip)) {
+			ip = "127.0.0.1";
+		}
+
 		return ip;
 	}
 

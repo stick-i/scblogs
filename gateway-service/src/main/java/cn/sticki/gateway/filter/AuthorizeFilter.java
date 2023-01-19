@@ -1,9 +1,11 @@
 package cn.sticki.gateway.filter;
 
 import cn.hutool.jwt.JWT;
+import cn.sticki.common.result.RestResult;
 import cn.sticki.gateway.config.JwtConfig;
 import cn.sticki.gateway.config.SecurityConfig;
 import cn.sticki.gateway.utils.JwtUtils;
+import cn.sticki.gateway.utils.MonoUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -15,6 +17,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
+ * 权限认证过滤器
+ *
  * @author 阿杆
  */
 @Component
@@ -24,12 +28,10 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		// 通过request中的id来判断用户
 		ServerHttpRequest request = exchange.getRequest();
-		// id 存在的情况下，认为用户恶意操作，直接拦截。
-		// 判断token
-		if (request.getHeaders().getFirst(SecurityConfig.identityHeader) != null) {
+		// 未经过网关就存在 user-id 的情况下，认为用户恶意操作，直接拦截。
+		if (getUserId(request) != null) {
 			// 拦截请求
-			exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-			return exchange.getResponse().setComplete();
+			return MonoUtils.buildMonoWrap(exchange.getResponse(), RestResult.fail(), HttpStatus.BAD_REQUEST);
 		}
 		// 获取token
 		String token = request.getHeaders().getFirst(JwtConfig.headerName);
@@ -42,7 +44,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 			}
 			if (object instanceof Integer) {
 				Integer id = (Integer) object;
-				ServerHttpRequest build = exchange.getRequest().mutate().header(SecurityConfig.identityHeader, id.toString()).build();
+				ServerHttpRequest build = request.mutate().header(SecurityConfig.identityHeader, id.toString()).build();
 				exchange = exchange.mutate().request(build).build();
 			}
 		}
@@ -52,7 +54,25 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
 	@Override
 	public int getOrder() {
-		return -2;
+		return -100;
+	}
+
+	/**
+	 * 获取存储在request header上的用户信息，但有可能为空
+	 *
+	 * @param request 请求体
+	 * @return 用户id
+	 */
+	public static Long getUserId(ServerHttpRequest request) {
+		Long res = null;
+		String identity = request.getHeaders().getFirst(SecurityConfig.identityHeader);
+		if (identity != null) {
+			try {
+				res = Long.parseLong(identity);
+			} catch (NumberFormatException ignored) {
+			}
+		}
+		return res;
 	}
 
 }
