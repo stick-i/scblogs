@@ -139,6 +139,11 @@ public class VisitRecordService {
 	private void addRecord(VisitRecord record) {
 		// 添加记录到缓存中
 		visitSet.add(record);
+		// 执行任务，保存数据
+		doTask();
+	}
+
+	private void doTask() {
 		if (!taskFinish) {
 			return;
 		}
@@ -149,12 +154,22 @@ public class VisitRecordService {
 			}
 			taskFinish = false;
 			threadPool.execute(() -> {
-				if (visitSet.size() <= BATCH_SIZE) {
-					sleep(500);
+				try {
+					// 当数据量较小时，则等待一段时间再插入数据，从而做到将数据尽可能的批量插入数据库
+					if (visitSet.size() <= BATCH_SIZE) {
+						sleep(500);
+					}
+					batchSave();
+				} finally {
+					// 任务执行完毕后修改标志位
+					taskFinish = true;
 				}
-				batchSave();
-				// 任务执行完毕后修改标志位
-				taskFinish = true;
+				// todo 并发情况下，可能出现 (整个任务完成前，hashSet更新后) 插入数据的情况，此时如果无新任务调度，则数据不会被主动保存
+				// 故任务完成后主动进行检查
+				// if (visitSet.size() > 0) {
+				// 	doTask();
+				// }
+				// 以上做法将重复创建新线程，会有问题
 			});
 		}
 	}
@@ -183,7 +198,15 @@ public class VisitRecordService {
 		// 构造新对象来存储数据，旧对象保存到数据库后不再使用
 		HashSet<VisitRecord> oldSet = visitSet;
 		visitSet = new HashSet<>();
-		visitLogService.saveBatch(oldSet, BATCH_SIZE);
+		boolean isSave = false;
+		try {
+			isSave = visitLogService.saveBatch(oldSet, BATCH_SIZE);
+		} finally {
+			if (!isSave) {
+				// 如果插入失败，则重新添加所有数据
+				visitSet.addAll(oldSet);
+			}
+		}
 	}
 
 }
