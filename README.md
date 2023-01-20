@@ -15,9 +15,9 @@
   <img src="https://img.shields.io/github/stars/stick-i/scblogs" alt=""/>
   <img src="https://img.shields.io/github/forks/stick-i/scblogs" alt=""/>
 <br>
-  <img src="https://img.shields.io/badge/SpringBoot-2.6.6-green" alt=""/>
-  <img src="https://img.shields.io/badge/SpringCloud-2021.0.2-green" alt=""/>
-  <img src="https://img.shields.io/badge/SpringCloudAlibaba-2021.0.1.0-green" alt=""/><br>
+  <img src="https://img.shields.io/badge/SpringBoot-2.6.11-green" alt=""/>
+  <img src="https://img.shields.io/badge/SpringCloud-2021.0.4-green" alt=""/>
+  <img src="https://img.shields.io/badge/SpringCloudAlibaba-2021.0.4.0-green" alt=""/><br>
   <img src="https://img.shields.io/badge/Vue-2.6.14-green" alt=""/>
   <img src="https://img.shields.io/badge/ElementUI-2.15.6-green" alt=""/>
 </a></p>
