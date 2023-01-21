@@ -190,6 +190,11 @@ public class VisitRecordService {
 	 */
 	private final int BATCH_SIZE = 500;
 
+	/**
+	 * 缩减因子，每次更新缓存Set时缩小的倍数
+	 */
+	private final float REDUCE_FACTOR = 0.75f;
+
 	private void batchSave() {
 		log.debug("访问记录准备插入数据库，当前数据量：{}", visitSet.size());
 		if (visitSet.size() == 0) {
@@ -197,7 +202,7 @@ public class VisitRecordService {
 		}
 		// 构造新对象来存储数据，旧对象保存到数据库后不再使用
 		HashSet<VisitRecord> oldSet = visitSet;
-		visitSet = new HashSet<>();
+		visitSet = new HashSet<>((int) (oldSet.size() * REDUCE_FACTOR));
 		boolean isSave = false;
 		try {
 			isSave = visitLogService.saveBatch(oldSet, BATCH_SIZE);
