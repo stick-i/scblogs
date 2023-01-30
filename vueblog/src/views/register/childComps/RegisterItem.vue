@@ -293,52 +293,61 @@ export default {
           type: "warning",
         });
       } else {
-        this.$axios
-          .post("/register/send-mail-verify", qs.stringify(this.ruleForm))
-          .then((res) => {
-            console.log(res);
-            if (res.data.code == 200 && res.data.status == true) {
-              this.$message({
-                showClose: true,
-                message: "验证码发送成功，请注意查收哦~",
-                type: "success",
+        this.$refs.ruleForm.validateField('mail', (error) => {
+          console.log('侧睡')
+          console.log(error)
+          if (error) {
+            return
+          } else {
+            this.$axios
+              .post("/register/send-mail-verify", qs.stringify(this.ruleForm))
+              .then((res) => {
+                console.log(res);
+                if (res.data.code == 200 && res.data.status == true) {
+                  this.$message({
+                    showClose: true,
+                    message: "验证码发送成功，请注意查收哦~",
+                    type: "success",
+                  });
+                }
+                if (res.data.code == 500) {
+                  this.$message({
+                    showClose: true,
+                    message: "输入的邮箱格式不正确",
+                    type: "warning",
+                  });
+                }
+                if (res.data.code == 401 && res.data.status == false) {
+                  console.log(res.data.message);
+                  let message = res.data.message;
+                  this.$message({
+                    showClose: true,
+                    message: message,
+                    type: "error",
+                  });
+                }
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            }
-            if (res.data.code == 500) {
-              this.$message({
-                showClose: true,
-                message: "输入的邮箱格式不正确",
-                type: "warning",
-              });
-            }
-            if (res.data.code == 401 && res.data.status == false) {
-              console.log(res.data.message);
-              let message = res.data.message;
-              this.$message({
-                showClose: true,
-                message: message,
-                type: "error",
-              });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
 
-        // 验证码倒计时
-        if (!this.timer) {
-          this.count = TIME_COUNT;
-          this.isShowTime = false;
-          this.timer = setInterval(() => {
-            if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
-            } else {
-              this.isShowTime = true;
-              clearInterval(this.timer);
-              this.timer = null;
+            // 验证码倒计时
+            if (!this.timer) {
+              this.count = TIME_COUNT;
+              this.isShowTime = false;
+              this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                  this.count--;
+                } else {
+                  this.isShowTime = true;
+                  clearInterval(this.timer);
+                  this.timer = null;
+                }
+              }, 1000);
             }
-          }, 1000);
-        }
+          }
+        })
+        
       }
     },
     submitForm(formName) {
