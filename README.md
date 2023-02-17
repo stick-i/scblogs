@@ -24,8 +24,6 @@
 
 ## 系统架构图
 
-> 使用在线绘图网站 [boardmix](https://boardmix.cn/app/my-space?inviteCode=maRS9i) 制作
-> 
 > GitHub点此 [链接](https://raw.githubusercontent.com/stick-i/scblogs/main/document/image/scblogs-framework.png) 查看大图，Gitee直接点图片就可以放大
 
 ![image](./document/image/scblogs-framework.png)
