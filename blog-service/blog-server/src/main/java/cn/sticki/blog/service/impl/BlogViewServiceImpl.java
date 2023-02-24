@@ -193,8 +193,10 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 			// 添加用户昵称
 			Map<Integer, UserDTO> userMap = result.getData();
 			for (BlogInfoBO blogInfoBO : blogInfoList) {
-				String nickname = userMap.get(blogInfoBO.getAuthorId()).getNickname();
-				blogInfoBO.setAuthorName(nickname);
+				UserDTO author = userMap.get(blogInfoBO.getAuthorId());
+				if (author != null) {
+					blogInfoBO.setAuthorName(author.getNickname());
+				}
 			}
 		}
 		// return blogInfoList;
