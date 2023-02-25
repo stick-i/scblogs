@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/resource?serverTimezone=Asia/Shanghai
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 该配置将会覆盖IpLimitConfig的默认值
+gateway:
+  ip-limit:
+    key: "gateway:ipLimit:"
+    count: 30
+    time: 5
+    ttl: 10

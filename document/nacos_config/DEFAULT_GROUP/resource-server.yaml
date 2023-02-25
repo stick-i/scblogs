@@ -5,11 +5,16 @@ spring:
       username: root
       password: root
       driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: xxxx
+    username: xxxx
+    password: xxxx
+    port: xxxx
 
 minio:
-  url: xxxx
-  username: xxxx
-  password: xxxx
+  url: http://127.0.0.1:59000
+  username: root
+  password: root
 
 resource:
   path:

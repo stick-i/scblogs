@@ -6,4 +6,4 @@ feign:
       default:
         #建立连接所用的时间，适用于网络状况正常的情况下，两端连接所需要的时间
         #超时时间
-        ConnectTimeOut: 500
+        ConnectTimeOut: 1000
