@@ -24,7 +24,7 @@ public interface BlogGeneralMapper extends BaseMapper<BlogGeneral> {
 	 *
 	 * @param blogId 博客id
 	 */
-	@Update("update blog_general set like_num = like_num - 1 where blog_id = #{blogId};")
+	@Update("update blog_general set like_num = like_num - 1 where blog_id = #{blogId} and like_num > 0;")
 	void decreaseLikeNum(Integer blogId);
 
 	/**
@@ -40,7 +40,7 @@ public interface BlogGeneralMapper extends BaseMapper<BlogGeneral> {
 	 *
 	 * @param blogId 博客id
 	 */
-	@Update("update blog_general set collection_num = collection_num - 1 where blog_id = #{blogId};")
+	@Update("update blog_general set collection_num = collection_num - 1 where blog_id = #{blogId} and collection_num > 0;")
 	void decreaseCollectionNum(Integer blogId);
 
 	/**
@@ -56,7 +56,7 @@ public interface BlogGeneralMapper extends BaseMapper<BlogGeneral> {
 	 *
 	 * @param blogId 博客id
 	 */
-	@Update("update blog_general set comment_num = comment_num - 1 where blog_id = #{blogId};")
+	@Update("update blog_general set comment_num = comment_num - 1 where blog_id = #{blogId} and comment_num > 0;")
 	void decreaseCommentNum(Integer blogId);
 
 }
