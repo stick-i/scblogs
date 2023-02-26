@@ -125,7 +125,7 @@ public class VisitRecordService {
 	 * 缓存，在插入数据库前先存入此。
 	 * 为防止数据被重复插入，故使用Set，但不能确保100%不会被重复存储。
 	 */
-	private HashSet<VisitRecord> visitSet = new HashSet<>();
+	private HashSet<VisitRecord> visitCache = new HashSet<>();
 
 	/**
 	 * 信号量，用于标记当前是否有任务正在执行，{@code true}表示当前无任务进行。
@@ -138,47 +138,34 @@ public class VisitRecordService {
 
 	private void addRecord(VisitRecord record) {
 		// 添加记录到缓存中
-		visitSet.add(record);
+		visitCache.add(record);
 		// 执行任务，保存数据
 		doTask();
 	}
 
 	private void doTask() {
-		if (!taskFinish) {
-			return;
-		}
-		// 当前没有任务的情况下，加锁并执行任务
-		synchronized (this) {
-			if (!taskFinish) {
-				return;
-			}
-			taskFinish = false;
-			threadPool.execute(() -> {
-				try {
-					// 当数据量较小时，则等待一段时间再插入数据，从而做到将数据尽可能的批量插入数据库
-					if (visitSet.size() <= BATCH_SIZE) {
-						sleep(500);
-					}
-					batchSave();
-				} finally {
-					// 任务执行完毕后修改标志位
-					taskFinish = true;
+		if (taskFinish) {
+			// 当前没有任务的情况下，加锁并执行任务
+			synchronized (this) {
+				if (taskFinish) {
+					taskFinish = false;
+					threadPool.execute(() -> {
+						try {
+							// 当数据量较小时，则等待一段时间再插入数据，从而做到将数据尽可能的批量插入数据库
+							if (visitCache.size() <= BATCH_SIZE) {
+								Thread.sleep(500);
+							}
+							batchSave();
+						} catch (InterruptedException e) {
+							log.error("睡眠时发生了异常: {}", e.getMessage());
+						} finally {
+							// 任务执行完毕后修改标志位
+							taskFinish = true;
+						}
+						// todo 并发情况下，可能出现 (整个任务完成前，hashSet更新后) 插入数据的情况，此时如果无新任务调度，则数据不会被主动保存
+					});
 				}
-				// todo 并发情况下，可能出现 (整个任务完成前，hashSet更新后) 插入数据的情况，此时如果无新任务调度，则数据不会被主动保存
-				// 故任务完成后主动进行检查
-				// if (visitSet.size() > 0) {
-				// 	doTask();
-				// }
-				// 以上做法将重复创建新线程，会有问题
-			});
-		}
-	}
-
-	private void sleep(long millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -191,25 +178,25 @@ public class VisitRecordService {
 	private final int BATCH_SIZE = 500;
 
 	/**
-	 * 缩减因子，每次更新缓存Set时缩小的倍数
+	 * 缩减因子，每次更新缓存Set时缩小的倍数，对应HashSet的扩容倍数
 	 */
-	private final float REDUCE_FACTOR = 0.75f;
+	private final float REDUCE_FACTOR = 0.5f;
 
 	private void batchSave() {
-		log.debug("访问记录准备插入数据库，当前数据量：{}", visitSet.size());
-		if (visitSet.size() == 0) {
+		log.debug("访问记录准备插入数据库，当前数据量：{}", visitCache.size());
+		if (visitCache.size() == 0) {
 			return;
 		}
 		// 构造新对象来存储数据，旧对象保存到数据库后不再使用
-		HashSet<VisitRecord> oldSet = visitSet;
-		visitSet = new HashSet<>((int) (oldSet.size() * REDUCE_FACTOR));
+		HashSet<VisitRecord> oldCache = visitCache;
+		visitCache = new HashSet<>((int) (oldCache.size() * REDUCE_FACTOR));
 		boolean isSave = false;
 		try {
-			isSave = visitLogService.saveBatch(oldSet, BATCH_SIZE);
+			isSave = visitLogService.saveBatch(oldCache, BATCH_SIZE);
 		} finally {
 			if (!isSave) {
 				// 如果插入失败，则重新添加所有数据
-				visitSet.addAll(oldSet);
+				visitCache.addAll(oldCache);
 			}
 		}
 	}
