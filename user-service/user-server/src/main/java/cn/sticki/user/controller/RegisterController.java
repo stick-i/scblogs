@@ -6,6 +6,7 @@ import cn.sticki.user.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +43,7 @@ public class RegisterController {
 	 * 注册账号，必须有正确的验证码才能注册成功
 	 */
 	@PostMapping("/register")
-	public RestResult<Object> register(UserRegisterBO userRegisterBO) {
+	public RestResult<Object> register(@RequestBody @Validated UserRegisterBO userRegisterBO) {
 		return registerService.register(userRegisterBO);
 	}
 
