@@ -38,7 +38,10 @@ public class VisitRecordService {
 	}
 
 	private void shutdownHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread(this::batchSave));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			this.batchSave();
+			threadPool.shutdown();
+		}));
 	}
 
 	@Nullable
