@@ -43,7 +43,7 @@ public class RegisterController {
 	 * 注册账号，必须有正确的验证码才能注册成功
 	 */
 	@PostMapping("/register")
-	public RestResult<Object> register(UserRegisterBO userRegisterBO) {
+	public RestResult<Object> register(@RequestBody @Validated UserRegisterBO userRegisterBO) {
 		return registerService.register(userRegisterBO);
 	}
 
