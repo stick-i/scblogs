@@ -2,6 +2,8 @@ package cn.sticki.blink.pojo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author 阿杆
  */
@@ -11,6 +13,7 @@ public class UpdateBlinkBO {
 	/**
 	 * 动态id
 	 */
+	@NotNull
 	Integer id;
 
 	/**
@@ -21,6 +24,7 @@ public class UpdateBlinkBO {
 	/**
 	 * 动态内容
 	 */
+	@NotNull
 	String content;
 
 }

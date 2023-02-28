@@ -39,7 +39,7 @@ public class BlinkController {
 	 * @param id 动态id
 	 */
 	@GetMapping
-	public BlinkView getBlink(Integer id) {
+	public BlinkView getBlink(@NotNull Integer id) {
 		return blinkViewService.getById(id);
 	}
 
@@ -63,7 +63,7 @@ public class BlinkController {
 	 * 修改动态内容
 	 */
 	@PutMapping
-	public void updateBlink(UpdateBlinkBO blinkBO) {
+	public void updateBlink(@Validated UpdateBlinkBO blinkBO) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		blinkBO.setUserId(id);
 		blinkService.update(blinkBO);

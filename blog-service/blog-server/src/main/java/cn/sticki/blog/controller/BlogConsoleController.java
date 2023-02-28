@@ -87,7 +87,7 @@ public class BlogConsoleController {
 	 * @param blog 要保存的博客内容
 	 */
 	@PostMapping("/blog")
-	public void saveBlog(BlogSaveBO blog, MultipartFile coverImage) {
+	public void saveBlog(@Validated BlogSaveBO blog, MultipartFile coverImage) {
 		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		// 设置其他参数
 		blog.setCoverImageFile(coverImage);
