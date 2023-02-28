@@ -71,7 +71,7 @@ public class FollowController {
 	 * 获取关注列表id
 	 */
 	@GetMapping("/followId")
-	public List<Integer> getFollowIdList(Integer userId) {
+	public List<Integer> getFollowIdList(@NotNull Integer userId) {
 		return userFollowService.getFollowIdList(userId);
 	}
 
