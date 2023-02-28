@@ -5,10 +5,11 @@ import cn.sticki.blog.service.CollectBlogService;
 import cn.sticki.blog.service.LikeBlogService;
 import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/blog/action")
+@Validated
 public class BlogActionController {
 
 	@Resource

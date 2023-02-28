@@ -20,7 +20,6 @@ import cn.sticki.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +124,9 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 
 	@Override
 	public boolean removeById(Integer id) {
+		// 由于user表当中username字段为唯一索引，且该项目使用了逻辑删除
+		// 所以我重写了userMapper的deleteById方法，将deleted字段值修改为id
+		// user_safety也是一样
 		if (userSafetyMapper.deleteById(id) == 1 && userMapper.deleteById(id) == 1) {
 			return true;
 		}
@@ -210,7 +214,7 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 	}
 
 	@Override
-	public boolean checkMailVerify(Integer id, @NotNull String verify) {
+	public boolean checkMailVerify(Integer id, @Valid @NotNull String verify) {
 		String code = redisTemplate.opsForValue().get(USER_SERVICE_MAIL_CODE_KEY + id);
 		return verify.equals(code);
 	}

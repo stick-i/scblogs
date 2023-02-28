@@ -1,7 +1,6 @@
 package cn.sticki.gateway.config;
 
 import cn.sticki.gateway.handler.GlobalExceptionHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class GatewayConfig {
 
 	@Bean
-	public GlobalExceptionHandler globalExceptionHandler(ObjectMapper objectMapper) {
-		return new GlobalExceptionHandler(objectMapper);
+	public GlobalExceptionHandler globalExceptionHandler() {
+		return new GlobalExceptionHandler();
 	}
 
 }

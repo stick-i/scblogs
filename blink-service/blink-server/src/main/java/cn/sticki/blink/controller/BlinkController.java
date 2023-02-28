@@ -8,10 +8,11 @@ import cn.sticki.blink.service.BlinkService;
 import cn.sticki.blink.service.BlinkViewService;
 import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * 动态（表白墙）相关接口
@@ -21,6 +22,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/blink")
+@Validated
 public class BlinkController {
 
 	private static final int PAGE_SIZE = 20;

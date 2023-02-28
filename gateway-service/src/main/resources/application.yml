@@ -47,6 +47,13 @@ spring:
           uri: lb://blink-server
           predicates:
             - Path=/blink/**
+        # 匹配除了上面所设置的所有地址，用于后续路径拦截返回404
+        # 若无此配置，所有404请求都会被抛出异常
+        - id: not-found
+          uri: lb://user-server
+          predicates:
+            - Path=/**
+          order: 10000
 
       globalcors:
         add-to-simple-url-handler-mapping: true # 放行options请求

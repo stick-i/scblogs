@@ -22,7 +22,7 @@ public class AuthHelper {
 	/**
 	 * 获取当前用户的id
 	 *
-	 * @return 当前用户id，若未登录，则为null
+	 * @return 当前用户id，当用户未登录时为null
 	 */
 	@Nullable
 	public static Integer getCurrentUserId() {
@@ -46,7 +46,7 @@ public class AuthHelper {
 	/**
 	 * 获取当前用户的id 或 抛出异常
 	 *
-	 * @return 当前用户id
+	 * @return 当前用户id，一定不为null
 	 * @throws UnauthorizedException 若未登录
 	 */
 	@NotNull

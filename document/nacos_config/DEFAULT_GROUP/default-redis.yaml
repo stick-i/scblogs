@@ -1,11 +1,16 @@
 spring:
   redis:
-    host: xxxx
-    port: xxxx
-    password: xxxx
+    host: 127.0.0.1
+    port: 6379
+    password: root
     lettuce:
       pool:
         max-active: 50
         max-idle: 20
         min-idle: 10
         max-wait: 100ms
+
+# 屏蔽lettuce打印的redis心跳日志
+logging:
+  level:
+    io.lettuce.core.protocol: warn

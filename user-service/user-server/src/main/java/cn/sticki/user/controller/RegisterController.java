@@ -4,13 +4,13 @@ import cn.sticki.common.result.RestResult;
 import cn.sticki.user.pojo.UserRegisterBO;
 import cn.sticki.user.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * 注册相关接口
@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/register")
+@Validated
 public class RegisterController {
 
 	@Resource
@@ -41,7 +42,7 @@ public class RegisterController {
 	 * 注册账号，必须有正确的验证码才能注册成功
 	 */
 	@PostMapping("/register")
-	public RestResult<Object> register(@Validated UserRegisterBO userRegisterBO) {
+	public RestResult<Object> register(UserRegisterBO userRegisterBO) {
 		return registerService.register(userRegisterBO);
 	}
 

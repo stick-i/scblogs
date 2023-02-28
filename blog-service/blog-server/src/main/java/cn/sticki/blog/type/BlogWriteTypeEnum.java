@@ -1,8 +1,9 @@
 package cn.sticki.blog.type;
 
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -45,7 +46,7 @@ public enum BlogWriteTypeEnum {
 	 * @param code 创作编码
 	 * @return 创作枚举类Optional对象
 	 */
-	public static Optional<BlogWriteTypeEnum> getEnum(@NotNull Integer code) {
+	public static Optional<BlogWriteTypeEnum> getEnum(@Valid @NotNull Integer code) {
 		return Stream.of(BlogWriteTypeEnum.values())
 				.filter(e -> Objects.equals(e.getCode(), code))
 				.findFirst();

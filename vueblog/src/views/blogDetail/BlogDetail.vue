@@ -338,8 +338,9 @@ export default {
 					avatarUrl: blog.author.avatarUrl,
 				};
 				_this.followIdForm = {
-					followId: blog.author.id,
-				};
+          followId: blog.author.id,
+        };
+        document.title = _this.blogDetail.title + " - " + _this.profile.author + " - 校园博客"
 				// _this.comment = blog.comment;
 				// console.log(_this.comment);
 			});
