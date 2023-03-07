@@ -202,9 +202,9 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 		// 2.2 生成验证码，并构造发送邮件类型
 		String code = RandomUtils.generator(6);
 		MailDTO mailDTO = new MailDTO();
-		mailDTO.setFrom("博客校园");
+		mailDTO.setFrom("校园博客");
 		mailDTO.setTo(userSafety.getMail());
-		mailDTO.setSubject("博客校园验证码");
+		mailDTO.setSubject("校园博客验证码");
 		mailDTO.setText("亲爱的用户：\n" + "你正在操作你的账户信息，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
 		// 3. 将验证码保存到redis
 		redisTemplate.opsForValue().set(key, code, USER_SERVICE_MAIL_CODE_TTL, TimeUnit.SECONDS);

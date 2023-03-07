@@ -88,10 +88,10 @@ public class RegisterServiceImpl extends ServiceImpl<UserSafetyMapper, UserSafet
 		stringRedisTemplate.opsForValue().set(key, code, REGISTER_MAIL_CODE_TTL, TimeUnit.SECONDS);
 		// 5.发送邮件
 		MailDTO mailDTO = new MailDTO();
-		mailDTO.setFrom("博客校园");
+		mailDTO.setFrom("校园博客");
 		mailDTO.setTo(mailAddress);
-		mailDTO.setSubject("博客校园注册验证码");
-		mailDTO.setText("亲爱的用户：\n" + "你正在注册博客校园，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
+		mailDTO.setSubject("校园博客注册验证码");
+		mailDTO.setText("亲爱的用户：\n" + "你正在注册校园博客，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
 		// 发送邮件return
 		messageClient.sendMail(mailDTO);
 		return RestResult.ok();
