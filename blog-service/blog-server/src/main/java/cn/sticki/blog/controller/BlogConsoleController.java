@@ -75,7 +75,7 @@ public class BlogConsoleController {
 		IPage<BlogView> blogPage = new Page<>(page, pageSize);
 		blogViewService.page(blogPage, wrapper);
 		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
-		BeanUtils.copyProperties(blogPage, BlogListConsoleVO.class);
+		BeanUtils.copyProperties(blogPage, blogListConsoleVO);
 		// 获取博客统计数据
 		blogListConsoleVO.setCount(blogService.getBlogCount(id));
 		return new RestResult<>(blogListConsoleVO);

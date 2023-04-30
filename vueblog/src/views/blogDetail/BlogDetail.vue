@@ -106,32 +106,6 @@
 							</ul>
 						</div>
 					</div>
-					<!-- 侧边盒子3 热门文章 -->
-					<div class="box asideHotArticle">
-						<h3 class="aside-title">热门文章</h3>
-						<div class="aside-content">
-							<ul>
-								<li v-for="(item, index) in 5" :key="index">
-									WPF使用MaterialDesign -- 好看的控件先从button开始
-									<img src="../../assets/img/blogDetail/view.png" alt="" />
-									<span>124</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-          <!-- 侧边盒子4 推荐文章 -->
-          <div class="box asideHotArticle">
-            <h3 class="aside-title">推荐文章</h3>
-            <div class="aside-content">
-              <ul>
-                <li v-for="(item, index) in 5" :key="index">
-                  WPF使用MaterialDesign -- 好看的控件先从button开始
-                  <img src="../../assets/img/blogDetail/view.png" alt="" />
-                  <span>124</span>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
         <!-- 右边博客内容 -->
         <div class="main-rt textScroll">

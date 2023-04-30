@@ -1,7 +1,7 @@
 <template>
 	<div class="contentright">
 		<div class="F-1"
-			 v-for="(item,index) in List"
+			 v-for="(item) in List"
 			 :key="item.id"
 			 @click="TurnToShow(item.id)">
 
@@ -51,7 +51,7 @@ export default {
 			//博客列表显示部分
 			List: [],
 			config: {
-				params: {status: 0, page: 0},
+				params: {status: 0, page: 1},
 				headers: {
 					'token': localStorage.getItem('token')
 				}
@@ -68,7 +68,7 @@ export default {
 		async infiniteHandler($state) {
 			// 个人博客列表数据获取
 			this.$axios
-				.get("/blog/list/new", this.config)
+				.get("/blog/console/list", this.config)
 				.then((res) => {
 					if (res.data.data.records.length > 0) {
 						this.config.params.page+=1;  // 下一页
@@ -140,22 +140,26 @@ export default {
 	height: 100%;
 }
 .contentright .F-1 .BlogContent-a {
-	width:50rem;
-	height: 100px;
+	width: 50rem;
+	height: 120px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	color: #606B7C;
 }
 
 .contentright .F-1 .BlogContent-a .BlogContent-1 {
 	/* width: 100%; */
-	height: 30%;
-	line-height: 2rem;
+	height: 25%;
+	line-height: 1.5rem;
 	font-size: 16px;
 	font-weight: 600;
 	color: black;
 }
 
 .contentright .F-1 .BlogContent-a .BlogContent-2 {
-	height: 40%;
-	line-height: 2rem;
+	height: 55%;
+	line-height: 1.2rem;
 	font-size: 14px;
 	font-weight: 500;
 	color: black;

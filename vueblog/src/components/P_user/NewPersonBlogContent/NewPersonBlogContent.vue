@@ -64,9 +64,6 @@ export default {
             // 切换模块时数据获取的激活条件
             getmessageindex:0,
             iconList:['#icon-dianzan_kuai','#icon-pinglun','#icon-zhuanfa','#icon-gengduo'],
-            CC:function(){
-                console.log("执行函数")
-            }
         }
     },
     created(){
@@ -83,10 +80,6 @@ export default {
             this.navList[index].chose=true
             this.getmessageindex=index
         },
-        CC(index){
-            console.log("数据列表")
-            console.log("防抖处理完成之后的执行函数")
-        }
     }
 }
 </script>

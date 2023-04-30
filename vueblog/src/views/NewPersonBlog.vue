@@ -36,11 +36,11 @@
             </div>
             <div class="middle">
                 <!-- 中部导航部分使用封装的子组件NewPersonBlogContent-->
-                <NewPersonBlogContent :avatarUrl="userMessage.avatarUrl" :username="userMessage.nickname"></NewPersonBlogContent>
+                <NewPersonBlogContent :avatarUrl="userMessage.avatarUrl" :username="userMessage.nickname"/>
             </div>
-            <div class="down">
-                <!-- 底部信息 -->
-            </div>
+<!--            <div class="down">-->
+<!--                &lt;!&ndash; 底部信息 &ndash;&gt;-->
+<!--            </div>-->
       </div>
   </div>
 </template>
@@ -171,6 +171,7 @@ export default {
 /* 头像本体 */
 .img img{
     width: 100%;
+		height: 100%;
 }
 /* 用户名字部分的区域 */
 .name{
