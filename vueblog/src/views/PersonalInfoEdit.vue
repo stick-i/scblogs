@@ -9,7 +9,7 @@
           <div class="contentleft">
             <ul class="contentleftA">
               <li :style="{'background-color': item.chose ? 'rgb(240,240,245)': ''}"
-                  v-for="(item,index) in leftNavigation" @click="ChoseModel(index)" :key="item.id">
+                  v-for="(item,index) in leftNavigation" @click="new ChoseModel(index)" :key="item.id">
                 <a href="#">{{ item.name }}</a>
               </li>
             </ul>
@@ -61,8 +61,8 @@ export default {
         , {name: "我的收藏", chose: false,id:3}, {name: "浏览历史", chose: false,id:4},
         {name: "内容管理", chose: false,id:5}, {name: "我的点赞", chose: false,id:6}],
       userMessage: {
-        username: "默认参数P",
-        nickname: "默认参数P",
+        username: "",
+        nickname: "",
         // 默认获取的个人头像照片地址
         avatarUrl: "https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
         registerTime: ""
@@ -97,7 +97,7 @@ export default {
 				res.data.data.avatarUrl += `?timestamp=${new Date().getTime()}`
 				this.bus.$emit('userMessage', JSON.stringify(res.data.data))
         localStorage.setItem('userMessage', JSON.stringify(res.data.data))
-      }).then(res => {
+      }).then(() => {
         this.userMessage = JSON.parse(localStorage.getItem('userMessage'))
         this.content1Seen = true
       })
@@ -109,7 +109,7 @@ export default {
       }
       this.leftNavigation[index].chose = true
 
-      if (index == 4) {
+      if (index === 4) {
         this.$router.push('/ContentManagement')
       }
     }
