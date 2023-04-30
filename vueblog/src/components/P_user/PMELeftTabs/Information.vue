@@ -12,19 +12,6 @@
               </div>
             </div>
         </div>
-<!--        <div class="rightContentA-2">-->
-<!--            <div class="rightContentA-2-container">-->
-<!--                <div class="myMoney">-->
-<!--                  <i></i>-->
-<!--                  <span>我的余额{{mymoney}}</span>-->
-<!--                </div>-->
-<!--                <div class="click">-->
-<!--                  <button>去充值</button>|-->
-<!--                  <button>个人主页</button>|-->
-<!--                  <button>我的勋章</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
     <div class="rightContentB">
         <div class="rightContentB-1">
@@ -35,7 +22,7 @@
           <div class="rightContentB-2-form">
             <ul>
               <li>
-                <span v-if="formchange">用户昵称 {{this.$parent.userMessage.nickname}}</span>
+                <span v-if="formchange">用户昵称：{{this.$parent.userMessage.nickname}}</span>
                 <!-- 编辑时产生对话框 -->
                 <div  v-if="!formchange">
                   <el-form class="form" ref="form" :model="form" label-width="80px">
@@ -47,9 +34,8 @@
                   </el-form>
                 </div>
               </li>
-              <li><span>用户ID {{}}</span></li>
-              <li><span>性别 {{}}</span></li>
-              <li><span>个人简介 {{}}</span></li>
+              <li><span>用户ID：{{this.$parent.userMessage.username}}</span></li>
+              <li><span>个人简介：这个人很懒，什么都没有留下</span></li>
             </ul>
           </div>
         </div>
@@ -81,7 +67,7 @@ export default {
   },
   data() {
     return {
-      username:"默认值没有",
+      username:"",
       mymoney:0,
       buttonSeen:true,
       formchange:true,
@@ -90,8 +76,8 @@ export default {
       dialogVisible: false,
       userMessage:{},
       form:{
-          username:"默认参数L",
-          nickname:"默认参数L",
+          username:"",
+          nickname:"",
           // 获取的个人头像照片地址
           avatarUrl:"https://profile.csdnimg.cn/2/8/8/1_qq_55817438",
           registerTime:""
@@ -148,7 +134,7 @@ export default {
         this.$axios.put('/user/nickname',formdata,this.config).then(res=>{
           console.log("修改用户昵称接口返回数据",res)
           // 调用父组件中GetData函数获取新的用户信息
-          if(res.data.status==true){
+          if(res.data.status===true){
              this.$message({
               message: '用户昵称修改成功',
               type: 'success'

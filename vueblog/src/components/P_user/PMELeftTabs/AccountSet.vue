@@ -19,15 +19,6 @@
                     </div>
                 </li>
                 <li>
-                    <div class="phone">
-                        <div class="text">手机号</div>
-                        <div class="right">
-                            <span>{{}}</span>
-                            <span>修改手机号</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
                     <div class="e-mail">
                         <div class="text">邮箱</div>
                         <div class="right">
@@ -194,7 +185,7 @@ export default {
             console.log("formdata",formdata)
             this.$axios.put('/user/password',formdata,this.config).then(res=>{
               console.log("修改昵称接口的返回值",res)
-                if(res.data.status==true){
+                if(res.data.status===true){
                      this.$message({
                             message: '密码修改成功',
                             type: 'success'
@@ -256,7 +247,7 @@ export default {
              formdata.append("password",this.ruleForm2.pass)
              console.log("标头headerstoken",this.config)
              this.$axios.delete('/user/user',{data:formdata,headers:{'token':localStorage.getItem('token')}}).then(res=>{
-                if(res.data.data.status==true){
+                if(res.data.data.status===true){
                      this.$message({
                             message: '你号没了',
                             type: 'success'
