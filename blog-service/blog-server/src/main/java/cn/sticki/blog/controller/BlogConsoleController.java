@@ -7,6 +7,8 @@ import cn.sticki.blog.pojo.vo.BlogListConsoleVO;
 import cn.sticki.blog.pojo.vo.BlogStatisticsDataVO;
 import cn.sticki.blog.service.BlogService;
 import cn.sticki.blog.service.BlogViewService;
+import cn.sticki.blog.type.BlogStatusType;
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.resource.type.FileType;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * 博客控制台相关接口
@@ -54,30 +57,43 @@ public class BlogConsoleController {
 	 * @param page     当前页
 	 * @param pageSize 页大小
 	 * @param status   博客状态码
+	 * @param authorId 作者id
 	 */
 	@GetMapping("/list")
 	public RestResult<BlogListConsoleVO> getBlogList(
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "20") int pageSize,
-			@RequestParam(defaultValue = "0") int status) {
+			@RequestParam(defaultValue = "0") int status,
+			@RequestParam(name = "userId", required = false) Integer authorId) {
 		if (pageSize > 200 || pageSize < 1 || status > 10 || status < 0) {
-			return new RestResult<>(400, "参数异常");
+			throw new BusinessException("参数异常");
 		}
+		// 判断要获取的用户id信息
+		Integer userId = AuthHelper.getCurrentUserId();
+		if (userId == null && authorId == null) {
+			throw new BusinessException("参数异常");
+		}
+		if (!Objects.equals(userId, authorId)) {
+			if (authorId == null) {
+				authorId = userId;
+			} else {
+				// 若不是当前用户，则只能查看已发表的博客
+				status = BlogStatusType.PUBLISH.getValue();
+			}
+		}
+
 		// 获取博客列表
-		Integer id = AuthHelper.getCurrentUserIdOrExit();
 		LambdaQueryWrapper<BlogView> wrapper = new LambdaQueryWrapper<>();
-		wrapper.eq(BlogView::getAuthorId, id);
+		wrapper.eq(BlogView::getAuthorId, authorId);
 		// 若status为0，则查找显示全部博客，否则查找某部分博客
-		if (status != 0) {
-			wrapper.eq(BlogView::getStatus, status);
-		}
+		wrapper.eq(status != 0, BlogView::getStatus, status);
 		// 使用mybatis进行分页
 		IPage<BlogView> blogPage = new Page<>(page, pageSize);
 		blogViewService.page(blogPage, wrapper);
 		BlogListConsoleVO blogListConsoleVO = new BlogListConsoleVO();
 		BeanUtils.copyProperties(blogPage, blogListConsoleVO);
 		// 获取博客统计数据
-		blogListConsoleVO.setCount(blogService.getBlogCount(id));
+		blogListConsoleVO.setCount(blogService.getBlogCount(authorId));
 		return new RestResult<>(blogListConsoleVO);
 	}
 
