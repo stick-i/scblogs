@@ -54,7 +54,6 @@ public class BlogListener {
 		log.debug("用户 {} 访问加1", blogOperateDTO.getAuthorId());
 		// 增加 统计表 用户访问数据
 		userGeneralMapper.updateViewNumByUserId(blogOperateDTO.getAuthorId());
-
 	}
 
 	/**
@@ -70,7 +69,6 @@ public class BlogListener {
 	public void collectAddUserGeneral(BlogOperateDTO blogOperateDTO) {
 		log.debug("用户 {} 收藏加1", blogOperateDTO.getBlogId());
 		userGeneralMapper.updateCollectNumByUserId(blogOperateDTO.getAuthorId(), 1);
-
 	}
 
 	/**
@@ -86,7 +84,6 @@ public class BlogListener {
 	public void collectReduceUserGeneral(BlogOperateDTO blogOperateDTO) {
 		log.debug("用户 {} 收藏加-1", blogOperateDTO.getBlogId());
 		userGeneralMapper.updateCollectNumByUserId(blogOperateDTO.getAuthorId(), -1);
-
 	}
 
 	/**
@@ -102,7 +99,6 @@ public class BlogListener {
 	public void likeAddUserGeneral(BlogOperateDTO blogOperateDTO) {
 		log.debug("用户 {} 点赞加1", blogOperateDTO.getBlogId());
 		userGeneralMapper.updateLikeNumByUserId(blogOperateDTO.getAuthorId(), 1);
-
 	}
 
 	/**
@@ -118,7 +114,6 @@ public class BlogListener {
 	public void likeReduceUserGeneral(BlogOperateDTO blogOperateDTO) {
 		log.debug("用户 {} 点赞加1", blogOperateDTO.getBlogId());
 		userGeneralMapper.updateLikeNumByUserId(blogOperateDTO.getAuthorId(), -1);
-
 	}
 
 	/**
@@ -134,7 +129,6 @@ public class BlogListener {
 	public void publishAddUserGeneral(BlogOperateDTO blogOperateDTO) {
 		log.debug("用户 {} 发布博客数加1", blogOperateDTO.getAuthorId());
 		userGeneralMapper.updateBlogNumByUserId(blogOperateDTO.getAuthorId(), 1);
-
 	}
 
 	/**
@@ -150,7 +144,6 @@ public class BlogListener {
 	public void publishReduceUserGeneral(BlogOperateDTO blogOperateDTO) {
 		log.debug("用户 {} 删除博客数 -1", blogOperateDTO.getAuthorId());
 		userGeneralMapper.updateBlogNumByUserId(blogOperateDTO.getAuthorId(), -1);
-
 	}
 
 }

@@ -33,6 +33,9 @@ public class AuthHelper {
 		}
 		// 获取请求中的用户信息
 		String header = attribute.getRequest().getHeader(USER_ID_HEADER);
+		if (header == null) {
+			return null;
+		}
 		Integer userId;
 		try {
 			userId = Integer.valueOf(header);
