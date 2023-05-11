@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <!-- 左部编辑，设置按钮 -->
-                        <div class="button">
+                        <div v-if="localUserId === userMessage.id" class="button">
                             <button class="edit" @click="TurnToEdit()">编辑资料</button>
                             <button class="set">设置</button>
                         </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="middle">
                 <!-- 中部导航部分使用封装的子组件NewPersonBlogContent-->
-                <NewPersonBlogContent :avatarUrl="userMessage.avatarUrl" :username="userMessage.nickname"/>
+                <NewPersonBlogContent :userId="userMessage.id" :avatarUrl="userMessage.avatarUrl" :username="userMessage.nickname"/>
             </div>
 <!--            <div class="down">-->
 <!--                &lt;!&ndash; 底部信息 &ndash;&gt;-->
@@ -66,6 +66,7 @@ export default {
                     token: localStorage.getItem("token"),
                 }
             },
+            localUserId : JSON.parse(localStorage.getItem("userMessage")).id,
             // 书的信息
             bookList:[{
                 text:'菩提本无树，明镜亦非台',
@@ -104,9 +105,14 @@ export default {
     },
     methods:{
         async GetData() {
-            this.userMessage=JSON.parse(localStorage.getItem('userMessage'))
+            this.$axios.get('/user', {params:{id:this.$route.params.userId},headers:{token: localStorage.getItem("token"),}}).then((res) => {
+                console.log(res.data);
+                this.userMessage = res.data.data;
+                console.log(this.userMessage.id);
+            } );
+
             // 获取用户个人信息
-             console.log(JSON.parse(localStorage.getItem('userMessage')),"所有个人信息")
+            //  console.log(JSON.parse(localStorage.getItem('userMessage')),"所有个人信息")
             },
             // 跳转至编辑个人信息页面
             TurnToEdit(){
