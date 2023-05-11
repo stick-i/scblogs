@@ -12,7 +12,7 @@
         </div>
         <div class="contentright">
             <div v-if="navList[0].chose">
-                <home></home>
+                <home :userId="userId"></home>
             </div>
             <div v-if="navList[1].chose">
                 <Dynamic></Dynamic>
@@ -43,6 +43,11 @@ export default {
         Fans
     },
     props:{
+        userId: {
+            require:true,
+            default: 0,
+            type:Number,
+        },
         avatarUrl:{
             require:true,
             default:'https://img2.baidu.com/it/u=590821804,2188087390&fm=253&fmt=auto&app=138&f=JPEG?w=350&h=350',
@@ -80,6 +85,8 @@ export default {
             this.navList[index].chose=true
             this.getmessageindex=index
         },
+    },
+    mounted() {
     }
 }
 </script>
