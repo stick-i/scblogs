@@ -21,12 +21,20 @@
 <script>
 export default {
     name:'MyAttention',
+    props:{
+		userId: {
+            require:true,
+            default: 0,
+            type:Number,
+        },
+	},
     data(){
         return {
             // 关注列表
             AttentionList:[],
             config:{
                 params:{
+                    userId: this.userId,
                     page:0
                 },
                 headers:{
