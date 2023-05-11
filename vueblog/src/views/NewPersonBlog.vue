@@ -66,7 +66,7 @@ export default {
                     token: localStorage.getItem("token"),
                 }
             },
-            localUserId : JSON.parse(localStorage.getItem("userMessage")).id,
+            localUserId : localStorage.getItem("userMessage") == null ? 0 : JSON.parse(localStorage.getItem("userMessage")).id,
             // 书的信息
             bookList:[{
                 text:'菩提本无树，明镜亦非台',
@@ -101,14 +101,16 @@ export default {
         };
     },
     created(){
+        // console.log(this.$route.params.userId);
+        // console.log(localStorage.getItem("token"));
         this.GetData();
     },
     methods:{
         async GetData() {
             this.$axios.get('/user', {params:{id:this.$route.params.userId},headers:{token: localStorage.getItem("token"),}}).then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 this.userMessage = res.data.data;
-                console.log(this.userMessage.id);
+                // console.log(this.userMessage.id);
             } );
 
             // 获取用户个人信息
