@@ -61,15 +61,24 @@
 <script>
 export default {
     name:'Dynamic',
+    props:{
+		userId: {
+            require:true,
+            default: 0,
+            type:Number,
+        },
+	},
     data(){
         return{
             // 是否允许他人查看
+            DynamicList: [],
             allowview:false,
             iconList:['#icon-dianzan_kuai','#icon-pinglun','#icon-zhuanfa','#icon-gengduo'],
             // 点赞的激活状态
             likeactive:false,
 			config:{
 				params:{
+                    userId: this.userId,
 					page:0,
 				},
 				headers:{
@@ -93,7 +102,8 @@ export default {
 						this.nodynamictip=true
 					}else{
 						this.nodynamictip=false
-						this.AttentionList=this.AttentionList.concat(res.data.data.records)
+                        console.log(res.data.data.records);
+						this.DynamicList=this.DynamicList.concat(res.data.data.records)
 						this.config.params.page++
 					}
 				}else{

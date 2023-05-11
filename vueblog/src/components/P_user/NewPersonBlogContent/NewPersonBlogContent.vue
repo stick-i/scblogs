@@ -15,13 +15,13 @@
                 <home :userId="userId"></home>
             </div>
             <div v-if="navList[1].chose">
-                <Dynamic></Dynamic>
+                <Dynamic :userId="userId"></Dynamic>
             </div>
             <div v-if="navList[2].chose">
-                <MyAttention></MyAttention>
+                <MyAttention :userId="userId"></MyAttention>
             </div>
             <div v-if="navList[3].chose">
-                <Fans></Fans>
+                <Fans :userId="userId"></Fans>
             </div>
         </div>
     </div>

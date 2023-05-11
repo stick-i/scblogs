@@ -284,6 +284,7 @@ export default {
 
   methods: {
     gotoUserHome() {
+        // console.log(this.profile.authorId);
         var routeUrl= this.$router.resolve({name:'UserHome',params:{userId:this.profile.authorId}})
         window.open(routeUrl.href, '_blank');
     },
