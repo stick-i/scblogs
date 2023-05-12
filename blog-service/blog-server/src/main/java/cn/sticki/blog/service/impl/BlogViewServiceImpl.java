@@ -1,10 +1,7 @@
 package cn.sticki.blog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.sticki.blog.mapper.BlogContentHtmlMapper;
-import cn.sticki.blog.mapper.BlogViewMapper;
-import cn.sticki.blog.mapper.CollectBlogMapper;
-import cn.sticki.blog.mapper.LikeBlogMapper;
+import cn.sticki.blog.mapper.*;
 import cn.sticki.blog.pojo.bo.ActionStatusBO;
 import cn.sticki.blog.pojo.bo.BlogInfoBO;
 import cn.sticki.blog.pojo.bo.BlogStatusBO;
@@ -16,6 +13,7 @@ import cn.sticki.blog.sdk.BlogOperateDTO;
 import cn.sticki.blog.service.BlogViewService;
 import cn.sticki.blog.type.BlogStatusType;
 import cn.sticki.common.result.RestResult;
+import cn.sticki.common.web.utils.RequestUtils;
 import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -24,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_OPERATE_READ_KEY;
@@ -49,6 +49,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	private BlogViewMapper blogViewMapper;
 
 	@Resource
+	private BlogGeneralMapper blogGeneralMapper;
+
+	@Resource
 	private LikeBlogMapper likeBlogMapper;
 
 	@Resource
@@ -62,6 +65,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Resource
 	private RabbitTemplate rabbitTemplate;
+
+	@Resource
+	private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
 	public BlogStatusListVO getRecommendBlogList(Integer userId, int page, int pageSize) {
@@ -131,6 +137,9 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Override
 	public BlogContentVO getBlogContentHtml(Integer id, Integer userId) {
+		// 博客阅读量+1
+		this.increaseViewNum(id);
+
 		BlogContentVO blog = new BlogContentVO();
 		// 博客内容
 		blog.setContent(blogContentHtmlMapper.selectById(id));
@@ -157,6 +166,21 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		blogOperateDTO.setUserId(userId);
 		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
 		return blog;
+	}
+
+	/**
+	 * 增加博客阅读量，通过ip来限制用户刷访问量
+	 *
+	 * @param blogId 博客id
+	 */
+	private void increaseViewNum(Integer blogId) {
+		// 获取当前线程的ip
+		String ip = RequestUtils.getCurIpAddress();
+		String key = "blogServer:viewBlog:" + ip + ":" + blogId;
+		Boolean success = redisTemplate.opsForValue().setIfAbsent(key, 1, 120, TimeUnit.SECONDS);
+		if (Boolean.TRUE.equals(success)) {
+			blogGeneralMapper.increaseViewNum(blogId);
+		}
 	}
 
 	/**
