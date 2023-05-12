@@ -18,6 +18,11 @@ public class BlogMqConstants {
 	public static final String BLOG_INSERT_KEY = "blog.insert";
 
 	/**
+	 * 刷新ES数据，也可以用于批量导入博客数据到ES
+	 */
+	public static final String BLOG_REFRESH_ES_KEY = "blog.refresh.es";
+
+	/**
 	 * 博客更新
 	 */
 	public static final String BLOG_UPDATE_KEY = "blog.update";
