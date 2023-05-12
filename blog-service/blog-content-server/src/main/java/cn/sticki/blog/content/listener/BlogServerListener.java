@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 import static cn.sticki.blog.sdk.BlogMqConstants.*;
 
 /**
@@ -31,6 +33,11 @@ public class BlogServerListener {
 	private static final String BLOG_SAVE_QUEUE = "blog.save.es.queue";
 
 	/**
+	 * 重置ES博客队列
+	 */
+	private static final String BLOG_REFRESH_QUEUE = "blog.refresh.es.queue";
+
+	/**
 	 * 删除博客队列
 	 */
 	private static final String BLOG_DELETE_QUEUE = BLOG_DELETE_KEY + ".es.queue";
@@ -46,6 +53,16 @@ public class BlogServerListener {
 	public void saveListener(BlogDoc blogDoc) {
 		log.debug("save blogDoc，{}", blogDoc);
 		blogRepository.save(blogDoc);
+	}
+
+	@RabbitListener(bindings = @QueueBinding(
+			exchange = @Exchange(name = BLOG_TOPIC_EXCHANGE, type = ExchangeTypes.TOPIC),
+			value = @Queue(name = BLOG_REFRESH_QUEUE),
+			key = BLOG_REFRESH_ES_KEY
+	))
+	public void refreshBlog(List<BlogDoc> blogDocs) {
+		log.debug("导入数量：{}", blogDocs.size());
+		blogRepository.saveAll(blogDocs);
 	}
 
 	@RabbitListener(bindings = @QueueBinding(
