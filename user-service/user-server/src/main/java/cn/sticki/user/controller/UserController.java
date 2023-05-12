@@ -61,12 +61,23 @@ public class UserController {
 	}
 
 	/**
+	 * 查询用户创作数据
+	 *
+	 * @param userId 用户id
+	 * @return 批量用户统计数据
+	 */
+	@GetMapping("/general")
+	public UserGeneral getUserGeneral(@RequestParam Integer userId) {
+		return userService.getUserGeneral(userId);
+	}
+
+	/**
 	 * 批量查询用户各项数据统计
 	 *
 	 * @param userIdList 用户id列表
 	 * @return 批量用户统计数据
 	 */
-	@GetMapping("/general")
+	@GetMapping("/general/map")
 	public Map<Integer, UserGeneral> getUserGeneralList(@RequestParam List<Integer> userIdList) {
 		return userService.getUserGeneralListMap(userIdList);
 	}

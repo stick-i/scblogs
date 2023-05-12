@@ -12,6 +12,14 @@ import org.apache.ibatis.annotations.Update;
 public interface BlogGeneralMapper extends BaseMapper<BlogGeneral> {
 
 	/**
+	 * 博客阅读量+1
+	 *
+	 * @param blogId 博客id
+	 */
+	@Update("update blog_general set view_num = view_num + 1 where blog_id = #{blogId};")
+	void increaseViewNum(Integer blogId);
+
+	/**
 	 * 博客点赞数+1
 	 *
 	 * @param blogId 博客id
