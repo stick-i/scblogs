@@ -16,8 +16,8 @@
             </el-input>
           </div>
           <div class="boxdown">
-              <div class="optionshow">
-                <div v-if="optionIndex==1" class="imgshow">
+              <!-- <div class="optionshow"> -->
+                <!-- <div v-if="optionIndex==1" class="imgshow">
                     <el-upload
                         action="https://jsonplaceholder.typicode.com/posts/"
                         list-type="picture-card"
@@ -31,20 +31,20 @@
                         accept=".jpg,.jpeg,.png"
                         :limit="9"
                         >
-                        <i class="el-icon-plus"></i>
+                         <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                     </el-dialog>
-                </div>
-              </div>
+                </div> -->
+              <!-- </div> -->
               <div class="option">
-                  <ul>
+                  <!-- <ul>
                       <li v-for="item in iconList" :key="item.id" @click="Options(item.id)">
                           <i class="iconfont" :class="item.icon"></i>
                           <span>{{item.option}}</span>
                       </li>
-                  </ul>
+                  </ul> -->
                   <button @click="PublishDynamic()">发布动态</button>
               </div>
           </div>
@@ -66,7 +66,9 @@ export default {
             // 底部显示部分
             optionIndex:1,
 			config:{
+                // content: '',
 				headers:{
+                   
 					token:localStorage.getItem('token')
 				}
 			}
@@ -88,12 +90,16 @@ export default {
             }
 			let formdata=new FormData()
 			formdata.append('content',this.textarea)
-			formdata.append('schoolCode',)
+			// formdata.append('schoolCode',)
 			//添加院校代码
-			this.$axios.post('/blink',this.config).then(res=>{
-				console.log(res)
+            // this.config.content = this.textarea;
+            
+			this.$axios.post('/blink', formdata, this.config).then(res=>{
+				// console.log(res)
+                this.$router.push('/HeartSay');
+                this.$message.success('发布成功');
 			})
-            console.log("需要发布的文字部分:",this.textarea)
+            // console.log("需要发布的文字部分:",this.textarea)
         },
         // 点击放大照片预览
          handlePictureCardPreview(file) {

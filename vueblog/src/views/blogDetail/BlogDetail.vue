@@ -38,24 +38,22 @@
             <!-- 个人数据介绍1 -->
             <div class="data-info">
               <dl>
-                <dt class="count">567</dt>
+                <dt class="count">{{ UserCreationStatistics.blogNum }}</dt>
                 <dd class="font">原创</dd>
               </dl>
               <dl>
-                <dt class="count">21万+</dt>
+                <dt v-if="UserCreationStatistics.weekRank" class="count">{{ UserCreationStatistics.weekRank }}</dt>
+                <dt v-else>暂无</dt>
                 <dd class="font">周排名</dd>
               </dl>
               <dl>
-                <dt class="count">2万+</dt>
+                <dt v-if="UserCreationStatistics.totalRank" class="count">{{ UserCreationStatistics.totalRank }}</dt>
+                <dt v-else>暂无</dt>
                 <dd class="font">总排名</dd>
               </dl>
               <dl>
-                <dt class="count">10万+</dt>
-                <dd class="font">访问</dd>
-              </dl>
-              <dl>
-                <dt class="count">5</dt>
-                <dd class="font">等级</dd>
+                <dt class="count">{{ UserCreationStatistics.viewNum }}</dt>
+                <dd class="font">总访问</dd>
               </dl>
             </div>
             <!-- 分割线 -->
@@ -63,23 +61,19 @@
             <!-- 个人数据介绍2 -->
             <div class="data-info">
               <dl>
-                <dt class="count">1324</dt>
-                <dd class="font">积分</dd>
-              </dl>
-              <dl>
-                <dt class="count">145</dt>
+                <dt class="count">{{ UserCreationStatistics.fansNum }}</dt>
                 <dd class="font">粉丝</dd>
               </dl>
               <dl>
-                <dt class="count">98</dt>
+                <dt class="count">{{ UserCreationStatistics.likeNum }}</dt>
                 <dd class="font">获赞</dd>
               </dl>
               <dl>
-                <dt class="count">76</dt>
+                <dt class="count">{{ UserCreationStatistics.commentNum }}</dt>
                 <dd class="font">评论</dd>
               </dl>
               <dl>
-                <dt class="count">324</dt>
+                <dt class="count">{{ UserCreationStatistics.collectNum }}</dt>
                 <dd class="font">收藏</dd>
               </dl>
             </div>
@@ -232,6 +226,19 @@ export default {
   data() {
     return {
       isfixTab: true,
+      UserCreationStatistics: {
+        id: 0,
+        userId: 0,
+        likeNum: 0,
+        fansNum: 0,
+        commentNum: 0,
+        collectNum: 0,
+        viewNum: 0,
+        blogNum: 0,
+        weekRank: 0,
+        totalRank: 0,
+        deleted: 0,
+      },
       // 点赞收藏id
       blogIdForm: {
         blogId: "",
@@ -262,12 +269,21 @@ export default {
       isShowFollow: false,
 			// 目录
 			navList:[],
+      config:{
+        params: {
+          userId: 0,
+        },
+				headers:{
+					token:localStorage.getItem('token')
+				}
+			},
     };
   },
   created() {
   },
 	mounted() {
-		this.getArticleDetail()
+		this.getArticleDetail();
+    // this.getUserCreationStatistics();
 	},
 
   // 滚动开始
@@ -283,6 +299,9 @@ export default {
   // 滚动结束
 
   methods: {
+    // getUserCreationStatistics() {
+
+    // },
     gotoUserHome() {
         // console.log(this.profile.authorId);
         var routeUrl= this.$router.resolve({name:'UserHome',params:{userId:this.profile.authorId}})
@@ -322,6 +341,11 @@ export default {
           followId: blog.author.id,
         };
         document.title = _this.blogDetail.title + " - " + _this.profile.author + " - 校园博客"
+        this.config.params.userId = blog.author.id;
+        this.$axios.get('/user/general', this.config).then((res) => {
+          // console.log(res.data.data);
+          this.UserCreationStatistics = res.data.data;
+        })
 				// _this.comment = blog.comment;
 				// console.log(_this.comment);
 			});
