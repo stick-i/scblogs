@@ -108,6 +108,16 @@ public class UserServiceImpl extends ServiceImpl<UserViewMapper, UserView> imple
 	}
 
 	@Override
+	public UserGeneral getUserGeneral(Integer userId) {
+		if (userId == null) {
+			return null;
+		}
+		LambdaQueryWrapper<UserGeneral> wrapper = new LambdaQueryWrapper<>();
+		wrapper.eq(UserGeneral::getUserId, userId);
+		return userGeneralMapper.selectOne(wrapper);
+	}
+
+	@Override
 	public Map<Integer, UserGeneral> getUserGeneralListMap(List<Integer> userIdList) {
 		if (userIdList == null || userIdList.size() == 0) {
 			return null;
