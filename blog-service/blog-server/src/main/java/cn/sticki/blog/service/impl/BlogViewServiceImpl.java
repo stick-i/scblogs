@@ -137,9 +137,6 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 
 	@Override
 	public BlogContentVO getBlogContentHtml(Integer id, Integer userId) {
-		// 博客阅读量+1
-		this.increaseViewNum(id);
-
 		BlogContentVO blog = new BlogContentVO();
 		// 博客内容
 		blog.setContent(blogContentHtmlMapper.selectById(id));
@@ -159,12 +156,8 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 		RestResult<UserDTO> result = userClient.getByUserId(blogView.getAuthorId());
 		blog.setAuthor(result.getData());
 
-		// 封装好请求体后，发送到MQ
-		BlogOperateDTO blogOperateDTO = new BlogOperateDTO();
-		blogOperateDTO.setBlogId(id);
-		blogOperateDTO.setAuthorId(blogView.getAuthorId());
-		blogOperateDTO.setUserId(userId);
-		rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
+		// 博客阅读量+1
+		this.increaseViewNum(id, blogView.getAuthorId(), userId);
 		return blog;
 	}
 
@@ -173,13 +166,19 @@ public class BlogViewServiceImpl extends ServiceImpl<BlogViewMapper, BlogView> i
 	 *
 	 * @param blogId 博客id
 	 */
-	private void increaseViewNum(Integer blogId) {
+	private void increaseViewNum(Integer blogId, Integer authorId, Integer userId) {
 		// 获取当前线程的ip
 		String ip = RequestUtils.getCurIpAddress();
 		String key = "blogServer:viewBlog:" + ip + ":" + blogId;
 		Boolean success = redisTemplate.opsForValue().setIfAbsent(key, 1, 120, TimeUnit.SECONDS);
 		if (Boolean.TRUE.equals(success)) {
 			blogGeneralMapper.increaseViewNum(blogId);
+			// 封装好请求体后，发送到MQ
+			BlogOperateDTO blogOperateDTO = new BlogOperateDTO();
+			blogOperateDTO.setBlogId(blogId);
+			blogOperateDTO.setAuthorId(authorId);
+			blogOperateDTO.setUserId(userId);
+			rabbitTemplate.convertAndSend(BLOG_TOPIC_EXCHANGE, BLOG_OPERATE_READ_KEY, blogOperateDTO);
 		}
 	}
 
