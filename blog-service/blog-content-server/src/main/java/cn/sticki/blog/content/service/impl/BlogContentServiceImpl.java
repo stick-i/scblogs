@@ -6,6 +6,7 @@ import cn.sticki.blog.content.pojo.BlogListVO;
 import cn.sticki.blog.content.pojo.SearchQuery;
 import cn.sticki.blog.content.service.BlogContentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -28,6 +29,9 @@ public class BlogContentServiceImpl implements BlogContentService {
 
 	@Resource
 	private BlogRepository blogRepository;
+
+	@Value("${blog.image-prefix:}")
+	private String imagePrefix;
 
 	/**
 	 * 搜索博客
@@ -59,6 +63,10 @@ public class BlogContentServiceImpl implements BlogContentService {
 				for (String name : fields.keySet()) {
 					beanMap.put(name, fields.get(name).get(0));
 				}
+			}
+			// 封面图链接添加前缀
+			if (blogDoc.getCoverImage() != null) {
+				blogDoc.setCoverImage(imagePrefix + blogDoc.getCoverImage());
 			}
 			// 2.4 博客数据插入列表
 			blogDocList.add(blogDoc);
