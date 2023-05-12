@@ -66,6 +66,11 @@ const routes = [
     name: 'BlogEdit',
     component: BlogEdit,
   },
+  {
+    path: '/user/:userId',
+    name: 'UserHome',
+    component: NewPersonBlog,
+  },
   // {
   //   path: '/campus/scenery',
   //   name: 'CampusScenery',

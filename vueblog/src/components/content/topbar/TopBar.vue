@@ -496,8 +496,8 @@ export default {
     // 退出登录
     handleCommand(command) {
       if (command == "a") {
-        console.log("个人中心");
-        this.$router.push('/NewPersonBlog')
+        var routeUrl= this.$router.resolve({name:'UserHome',params:{userId:JSON.parse(localStorage.getItem("userMessage")).id}})
+        window.open(routeUrl.href, '_blank');
       }
       if (command == "b") {
         console.log("退出登录");

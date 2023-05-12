@@ -9,7 +9,7 @@
           <div class="box asideProfile">
             <!-- 个人介绍 -->
             <div class="profile-intro">
-              <div class="avatar-box">
+              <div class="avatar-box" @click="gotoUserHome">
                 <a href="#">
                   <img :src="profile.avatarUrl" alt="" />
                 </a>
@@ -249,6 +249,7 @@ export default {
         commentNum: "",
       },
       profile: {
+        authorId: 0,
         author: "",
         avatarUrl: "",
       },
@@ -282,6 +283,11 @@ export default {
   // 滚动结束
 
   methods: {
+    gotoUserHome() {
+        // console.log(this.profile.authorId);
+        var routeUrl= this.$router.resolve({name:'UserHome',params:{userId:this.profile.authorId}})
+        window.open(routeUrl.href, '_blank');
+    },
 		async getArticleDetail() {
 			// 显示文章详情
 			const blogId = this.$route.params.blogId;
@@ -310,6 +316,7 @@ export default {
 				_this.profile = {
 					author: blog.author.nickname,
 					avatarUrl: blog.author.avatarUrl,
+          authorId: blog.author.id
 				};
 				_this.followIdForm = {
           followId: blog.author.id,
