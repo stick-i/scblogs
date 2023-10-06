@@ -116,14 +116,14 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          if (res.data.code == 402 && res.data.status == false) {
+          if (res.data.code === 402 && res.data.status === false) {
             this.$message({
               showClose: true,
               message: "请先登录哦~",
               type: "warning",
             });
           }
-          if (res.data.code == 200 && res.data.status == true) {
+          if (res.data.code === 200 && res.data.status === true) {
             if (isLike) {
               this.blogList[index].likeNum--;
               this.blogList[index].actionStatus.like = false;

@@ -76,7 +76,7 @@ export default {
   methods: {
 		keyDown(e){
 			//如果是回车则执行登录方法
-			if(e.keyCode == 13){
+			if(e.keyCode === 13){
 				this.submitForm('ruleForm');
 			}
 		},
@@ -88,21 +88,21 @@ export default {
             .post("/login/login", qs.stringify(this.ruleForm))
             .then((res) => {
               console.log(res);
-              if (res.data.code == 200 && res.data.status == false) {
+              if (res.data.code === 200 && res.data.status === false) {
                 this.$message({
                   showClose: true,
                   message: "用户名或密码错误",
                   type: "warning",
                 });
               }
-              if (res.data.code == 402) {
+              if (res.data.code === 402) {
                 this.$message({
                   showClose: true,
                   message: "用户名或密码错误",
                   type: "warning",
                 });
               }
-              if (res.data.code == 200 && res.data.status == true) {
+              if (res.data.code === 200 && res.data.status === true) {
                 this.$message({
                   showClose: true,
                   message: "恭喜您，登录成功~",
