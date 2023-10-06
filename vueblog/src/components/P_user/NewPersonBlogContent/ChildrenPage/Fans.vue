@@ -6,7 +6,7 @@
         </div>
 		<div v-if="nofanstip"  class="nofans">你还没有粉丝哦，可以试试写一些有意义的文章</div>
 
-        <div class="attention" v-for="(item,index) in FansLists" :key="item.followId">
+        <div class="attention" v-for="(item) in FansLists" :key="item.followId">
             <div class="img">
                 <img :src="item.avatarUrl" alt="">
             </div>
@@ -22,12 +22,20 @@
 <script>
 export default {
     name:'Fans',
+    props:{
+		userId: {
+            require:true,
+            default: 0,
+            type:Number,
+        },
+	},
     data(){
         return {
             // 关注列表
             FansLists:[],
             config:{
                 params:{
+                    userId: this.userId,
                     page:0
                 },
                 headers:{
@@ -45,7 +53,7 @@ export default {
             this.$axios.get('/user/fans',this.config).then(res=>{
                 console.log("获取所有粉丝列表",res)
 				if(res.data.status){
-					if(res.data.data.total!=0) {
+					if(res.data.data.total!==0) {
 						this.nofanstip=false
 						this.FansLists = this.FansLists.concat(res.data.data.records)
 						this.config.params.page++
@@ -113,6 +121,7 @@ export default {
 }
 .attention .img img{
     width: 100%;
+		height: 100%;
 }
 .attention .introduce{
     height: 100%;
@@ -124,6 +133,6 @@ export default {
     font-size: 20px;
     font-weight: 400;
     color: white;
-    margin: 11px 0px;
+    margin: 11px 0;
 }
 </style>

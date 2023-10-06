@@ -87,8 +87,8 @@ public class RankServiceImpl implements RankService {
 	@Override
 	public List<RankAuthorVO> getWeekAuthorRank() {
 		//获取上周的周key
-		long weekkey = RankKeyUtils.getWeekKey();
-		return getAuthorRank(RANK_AUTHOR_WEEK_KEY + weekkey);
+		long weekKey = RankKeyUtils.getWeekKey();
+		return getAuthorRank(RANK_AUTHOR_WEEK_KEY + weekKey);
 	}
 
 	@Override

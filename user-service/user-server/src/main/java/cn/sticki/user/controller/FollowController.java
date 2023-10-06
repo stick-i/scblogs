@@ -1,5 +1,6 @@
 package cn.sticki.user.controller;
 
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.user.pojo.FansViewListVO;
 import cn.sticki.user.pojo.FollowViewListVO;
@@ -38,9 +39,14 @@ public class FollowController {
 	 * @return 关注列表数据
 	 */
 	@GetMapping("/follow")
-	public FollowViewListVO getFollowList(@RequestParam(defaultValue = "1") int page) {
-		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		return userFollowService.getFollowList(id, page, pageSize);
+	public FollowViewListVO getFollowList(@RequestParam(defaultValue = "1") int page, Integer userId) {
+		if (userId == null) {
+			userId = AuthHelper.getCurrentUserId();
+			if (userId == null) {
+				throw new BusinessException("参数异常");
+			}
+		}
+		return userFollowService.getFollowList(userId, page, pageSize);
 	}
 
 	/**
@@ -50,9 +56,14 @@ public class FollowController {
 	 * @return 粉丝列表数据
 	 */
 	@GetMapping("/fans")
-	public FansViewListVO getFansList(@RequestParam(defaultValue = "1") int page) {
-		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		return userFollowService.getFansList(id, page, pageSize);
+	public FansViewListVO getFansList(@RequestParam(defaultValue = "1") int page, Integer userId) {
+		if (userId == null) {
+			userId = AuthHelper.getCurrentUserId();
+			if (userId == null) {
+				throw new BusinessException("参数异常");
+			}
+		}
+		return userFollowService.getFansList(userId, page, pageSize);
 	}
 
 	/**

@@ -6,6 +6,7 @@ import cn.sticki.blink.pojo.SaveBlinkBO;
 import cn.sticki.blink.pojo.UpdateBlinkBO;
 import cn.sticki.blink.service.BlinkService;
 import cn.sticki.blink.service.BlinkViewService;
+import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.web.auth.AuthHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -92,14 +93,21 @@ public class BlinkController {
 	}
 
 	/**
-	 * 获取自己的动态列表
+	 * 获取动态列表
 	 *
 	 * @param page 第几页
 	 */
 	@GetMapping("/list/self")
-	public BlinkViewListVO getSelfList(@RequestParam(defaultValue = "1") Integer page) {
-		Integer id = AuthHelper.getCurrentUserIdOrExit();
-		return blinkViewService.getSelfList(id, page, PAGE_SIZE);
+	public BlinkViewListVO getSelfList(
+			@RequestParam(defaultValue = "1") Integer page,
+			Integer userId) {
+		if (userId == null) {
+			userId = AuthHelper.getCurrentUserId();
+			if (userId == null) {
+				throw new BusinessException("参数异常");
+			}
+		}
+		return blinkViewService.getSelfList(userId, page, PAGE_SIZE);
 	}
 
 }

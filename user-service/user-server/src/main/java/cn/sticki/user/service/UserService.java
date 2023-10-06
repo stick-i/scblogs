@@ -40,6 +40,14 @@ public interface UserService extends IService<UserView> {
 	Map<Integer, UserView> getUserListMap(Set<Integer> userIdList);
 
 	/**
+	 * 获取用户创作信息
+	 *
+	 * @param userId 用户id
+	 * @return 批量用户统计数据
+	 */
+	UserGeneral getUserGeneral(Integer userId);
+
+	/**
 	 * 批量查询用户各项数据统计
 	 *
 	 * @param userIdList 用户id列表

@@ -5,7 +5,7 @@
             我的关注
         </div>
 		<div v-if="noattentiontip" class="noattention">你还没有关注哦，</div>
-        <div class="attention" v-for="(item,index) in AttentionList" :key="item.followId">
+        <div class="attention" v-for="(item) in AttentionList" :key="item.followId">
             <div class="img">
                 <img :src="item.avatarUrl" alt="">
             </div>
@@ -21,12 +21,20 @@
 <script>
 export default {
     name:'MyAttention',
+    props:{
+		userId: {
+            require:true,
+            default: 0,
+            type:Number,
+        },
+	},
     data(){
         return {
             // 关注列表
             AttentionList:[],
             config:{
                 params:{
+                    userId: this.userId,
                     page:0
                 },
                 headers:{
@@ -45,7 +53,7 @@ export default {
             this.$axios.get('/user/follow',this.config).then((res)=>{
                 console.log("关注列表数据返回",res)
                 if(res.status){
-                    if(res.data.data.total==0){
+                    if(res.data.data.total===0){
 						this.noattentiontip=true
                     }else{
 						this.noattentiontip=false
@@ -113,6 +121,7 @@ export default {
 }
 .attention .img img{
     width: 100%;
+		height: 100%;
 }
 .attention .introduce{
     height: 100%;
@@ -125,6 +134,6 @@ export default {
     font-size: 20px;
     font-weight: 400;
     color: white;
-    margin: 11px 0px;
+    margin: 11px 0;
 }
 </style>

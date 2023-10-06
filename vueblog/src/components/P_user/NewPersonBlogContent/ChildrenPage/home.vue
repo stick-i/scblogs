@@ -46,12 +46,19 @@ export default {
 	components:{
 		InfiniteLoading,
 	},
+    props:{
+		userId: {
+            require:true,
+            default: 0,
+            type:Number,
+        },
+	},
 	data() {
 		return {
 			//博客列表显示部分
 			List: [],
 			config: {
-				params: {status: 0, page: 1},
+				params: {userId:this.userId, status: 0, page: 1},
 				headers: {
 					'token': localStorage.getItem('token')
 				}
@@ -61,11 +68,26 @@ export default {
 	async created() {
 	},
 	mounted() {
-
+	},
+	watch : {
+		userId() {
+			// console.log(this.userId);
+			this.config.params.userId = this.userId;
+			this.$axios
+				.get("/blog/console/list", this.config)
+				.then((res) => {
+					if (res.data.data.records.length > 0) {
+						this.config.params.page+=1;  // 下一页
+						this.List = this.List.concat(res.data.data.records);
+					} else {
+					}
+				})
+		},
 	},
 	methods: {
 		// 底部刷新函数
 		async infiniteHandler($state) {
+			console.log(this.userId);
 			// 个人博客列表数据获取
 			this.$axios
 				.get("/blog/console/list", this.config)

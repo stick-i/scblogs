@@ -60,7 +60,7 @@ public interface UserClient {
 	 * @param userIdList 用户id列表
 	 * @return 批量用户统计数据
 	 */
-	@GetMapping("/user/general")
+	@GetMapping("/user/general/map")
 	RestResult<Map<Integer, UserGeneralDTO>> getUserGeneralList(@RequestParam List<Integer> userIdList);
 
 }

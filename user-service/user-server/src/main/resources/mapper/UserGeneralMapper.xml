@@ -7,7 +7,7 @@
 
 	<insert id="insertAllUser" parameterType="integer">
 		insert user_general(`user_id`) values
-		<foreach collection="userIds" separator="," item="item" open="(" close=")">
+		<foreach collection="userIds" separator="),(" item="item" open="(" close=")">
 			${item}
 		</foreach>
 	</insert>

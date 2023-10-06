@@ -1,7 +1,10 @@
 package cn.sticki.common.web.utils;
 
+import cn.sticki.common.exception.SystemException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -11,6 +14,20 @@ import java.util.Objects;
  */
 @SuppressWarnings("AlibabaUndefineMagicConstant")
 public class RequestUtils {
+
+	/**
+	 * 获取当前线程的ip地址，仅spring-mvc项目可用
+	 *
+	 * @return ip地址
+	 */
+	public static String getCurIpAddress() {
+		// 2. 获取当前线程的请求
+		ServletRequestAttributes attribute = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		if (attribute == null) {
+			throw new SystemException("当前线程无法获取ip地址");
+		}
+		return getIpAddress(attribute.getRequest());
+	}
 
 	public static String getIpAddress(HttpServletRequest request) {
 		String ip = null;
