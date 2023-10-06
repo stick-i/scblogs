@@ -7,7 +7,7 @@
             <a
 							data-report-click='{"spm":"3001.4476"}'
 							data-report-query="spm=3001.4476"
-							href="http://scblogs.cn/"
+							href="/"
 						>
 							<img id="icon" title="首页" src="../../../assets/img/long-logo.png"/>
 						</a>
@@ -49,7 +49,7 @@
               <a
 								data-report-click='{"mod":"popu_336","dest":"http://scblogs.cn/","spm":"3001.4492"}'
 								data-report-query="spm=3001.4492"
-								href="http://scblogs.cn/"
+								href="/"
               >
                 问答
                 <!-- 校园风采 -->
@@ -69,15 +69,15 @@
               <a
 								data-report-click='{"mod":"popu_336","dest":"http://scblogs.cn/","spm":"3001.4482"}'
 								data-report-query="spm=3001.4482"
-								href="http://scblogs.cn/"
+								href="/"
               >
                 校园风采
               </a>
             </li>
 
-             <li class="" title="热门文章">
+             <li class="" title="当前院校">
               <a
-                data-report-click='{"mod":"popu_336","dest":"https://edu.csdn.net/","spm":"3001.4482"}'
+                data-report-click='{"mod":"popu_336","dest":"/","spm":"3001.4482"}'
                 data-report-query="spm=3001.4482"
 				@click="centerDialogVisible = true">
 				  <el-popover

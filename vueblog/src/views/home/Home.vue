@@ -2,60 +2,22 @@
   <div class="container">
     <top-bar class="top-bar"></top-bar>
     <div class="top-content">
-      <!-- navbar -->
-      <!--      <div class="top-navbar">-->
-      <!--        <div class="small-box"></div>-->
-      <!--        <div class="nav-content">-->
-      <!--          <ul>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--            <li><a href="#">前端</a></li>-->
-      <!--          </ul>-->
-      <!--        </div>-->
-      <!--      </div>-->
-<!--      <div class="top-navbar">-->
-<!--        <ul class="li-content">-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端前端前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--          <li><a href="#">前端</a></li>-->
-<!--        </ul>-->
-<!--      </div>-->
 
       <div class="main-container">
         <div class="grid-content">
           <Swiper class="swiper" />
-          <div class="main-right-item" v-for="(item, index) in 6" :key="index">
+          <div class="main-right-item" v-for="(item, index) in mainRightBlogList" :key="index">
 						<router-link
-							:to="{ name: 'BlogDetail', params: { blogId: blogList[index].id } }"
+							:to="{ name: 'BlogDetail', params: { blogId: item.id } }"
 							target="_blank"
 						>
             <div class="item-img">
-              <img :src="blogList[index].coverImage?blogList[index].coverImage:require('../../assets/img/home/003.jpg')" alt="" />
+              <img :src="item.coverImage?item.coverImage:require('../../assets/img/home/003.jpg')" alt="" />
             </div>
             <div class="item-title">
-              {{blogList[index].title}}
+              {{item.title}}
             </div>
-            <div class="item-name">{{ blogList[index].authorName }}</div>
+            <div class="item-name">{{ item.authorName }}</div>
 						</router-link>
           </div>
         </div>
@@ -66,77 +28,6 @@
           </button>
         </div>
       </div>
-
-      <!--  -->
-      <!--      <div class="main">-->
-      <!--        &lt;!&ndash; 左边头条 &ndash;&gt;-->
-      <!--        <div class="main-left">-->
-      <!--          &lt;!&ndash; 图片展示 &ndash;&gt;-->
-      <!--          <div class="main-left-left">-->
-      <!--            <div class="main-left-top">-->
-      <!--              <img src="../../assets/img/home/toutiao.png" alt="头条" />-->
-      <!--              <span>头条</span>-->
-      <!--            </div>-->
-      <!--            <div class="main-left-center">-->
-      <!--              <img src="../../assets/img/home/003.jpg" alt="" />-->
-      <!--            </div>-->
-      <!--            <div class="main-left-bottom">-->
-      <!--              <span class="left-title">好好学习天天向上</span>-->
-      <!--              <span class="left-span">早睡早起身体好</span>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          &lt;!&ndash; 头条item展示 &ndash;&gt;-->
-      <!--          <div class="main-left-right1">-->
-      <!--            <div class="headswiper">-->
-      <!--              <div class="headswiper-top">头条左右箭头</div>-->
-      <!--              <div class="headswiper-content">-->
-      <!--                <div class="headswiper-item item-first">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--                <div class="headswiper-item" v-for="item in 4">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        &lt;!&ndash; 中间热点 &ndash;&gt;-->
-      <!--        <div class="main-center">-->
-      <!--          &lt;!&ndash; 热点item展示 &ndash;&gt;-->
-      <!--          <div class="main-left-right2">-->
-      <!--            <div class="main-left-top">-->
-      <!--              <img src="../../assets/img/home/redian.png" alt="头条" />-->
-      <!--              <span>热点</span>-->
-      <!--            </div>-->
-
-      <!--            <div class="headswiper hotswiper">-->
-      <!--              &lt;!&ndash;              <div class="headswiper-top">热点左右箭头</div>&ndash;&gt;-->
-      <!--              <div class="headswiper-content">-->
-      <!--                <div class="headswiper-item item-first">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--                <div class="headswiper-item" v-for="item in 4">-->
-      <!--                  <a target="_blank" href="#" class="item-title"-->
-      <!--                    >饭后走一走活到九十九</a-->
-      <!--                  >-->
-      <!--                  <a target="_blank" href="#" class="item-name">活到九十九</a>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        &lt;!&ndash; 右边轮播图 &ndash;&gt;-->
-      <!--        <Swiper />-->
-      <!--      </div>-->
     </div>
 
     <div class="content">
@@ -161,60 +52,6 @@
 
       <!-- 右边-->
       <div class="article-right">
-        <!--        卡片1-->
-<!--        <div class="template">-->
-<!--          <div class="template-title">-->
-<!--            <span>热门推荐</span>-->
-<!--          </div>-->
-<!--          <div class="template-cont">-->
-<!--            <div class="hot" v-for="item in 5">-->
-<!--              <a target="_blank" href="#" class="hot-img">-->
-<!--                <img src="../../assets/img/home/003.jpg" alt="" />-->
-<!--              </a>-->
-<!--              <div class="hot-cont">-->
-<!--                <a target="_blank" href="#">-->
-<!--                  <div>【JS】求斐波那契数列中的奇数之和</div>-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-        <!--        卡片2-->
-<!--        <div class="template">-->
-<!--          <div class="template-title">-->
-<!--            <span>热更作者</span>-->
-<!--          </div>-->
-<!--          <div class="template-cont">-->
-<!--            <div class="recommendation" v-for="item in 5">-->
-<!--              <a target="_blank" href="#" class="recommendation-img">-->
-<!--                <img src="../../assets/img/home/default_avatar.jpg" alt="" />-->
-<!--              </a>-->
-<!--              <div class="recommendation-cont">-->
-<!--                <div><a target="_blank" href="#">大哥</a></div>-->
-<!--                <div class="intro">这月已更博55篇</div>-->
-<!--              </div>-->
-<!--              <div class="recommendation-btn">关注</div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash;        卡片3&ndash;&gt;-->
-<!--        <div class="template">-->
-<!--          <div class="template-title">-->
-<!--            <span>作者推荐</span>-->
-<!--          </div>-->
-<!--          <div class="template-cont">-->
-<!--            <div class="recommendation" v-for="item in 5">-->
-<!--              <a target="_blank" href="#" class="recommendation-img">-->
-<!--                <img src="../../assets/img/home/default_avatar.jpg" alt="" />-->
-<!--              </a>-->
-<!--              <div class="recommendation-cont">-->
-<!--                <div><a target="_blank" href="#">大哥</a></div>-->
-<!--                <div class="intro">此人很懒，什么都没有写</div>-->
-<!--              </div>-->
-<!--              <div class="recommendation-btn">关注</div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
         <!--        关于我们-->
         <div class="template">
           <div class="template-title">
@@ -298,11 +135,11 @@ export default {
 			page: 1,
       activeName: "second",
 			blogList:[],
+			mainRightBlogList:[],
     };
   },
 	created(){
 		this.getData()
-		// console.log("获取到的元素",blogList)
 	},
   methods: {
     handleClick(tab, event) {
@@ -315,7 +152,8 @@ export default {
 				})
 				.then((res) => {
 					if (res.data.data.records.length) {
-						this.blogList = this.blogList.concat(res.data.data.records);
+						this.blogList = res.data.data.records
+						this.mainRightBlogList = this.blogList.slice(0,6)
 					}
 				});
 		}
