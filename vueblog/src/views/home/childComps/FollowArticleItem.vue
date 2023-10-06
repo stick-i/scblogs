@@ -75,7 +75,7 @@
       <div slot="no-results">No results Data</div>
       <div slot="error" slot-scope="{ trigger }">
         Error Data, click
-        <a href="javascript:;" @click="trigger">here</a> toretry
+        <a href="javascript:" @click="trigger">here</a> toretry
       </div>
     </infinite-loading>
   </div>
