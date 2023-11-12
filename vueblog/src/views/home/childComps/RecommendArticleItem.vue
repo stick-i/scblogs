@@ -135,14 +135,11 @@ export default {
         });
     },
     async infiniteHandler($state) {
-      // this.$axios
-      //   .get("/blog/list?page=" + this.page, {
-      //     headers: { token: localStorage.getItem("token") },
-      //   })
-			this.$axios
-				.get("/blog/list/recommend?page=" + this.page, {
-					headers: { token: localStorage.getItem("token") },
-				})
+
+        this.$axios
+            .get("/blog/list/recommend?page=" + this.page, {
+                headers: { token: localStorage.getItem("token") },
+            })
         .then((res) => {
           // console.log(res);
           // console.log(res.data.data.userAction)
@@ -155,10 +152,6 @@ export default {
           if (res.data.data.records.length) {
             this.page += 1; // 下一页
             this.blogList = this.blogList.concat(res.data.data.records);
-            this.userAction = {
-              ...this.userAction,
-              ...res.data.data.userAction,
-            };
             // console.log(this.blogList);
             $state.loaded();
           } else {
