@@ -44,7 +44,7 @@ public class QiNiuServiceImpl implements QiNiuService {
 			Response response = uploadManager.put(inputStream, fileName, upToken, null, null);
 			//解析上传成功的结果
 			DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-			log.info("QiNiuService upload ok, key {}", putRet);
+			log.info("QiNiuService upload ok, key {}", putRet.key);
 			return qiNiuConfig.getPrefixUrl() + putRet.key;
 		} catch (QiniuException ex) {
 			Response r = ex.response;
