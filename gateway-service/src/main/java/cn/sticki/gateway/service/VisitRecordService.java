@@ -193,13 +193,10 @@ public class VisitRecordService {
 		// 构造新对象来存储数据，旧对象保存到数据库后不再使用
 		HashSet<VisitRecord> oldCache = visitCache;
 		visitCache = new HashSet<>((int) (oldCache.size() * REDUCE_FACTOR));
-		boolean isSave = false;
-		try {
-			isSave = visitLogService.saveBatch(oldCache, BATCH_SIZE);
-		} finally {
-			if (!isSave) {
-				// 如果插入失败，则重新添加所有数据
-				visitCache.addAll(oldCache);
+		if (!visitLogService.saveBatch(oldCache, BATCH_SIZE)) {
+			// 第一次保存失败，进行重试
+			if (!visitLogService.saveBatch(oldCache, BATCH_SIZE)) {
+				log.error("访问日志保存异常，丢弃数据{}条", oldCache.size());
 			}
 		}
 	}
