@@ -1,5 +1,5 @@
 # 设置JAVA版本
-FROM java:8-alpine
+FROM amazoncorretto:17-alpine
 # 指定存储卷, 任何向/tmp写入的信息都不会记录到容器存储层
 VOLUME /tmp
 # 拷贝运行JAR包
