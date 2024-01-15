@@ -11,11 +11,6 @@
 
 	<artifactId>blog-client</artifactId>
 
-	<properties>
-		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
-	</properties>
-
 	<dependencies>
 		<!--feign客户端依赖-->
 		<dependency>
