@@ -54,6 +54,7 @@
 - Gitee地址：https://gitee.com/sticki/scblogs
 - GitHub地址：https://github.com/stick-i/scblogs
 - QQ交流群：729931395 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=KwCs7qjv8N65wHys9A1nT8yZwfQF4oHh&jump_from=webapi&authKey=pk46Kps4/87pOQAWXQ+QcdHs31ZrGn+3/E/wBcxPEJrT/EkON/P6knYvUUDIexue"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="校园博客" title="校园博客"></a>
+- 微信交流群：加我微信 **sticki6**，备注或私聊 “校园博客”，我拉你进群
 - 腾讯云服务器购买链接：[云服务器等爆品抢先购，低至4.2元/月](https://cloud.tencent.com/act/cps/redirect?redirect=2446&cps_key=01c7d20caadfac8f61a2901a9324068c&from=console)
 - 阿里云服务器购买链接：[云服务器精选特惠](https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=dv0atr82)
 
@@ -141,7 +142,7 @@ http://localhost:8080/
 
 ## 赞助
 
-如果本项目对你有帮助，可以请作者喝杯奶茶！
+如果本项目对你有帮助，可以请作者喝杯奶茶（超爱）！
 
 | ☕️微信赞赏                                               | ☕️支付宝赞赏                                          |
 |------------------------------------------------------|--------------------------------------------------|
