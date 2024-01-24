@@ -1,9 +1,8 @@
 package cn.sticki.common.web.filter;
 
 import cn.hutool.http.HTMLFilter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 /**
  * Date 2022/10/26

@@ -5,12 +5,12 @@ import cn.sticki.common.web.auth.AuthHelper;
 import cn.sticki.user.pojo.FansViewListVO;
 import cn.sticki.user.pojo.FollowViewListVO;
 import cn.sticki.user.service.UserFollowService;
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**

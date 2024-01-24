@@ -3,12 +3,12 @@ package cn.sticki.blog.controller;
 import cn.sticki.blog.pojo.vo.RankAuthorVO;
 import cn.sticki.blog.pojo.vo.RankHotVO;
 import cn.sticki.blog.service.RankService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

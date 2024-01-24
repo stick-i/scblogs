@@ -1,9 +1,8 @@
 package cn.sticki.blog.content.pojo;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author 阿杆

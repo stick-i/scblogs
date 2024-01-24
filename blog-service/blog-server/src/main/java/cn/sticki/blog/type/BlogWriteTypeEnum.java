@@ -1,9 +1,9 @@
 package cn.sticki.blog.type;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;

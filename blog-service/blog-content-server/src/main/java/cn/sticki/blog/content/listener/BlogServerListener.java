@@ -2,6 +2,7 @@ package cn.sticki.blog.content.listener;
 
 import cn.sticki.blog.content.mapper.BlogRepository;
 import cn.sticki.blog.content.pojo.BlogDoc;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -9,8 +10,6 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 import java.util.List;
 

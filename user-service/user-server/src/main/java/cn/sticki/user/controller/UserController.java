@@ -9,13 +9,13 @@ import cn.sticki.user.pojo.User;
 import cn.sticki.user.pojo.UserGeneral;
 import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

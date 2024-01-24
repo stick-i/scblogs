@@ -1,10 +1,10 @@
 package cn.sticki.common.web.filter;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 

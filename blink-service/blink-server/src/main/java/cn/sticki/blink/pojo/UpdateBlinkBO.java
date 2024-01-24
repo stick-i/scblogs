@@ -1,8 +1,7 @@
 package cn.sticki.blink.pojo;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author 阿杆

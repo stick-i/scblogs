@@ -11,12 +11,12 @@ import cn.sticki.user.client.UserClient;
 import cn.sticki.user.dto.UserDTO;
 import cn.sticki.user.dto.UserGeneralDTO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

@@ -3,9 +3,9 @@ package cn.sticki.resource.service;
 import cn.sticki.resource.pojo.Image;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.minio.errors.MinioException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

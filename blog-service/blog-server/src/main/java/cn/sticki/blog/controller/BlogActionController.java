@@ -4,12 +4,12 @@ import cn.sticki.blog.pojo.vo.BlogListVO;
 import cn.sticki.blog.service.CollectBlogService;
 import cn.sticki.blog.service.LikeBlogService;
 import cn.sticki.common.web.auth.AuthHelper;
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 

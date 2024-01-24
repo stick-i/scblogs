@@ -1,7 +1,5 @@
 package cn.sticki.user.service.impl;
 
-import java.util.Objects;
-
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.client.ResourceClient;
 import cn.sticki.user.mapper.UserSafetyMapper;
@@ -11,12 +9,13 @@ import cn.sticki.user.pojo.UserSafety;
 import cn.sticki.user.pojo.UserView;
 import cn.sticki.user.service.LoginService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * @author 阿杆

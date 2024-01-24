@@ -2,6 +2,8 @@ package cn.sticki.common.web.anno;
 
 import cn.sticki.common.web.exception.FrequentVisitsException;
 import cn.sticki.common.web.utils.RequestUtils;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,8 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 

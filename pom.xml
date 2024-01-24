@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.11</version>
+		<version>3.2.1</version>
 		<relativePath/>
 	</parent>
 
@@ -35,29 +35,22 @@
 
 		<docker.space>scblogs</docker.space>
 
-		<spring-boot.version>2.6.11</spring-boot.version>
-		<spring-cloud.version>2021.0.4</spring-cloud.version>
-		<spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+		<spring-boot.version>3.2.1</spring-boot.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
+		<spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-		<druid.version>1.2.11</druid.version>
+		<mybatis-plus.version>3.5.5</mybatis-plus.version>
+		<druid.version>1.2.20</druid.version>
 
 		<hutool.version>5.8.11</hutool.version>
-		<dynamic-ds.version>3.5.1</dynamic-ds.version>
-		<captcha.version>2.2.2</captcha.version>
-		<velocity.version>2.3</velocity.version>
-		<velocity.tool.version>3.1</velocity.tool.version>
-		<configuration.version>1.10</configuration.version>
-		<jasypt.version>2.1.0</jasypt.version>
+
 		<minio.version>8.3.8</minio.version>
 		<elasticsearch.version>7.12.1</elasticsearch.version>
-		<jetbrains.version>23.0.0</jetbrains.version>
+		<jetbrains.version>24.0.1</jetbrains.version>
 
-		<!-- Dependency org.yaml:snakeyaml [0,1.31), leading to CVE problem -->
-		<snakeyaml.version>1.31</snakeyaml.version>
 		<dockerfile-maven-plugin.version>1.3.6</dockerfile-maven-plugin.version>
 	</properties>
 

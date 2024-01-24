@@ -3,6 +3,7 @@ package cn.sticki.gateway.handler;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.gateway.service.VisitRecordService;
 import cn.sticki.gateway.utils.MonoUtils;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
@@ -13,8 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.Resource;
 
 /**
  * 网关异常通用处理器，只作用在webflux 环境下 , 优先级低于 {@link ResponseStatusExceptionHandler} 执行
@@ -40,10 +39,10 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 		// 设置返回信息和HTTP状态码
 		RestResult<Object> result;
 		HttpStatus httpStatus;
-		if (ex instanceof ResponseStatusException) {
+		if (ex instanceof ResponseStatusException statusException) {
 			// HTTP状态码异常
 			log.warn("Http Status Warn : {}, url: {}", ex.getMessage(), request.getURI());
-			httpStatus = ((ResponseStatusException) ex).getStatus();
+			httpStatus = HttpStatus.valueOf(statusException.getStatusCode().value());
 		} else {
 			// 系统异常
 			log.error("Error Gateway, {}: {}, url: {}", ex.getClass(), ex.getMessage(), request.getURI());
