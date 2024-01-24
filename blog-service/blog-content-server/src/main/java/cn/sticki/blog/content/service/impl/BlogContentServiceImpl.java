@@ -5,6 +5,7 @@ import cn.sticki.blog.content.pojo.BlogDoc;
 import cn.sticki.blog.content.pojo.BlogListVO;
 import cn.sticki.blog.content.pojo.SearchQuery;
 import cn.sticki.blog.content.service.BlogContentService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanMap;
@@ -13,7 +14,6 @@ import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

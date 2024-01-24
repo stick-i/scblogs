@@ -2,6 +2,7 @@ package cn.sticki.gateway.filter;
 
 import cn.sticki.gateway.pojo.VisitRecord;
 import cn.sticki.gateway.service.VisitRecordService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -9,8 +10,6 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.Resource;
 
 /**
  * 访问记录过滤器，保存访问记录，最先执行

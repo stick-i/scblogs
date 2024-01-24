@@ -1,10 +1,10 @@
 package cn.sticki.resource.service;
 
 import io.minio.errors.MinioException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -64,7 +64,7 @@ public interface MinioService {
 	 * @param outputStream 输出流
 	 * @throws MinioException 文件不存在
 	 * @throws IOException    outputStream为空
-	 * @deprecated 请使用 {@link MinioService#download(java.lang.String, java.lang.String, javax.servlet.http.HttpServletResponse) }
+	 * @deprecated 请使用 {@link MinioService#download(java.lang.String, java.lang.String, jakarta.servlet.http.HttpServletResponse) }
 	 */
 	void download(String filePath, String bucketName, ServletOutputStream outputStream) throws MinioException, IOException;
 

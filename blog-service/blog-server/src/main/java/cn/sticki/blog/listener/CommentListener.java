@@ -3,6 +3,7 @@ package cn.sticki.blog.listener;
 import cn.sticki.blog.mapper.BlogGeneralMapper;
 import cn.sticki.blog.service.RankService;
 import cn.sticki.comment.sdk.CommentDTO;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -10,8 +11,6 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 import static cn.sticki.comment.sdk.MqConstants.*;
 

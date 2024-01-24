@@ -4,6 +4,7 @@ import cn.hutool.core.thread.ThreadFactoryBuilder;
 import cn.sticki.common.web.utils.RequestUtils;
 import cn.sticki.gateway.filter.AuthorizeFilter;
 import cn.sticki.gateway.pojo.VisitRecord;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -11,7 +12,6 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;

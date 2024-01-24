@@ -4,6 +4,8 @@ import cn.sticki.common.exception.BusinessException;
 import cn.sticki.common.exception.MapperException;
 import cn.sticki.common.exception.SystemException;
 import cn.sticki.common.result.RestResult;
+import jakarta.servlet.ServletException;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.servlet.ServletException;
-import javax.validation.ValidationException;
 import java.net.ConnectException;
 import java.util.List;
 

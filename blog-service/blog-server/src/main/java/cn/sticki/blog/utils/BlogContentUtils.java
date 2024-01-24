@@ -2,11 +2,11 @@ package cn.sticki.blog.utils;
 
 import cn.sticki.blog.pojo.domain.Blog;
 import cn.sticki.blog.service.BlogService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 import static cn.sticki.blog.sdk.BlogMqConstants.BLOG_REFRESH_ES_KEY;

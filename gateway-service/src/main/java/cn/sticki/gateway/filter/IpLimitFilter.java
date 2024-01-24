@@ -4,6 +4,7 @@ import cn.sticki.common.result.RestResult;
 import cn.sticki.common.web.utils.RequestUtils;
 import cn.sticki.gateway.config.IpLimitConfig;
 import cn.sticki.gateway.utils.MonoUtils;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Resource;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
