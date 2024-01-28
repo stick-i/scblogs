@@ -135,6 +135,11 @@
 			<artifactId>spring-cloud-loadbalancer</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
+
 		<!-- 参数校验依赖 -->
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
