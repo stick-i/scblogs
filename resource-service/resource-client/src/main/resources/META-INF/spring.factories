@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.sticki.resource.client.fuse.ResourceClientFuse,\
-  cn.sticki.resource.client.fuse.MessageClientFuse
