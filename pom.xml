@@ -123,6 +123,15 @@
 				<artifactId>annotations</artifactId>
 				<version>${jetbrains.version}</version>
 			</dependency>
+
+			<!-- todo 临时添加，用于消除BeanPostProcessors的警告，详情见https://github.com/spring-cloud/spring-cloud-commons/issues/1315 -->
+			<!-- todo 后续应进行删除，同时升级SpringCloud的版本 -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-commons</artifactId>
+				<version>4.1.1</version>
+				<scope>compile</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
