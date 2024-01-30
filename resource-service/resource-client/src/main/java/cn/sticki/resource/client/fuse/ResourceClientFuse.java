@@ -3,7 +3,6 @@ package cn.sticki.resource.client.fuse;
 import cn.sticki.common.result.RestResult;
 import cn.sticki.resource.client.ResourceClient;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
  * @author 阿杆
  */
 @Slf4j
-@Component
 public class ResourceClientFuse implements ResourceClient {
 
 	/**

@@ -4,7 +4,6 @@ import cn.sticki.blog.dto.BlogDTO;
 import cn.sticki.blog.dto.BlogGeneralDTO;
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,7 +13,6 @@ import java.util.List;
  * @author 阿杆
  */
 @Slf4j
-@Component
 public class BlogClientResolver implements BlogClient {
 
 	/**

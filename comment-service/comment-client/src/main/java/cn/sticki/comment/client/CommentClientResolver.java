@@ -2,7 +2,6 @@ package cn.sticki.comment.client;
 
 import cn.sticki.common.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * 评论模块接口客户端熔断器
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @date 2022/7/12 9:44
  */
 @Slf4j
-@Component
 public class CommentClientResolver implements CommentClient {
 
 	/**

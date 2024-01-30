@@ -4,6 +4,7 @@ import cn.sticki.common.result.RestResult;
 import cn.sticki.user.dto.UserDTO;
 import cn.sticki.user.dto.UserGeneralDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import java.util.Set;
 /**
  * @author 阿杆
  */
+@Import(UserClientResolver.class)
 @FeignClient(value = "user-server", fallback = UserClientResolver.class)
 public interface UserClient {
 
