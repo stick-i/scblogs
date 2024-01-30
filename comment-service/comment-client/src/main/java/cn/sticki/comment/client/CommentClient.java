@@ -2,6 +2,7 @@ package cn.sticki.comment.client;
 
 import cn.sticki.common.result.RestResult;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author 阿杆
  */
+@Import(CommentClientResolver.class)
 @FeignClient(value = "comment-server", fallback = CommentClientResolver.class)
 public interface CommentClient {
 

@@ -4,7 +4,6 @@ import cn.sticki.common.result.RestResult;
 import cn.sticki.user.dto.UserDTO;
 import cn.sticki.user.dto.UserGeneralDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import java.util.Set;
  * @date 2022/7/12 9:56
  */
 @Slf4j
-@Component
 public class UserClientResolver implements UserClient {
 
 	/**
