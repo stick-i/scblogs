@@ -141,6 +141,13 @@ npm run serve
 打开浏览器输入
 http://localhost:8080/
 
+## 贡献者名单 
+
+ <a href="https://github.com/stick-i/scblogs/graphs/contributors"> 
+<img src="https://contrib.rocks/image?repo=stick-i/scblogs" /> 
+</a> 
+
+
 ## 赞助
 
 如果本项目对你有帮助，可以请作者喝杯奶茶（超爱）！
