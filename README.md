@@ -29,35 +29,20 @@
 
 ![image](./document/image/scblogs-framework.png)
 
-## 参与贡献
+## 暂停维护
 
-陆续有一些开源贡献者愿意加入到这个项目当中了😁，为了便于大家参与贡献，我将项目计划做了一些整理，主要分为以下几个部分：
+此项目为作者大学时期学习微服务时所创建，现由于个人时间原因已暂停维护，在线网站也一并下线。
 
-|         新功能或新模块         |  难度  |
-| :----------------------------: | :----: |
-| 对原来的模块进行完善及新增功能 | 看情况 |
-|         管理员系统模块         |  中等  |
-|            问答模块            |  简单  |
-|            商城模块            |  中等  |
-|             OJ模块             |  困难  |
-
-另外详细的计划内容已经作为issue发在GitHub上了，访问链接：https://github.com/stick-i/scblogs/issues/64 即可查看，欢迎大家参与噢！
-
-在参与项目贡献前，请先阅读 [CONTRIBUTING](./CONTRIBUTING.md) 这个文件，这很重要。
-
-如果你经常性的无法访问GitHub，这篇文章或许可以帮到你：[GitHub连接不上解决方案](https://juejin.cn/post/7158258577113612302)。
+此项目适合微服务初学者进行参考学习，如有疑问，仍然欢迎提issue。
 
 ## 项目地址
 
 项目部署在腾讯云服务器上，代码托管在 **Gitee** 和 **GitHub** 上，欢迎大家 **Star**
 
-- 项目主页：http://scblogs.cn/
 - Gitee地址：https://gitee.com/sticki/scblogs
 - GitHub地址：https://github.com/stick-i/scblogs
 - QQ交流群：729931395 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=KwCs7qjv8N65wHys9A1nT8yZwfQF4oHh&jump_from=webapi&authKey=pk46Kps4/87pOQAWXQ+QcdHs31ZrGn+3/E/wBcxPEJrT/EkON/P6knYvUUDIexue"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="校园博客" title="校园博客"></a>
 - 微信交流群：加我微信 **sticki6**，备注或私聊 “校园博客”，我拉你进群
-- 腾讯云服务器购买链接：[云服务器等爆品抢先购，低至4.2元/月](https://cloud.tencent.com/act/cps/redirect?redirect=2446&cps_key=01c7d20caadfac8f61a2901a9324068c&from=console)
-- 阿里云服务器购买链接：[云服务器精选特惠](https://www.aliyun.com/daily-act/ecs/activity_selection?userCode=dv0atr82)
 
 ## 项目特点
 
@@ -94,8 +79,6 @@
 
 ## 技术选型
 
-### 后端技术
-
 |      技术      |       说明       |                        官网                         |
 | :------------: | :--------------: |:-------------------------------------------------:|
 |   SpringBoot   |     MVC框架      |      https://spring.io/projects/spring-boot       |
@@ -119,15 +102,18 @@
 |     Minio      | 本地对象存储服务 |                  https://min.io/                  |
 | Docker Compose |  Docker容器编排  |         https://docs.docker.com/compose/          |
 
-### 前端技术
+## 启动服务
 
-#### 前端运行
+### 启动后端
+
+等待补充
+
+### 启动前端
 **1、安装node.js**
 参考菜鸟教程：https://www.runoob.com/nodejs/nodejs-install-setup.html
 
 **2、运行前端项目**
 ```shell
-
 # 进入到前端项目目录
 cd vueblog
 
@@ -136,10 +122,15 @@ npm install --registry=https://registry.npmmirror.com
 
 # 本地开发 启动项目
 npm run serve
- 
 ```
 打开浏览器输入
 http://localhost:8080/
+
+## 参与贡献
+
+在参与项目贡献前，请先阅读 [CONTRIBUTING](./CONTRIBUTING.md) 这个文件，这很重要。
+
+如果你经常性的无法访问GitHub，这篇文章或许可以帮到你：[GitHub连接不上解决方案](https://juejin.cn/post/7158258577113612302)。
 
 ## 贡献者名单 
 
