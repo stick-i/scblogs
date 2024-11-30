@@ -106,9 +106,21 @@
 
 ### 启动后端
 
-等待补充
+需要准备的环境：
+
+- MySQL（强制）
+- Redis（强制）
+- Nacos（强制）
+- ES（blog-content-service依赖，需要安装ik分词器）
+- RabbitMQ（blog-service依赖）
+- MinIO（resource-service依赖）
+
+SQL、Nacos配置等文件以及说明在 [document](./document) 目录下，Nacos里的相关配置也需要修改为自己实际的。
+
+由于本项目没有完善的教程文档，故仅适合有一定项目基础的同学，同时也欢迎大家来补充教程。
 
 ### 启动前端
+
 **1、安装node.js**
 参考菜鸟教程：https://www.runoob.com/nodejs/nodejs-install-setup.html
 
