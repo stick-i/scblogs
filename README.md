@@ -41,7 +41,7 @@
 
 - Gitee地址：https://gitee.com/sticki/scblogs
 - GitHub地址：https://github.com/stick-i/scblogs
-- QQ交流群：729931395 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=KwCs7qjv8N65wHys9A1nT8yZwfQF4oHh&jump_from=webapi&authKey=pk46Kps4/87pOQAWXQ+QcdHs31ZrGn+3/E/wBcxPEJrT/EkON/P6knYvUUDIexue"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="校园博客" title="校园博客"></a>
+- QQ交流群：729931395 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=KwCs7qjv8N65wHys9A1nT8yZwfQF4oHh&jump_from=webapi&authKey=pk46Kps4/87pOQAWXQ+QcdHs31ZrGn+3/E/wBcxPEJrT/EkON/P6knYvUUDIexue"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="校园博客" title="校园博客"></a> （优先加微信群吧，QQ我不咋用）
 - 微信交流群：加我微信 **sticki6**，备注或私聊 “校园博客”，我拉你进群
 
 ## 项目特点
